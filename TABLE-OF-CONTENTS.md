@@ -1,435 +1,416 @@
 # Master Table of Contents — Modern AI Mastery (June 2026)
 
-_One course, **17 subjects**. **Each subject = one academic quarter, 3 lecture-hours/week.** Every lecture lists its topics, its **▶ practical project** (a real GitHub repo), and its reusable skill. Per-subject time-boxed plans in [`_toc/`](_toc/); every-chapter project table in [`CHAPTER-PROJECT-MAP.md`](CHAPTER-PROJECT-MAP.md); Krish Naik map in [`KRISHNAIK-PROJECTS-MAP.md`](KRISHNAIK-PROJECTS-MAP.md)._
+_One course, **6 subjects** (consolidated from 17 modules; nothing lost — related modules are now Parts). Each subject = a quarter-track at 3 lecture-hrs/week. Every lecture shows its topics, ▶ practical project, and 🔧 skill._
 
-| # | Subject | Lectures | Lecture hrs |
+| # | Subject | Parts | Lectures |
 |---|---|---|---|
-| 01 | Math & ML Foundations From Scratch | 10 | ~30h |
-| 02 | Deep Learning & the Transformer, Built by Hand | 12 | ~36h |
-| 03 | Large Language Models: Pretraining → Post-Training | 13 | ~39h |
-| 04 | Retrieval-Augmented Generation & Knowledge Systems | 10 | ~30h |
-| 05 | Fine-Tuning & Model Adaptation | 10 | ~30h |
-| 06 | Reasoning Models & Test-Time Compute | 10 | ~30h |
-| 07 | AI Agent Engineering (MCP, A2A, Multi-Agent, AgentOps) | 12 | ~36h |
-| 08 | AI-First Software Development | 12 | ~36h |
-| 09 | Full-Stack AI: MLOps, LLMOps & AgentOps to Production | 12 | ~36h |
-| 10 | Efficient AI: Quantization, Serving & Systems | 12 | ~36h |
-| 11 | Domain-Specific Applied AI | 13 | ~39h |
-| 12 | Multimodal & Generative AI | 12 | ~36h |
-| 13 | Reinforcement Learning, Robotics & Embodied AI | 14 | ~42h |
-| 14 | AI Safety, Alignment & Governance | 13 | ~39h |
-| 15 | Emerging Topics & AI for Science | 13 | ~39h |
-| 16 | Capstone: Build & Ship an Agentic AI System | 6 | ~18h |
-| 17 | Recursive Self-Improvement: Self-Evolving Agents, Models & Systems | 13 | ~39h |
+| 01 | Foundations & Deep Learning From Scratch | 2 | 22 |
+| 02 | Large Language Models: Pretraining, RAG, Fine-Tuning & Reasoning | 4 | 43 |
+| 03 | AI Agents & AI-First Software Engineering | 2 | 24 |
+| 04 | Production AI: MLOps, LLMOps, AgentOps & Efficient Serving | 2 | 24 |
+| 05 | Applied, Multimodal, Reinforcement & Frontier AI | 4 | 52 |
+| 06 | AI Safety, Alignment, Recursive Self-Improvement & Capstone | 3 | 32 |
 
-## Subject 01 — Math & ML Foundations From Scratch
-_`01-foundations-math-ml-from-scratch.md` · 1 quarter · 3 hrs/wk · 10 lectures · [time-boxed](_toc/01-foundations-math-ml-from-scratch-toc.md)_
+## 01 — Foundations & Deep Learning From Scratch
 
-- **L1. Week 1 — Why Math Is the Operating Language of ML (and Python/NumPy From Scratch)**
+### Part A — Math & ML Foundations From Scratch
+- **Week 1 — Why Math Is the Operating Language of ML (and Python/NumPy From Scratch)**
   - ML as iterative improvement
   - The data matrix X and target y
   - Matrix multiplication
   - Reproducibility as a precondition for learning anything
   - ▶ [`krishnaik06/mlproject`](https://github.com/krishnaik06/mlproject) · 🔧 `$study-harness`
-- **L2. Week 2 — Linear Algebra as Shapes You Can Reason About**
+- **Week 2 — Linear Algebra as Shapes You Can Reason About**
   - Vector as one structured example
   - Linear prediction
   - Norms and distance
   - Broadcasting
   - ▶ [`microsoft/ML-For-Beginners`](https://github.com/microsoft/ML-For-Beginners) · 🔧 `$shape-checker`
-- **L3. Week 3 — Derivatives, Gradients & the Seed of Backpropagation**
+- **Week 3 — Derivatives, Gradients & the Seed of Backpropagation**
   - Derivative
   - Partial derivative & gradient
   - Chain rule
   - ▶ [`ashishpatel26/500-AI-Machine-Learning-Projects-with-code`](https://github.com/ashishpatel26/500-AI-Machine-Learning-Projects-with-code) · 🔧 `$gradient-check`
-- **L4. Week 4 — Probability & Statistics: The Language of Uncertainty**
+- **Week 4 — Probability & Statistics: The Language of Uncertainty**
   - Random variable, distribution, expectation
   - Conditional probability & Bayes
   - MLE → loss
   - Variance & noise
   - ▶ [`microsoft/AI-For-Beginners`](https://github.com/microsoft/AI-For-Beginners) · 🔧 `$uncertainty-reader`
-- **L5. Week 5 — The Learning Problem: Loss, Empirical Risk & Gradient Descent From Scratch**
+- **Week 5 — The Learning Problem: Loss, Empirical Risk & Gradient Descent From Scratch**
   - Empirical risk
   - Gradient descent
   - Mini-batch / SGD
   - ▶ [`krishnaik06/AQI-Project`](https://github.com/krishnaik06/AQI-Project) · 🔧 `$training-diagnostics`
-- **L6. Week 6 — First Models I: Linear & Logistic Regression (Now With, Then Without, scikit-learn)**
+- **Week 6 — First Models I: Linear & Logistic Regression (Now With, Then Without, scikit-learn)**
   - Linear regression
   - Logistic regression
   - Cross-entropy loss
   - Regularization (L1/L2)
   - ▶ [`microsoft/ML-For-Beginners`](https://github.com/microsoft/ML-For-Beginners) · 🔧 `$baseline-builder`
-- **L7. Week 7 — First Models II: Trees, Ensembles & Strong Baselines**
+- **Week 7 — First Models II: Trees, Ensembles & Strong Baselines**
   - Decision tree
   - Bagging / Random Forest
   - Boosting (gradient boosting / XGBoost-style)
   - Feature importance
   - ▶ [`krishnaik06/Credit-Card-Fraudlent`](https://github.com/krishnaik06/Credit-Card-Fraudlent) · 🔧 `$tabular-model-review`
-- **L8. Week 8 — Evaluation, Error Analysis & Experiment Design**
+- **Week 8 — Evaluation, Error Analysis & Experiment Design**
   - Metric–decision fit
   - Threshold sweep
   - Slices
   - Calibration
   - ▶ [`krishnaik06/Credit-Card-Fraudlent`](https://github.com/krishnaik06/Credit-Card-Fraudlent) · 🔧 `$evaluation-review`
-- **L9. Week 9 — Bias, Variance, Regularization & Generalization (Learning-Theory Intuition)**
+- **Week 9 — Bias, Variance, Regularization & Generalization (Learning-Theory Intuition)**
   - Empirical vs population risk
   - Bias–variance
   - Capacity / VC intuition
   - Regularization & early stopping
   - ▶ [`ashishpatel26/500-AI-Machine-Learning-Projects-with-code`](https://github.com/ashishpatel26/500-AI-Machine-Learning-Projects-with-code) · 🔧 `$generalization-translator`
-- **L10. Week 10 — Capstone: A From-Scratch ML Project With an Evidence Packet**
+- **Week 10 — Capstone: A From-Scratch ML Project With an Evidence Packet**
   - ▶ [`krishnaik06/Data-Science-Projects-For-Resumes`](https://github.com/krishnaik06/Data-Science-Projects-For-Resumes) · 🔧 `$project-evidence-packet`
 
-## Subject 02 — Deep Learning & the Transformer, Built by Hand
-_`02-deep-learning-transformers-from-scratch.md` · 1 quarter · 3 hrs/wk · 12 lectures · [time-boxed](_toc/02-deep-learning-transformers-from-scratch-toc.md)_
-
-- **L1. Week 1 — The Neuron, the Forward Pass, and Scalar Autodiff From Scratch**
+### Part B — Deep Learning & the Transformer, Built by Hand
+- **Week 1 — The Neuron, the Forward Pass, and Scalar Autodiff From Scratch**
   - Artificial neuron
   - Computation graph & reverse-mode autodiff
   - Nonlinearity necessity
   - Input normalization
   - ▶ [`VizuaraAI/visual-ai-book`](https://github.com/VizuaraAI/visual-ai-book) · 🔧 `$autodiff-tracer`
-- **L2. Week 2 — Backpropagation Through an MLP, By Hand (NumPy)**
+- **Week 2 — Backpropagation Through an MLP, By Hand (NumPy)**
   - Softmax
   - Cross-entropy loss
   - The backward pass
   - Batching
   - ▶ [`rasbt/LLMs-from-scratch`](https://github.com/rasbt/LLMs-from-scratch) · 🔧 `$layer-backprop-derive`
-- **L3. Week 3 — Optimizers: SGD, Momentum, RMSProp, Adam From Scratch**
+- **Week 3 — Optimizers: SGD, Momentum, RMSProp, Adam From Scratch**
   - SGD
   - Momentum
   - RMSProp
   - Adam
   - ▶ [`rasbt/LLMs-from-scratch`](https://github.com/rasbt/LLMs-from-scratch) · 🔧 `$optimizer-bench`
-- **L4. Week 4 — From NumPy to PyTorch + Regularization (Dropout, BatchNorm, Weight Decay)**
+- **Week 4 — From NumPy to PyTorch + Regularization (Dropout, BatchNorm, Weight Decay)**
   - autograd = your Week-1 engine at scale
   - Dropout
   - Batch normalization
   - Weight decay / L2
   - ▶ [`microsoft/AI-For-Beginners`](https://github.com/microsoft/AI-For-Beginners) · 🔧 `$regularization-ablation`
-- **L5. Week 5 — Convolutional Networks: Built, Then Trained on Fashion-MNIST**
+- **Week 5 — Convolutional Networks: Built, Then Trained on Fashion-MNIST**
   - Convolution
   - Output-size formula
   - Pooling
   - Parameter sharing
   - ▶ [`krishnaik06/Malaria-Detection`](https://github.com/krishnaik06/Malaria-Detection) · 🔧 `$conv-shape-planner`
-- **L6. Week 6 — Sequence Models: RNNs and LSTMs From Scratch (and the Char-LM)**
+- **Week 6 — Sequence Models: RNNs and LSTMs From Scratch (and the Char-LM)**
   - RNN recurrence
   - BPTT
   - Vanishing/exploding gradients
   - LSTM gates
   - ▶ [`VizuaraAI/visual-ai-book`](https://github.com/VizuaraAI/visual-ai-book) · 🔧 `$sequence-sanity`
-- **L7. Week 7 — Attention From Scratch: Why It Replaced Recurrence**
+- **Week 7 — Attention From Scratch: Why It Replaced Recurrence**
   - Scaled dot-product attention
   - Causal mask
   - Q/K/V projections
   - Attention ≠ explanation
   - ▶ [`rasbt/LLMs-from-scratch`](https://github.com/rasbt/LLMs-from-scratch) · 🔧 `$attention-inspector`
-- **L8. Week 8 — The Transformer Block, Built End to End**
+- **Week 8 — The Transformer Block, Built End to End**
   - Multi-head attention
   - Positional encoding
   - Residual connections
   - LayerNorm + pre-norm
   - ▶ [`rasbt/LLMs-from-scratch`](https://github.com/rasbt/LLMs-from-scratch) · 🔧 `$transformer-block-validator`
-- **L9. Week 9 — Tokenization and Byte-Pair Encoding From Scratch**
+- **Week 9 — Tokenization and Byte-Pair Encoding From Scratch**
   - BPE training
   - Encoding/decoding
   - Vocab size trade-off
   - Byte-level fallback
   - ▶ [`rasbt/LLMs-from-scratch`](https://github.com/rasbt/LLMs-from-scratch) · 🔧 `$tokenizer-probe`
-- **L10. Week 10 — Training a Small GPT: nanoGPT From Scratch**
+- **Week 10 — Training a Small GPT: nanoGPT From Scratch**
   - GPT forward pass
   - LR schedule
   - Sampling
   - Perplexity
   - ▶ [`rasbt/LLMs-from-scratch`](https://github.com/rasbt/LLMs-from-scratch) · 🔧 `$mini-train-loop`
-- **L11. Week 11 — Scaling, Efficiency, and Honest Evaluation of Your Small GPT**
+- **Week 11 — Scaling, Efficiency, and Honest Evaluation of Your Small GPT**
   - Scaling laws (intuition)
   - Mixed precision
   - KV-cache
   - Evaluation triangulation
   - ▶ [`VizuaraAI/kv-cache-token-reduction-walkthrough`](https://github.com/VizuaraAI/kv-cache-token-reduction-walkthrough) · 🔧 `$eval-triangulator`
-- **L12. Week 12 — Capstone: A Built-From-Scratch GPT With an Evidence Packet**
+- **Week 12 — Capstone: A Built-From-Scratch GPT With an Evidence Packet**
   - ▶ [`VizuaraAILabs/nano-gpt-oss`](https://github.com/VizuaraAILabs/nano-gpt-oss) · 🔧 `$model-evidence-packet`
 
-## Subject 03 — Large Language Models: Pretraining → Post-Training
-_`03-llm-pretraining-to-posttraining.md` · 1 quarter · 3 hrs/wk · 13 lectures · [time-boxed](_toc/03-llm-pretraining-to-posttraining-toc.md)_
+## 02 — Large Language Models: Pretraining, RAG, Fine-Tuning & Reasoning
 
-- **L1. Week 1 — The LLM Lifecycle, End to End (and a Reproducible Tiny Pretraining Run)**
+### Part A — Large Language Models: Pretraining → Post-Training
+- **Week 1 — The LLM Lifecycle, End to End (and a Reproducible Tiny Pretraining Run)**
   - Pretraining objective
   - The lifecycle as stages with different objectives
   - Compute/throughput accounting
   - Reproducibility at scale
   - ▶ [`VizuaraAILabs/nano-gpt-oss`](https://github.com/VizuaraAILabs/nano-gpt-oss) · 🔧 `$lifecycle-map`
-- **L2. Week 2 — Data Curation I: Common Crawl, Extraction, Filtering, Language ID**
+- **Week 2 — Data Curation I: Common Crawl, Extraction, Filtering, Language ID**
   - Extraction
   - Quality filtering
   - Language identification
   - Provenance & licensing
   - ▶ [`VizuaraAILabs/truly-open-gpt-oss`](https://github.com/VizuaraAILabs/truly-open-gpt-oss) · 🔧 `$data-funnel`
-- **L3. Week 3 — Data Curation II: Deduplication, Decontamination, and Tokenizer Training**
+- **Week 3 — Data Curation II: Deduplication, Decontamination, and Tokenizer Training**
   - Exact dedup
   - Near-dup (MinHash + LSH)
   - Decontamination
   - Tokenizer quality
   - ▶ [`VizuaraAILabs/truly-open-gpt-oss`](https://github.com/VizuaraAILabs/truly-open-gpt-oss) · 🔧 `$dedup-decontam`
-- **L4. Week 4 — Architecture, Hyperparameters, and Scaling Laws**
+- **Week 4 — Architecture, Hyperparameters, and Scaling Laws**
   - RoPE
   - RMSNorm + SwiGLU
   - GQA (grouped-query attention)
   - Scaling laws / Chinchilla
   - ▶ [`VizuaraAILabs/DeepSeek-From-Scratch`](https://github.com/VizuaraAILabs/DeepSeek-From-Scratch) · 🔧 `$scaling-fit`
-- **L5. Week 5 — Distributed Pretraining: Data/Tensor/Pipeline Parallel, FSDP & ZeRO**
+- **Week 5 — Distributed Pretraining: Data/Tensor/Pipeline Parallel, FSDP & ZeRO**
   - Data parallel (DDP)
   - ZeRO / FSDP sharding
   - Tensor & pipeline parallel
   - MFU & scaling efficiency
   - ▶ [`VizuaraAI/vizuara-5d-parallelism-workshop`](https://github.com/VizuaraAI/vizuara-5d-parallelism-workshop) · 🔧 `$distributed-profiler`
-- **L6. Week 6 — Mixture-of-Experts and Long-Context Pretraining**
+- **Week 6 — Mixture-of-Experts and Long-Context Pretraining**
   - MoE FFN
   - Load-balancing loss
   - Capacity factor
   - Long context
   - ▶ [`VizuaraAI/Mixture_of_Experts`](https://github.com/VizuaraAI/Mixture_of_Experts) · 🔧 `$moe-router-monitor`
-- **L7. Week 7 — Pretraining Evaluation & a Paper-Reproduction Checkpoint**
+- **Week 7 — Pretraining Evaluation & a Paper-Reproduction Checkpoint**
   - Perplexity vs capability
   - Benchmark formats
   - Contamination & emergence
   - Reproduction discipline
   - ▶ [`mlabonne/llm-course`](https://github.com/mlabonne/llm-course) · 🔧 `$benchmark-runner`
-- **L8. Week 8 — Supervised Fine-Tuning & Instruction Tuning**
+- **Week 8 — Supervised Fine-Tuning & Instruction Tuning**
   - SFT objective
   - Chat templating
   - LoRA / QLoRA
   - Data quality > quantity
   - ▶ [`krishnaik06/Finetuning-LLM`](https://github.com/krishnaik06/Finetuning-LLM) · 🔧 `$sft-recipe`
-- **L9. Week 9 — Reward Modeling & RLHF (PPO)**
+- **Week 9 — Reward Modeling & RLHF (PPO)**
   - Bradley-Terry reward model
   - RLHF/PPO objective
   - Value function / advantage
   - Reward hacking
   - ▶ [`mlabonne/llm-course`](https://github.com/mlabonne/llm-course) · 🔧 `$rlhf-monitor`
-- **L10. Week 10 — Direct Preference Optimization: DPO, ORPO, KTO**
+- **Week 10 — Direct Preference Optimization: DPO, ORPO, KTO**
   - DPO
   - ORPO
   - KTO
   - DPO vs RLHF
   - ▶ [`mlabonne/llm-course`](https://github.com/mlabonne/llm-course) · 🔧 `$preference-align-bench`
-- **L11. Week 11 — RL for Reasoning: GRPO and Verifiable Rewards**
+- **Week 11 — RL for Reasoning: GRPO and Verifiable Rewards**
   - GRPO
   - Verifiable reward (RLVR)
   - Test-time compute
   - Format + correctness rewards
   - ▶ [`VizuaraAILabs/OpenClaw-RL-Tutorial`](https://github.com/VizuaraAILabs/OpenClaw-RL-Tutorial) · 🔧 `$verifiable-reward`
-- **L12. Week 12 — Long-Context, Safety Fine-Tuning, and Serving**
+- **Week 12 — Long-Context, Safety Fine-Tuning, and Serving**
   - Long-context extension
   - Safety fine-tuning
   - Red-teaming
   - Efficient serving
   - ▶ [`VizuaraAI/llm-inference-tutorial`](https://github.com/VizuaraAI/llm-inference-tutorial) · 🔧 `$safety-serving-audit`
-- **L13. Week 13 — Capstone: A Full Pretrain → Post-Train Pipeline With an Evidence Packet**
+- **Week 13 — Capstone: A Full Pretrain → Post-Train Pipeline With an Evidence Packet**
   - ▶ [`VizuaraAI/pharma-slm`](https://github.com/VizuaraAI/pharma-slm) · 🔧 `$lifecycle-evidence-packet`
 
-## Subject 04 — Retrieval-Augmented Generation & Knowledge Systems
-_`04-rag-and-knowledge-systems.md` · 1 quarter · 3 hrs/wk · 10 lectures · [time-boxed](_toc/04-rag-and-knowledge-systems-toc.md)_
-
-- **L1. Week 1 — Why Retrieval at All: Embeddings, Semantic Search & a Naive RAG Baseline**
+### Part B — Retrieval-Augmented Generation & Knowledge Systems
+- **Week 1 — Why Retrieval at All: Embeddings, Semantic Search & a Naive RAG Baseline**
   - The RAG loop
   - Embedding
   - Cosine similarity
   - Top-k retrieval & context stuffing
   - ▶ [`krishnaik06/RAG-Tutorials`](https://github.com/krishnaik06/RAG-Tutorials) · 🔧 `$rag-baseline`
-- **L2. Week 2 — Chunking & Document Processing: The Unsexy Half of Retrieval Quality**
+- **Week 2 — Chunking & Document Processing: The Unsexy Half of Retrieval Quality**
   - Chunk
   - Recursive splitting
   - Semantic chunking
   - Structure-aware & parent/child
   - ▶ [`krishnaik06/Updated-Langchain`](https://github.com/krishnaik06/Updated-Langchain) · 🔧 `$chunk-strategist`
-- **L3. Week 3 — Vector Databases: Indexes, ANN, and Choosing Your Store**
+- **Week 3 — Vector Databases: Indexes, ANN, and Choosing Your Store**
   - ANN vs exact search
   - HNSW
   - Metadata filtering
   - Distance metric must match training
   - ▶ [`Shubhamsaboo/awesome-llm-apps`](https://github.com/Shubhamsaboo/awesome-llm-apps) · 🔧 `$vectordb-selector`
-- **L4. Week 4 — Hybrid Search & Rerankers: BM25 + Dense, Then Cohere/BGE on Top**
+- **Week 4 — Hybrid Search & Rerankers: BM25 + Dense, Then Cohere/BGE on Top**
   - BM25
   - Dense vs sparse failure modes
   - Reciprocal Rank Fusion
   - Cross-encoder reranker
   - ▶ [`NirDiamant/RAG_Techniques`](https://github.com/NirDiamant/RAG_Techniques) · 🔧 `$retriever-stack`
-- **L5. Week 5 — Late Interaction & ColBERT: Token-Level Retrieval**
+- **Week 5 — Late Interaction & ColBERT: Token-Level Retrieval**
   - Single-vector bottleneck
   - Late interaction (ColBERT)
   - PLAID / compression
   - When to use it
   - ▶ [`NirDiamant/RAG_Techniques`](https://github.com/NirDiamant/RAG_Techniques) · 🔧 `$late-interaction-eval`
-- **L6. Week 6 — RAG Evaluation: Ragas, MAP/nDCG, and Faithfulness**
+- **Week 6 — RAG Evaluation: Ragas, MAP/nDCG, and Faithfulness**
   - Retrieval metrics
   - Context precision/recall (Ragas)
   - Faithfulness / groundedness
   - LLM-as-judge validity
   - ▶ [`NirDiamant/RAG_Techniques`](https://github.com/NirDiamant/RAG_Techniques) · 🔧 `$rag-eval`
-- **L7. Week 7 — Advanced RAG I: HyDE, CRAG & Self-RAG**
+- **Week 7 — Advanced RAG I: HyDE, CRAG & Self-RAG**
   - HyDE
   - CRAG
   - Self-RAG
   - Adaptive retrieval
   - ▶ [`krishnaik06/Agentic-LanggraphCrash-course`](https://github.com/krishnaik06/Agentic-LanggraphCrash-course) · 🔧 `$rag-ablation`
-- **L8. Week 8 — Advanced RAG II: Agentic RAG, GraphRAG & Text2SQL**
+- **Week 8 — Advanced RAG II: Agentic RAG, GraphRAG & Text2SQL**
   - Agentic RAG
   - GraphRAG
   - Text2SQL
   - Query routing
   - ▶ [`run-llama/llama_index`](https://github.com/run-llama/llama_index) · 🔧 `$knowledge-router`
-- **L9. Week 9 — Long-Context vs RAG, Production Serving, Caching & Guardrails**
+- **Week 9 — Long-Context vs RAG, Production Serving, Caching & Guardrails**
   - Long-context vs RAG
   - Semantic caching
   - Prompt injection via retrieved content
   - Grounding/citation guardrail
   - RAG lifecycle & retrieval drift
   - ▶ [`decodingml/llm-twin-course`](https://github.com/decodingml/llm-twin-course) · 🔧 `$rag-prod-harness`
-- **L10. Week 10 — Capstone: A Production Document-QA / Knowledge Portal**
+- **Week 10 — Capstone: A Production Document-QA / Knowledge Portal**
   - ▶ [`Shubhamsaboo/awesome-llm-apps`](https://github.com/Shubhamsaboo/awesome-llm-apps) · 🔧 `$rag-evidence-packet`
 
-## Subject 05 — Fine-Tuning & Model Adaptation
-_`05-finetuning-and-adaptation.md` · 1 quarter · 3 hrs/wk · 10 lectures · [time-boxed](_toc/05-finetuning-and-adaptation-toc.md)_
-
-- **L1. Week 1 — The Adaptation Decision: Prompt vs RAG vs Fine-Tune (and a Baseline You Must Beat)**
+### Part C — Fine-Tuning & Model Adaptation
+- **Week 1 — The Adaptation Decision: Prompt vs RAG vs Fine-Tune (and a Baseline You Must Beat)**
   - What fine-tuning is for
   - The decision ladder
   - Catastrophic forgetting
   - Baseline economics
   - ▶ [`mlabonne/llm-course`](https://github.com/mlabonne/llm-course) · 🔧 `$adaptation-decision`
-- **L2. Week 2 — Data Preparation & Formatting: The 80% That Decides the Outcome**
+- **Week 2 — Data Preparation & Formatting: The 80% That Decides the Outcome**
   - Chat template & loss masking
   - Decontamination
   - Data quality > quantity
   - Packing
   - ▶ [`VizuaraAI/pharma-slm`](https://github.com/VizuaraAI/pharma-slm) · 🔧 `$sft-data-prep`
-- **L3. Week 3 — PEFT I: LoRA From the Math Up**
+- **Week 3 — PEFT I: LoRA From the Math Up**
   - LoRA
   - Rank r and alpha
   - Why it works
   - Merging vs keeping separate
   - ▶ [`krishnaik06/Finetuning-LLM`](https://github.com/krishnaik06/Finetuning-LLM) · 🔧 `$lora-trainer`
-- **L4. Week 4 — PEFT II: QLoRA, Quantization for Training & Going Bigger on One GPU**
+- **Week 4 — PEFT II: QLoRA, Quantization for Training & Going Bigger on One GPU**
   - Quantization (training-time)
   - Double quantization & paged optimizers
   - Quality tax
   - NF4 vs other 4-bit
   - ▶ [`krishnaik06/Finetuning-LLM`](https://github.com/krishnaik06/Finetuning-LLM) · 🔧 `$qlora-trainer`
-- **L5. Week 5 — Preference Optimization I: DPO and the RLHF Lineage**
+- **Week 5 — Preference Optimization I: DPO and the RLHF Lineage**
   - RLHF (for context)
   - DPO
   - β / KL anchor
   - Preference data quality
   - ▶ [`mlabonne/llm-course`](https://github.com/mlabonne/llm-course) · 🔧 `$preference-tuner`
-- **L6. Week 6 — Preference Optimization II: ORPO, KTO, SimPO & Choosing the Right Objective**
+- **Week 6 — Preference Optimization II: ORPO, KTO, SimPO & Choosing the Right Objective**
   - Bradley-Terry backbone
   - ORPO
   - KTO
   - SimPO / IPO
   - ▶ [`mlabonne/llm-course`](https://github.com/mlabonne/llm-course) · 🔧 `$preference-method-selector`
-- **L7. Week 7 — RLHF, RFT & Distillation: When You Need More Than Offline Preferences**
+- **Week 7 — RLHF, RFT & Distillation: When You Need More Than Offline Preferences**
   - RLHF vs RLAIF vs RFT
   - Verifiable reward
   - Distillation
   - RFT vs more SFT
   - ▶ [`VizuaraAI/RL-in-Production-Bootcamp-Resources`](https://github.com/VizuaraAI/RL-in-Production-Bootcamp-Resources) · 🔧 `$verifiable-rft`
-- **L8. Week 8 — Evaluation & Regression Testing of Fine-Tunes (No Silent Forgetting)**
+- **Week 8 — Evaluation & Regression Testing of Fine-Tunes (No Silent Forgetting)**
   - Target vs general eval
   - Catastrophic forgetting check
   - Alignment tax
   - Regression gate
   - ▶ [`VizuaraAI/pharma-slm`](https://github.com/VizuaraAI/pharma-slm) · 🔧 `$finetune-regression`
-- **L9. Week 9 — Serving Adapters: Quantization for Inference, Multi-LoRA & Cost**
+- **Week 9 — Serving Adapters: Quantization for Inference, Multi-LoRA & Cost**
   - Inference quantization
   - Multi-LoRA serving
   - Merge vs keep-separate
   - Cost/latency
   - ▶ [`VizuaraAI/llm-inference-tutorial`](https://github.com/VizuaraAI/llm-inference-tutorial) · 🔧 `$adapter-serving`
-- **L10. Week 10 — Capstone: A Fine-Tuned Model That Provably Beats Prompting**
+- **Week 10 — Capstone: A Fine-Tuned Model That Provably Beats Prompting**
   - ▶ [`krishnaik06/Finetuning-LLM`](https://github.com/krishnaik06/Finetuning-LLM) · 🔧 `$adaptation-evidence-packet`
 
-## Subject 06 — Reasoning Models & Test-Time Compute
-_`06-reasoning-and-test-time-compute.md` · 1 quarter · 3 hrs/wk · 10 lectures · [time-boxed](_toc/06-reasoning-and-test-time-compute-toc.md)_
-
-- **L1. Week 1 — What Reasoning Buys You: CoT, and Spending Compute at Inference**
+### Part D — Reasoning Models & Test-Time Compute
+- **Week 1 — What Reasoning Buys You: CoT, and Spending Compute at Inference**
   - Chain-of-thought
   - Test-time compute
   - Verifiable eval
   - Contamination
   - ▶ [`mlabonne/llm-course`](https://github.com/mlabonne/llm-course) · 🔧 `$reasoning-eval`
-- **L2. Week 2 — Self-Consistency, Best-of-N & the Test-Time Scaling Curve**
+- **Week 2 — Self-Consistency, Best-of-N & the Test-Time Scaling Curve**
   - Self-consistency
   - Best-of-N
   - Test-time scaling curve
   - Parallel vs sequential compute
   - ▶ [`mlabonne/llm-course`](https://github.com/mlabonne/llm-course) · 🔧 `$test-time-scaler`
-- **L3. Week 3 — Verifiers & Reward Models: PRMs, ORMs & Process vs Outcome**
+- **Week 3 — Verifiers & Reward Models: PRMs, ORMs & Process vs Outcome**
   - Outcome reward (ORM / verifier)
   - Process reward (PRM)
   - Verifier-guided selection
   - Verifiable vs learned reward
   - ▶ [`VizuaraAI/RL-in-Production-Bootcamp-Resources`](https://github.com/VizuaraAI/RL-in-Production-Bootcamp-Resources) · 🔧 `$verifier-suite`
-- **L4. Week 4 — ReAct, Tool Use & Search: Reasoning That Acts**
+- **Week 4 — ReAct, Tool Use & Search: Reasoning That Acts**
   - ReAct
   - Tool-augmented computation
   - Deep research
   - Reasoning + retrieval boundary
   - ▶ [`krishnaik06/Agentic-LanggraphCrash-course`](https://github.com/krishnaik06/Agentic-LanggraphCrash-course) · 🔧 `$reasoning-agent`
-- **L5. Week 5 — RLVR & GRPO: The DeepSeek-R1 Recipe From Scratch**
+- **Week 5 — RLVR & GRPO: The DeepSeek-R1 Recipe From Scratch**
   - RLVR
   - GRPO
   - Why no critic
   - R1-Zero vs R1
   - ▶ [`VizuaraAILabs/OpenClaw-RL-Tutorial`](https://github.com/VizuaraAILabs/OpenClaw-RL-Tutorial) · 🔧 `$grpo-trainer`
-- **L6. Week 6 — GRPO in Practice: DAPO, Dr.GRPO & Stabilizing the Run**
+- **Week 6 — GRPO in Practice: DAPO, Dr.GRPO & Stabilizing the Run**
   - Length bias
   - Entropy collapse
   - DAPO
   - Dr.GRPO
   - ▶ [`VizuaraAI/RL-in-Production-Bootcamp-Resources`](https://github.com/VizuaraAI/RL-in-Production-Bootcamp-Resources) · 🔧 `$grpo-stabilizer`
-- **L7. Week 7 — Long-Horizon Reasoning & Self-Improving Agents**
+- **Week 7 — Long-Horizon Reasoning & Self-Improving Agents**
   - Long-horizon credit assignment
   - Self-improvement (STaR / ReST / rejection sampling)
   - Agentic RL
   - Honest long-horizon eval
   - ▶ [`VizuaraAILabs/OpenClaw-RL-Tutorial`](https://github.com/VizuaraAILabs/OpenClaw-RL-Tutorial) · 🔧 `$self-improve-loop`
-- **L8. Week 8 — Reasoning Evaluation: AIME, GPQA, ARC-AGI & Contamination**
+- **Week 8 — Reasoning Evaluation: AIME, GPQA, ARC-AGI & Contamination**
   - AIME / MATH
   - GPQA
   - ARC-AGI
   - Contamination & faithfulness
   - ▶ [`mlabonne/llm-course`](https://github.com/mlabonne/llm-course) · 🔧 `$reasoning-audit`
-- **L9. Week 9 — Reasoning at Inference: Budgets, Faithfulness & Deployment**
+- **Week 9 — Reasoning at Inference: Budgets, Faithfulness & Deployment**
   - Adaptive test-time compute
   - CoT faithfulness
   - Reasoning-model serving
   - Effort/budget controls
   - Contextual drag
   - ▶ [`VizuaraAI/kv-cache-token-reduction-walkthrough`](https://github.com/VizuaraAI/kv-cache-token-reduction-walkthrough) · 🔧 `$reasoning-deploy`
-- **L10. Week 10 — Capstone: A Small Reasoning-RL Run That Provably Improves Math**
+- **Week 10 — Capstone: A Small Reasoning-RL Run That Provably Improves Math**
   - ▶ [`VizuaraAI/RL-in-Production-Bootcamp-Resources`](https://github.com/VizuaraAI/RL-in-Production-Bootcamp-Resources) · 🔧 `$reasoning-evidence-packet`
 
-## Subject 07 — AI Agent Engineering (MCP, A2A, Multi-Agent, AgentOps)
-_`07-ai-agent-engineering.md` · 1 quarter · 3 hrs/wk · 12 lectures · [time-boxed](_toc/07-ai-agent-engineering-toc.md)_
+## 03 — AI Agents & AI-First Software Engineering
 
-- **L1. Week 1 — Agent Anatomy and the Agent Loop**
+### Part A — AI Agent Engineering (MCP, A2A, Multi-Agent, AgentOps)
+- **Week 1 — Agent Anatomy and the Agent Loop**
   - The agent loop
   - Planner vs controller
   - Critic / verifier
   - Workflow vs agent (the autonomy dial)
   - Tools as the action space
   - ▶ [`The-Pocket/PocketFlow`](https://github.com/The-Pocket/PocketFlow) · 🔧 `$agent-anatomy-map`
-- **L2. Week 2 — Function Calling, Tool Schemas, and Structured Outputs**
+- **Week 2 — Function Calling, Tool Schemas, and Structured Outputs**
   - Tool schema
   - Description as prompt
   - Structured outputs / constrained decoding
   - Tool granularity & idempotency
   - Errors as observations
   - ▶ [`anthropics/anthropic-cookbook`](https://github.com/anthropics/anthropic-cookbook) · 🔧 `$tool-schema-designer`
-- **L3. Week 3 — MCP: Build a Model Context Protocol Server (original module)**
+- **Week 3 — MCP: Build a Model Context Protocol Server (original module)**
   - Why MCP (the "USB-C for tools" framing)
   - Three primitives
   - Client–server–host
@@ -437,21 +418,21 @@ _`07-ai-agent-engineering.md` · 1 quarter · 3 hrs/wk · 12 lectures · [time-b
   - The trust boundary
   - Audit logging & tool overreach
   - ▶ [`modelcontextprotocol/servers`](https://github.com/modelcontextprotocol/servers) · 🔧 `$mcp-server-scaffold`
-- **L4. Week 4 — Reasoning and Planning: ReAct, Plan-and-Execute, Reflexion**
+- **Week 4 — Reasoning and Planning: ReAct, Plan-and-Execute, Reflexion**
   - ReAct
   - Plan-and-execute
   - Reflexion / self-refine
   - Test-time compute as a dial
   - Verifier vs generator
   - ▶ [`NirDiamant/GenAI_Agents`](https://github.com/NirDiamant/GenAI_Agents) · 🔧 `$reasoning-strategy-picker`
-- **L5. Week 5 — Agent Memory: Short-Term, Long-Term, Mem0 and LangMem**
+- **Week 5 — Agent Memory: Short-Term, Long-Term, Mem0 and LangMem**
   - Working vs long-term memory
   - Episodic / semantic / procedural
   - Memory write policy
   - Retrieval policy
   - Forgetting / decay & conflict
   - ▶ [`krishnaik06/RAG-Tutorials`](https://github.com/krishnaik06/RAG-Tutorials) · 🔧 `$agent-memory-designer`
-- **L6. Week 6 — Agent Frameworks: LangGraph, OpenAI/Claude Agent SDKs, CrewAI, AutoGen, Pydantic AI, Google ADK**
+- **Week 6 — Agent Frameworks: LangGraph, OpenAI/Claude Agent SDKs, CrewAI, AutoGen, Pydantic AI, Google ADK**
   - Graph / state machine (LangGraph)
   - Agent SDK runtimes (Claude Agent SDK, OpenAI Agents SDK)
   - Role-based crews (CrewAI)
@@ -459,756 +440,742 @@ _`07-ai-agent-engineering.md` · 1 quarter · 3 hrs/wk · 12 lectures · [time-b
   - Typed agents (Pydantic AI) & Google ADK
   - The meta-point:
   - ▶ [`krishnaik06/Agentic-LanggraphCrash-course`](https://github.com/krishnaik06/Agentic-LanggraphCrash-course) · 🔧 `$framework-selector`
-- **L7. Week 7 — Multi-Agent Systems and A2A: Orchestrator, Specialists, Debate**
+- **Week 7 — Multi-Agent Systems and A2A: Orchestrator, Specialists, Debate**
   - When multi-agent helps
   - Orchestrator + specialists
   - A2A protocol
   - Multi-agent debate / critic
   - Cost/latency multiplication
   - ▶ [`microsoft/ai-agents-for-beginners`](https://github.com/microsoft/ai-agents-for-beginners) · 🔧 `$multi-agent-architect`
-- **L8. Week 8 — Computer-Use and Browser Agents**
+- **Week 8 — Computer-Use and Browser Agents**
   - Perception → action loop
   - Grounding strategy: pixels vs DOM/a11y
   - Set-of-marks / element tagging
   - Verification after action
   - API > GUI when possible
   - ▶ [`web-arena-x/webarena`](https://github.com/web-arena-x/webarena) · 🔧 `$browser-agent-debugger`
-- **L9. Week 9 — Agent Evaluation: tau-bench, Long-Horizon, and pass^k**
+- **Week 9 — Agent Evaluation: tau-bench, Long-Horizon, and pass^k**
   - Task success check
   - Simulated user
   - pass^k vs pass@k
   - Failure taxonomy
   - Eval-gated deploys
   - ▶ [`sierra-research/tau-bench`](https://github.com/sierra-research/tau-bench) · 🔧 `$agent-eval-suite`
-- **L10. Week 10 — AgentOps: Observability, Cost, Guardrails, Human-in-the-Loop**
+- **Week 10 — AgentOps: Observability, Cost, Guardrails, Human-in-the-Loop**
   - Tracing / spans
   - Cost & latency accounting
   - Guardrails
   - Human-in-the-loop gates
   - AgentOps lifecycle
   - ▶ [`langfuse/langfuse`](https://github.com/langfuse/langfuse) · 🔧 `$agentops-instrumenter`
-- **L11. Week 11 — Agent Security: Prompt Injection, Tool Abuse, and the OWASP LLM Top 10**
+- **Week 11 — Agent Security: Prompt Injection, Tool Abuse, and the OWASP LLM Top 10**
   - Direct vs indirect injection
   - Why agents are uniquely exposed
   - Least-privilege & privilege separation
   - Tool/MCP poisoning & confused deputy
   - Defense in depth
   - ▶ [`ethz-spylab/agentdojo`](https://github.com/ethz-spylab/agentdojo) · 🔧 `$agent-red-team`
-- **L12. Week 12 — Capstone: Deploy a Multi-Agent System with an MCP Server**
+- **Week 12 — Capstone: Deploy a Multi-Agent System with an MCP Server**
   - ▶ [`langchain-ai/langchain`](https://github.com/langchain-ai/langchain) · 🔧 `$agent-system-evidence-packet`
 
-## Subject 08 — AI-First Software Development
-_`08-ai-first-software-development.md` · 1 quarter · 3 hrs/wk · 12 lectures · [time-boxed](_toc/08-ai-first-software-development-toc.md)_
-
-- **L1. Week 1 — How Coding LLMs Actually Work (a usable mental model)**
+### Part B — AI-First Software Development
+- **Week 1 — How Coding LLMs Actually Work (a usable mental model)**
   - Next-token prediction over code
   - Context window & code tokenization
   - Lost in the middle
   - Capability vs grounding
   - Determinism & temperature
   - ▶ [`microsoft/generative-ai-for-beginners`](https://github.com/microsoft/generative-ai-for-beginners) · 🔧 `$coding-model-profile`
-- **L2. Week 2 — Prompt Engineering for Developers: Specs, Context, and PRDs**
+- **Week 2 — Prompt Engineering for Developers: Specs, Context, and PRDs**
   - Spec over wish
   - Acceptance tests in the prompt
   - Context curation & ordering
   - Few-shot from your repo
   - PRD as shared source of truth
   - ▶ [`VizuaraAI/modern-software-developer-bootcamp`](https://github.com/VizuaraAI/modern-software-developer-bootcamp) · 🔧 `$spec-to-prd`
-- **L3. Week 3 — Building a Coding Agent From Scratch**
+- **Week 3 — Building a Coding Agent From Scratch**
   - The coding-agent loop
   - Diff/patch edits vs full rewrites
   - Verification as the inner loop
   - Localization (find the right file)
   - Stop rule & budgets
   - ▶ [`Aider-AI/aider`](https://github.com/Aider-AI/aider) · 🔧 `$coding-agent-loop`
-- **L4. Week 4 — The AI IDE: Context, Embeddings, and PRDs as MCP Resources**
+- **Week 4 — The AI IDE: Context, Embeddings, and PRDs as MCP Resources**
   - Repo indexing & retrieval
   - @-mentions & manual context
   - Rules / conventions files
   - PRDs/schemas as MCP resources
   - Context cost/quality trade-off
   - ▶ [`modelcontextprotocol/servers`](https://github.com/modelcontextprotocol/servers) · 🔧 `$project-context-pack`
-- **L5. Week 5 — Coding-Agent Autonomy Patterns and Human-in-the-Loop Gates**
+- **Week 5 — Coding-Agent Autonomy Patterns and Human-in-the-Loop Gates**
   - Autonomy spectrum
   - Plan-approval checkpoint
   - Irreversible-action gates
   - Small reversible steps
   - Sandboxing & scoped permissions
   - ▶ [`anthropics/anthropic-cookbook`](https://github.com/anthropics/anthropic-cookbook) · 🔧 `$autonomy-gate-designer`
-- **L6. Week 6 — The Modern AI Terminal and Sandboxing**
+- **Week 6 — The Modern AI Terminal and Sandboxing**
   - AI terminal
   - Why sandbox
   - Sandbox dimensions
   - Ephemeral sandboxes (E2B / cloud)
   - Allow-listed commands
   - ▶ [`krishnaik06/Dockers`](https://github.com/krishnaik06/Dockers) · 🔧 `$agent-sandbox-config`
-- **L7. Week 7 — AI-Generated Tests and Test Quality**
+- **Week 7 — AI-Generated Tests and Test Quality**
   - Coverage ≠ quality
   - Mutation testing
   - Property-based testing
   - AI-assisted TDD
   - Test independence from the implementer
   - ▶ [`evalplus/evalplus`](https://github.com/evalplus/evalplus) · 🔧 `$ai-test-hardener`
-- **L8. Week 8 — AI Security and Secure "Vibe Coding"**
+- **Week 8 — AI Security and Secure "Vibe Coding"**
   - Why AI code is insecure
   - SAST
   - Secret scanning
   - DAST
   - Dependency/supply-chain scanning
   - ▶ [`juice-shop/juice-shop`](https://github.com/juice-shop/juice-shop) · 🔧 `$secure-code-gate`
-- **L9. Week 9 — AI Code Review Gates**
+- **Week 9 — AI Code Review Gates**
   - AI vs human review division of labor
   - Reviewer grounding
   - Signal vs noise
   - Review as a gate, not advice
   - Self-review prompt for the author
   - ▶ [`openai/openai-cookbook`](https://github.com/openai/openai-cookbook) · 🔧 `$ai-review-gate`
-- **L10. Week 10 — Automated UI and App Building**
+- **Week 10 — Automated UI and App Building**
   - Generative UI
   - Reconciliation
   - Visual feedback loop
   - Component/E2E verification
   - Prototype vs keep
   - ▶ [`shadcn-ui/ui`](https://github.com/shadcn-ui/ui) · 🔧 `$ui-reconcile`
-- **L11. Week 11 — Agents Post-Deployment: Monitoring, Incident Response, and SWE-bench-Style Evaluation**
+- **Week 11 — Agents Post-Deployment: Monitoring, Incident Response, and SWE-bench-Style Evaluation**
   - Observability for shipped features
   - SLOs & alerts
   - Feature flags + canary + rollback
   - AI-assisted incident response
   - SWE-bench-style self-evaluation
   - ▶ [`krishnaik06/mlproject`](https://github.com/krishnaik06/mlproject) · 🔧 `$ai-incident-runbook`
-- **L12. Week 12 — Capstone: Ship a Real Feature End-to-End with a Coding Agent**
+- **Week 12 — Capstone: Ship a Real Feature End-to-End with a Coding Agent**
   - ▶ [`krishnaik06/Deployment-flask`](https://github.com/krishnaik06/Deployment-flask) · 🔧 `$ai-delivery-evidence-packet`
 
-## Subject 09 — Full-Stack AI: MLOps, LLMOps & AgentOps to Production
-_`09-mlops-llmops-agentops-production.md` · 1 quarter · 3 hrs/wk · 12 lectures · [time-boxed](_toc/09-mlops-llmops-agentops-production-toc.md)_
+## 04 — Production AI: MLOps, LLMOps, AgentOps & Efficient Serving
 
-- **L1. Week 1 — The Production Mindset & Containerizing a Model**
+### Part A — Full-Stack AI: MLOps, LLMOps & AgentOps to Production
+- **Week 1 — The Production Mindset & Containerizing a Model**
   - Reproducible artifact
   - Image layers & build cache
   - Twelve-factor for ML
   - MLOps maturity (Google's levels 0/1/2)
   - ▶ [`krishnaik06/mlproject`](https://github.com/krishnaik06/mlproject) · 🔧 `$repro-image`
-- **L2. Week 2 — Orchestration: Kubernetes & Serverless GPU**
+- **Week 2 — Orchestration: Kubernetes & Serverless GPU**
   - Desired-state reconciliation
   - Liveness vs readiness
   - Requests vs limits
   - Scale-to-zero
   - ▶ [`GokuMohandas/Made-With-ML`](https://github.com/GokuMohandas/Made-With-ML) · 🔧 `$k8s-deploy`
-- **L3. Week 3 — Data Pipelines & Versioning: Airflow, DVC, Feature Stores**
+- **Week 3 — Data Pipelines & Versioning: Airflow, DVC, Feature Stores**
   - DAG idempotency
   - Data versioning (DVC)
   - Train/serve skew
   - Data contract
   - ▶ [`krishnaik06/Kidney-Disease-Classification-Deep-Learning-Project`](https://github.com/krishnaik06/Kidney-Disease-Classification-Deep-Learning-Project) · 🔧 `$data-contract`
-- **L4. Week 4 — Experiment Tracking, Model Registry & Reproducible Training**
+- **Week 4 — Experiment Tracking, Model Registry & Reproducible Training**
   - Experiment vs run vs artifact
   - Model registry & stages
   - Lineage
   - Sweep/HPO
   - ▶ [`DataTalksClub/mlops-zoomcamp`](https://github.com/DataTalksClub/mlops-zoomcamp) · 🔧 `$run-ledger`
-- **L5. Week 5 — Model Serving I: FastAPI, vLLM & Triton**
+- **Week 5 — Model Serving I: FastAPI, vLLM & Triton**
   - Online vs offline/batch inference
   - Continuous batching (vLLM)
   - Throughput vs latency tradeoff
   - Backpressure
   - ▶ [`VizuaraAI/infertutor-arena-capstone`](https://github.com/VizuaraAI/infertutor-arena-capstone) · 🔧 `$serve-bench`
-- **L6. Week 6 — CI/CD for Models *and* Prompts/Evals (Eval-Gated Deploys)**
+- **Week 6 — CI/CD for Models *and* Prompts/Evals (Eval-Gated Deploys)**
   - CI vs CD vs CT
   - Eval-gated deploy
   - Prompt as code
   - Golden/regression set
   - ▶ [`promptfoo/promptfoo`](https://github.com/promptfoo/promptfoo) · 🔧 `$eval-gate`
-- **L7. Week 7 — LLMOps: Gateways, Prompt Management, Semantic Caching & Cost/Latency Control**
+- **Week 7 — LLMOps: Gateways, Prompt Management, Semantic Caching & Cost/Latency Control**
   - LLM gateway
   - Semantic cache
   - Model routing / escalation
   - Cost as a first-class SLO
   - ▶ [`decodingml/llm-twin-course`](https://github.com/decodingml/llm-twin-course) · 🔧 `$llm-gateway`
-- **L8. Week 8 — Observability: Tracing, Metrics & LLM/Agent Telemetry**
+- **Week 8 — Observability: Tracing, Metrics & LLM/Agent Telemetry**
   - Traces vs metrics vs logs
   - Span & attributes
   - RED + LLM metrics
   - Trace-linked eval
   - ▶ [`langfuse/langfuse`](https://github.com/langfuse/langfuse) · 🔧 `$trace-debug`
-- **L9. Week 9 — Monitoring, Drift Detection & Alerting in Production**
+- **Week 9 — Monitoring, Drift Detection & Alerting in Production**
   - Data vs concept drift
   - Proxy quality signals for LLMs
   - SLI/SLO/error budget
   - Delayed labels
   - RAG-lifecycle drift
   - ▶ [`evidentlyai/evidently`](https://github.com/evidentlyai/evidently) · 🔧 `$drift-watch`
-- **L10. Week 10 — Safe Release: Shadow, Canary, Rollback & Human-in-the-Loop Gates**
+- **Week 10 — Safe Release: Shadow, Canary, Rollback & Human-in-the-Loop Gates**
   - Shadow mode
   - Canary + automated analysis
   - Blue-green vs rolling
   - HITL gate
   - ▶ [`argoproj/argo-rollouts`](https://github.com/argoproj/argo-rollouts) · 🔧 `$safe-release`
-- **L11. Week 11 — AgentOps: Operating Multi-Step Agent Systems in Production**
+- **Week 11 — AgentOps: Operating Multi-Step Agent Systems in Production**
   - Trajectory non-determinism
   - Tool side-effects & blast radius
   - Loop/cost runaway
   - Prompt injection / tool poisoning
   - Agent memory
   - ▶ [`krishnaik06/Agentic-LanggraphCrash-course`](https://github.com/krishnaik06/Agentic-LanggraphCrash-course) · 🔧 `$agent-ops`
-- **L12. Week 12 — Capstone: One Model + One Agent, Notebook → Monitored Production**
+- **Week 12 — Capstone: One Model + One Agent, Notebook → Monitored Production**
   - ▶ [`GokuMohandas/Made-With-ML`](https://github.com/GokuMohandas/Made-With-ML) · 🔧 `$production-readiness-review`
 
-## Subject 10 — Efficient AI: Quantization, Serving & Systems
-_`10-efficient-ai-systems-serving.md` · 1 quarter · 3 hrs/wk · 12 lectures · [time-boxed](_toc/10-efficient-ai-systems-serving-toc.md)_
-
-- **L1. Week 1 — The GPU Execution & Memory Model (and How to Profile It)**
+### Part B — Efficient AI: Quantization, Serving & Systems
+- **Week 1 — The GPU Execution & Memory Model (and How to Profile It)**
   - Memory-bound vs compute-bound
   - GPU memory hierarchy
   - Roofline model
   - The memory budget of an LLM
   - ▶ [`VizuaraAI/llm-inference-tutorial`](https://github.com/VizuaraAI/llm-inference-tutorial) · 🔧 `$gpu-profile`
-- **L2. Week 2 — Numerics: Mixed Precision, FP8 & Why Bits Matter**
+- **Week 2 — Numerics: Mixed Precision, FP8 & Why Bits Matter**
   - Range vs precision
   - Mixed precision
   - FP8 (E4M3/E5M2)
   - Dynamic range & scaling
   - ▶ [`VizuaraAILabs/nano-gpt-oss`](https://github.com/VizuaraAILabs/nano-gpt-oss) · 🔧 `$precision-sweep`
-- **L3. Week 3 — Post-Training Quantization: GPTQ, AWQ, SmoothQuant**
+- **Week 3 — Post-Training Quantization: GPTQ, AWQ, SmoothQuant**
   - PTQ vs QAT
   - Quantization granularity
   - AWQ
   - SmoothQuant
   - Calibration set
   - ▶ [`mlabonne/llm-course`](https://github.com/mlabonne/llm-course) · 🔧 `$quantize-and-verify`
-- **L4. Week 4 — QAT, Low-Bit Frontiers & Serving Quantized Models**
+- **Week 4 — QAT, Low-Bit Frontiers & Serving Quantized Models**
   - QAT & the straight-through estimator
   - NF4 + QLoRA
   - Served vs offline speedup
   - Low-bit cliff
   - On-device / private SLM deployment
   - ▶ [`krishnaik06/Finetuning-LLM`](https://github.com/krishnaik06/Finetuning-LLM) · 🔧 `$lowbit-serve`
-- **L5. Week 5 — Pruning, Sparsity, Distillation & NAS**
+- **Week 5 — Pruning, Sparsity, Distillation & NAS**
   - Unstructured vs structured pruning
   - 2:4 sparsity
   - Distillation
   - SparseGPT / Wanda
   - NAS / once-for-all
   - ▶ [`VizuaraAILabs/Tiny-Stories-Regional`](https://github.com/VizuaraAILabs/Tiny-Stories-Regional) · 🔧 `$compress-verify`
-- **L6. Week 6 — Attention at Scale: FlashAttention-3, KV-Cache & PagedAttention**
+- **Week 6 — Attention at Scale: FlashAttention-3, KV-Cache & PagedAttention**
   - Naive attention is IO-bound
   - FlashAttention (tiling + online softmax)
   - KV-cache
   - PagedAttention
   - ▶ [`VizuaraAI/kv-cache-token-reduction-walkthrough`](https://github.com/VizuaraAI/kv-cache-token-reduction-walkthrough) · 🔧 `$attention-bench`
-- **L7. Week 7 — Inference Serving Engines: vLLM, SGLang & TensorRT-LLM**
+- **Week 7 — Inference Serving Engines: vLLM, SGLang & TensorRT-LLM**
   - Prefill vs decode
   - Continuous batching
   - TTFT vs ITL vs throughput
   - Prefix caching / RadixAttention
   - ▶ [`VizuaraAI/infertutor-arena-capstone`](https://github.com/VizuaraAI/infertutor-arena-capstone) · 🔧 `$serving-engine-bench`
-- **L8. Week 8 — Speculative & Parallel Decoding**
+- **Week 8 — Speculative & Parallel Decoding**
   - Why decode is slow
   - Speculative decoding (verify-in-parallel)
   - Acceptance rate
   - Medusa / EAGLE
   - ▶ [`VizuaraAI/llm-inference-tutorial`](https://github.com/VizuaraAI/llm-inference-tutorial) · 🔧 `$spec-decode`
-- **L9. Week 9 — Mixture-of-Experts: Sparse Models at Scale**
+- **Week 9 — Mixture-of-Experts: Sparse Models at Scale**
   - Sparse activation
   - Router + top-k gating
   - Load balancing
   - Expert parallelism
   - ▶ [`VizuaraAILabs/DeepSeek-From-Scratch`](https://github.com/VizuaraAILabs/DeepSeek-From-Scratch) · 🔧 `$moe-analyze`
-- **L10. Week 10 — Long-Context Efficiency**
+- **Week 10 — Long-Context Efficiency**
   - KV-cache dominates long context
   - KV-cache quantization & eviction
   - Sliding-window / sparse attention
   - RoPE scaling / YaRN
   - Long-context vs RAG
   - ▶ [`VizuaraAI/kv-cache-token-reduction-walkthrough`](https://github.com/VizuaraAI/kv-cache-token-reduction-walkthrough) · 🔧 `$longctx-budget`
-- **L11. Week 11 — Distributed Training & Inference: FSDP, ZeRO, Tensor/Pipeline Parallelism**
+- **Week 11 — Distributed Training & Inference: FSDP, ZeRO, Tensor/Pipeline Parallelism**
   - Data parallelism
   - ZeRO / FSDP sharding
   - Tensor parallelism
   - Pipeline parallelism
   - Choosing a plan
   - ▶ [`VizuaraAI/vizuara-5d-parallelism-workshop`](https://github.com/VizuaraAI/vizuara-5d-parallelism-workshop) · 🔧 `$parallel-plan`
-- **L12. Week 12 — Capstone: FP16 → Quantized, Served, Benchmarked Endpoint**
+- **Week 12 — Capstone: FP16 → Quantized, Served, Benchmarked Endpoint**
   - ▶ [`VizuaraAI/infertutor-arena-capstone`](https://github.com/VizuaraAI/infertutor-arena-capstone) · 🔧 `$efficiency-report`
 
-## Subject 11 — Domain-Specific Applied AI
-_`11-domain-specific-applied-ai.md` · 1 quarter · 3 hrs/wk · 13 lectures · [time-boxed](_toc/11-domain-specific-applied-ai-toc.md)_
+## 05 — Applied, Multimodal, Reinforcement & Frontier AI
 
-- **L1. Week 1 — What Makes a Domain Hard: The Six-Lens Method & Picking Your Anchor**
+### Part A — Domain-Specific Applied AI
+- **Week 1 — What Makes a Domain Hard: The Six-Lens Method & Picking Your Anchor**
   - Prediction ≠ decision
   - Cost asymmetry
   - Regulatory tiering (EU AI Act)
   - Distribution shift is the default, not the exception
   - Automation bias & feedback loops
   - ▶ [`krishnaik06/mlproject`](https://github.com/krishnaik06/mlproject) · 🔧 `$domain-readiness`
-- **L2. Week 2 — Healthcare I: Medical Imaging & Explainable Diagnosis (HIPAA, FDA SaMD)**
+- **Week 2 — Healthcare I: Medical Imaging & Explainable Diagnosis (HIPAA, FDA SaMD)**
   - Patient-level splitting
   - Dice / IoU vs accuracy
   - Calibration & abstention
   - XAI as a *failure detector*
   - HIPAA Safe Harbor
   - ▶ [`krishnaik06/Malaria-Detection`](https://github.com/krishnaik06/Malaria-Detection) · 🔧 `$xai-audit`
-- **L3. Week 3 — Healthcare II: Clinical NLP on Notes (De-identification, RAG, Hallucination Safety)**
+- **Week 3 — Healthcare II: Clinical NLP on Notes (De-identification, RAG, Hallucination Safety)**
   - PHI de-identification on text
   - Clinical NER & concept normalization
   - Negation & uncertainty
   - Grounded generation (faithfulness)
   - ▶ [`krishnaik06/Text-Summarization-NLP-Project`](https://github.com/krishnaik06/Text-Summarization-NLP-Project) · 🔧 `$faithfulness-judge`
-- **L4. Week 4 — Legal: Contract Analysis & RAG over Case Law (Citation Integrity)**
+- **Week 4 — Legal: Contract Analysis & RAG over Case Law (Citation Integrity)**
   - Clause-level extraction
   - Long-document handling
   - Citation grounding & verification
   - GraphRAG over precedent
   - Document & table retrieval (visual / layout-aware)
   - ▶ [`krishnaik06/RAG-Tutorials`](https://github.com/krishnaik06/RAG-Tutorials) · 🔧 `$citation-verifier`
-- **L5. Week 5 — Finance I: Fraud Detection & Point-in-Time Correctness**
+- **Week 5 — Finance I: Fraud Detection & Point-in-Time Correctness**
   - Point-in-time correctness
   - Class imbalance & cost
   - Temporal validation
   - Adversarial & label-delay dynamics
   - ▶ [`krishnaik06/Credit-Card-Fraudlent`](https://github.com/krishnaik06/Credit-Card-Fraudlent) · 🔧 `$pit-leakage-audit`
-- **L6. Week 6 — Finance II: Credit Risk, Time-Series & Model Governance (SR 11-7, ECOA/FCRA)**
+- **Week 6 — Finance II: Credit Risk, Time-Series & Model Governance (SR 11-7, ECOA/FCRA)**
   - Calibration over discrimination
   - Reason codes / adverse action
   - Fairness testing
   - Probabilistic forecasting & intervals
   - SR 11-7 model risk
   - ▶ [`krishnaik06/ARIMA-And-Seasonal-ARIMA`](https://github.com/krishnaik06/ARIMA-And-Seasonal-ARIMA) · 🔧 `$model-governance-card`
-- **L7. Week 7 — Retail & E-commerce I: Recommendation Systems at Scale**
+- **Week 7 — Retail & E-commerce I: Recommendation Systems at Scale**
   - Two-stage architecture
   - Implicit feedback
   - Ranking metrics
   - Popularity & feedback bias
   - ▶ [`krishnaik06/Movie-Recommender-in-python`](https://github.com/krishnaik06/Movie-Recommender-in-python) · 🔧 `$recsys-slice-eval`
-- **L8. Week 8 — Retail & E-commerce II: Demand Forecasting & Inventory Decisions**
+- **Week 8 — Retail & E-commerce II: Demand Forecasting & Inventory Decisions**
   - Asymmetric cost → quantile forecast
   - Scale-free accuracy
   - Intermittent demand
   - Hierarchical coherence
   - ▶ [`krishnaik06/Stock-MArket-Forecasting`](https://github.com/krishnaik06/Stock-MArket-Forecasting) · 🔧 `$decision-forecast-eval`
-- **L9. Week 9 — Manufacturing & Industry 4.0: Predictive Maintenance & Vision QC**
+- **Week 9 — Manufacturing & Industry 4.0: Predictive Maintenance & Vision QC**
   - RUL regression / health index
   - Unsupervised/one-class defect detection
   - Localization vs detection
   - Operational thresholds
   - ▶ [`krishnaik06/Tomato-Leaf-Disease-Prediction`](https://github.com/krishnaik06/Tomato-Leaf-Disease-Prediction) · 🔧 `$anomaly-qc-eval`
-- **L10. Week 10 — Education: Tutoring Agents & Learning Science (FERPA, Pedagogical Safety)**
+- **Week 10 — Education: Tutoring Agents & Learning Science (FERPA, Pedagogical Safety)**
   - Scaffolding vs answer-leakage
   - Knowledge tracing / mastery
   - Correctness guardrail
   - FERPA & minors
   - ▶ [`krishnaik06/Agentic-LanggraphCrash-course`](https://github.com/krishnaik06/Agentic-LanggraphCrash-course) · 🔧 `$pedagogy-eval`
-- **L11. Week 11 — AI for Science: Surrogates, Property Prediction & Inverse Design**
+- **Week 11 — AI for Science: Surrogates, Property Prediction & Inverse Design**
   - Scaffold splitting
   - Graph/representation choice
   - Physics-informed constraints
   - OOD honesty & uncertainty
   - ▶ [`krishnaik06/AQI-Project`](https://github.com/krishnaik06/AQI-Project) · 🔧 `$ood-science-eval`
-- **L12. Week 12 — Capstone Build & Deployment-Risk Dossier**
+- **Week 12 — Capstone Build & Deployment-Risk Dossier**
   - ▶ [`krishnaik06/mlproject`](https://github.com/krishnaik06/mlproject) · 🔧 `$deployment-risk-dossier`
-- **L13. Week 13 — Ship Review: Stakeholder + Regulator Panel & Cross-Vertical Synthesis**
+- **Week 13 — Ship Review: Stakeholder + Regulator Panel & Cross-Vertical Synthesis**
   - ▶ [`krishnaik06/Data-Science-Projects-For-Resumes`](https://github.com/krishnaik06/Data-Science-Projects-For-Resumes) · 🔧 `$ship-review`
 
-## Subject 12 — Multimodal & Generative AI
-_`12-multimodal-and-generative-ai.md` · 1 quarter · 3 hrs/wk · 12 lectures · [time-boxed](_toc/12-multimodal-and-generative-ai-toc.md)_
-
-- **L1. Week 1 — Vision Transformers From Scratch: Images as Sequences of Patches**
+### Part B — Multimodal & Generative AI
+- **Week 1 — Vision Transformers From Scratch: Images as Sequences of Patches**
   - Patch embedding
   - Self-attention recap
   - Inductive bias trade-off
   - Class token vs mean pooling
   - ▶ [`VizuaraAI/Transformers-for-vision-BOOK`](https://github.com/VizuaraAI/Transformers-for-vision-BOOK) · 🔧 `$from-scratch-verifier`
-- **L2. Week 2 — Contrastive Learning & CLIP: Aligning Images and Text**
+- **Week 2 — Contrastive Learning & CLIP: Aligning Images and Text**
   - Contrastive (InfoNCE) loss
   - Zero-shot classification
   - Batch size as negatives
   - Modality gap
   - ▶ [`VizuaraAI/Transformers-for-vision-BOOK`](https://github.com/VizuaraAI/Transformers-for-vision-BOOK) · 🔧 `$contrastive-eval`
-- **L3. Week 3 — Vision-Language Models: LLaVA, Qwen-VL, Llama-Vision & Fine-Tuning**
+- **Week 3 — Vision-Language Models: LLaVA, Qwen-VL, Llama-Vision & Fine-Tuning**
   - Connector / projector
   - Visual tokens in context
   - Instruction tuning for VLMs
   - VLM hallucination
   - ▶ [`VizuaraAI/infertutor-arena-capstone`](https://github.com/VizuaraAI/infertutor-arena-capstone) · 🔧 `$vlm-probe`
-- **L4. Week 4 — Diffusion From Scratch I: DDPM (the Forward & Reverse Process)**
+- **Week 4 — Diffusion From Scratch I: DDPM (the Forward & Reverse Process)**
   - Forward process
   - Reverse process / objective
   - Time conditioning
   - Sampling steps
   - ▶ [`VizuaraAILabs/Principles-of-Diffusion-Models`](https://github.com/VizuaraAILabs/Principles-of-Diffusion-Models) · 🔧 `$generative-eval`
-- **L5. Week 5 — Diffusion II: Latent Diffusion, Conditioning & Text-to-Image**
+- **Week 5 — Diffusion II: Latent Diffusion, Conditioning & Text-to-Image**
   - Latent diffusion
   - Cross-attention text conditioning
   - Classifier-free guidance (CFG)
   - CLIPScore vs FID for text-to-image
   - ▶ [`VizuaraAILabs/Principles-of-Diffusion-Models`](https://github.com/VizuaraAILabs/Principles-of-Diffusion-Models) · 🔧 `$t2i-eval`
-- **L6. Week 6 — Flow Matching & Rectified Flow: The Modern Generative Backbone**
+- **Week 6 — Flow Matching & Rectified Flow: The Modern Generative Backbone**
   - Continuous-time view
   - Conditional flow matching loss
   - Rectified flow
   - DDIM bridge
   - ▶ [`VizuaraAILabs/Principles-of-Diffusion-Models`](https://github.com/VizuaraAILabs/Principles-of-Diffusion-Models) · 🔧 `$sampler-benchmark`
-- **L7. Week 7 — Video Generation: Spatiotemporal Diffusion & World Consistency**
+- **Week 7 — Video Generation: Spatiotemporal Diffusion & World Consistency**
   - Temporal modeling
   - Latent video diffusion + DiT
   - Conditioning modes
   - Evaluation
   - ▶ [`VizuaraAI/vla-driving-simulation`](https://github.com/VizuaraAI/vla-driving-simulation) · 🔧 `$video-consistency-eval`
-- **L8. Week 8 — Audio & Speech: ASR (Whisper), TTS & Audio Representations**
+- **Week 8 — Audio & Speech: ASR (Whisper), TTS & Audio Representations**
   - ASR & WER
   - Mel-spectrogram pipeline
   - Neural audio codecs
   - Robustness slices
   - ▶ [`VizuaraAI/audio-llm`](https://github.com/VizuaraAI/audio-llm) · 🔧 `$asr-robustness-eval`
-- **L9. Week 9 — Any-to-Any & Unified Multimodal Models**
+- **Week 9 — Any-to-Any & Unified Multimodal Models**
   - Unified token space
   - Early vs late fusion
   - Interleaved generation
   - The specialist-vs-generalist trade-off
   - ▶ [`Shubhamsaboo/awesome-llm-apps`](https://github.com/Shubhamsaboo/awesome-llm-apps) · 🔧 `$modality-router-eval`
-- **L10. Week 10 — World Models: Learning Simulators (IRIS, Genie-style)**
+- **Week 10 — World Models: Learning Simulators (IRIS, Genie-style)**
   - Latent dynamics
   - Transformer/tokenized world models (IRIS)
   - Action-conditioned generation (Genie)
   - Compounding error / rollout horizon
   - ▶ [`VizuaraAI/vla-driving-simulation`](https://github.com/VizuaraAI/vla-driving-simulation) · 🔧 `$rollout-eval`
-- **L11. Week 11 — Multimodal RAG & Agents: Grounded, Tool-Using Multimodal Systems**
+- **Week 11 — Multimodal RAG & Agents: Grounded, Tool-Using Multimodal Systems**
   - Multimodal retrieval
   - Grounded multimodal generation
   - Agentic tools for vision
   - Multimodal hallucination guardrail
   - ▶ [`NirDiamant/RAG_Techniques`](https://github.com/NirDiamant/RAG_Techniques) · 🔧 `$mm-grounding-eval`
-- **L12. Week 12 — Capstone: A Multimodal App + a Small Diffusion Model**
+- **Week 12 — Capstone: A Multimodal App + a Small Diffusion Model**
   - ▶ [`VizuaraAI/infertutor-arena-capstone`](https://github.com/VizuaraAI/infertutor-arena-capstone) · 🔧 `$multimodal-capstone-packet`
 
-## Subject 13 — Reinforcement Learning, Robotics & Embodied AI
-_`13-rl-robotics-embodied-ai.md` · 1 quarter · 3 hrs/wk · 14 lectures · [time-boxed](_toc/13-rl-robotics-embodied-ai-toc.md)_
-
-- **L1. Week 1 — MDPs, Bellman Equations & Dynamic Programming From Scratch**
+### Part C — Reinforcement Learning, Robotics & Embodied AI
+- **Week 1 — MDPs, Bellman Equations & Dynamic Programming From Scratch**
   - Markov Decision Process
   - Return & discounting
   - State-value & action-value
   - Bellman optimality
   - Contraction & convergence
   - ▶ [`VizuaraAILabs/OpenClaw-RL-Tutorial`](https://github.com/VizuaraAILabs/OpenClaw-RL-Tutorial) · 🔧 `$mdp-modeler`
-- **L2. Week 2 — Model-Free Prediction & Control: Monte Carlo, TD, Q-Learning, SARSA**
+- **Week 2 — Model-Free Prediction & Control: Monte Carlo, TD, Q-Learning, SARSA**
   - TD(0) update
   - Q-learning (off-policy)
   - SARSA (on-policy)
   - Exploration
   - Bias–variance of targets
   - ▶ [`VizuaraAILabs/OpenClaw-RL-Tutorial`](https://github.com/VizuaraAILabs/OpenClaw-RL-Tutorial) · 🔧 `$rollout-harness`
-- **L3. Week 3 — Deep Q-Networks: DQN → Double → Dueling → Rainbow**
+- **Week 3 — Deep Q-Networks: DQN → Double → Dueling → Rainbow**
   - Q-network
   - Replay buffer + target net
   - Double DQN
   - Dueling architecture
   - Prioritized replay / n-step / distributional / noisy nets
   - ▶ [`VizuaraAILabs/OpenClaw-RL-Tutorial`](https://github.com/VizuaraAILabs/OpenClaw-RL-Tutorial) · 🔧 `$value-debugger`
-- **L4. Week 4 — Policy Gradients & Actor-Critic: REINFORCE, Baselines, A2C**
+- **Week 4 — Policy Gradients & Actor-Critic: REINFORCE, Baselines, A2C**
   - Policy-gradient theorem
   - Baseline / advantage
   - Actor-Critic
   - Continuous policies
   - ▶ [`VizuaraAI/RL-in-Production-Bootcamp-Resources`](https://github.com/VizuaraAI/RL-in-Production-Bootcamp-Resources) · 🔧 `$gradient-variance-meter`
-- **L5. Week 5 — Trust Regions & PPO: TRPO, GAE, and the Workhorse of Modern RL**
+- **Week 5 — Trust Regions & PPO: TRPO, GAE, and the Workhorse of Modern RL**
   - Surrogate objective / importance ratio
   - PPO-clip
   - GAE
   - TRPO vs PPO
   - ▶ [`VizuaraAI/RL-in-Production-Bootcamp-Resources`](https://github.com/VizuaraAI/RL-in-Production-Bootcamp-Resources) · 🔧 `$ppo-trainer`
-- **L6. Week 6 — Offline RL & Imitation Learning**
+- **Week 6 — Offline RL & Imitation Learning**
   - Behavior cloning
   - Distributional shift
   - Conservative value (CQL)
   - Implicit Q-Learning (IQL)
   - Decision Transformer
   - ▶ [`VizuaraAI/RL-in-Production-Bootcamp-Resources`](https://github.com/VizuaraAI/RL-in-Production-Bootcamp-Resources) · 🔧 `$offline-data-auditor`
-- **L7. Week 7 — Model-Based RL, MCTS & World Models (IRIS)**
+- **Week 7 — Model-Based RL, MCTS & World Models (IRIS)**
   - Model-based RL
   - MCTS
   - AlphaZero loop
   - World models (IRIS)
   - ▶ [`VizuaraAI/RL-in-Production-Bootcamp-Resources`](https://github.com/VizuaraAI/RL-in-Production-Bootcamp-Resources) · 🔧 `$model-trust-auditor`
-- **L8. Week 8 — RLHF & Preference Optimization: PPO-RLHF, DPO, SimPO, KTO, ORPO**
+- **Week 8 — RLHF & Preference Optimization: PPO-RLHF, DPO, SimPO, KTO, ORPO**
   - Reward model (Bradley-Terry)
   - PPO-RLHF objective
   - DPO
   - SimPO / KTO / ORPO
   - ▶ [`VizuaraAI/RL-in-Production-Bootcamp-Resources`](https://github.com/VizuaraAI/RL-in-Production-Bootcamp-Resources) · 🔧 `$preference-tuner`
-- **L9. Week 9 — RLVR & the GRPO Lineage: GRPO (DeepSeek-R1), DAPO, Dr.GRPO**
+- **Week 9 — RLVR & the GRPO Lineage: GRPO (DeepSeek-R1), DAPO, Dr.GRPO**
   - RLVR
   - GRPO
   - GRPO biases (Dr.GRPO)
   - DAPO
   - ▶ [`VizuaraAILabs/DeepSeek-From-Scratch`](https://github.com/VizuaraAILabs/DeepSeek-From-Scratch) · 🔧 `$rlvr-trainer`
-- **L10. Week 10 — Agentic RL: SWE-RL, DeepSWE & Distributed RL Infrastructure**
+- **Week 10 — Agentic RL: SWE-RL, DeepSWE & Distributed RL Infrastructure**
   - Agentic MDP
   - SWE-RL / DeepSWE
   - Distributed RL stack
   - Reward sparsity & shaping
   - ▶ [`VizuaraAI/RL-in-Production-Bootcamp-Resources`](https://github.com/VizuaraAI/RL-in-Production-Bootcamp-Resources) · 🔧 `$agentic-rl-env`
-- **L11. Week 11 — Robotics & Embodied AI: VLA Models (SmolVLA), Sim-to-Real**
+- **Week 11 — Robotics & Embodied AI: VLA Models (SmolVLA), Sim-to-Real**
   - VLA model
   - Action chunking
   - Sim-to-real gap
   - Imitation vs RL fine-tuning
   - ▶ [`VizuaraAILabs/ACT-Maniskill`](https://github.com/VizuaraAILabs/ACT-Maniskill) · 🔧 `$embodied-eval`
-- **L12. Week 12 — Humanoid Locomotion & Multi-Agent RL**
+- **Week 12 — Humanoid Locomotion & Multi-Agent RL**
   - Massively parallel sim
   - Locomotion reward
   - Stochastic game
   - CTDE (centralized training, decentralized execution)
   - ▶ [`VizuaraAILabs/Modern-Robot-Learning`](https://github.com/VizuaraAILabs/Modern-Robot-Learning) · 🔧 `$reward-shaping-auditor`
-- **L13. Week 13 — RL Safety: Reward Hacking, Specification Gaming & Safe RL**
+- **Week 13 — RL Safety: Reward Hacking, Specification Gaming & Safe RL**
   - Specification gaming
   - Goodhart / reward over-optimization
   - Constrained MDP
   - Mitigations
   - ▶ [`VizuaraAI/RL-in-Production-Bootcamp-Resources`](https://github.com/VizuaraAI/RL-in-Production-Bootcamp-Resources) · 🔧 `$reward-hacking-redteam`
-- **L14. Week 14 — Capstone: An Agentic-RL System With a Safety Audit**
+- **Week 14 — Capstone: An Agentic-RL System With a Safety Audit**
   - ▶ [`VizuaraAI/RL-in-Production-Bootcamp-Resources`](https://github.com/VizuaraAI/RL-in-Production-Bootcamp-Resources) · 🔧 `$rl-evidence-packet`
 
-## Subject 14 — AI Safety, Alignment & Governance
-_`14-ai-safety-alignment-governance.md` · 1 quarter · 3 hrs/wk · 13 lectures · [time-boxed](_toc/14-ai-safety-alignment-governance-toc.md)_
+### Part D — Emerging Topics & AI for Science
+- **Week 1 — Operating at the Frontier: Reading Papers, Choosing a Thread, Signal vs Hype**
+  - Claim–evidence–gap
+  - Reproducibility tiers
+  - Benchmark contamination & gaming
+  - The hype cycle
+  - ▶ [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook) · 🔧 `$paper-triage`
+- **Week 2 — Autonomous Research Agents: The "AI Scientist"**
+  - The research loop as an agent
+  - Verification bottleneck
+  - Novelty vs recombination
+  - Automated reviewing & its biases
+  - ▶ [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook) · 🔧 `$research-claim-audit`
+- **Week 3 — AI for Science I: Structure Prediction (AlphaFold-style) & Geometric DL**
+  - Equivariance
+  - MSA / evolutionary signal
+  - Confidence (pLDDT/PAE)
+  - Generalization limits
+  - ▶ [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook) · 🔧 `$scientific-repro`
+- **Week 4 — AI for Science II: Molecules, Materials & Generative Design**
+  - Property prediction + screening
+  - Generative proposal
+  - Validation gap
+  - Distribution shift / novelty
+  - ▶ [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook) · 🔧 `$discovery-validity-check`
+- **Week 5 — Physics-Informed ML: PINNs, Neural Operators & Scientific Surrogates**
+  - Physics-informed loss
+  - PINN vs neural operator
+  - Training pathologies
+  - Validation against the solver
+  - ▶ [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook) · 🔧 `$physics-validity`
+- **Week 6 — Emergence, Scaling & In-Context Learning**
+  - Scaling laws
+  - Emergent abilities & the metric critique
+  - In-context learning
+  - Grokking
+  - ▶ [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook) · 🔧 `$emergence-probe`
+- **Week 7 — Mechanistic Interpretability: Circuits, SAEs & CoT Monitoring**
+  - Superposition
+  - Sparse autoencoders (SAEs)
+  - Circuits & activation patching
+  - CoT monitoring & faithfulness
+  - ▶ [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook) · 🔧 `$interp-evidence`
+- **Week 8 — Neuro-Symbolic Methods: Combining Learning and Reasoning**
+  - Why hybridize
+  - LLM-as-program-generator + solver
+  - Differentiable/relaxed logic
+  - Verifiability
+  - ▶ [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook) · 🔧 `$neurosymbolic-loop`
+- **Week 9 — World Models & Simulation for Reasoning and Control**
+  - Planning in imagination
+  - Model exploitation
+  - Compounding error & horizon
+  - Generative interactive environments (Genie)
+  - ▶ [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook) · 🔧 `$sim-fidelity-eval`
+- **Week 10 — Synthetic Data, Self-Improvement & the Efficiency/SSM Frontier**
+  - Synthetic data & self-improvement
+  - Model collapse
+  - State-space models (Mamba)
+  - Hybrids
+  - ▶ [`VizuaraAILabs/DeepSeek-From-Scratch`](https://github.com/VizuaraAILabs/DeepSeek-From-Scratch) · 🔧 `$frontier-tradeoff`
+- **Week 11 — Theorem Proving, Autoformalization & the Societal-Impact Panel**
+  - Formal verification as ground truth
+  - Autoformalization
+  - LLM + search + RL (AlphaProof)
+  - Governance frameworks
+  - ▶ [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook) · 🔧 `$verifiable-reasoning-eval`
+- **Week 12 — In-Class Hackathon: Build at the Frontier Under Pressure**
+  - ▶ [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook) · 🔧 `$frontier-sprint`
+- **Week 13 — Final Talks: Conference-Style Presentations & Defense**
+  - ▶ [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook) · 🔧 `$research-defense`
 
-- **L1. Week 1 — The AI Risk Landscape & How to Reason About It**
+## 06 — AI Safety, Alignment, Recursive Self-Improvement & Capstone
+
+### Part A — AI Safety, Alignment & Governance
+- **Week 1 — The AI Risk Landscape & How to Reason About It**
   - Risk taxonomy
   - Threat model
   - Capability vs propensity
   - Defense in depth
   - ▶ [`anthropics/courses`](https://github.com/anthropics/courses) · 🔧 `$threat-modeler`
-- **L2. Week 2 — Where Safety Enters Modern LLM Training (RLHF, RLVR, Safety Fine-Tuning)**
+- **Week 2 — Where Safety Enters Modern LLM Training (RLHF, RLVR, Safety Fine-Tuning)**
   - Pipeline & injection points
   - Safety fine-tuning
   - Alignment tax
   - Over-refusal
   - ▶ [`anthropics/anthropic-cookbook`](https://github.com/anthropics/anthropic-cookbook) · 🔧 `$alignment-tax-meter`
-- **L3. Week 3 — Adversarial Robustness I: Jailbreaks**
+- **Week 3 — Adversarial Robustness I: Jailbreaks**
   - Jailbreak
   - GCG (greedy coordinate gradient)
   - PAIR / TAP
   - Transferability
   - ▶ [`anthropics/anthropic-cookbook`](https://github.com/anthropics/anthropic-cookbook) · 🔧 `$jailbreak-suite`
-- **L4. Week 4 — Adversarial Robustness II: Prompt Injection, Agent Hijacking & Weight Protection**
+- **Week 4 — Adversarial Robustness II: Prompt Injection, Agent Hijacking & Weight Protection**
   - Prompt injection
   - Indirect injection
   - Confused deputy / exfiltration
   - Defenses
   - ▶ [`anthropics/anthropic-cookbook`](https://github.com/anthropics/anthropic-cookbook) · 🔧 `$injection-redteam`
-- **L5. Week 5 — Model Specs, Content Policies & Moderation (Llama Guard, NeMo Guardrails)**
+- **Week 5 — Model Specs, Content Policies & Moderation (Llama Guard, NeMo Guardrails)**
   - Model spec
   - Guard model
   - Programmable guardrails
   - Operating point
   - ▶ [`anthropics/anthropic-cookbook`](https://github.com/anthropics/anthropic-cookbook) · 🔧 `$policy-enforcer`
-- **L6. Week 6 — Scheming, Deception & Situational Awareness**
+- **Week 6 — Scheming, Deception & Situational Awareness**
   - Deceptive alignment / scheming
   - Situational awareness
   - Sandbagging / eval-gaming
   - Detection
   - ▶ [`anthropics/courses`](https://github.com/anthropics/courses) · 🔧 `$deception-probe`
-- **L7. Week 7 — Mechanistic Interpretability I: Sparse Autoencoders (SAEs)**
+- **Week 7 — Mechanistic Interpretability I: Sparse Autoencoders (SAEs)**
   - Superposition
   - Sparse autoencoder
   - Feature validation
   - Limits
   - ▶ [`anthropics/courses`](https://github.com/anthropics/courses) · 🔧 `$sae-feature-lab`
-- **L8. Week 8 — Mechanistic Interpretability II: CoT Monitoring & Faithfulness**
+- **Week 8 — Mechanistic Interpretability II: CoT Monitoring & Faithfulness**
   - CoT monitoring
   - Faithfulness
   - Optimization pressure erodes monitorability
   - Monitor design
   - ▶ [`anthropics/courses`](https://github.com/anthropics/courses) · 🔧 `$cot-monitor`
-- **L9. Week 9 — Scalable Oversight, Constitutional AI & RLAIF**
+- **Week 9 — Scalable Oversight, Constitutional AI & RLAIF**
   - Scalable oversight
   - Constitutional AI
   - RLAIF vs RLHF
   - Debate / weak-to-strong
   - ▶ [`anthropics/anthropic-cookbook`](https://github.com/anthropics/anthropic-cookbook) · 🔧 `$constitutional-aligner`
-- **L10. Week 10 — Dangerous Capabilities, Responsible Scaling & Takeoff**
+- **Week 10 — Dangerous Capabilities, Responsible Scaling & Takeoff**
   - Dangerous-capability eval
   - Responsible scaling policy
   - Recursive self-improvement / takeoff
   - Elicitation
   - Machine unlearning (capability removal)
   - ▶ [`anthropics/courses`](https://github.com/anthropics/courses) · 🔧 `$capability-eval`
-- **L11. Week 11 — Agent Safety: Autonomy, Permissions & Multi-Agent Risk**
+- **Week 11 — Agent Safety: Autonomy, Permissions & Multi-Agent Risk**
   - Autonomy risk
   - Authorization layer
   - Containment / sandboxing
   - Multi-agent risk
   - ▶ [`anthropics/anthropic-cookbook`](https://github.com/anthropics/anthropic-cookbook) · 🔧 `$agent-safety-harness`
-- **L12. Week 12 — Governance: EU AI Act, NIST AI RMF, OWASP & Standards**
+- **Week 12 — Governance: EU AI Act, NIST AI RMF, OWASP & Standards**
   - EU AI Act risk tiers
   - NIST AI RMF
   - OWASP LLM Top-10 / ISO 42001
   - Documentation artifacts
   - ▶ [`anthropics/courses`](https://github.com/anthropics/courses) · 🔧 `$compliance-mapper`
-- **L13. Week 13 — Capstone: A Full Red-Team → Mitigation → Eval Cycle**
+- **Week 13 — Capstone: A Full Red-Team → Mitigation → Eval Cycle**
   - ▶ [`anthropics/anthropic-cookbook`](https://github.com/anthropics/anthropic-cookbook) · 🔧 `$safety-case-builder`
 
-## Subject 15 — Emerging Topics & AI for Science
-_`15-emerging-topics-ai-for-science.md` · 1 quarter · 3 hrs/wk · 13 lectures · [time-boxed](_toc/15-emerging-topics-ai-for-science-toc.md)_
-
-- **L1. Week 1 — Operating at the Frontier: Reading Papers, Choosing a Thread, Signal vs Hype**
-  - Claim–evidence–gap
-  - Reproducibility tiers
-  - Benchmark contamination & gaming
-  - The hype cycle
-  - ▶ [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook) · 🔧 `$paper-triage`
-- **L2. Week 2 — Autonomous Research Agents: The "AI Scientist"**
-  - The research loop as an agent
-  - Verification bottleneck
-  - Novelty vs recombination
-  - Automated reviewing & its biases
-  - ▶ [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook) · 🔧 `$research-claim-audit`
-- **L3. Week 3 — AI for Science I: Structure Prediction (AlphaFold-style) & Geometric DL**
-  - Equivariance
-  - MSA / evolutionary signal
-  - Confidence (pLDDT/PAE)
-  - Generalization limits
-  - ▶ [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook) · 🔧 `$scientific-repro`
-- **L4. Week 4 — AI for Science II: Molecules, Materials & Generative Design**
-  - Property prediction + screening
-  - Generative proposal
-  - Validation gap
-  - Distribution shift / novelty
-  - ▶ [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook) · 🔧 `$discovery-validity-check`
-- **L5. Week 5 — Physics-Informed ML: PINNs, Neural Operators & Scientific Surrogates**
-  - Physics-informed loss
-  - PINN vs neural operator
-  - Training pathologies
-  - Validation against the solver
-  - ▶ [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook) · 🔧 `$physics-validity`
-- **L6. Week 6 — Emergence, Scaling & In-Context Learning**
-  - Scaling laws
-  - Emergent abilities & the metric critique
-  - In-context learning
-  - Grokking
-  - ▶ [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook) · 🔧 `$emergence-probe`
-- **L7. Week 7 — Mechanistic Interpretability: Circuits, SAEs & CoT Monitoring**
-  - Superposition
-  - Sparse autoencoders (SAEs)
-  - Circuits & activation patching
-  - CoT monitoring & faithfulness
-  - ▶ [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook) · 🔧 `$interp-evidence`
-- **L8. Week 8 — Neuro-Symbolic Methods: Combining Learning and Reasoning**
-  - Why hybridize
-  - LLM-as-program-generator + solver
-  - Differentiable/relaxed logic
-  - Verifiability
-  - ▶ [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook) · 🔧 `$neurosymbolic-loop`
-- **L9. Week 9 — World Models & Simulation for Reasoning and Control**
-  - Planning in imagination
-  - Model exploitation
-  - Compounding error & horizon
-  - Generative interactive environments (Genie)
-  - ▶ [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook) · 🔧 `$sim-fidelity-eval`
-- **L10. Week 10 — Synthetic Data, Self-Improvement & the Efficiency/SSM Frontier**
-  - Synthetic data & self-improvement
-  - Model collapse
-  - State-space models (Mamba)
-  - Hybrids
-  - ▶ [`VizuaraAILabs/DeepSeek-From-Scratch`](https://github.com/VizuaraAILabs/DeepSeek-From-Scratch) · 🔧 `$frontier-tradeoff`
-- **L11. Week 11 — Theorem Proving, Autoformalization & the Societal-Impact Panel**
-  - Formal verification as ground truth
-  - Autoformalization
-  - LLM + search + RL (AlphaProof)
-  - Governance frameworks
-  - ▶ [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook) · 🔧 `$verifiable-reasoning-eval`
-- **L12. Week 12 — In-Class Hackathon: Build at the Frontier Under Pressure**
-  - ▶ [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook) · 🔧 `$frontier-sprint`
-- **L13. Week 13 — Final Talks: Conference-Style Presentations & Defense**
-  - ▶ [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook) · 🔧 `$research-defense`
-
-## Subject 16 — Capstone: Build & Ship an Agentic AI System
-_`16-capstone-agentic-system.md` · 1 quarter · 3 hrs/wk · 6 milestones · [time-boxed](_toc/16-capstone-agentic-system-toc.md)_
-
-- **M1. Milestone 1 — Proposal & Problem Framing**
-  - ▶ [`GokuMohandas/Made-With-ML`](https://github.com/GokuMohandas/Made-With-ML) · 🔧 `$project-charter`
-- **M2. Milestone 2 — Data, RAG & Prototype**
-  - ▶ [`decodingml/llm-twin-course`](https://github.com/decodingml/llm-twin-course) · 🔧 `$rag-evaluator`
-- **M3. Milestone 3 — Multi-Agent System with MCP + Fine-Tuning**
-  - ▶ [`Shubhamsaboo/awesome-llm-apps`](https://github.com/Shubhamsaboo/awesome-llm-apps) · 🔧 `$agent-orchestrator`
-- **M4. Milestone 4 — Evaluation Harness & Safety Review**
-  - ▶ [`GokuMohandas/Made-With-ML`](https://github.com/GokuMohandas/Made-With-ML) · 🔧 `$eval-gate`
-- **M5. Milestone 5 — LLMOps/AgentOps Production Deployment**
-  - ▶ [`GokuMohandas/Made-With-ML`](https://github.com/GokuMohandas/Made-With-ML) · 🔧 `$agentops-deployer`
-- **M6. Milestone 6 — Monitored Production, Final Report & Showcase**
-  - ▶ [`GokuMohandas/Made-With-ML`](https://github.com/GokuMohandas/Made-With-ML) · 🔧 `$production-evidence-packet`
-
-## Subject 17 — Recursive Self-Improvement: Self-Evolving Agents, Models & Systems
-_`17-recursive-self-improvement.md` · 1 quarter · 3 hrs/wk · 13 lectures · [time-boxed](_toc/17-recursive-self-improvement-toc.md)_
-
-- **L1. Week 1 — Foundations: The Five Lenses, Taxonomy & Theory of RSI**
+### Part B — Recursive Self-Improvement: Self-Evolving Agents, Models & Systems
+- **Week 1 — Foundations: The Five Lenses, Taxonomy & Theory of RSI**
   - The self-improvement loop
   - Iterative computation as a unifying view
   - A task-centric theory
   - Interestingness / novelty
   - ▶ [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook) · 🔧 `$rsi-classifier`
-- **L2. Week 2 — Self-Generated Data & Self-Play (and the Collapse Problem)**
+- **Week 2 — Self-Generated Data & Self-Play (and the Collapse Problem)**
   - Self-play loop
   - Model collapse
   - Self-play ≈ adversarial imitation
   - ▶ [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook) · 🔧 `$collapse-monitor`
-- **L3. Week 3 — Test-Time Self-Improvement & Inference-Time Scaling**
+- **Week 3 — Test-Time Self-Improvement & Inference-Time Scaling**
   - Compute-as-teacher
   - Test-time self-distillation
   - Reusable test-time computation
   - Fast tree-search self-improvement
   - ▶ [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook) · 🔧 `$test-time-improver`
-- **L4. Week 4 — Agentic Memory & Lifelong/Continual Learning**
+- **Week 4 — Agentic Memory & Lifelong/Continual Learning**
   - Meta-learned memory designs
   - Agentic context engineering
   - Continual learning without forgetting
   - Real-time procedural learning from experience
   - ▶ [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook) · 🔧 `$memory-evolver`
-- **L5. Week 5 — Verifiers, Rewards & the Reward-Hacking Problem**
+- **Week 5 — Verifiers, Rewards & the Reward-Hacking Problem**
   - Verifiers > solvers as a bottleneck
   - Self-evolving, interpretable rubrics
   - Reward hacking in self-improving code agents
   - Self-improving VLM judges without human labels
   - ▶ [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook) · 🔧 `$verifier-auditor`
-- **L6. Week 6 — Self-Evolving Coding Agents**
+- **Week 6 — Self-Evolving Coding Agents**
   - Adversarial self-generated unit tests + preference optimization
   - Repository context files (AGENTS.md)
   - Sobering baseline:
   - Deep agentic reasoning systems
   - ▶ [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook) · 🔧 `$code-harness-synth`
-- **L7. Week 7 — Automated AI Research & Scientific Discovery ("AI Scientists")**
+- **Week 7 — Automated AI Research & Scientific Discovery ("AI Scientists")**
   - Can agents automate post-training?
   - Discovery limits:
   - Evolutionary optimization by LLMs
   - ▶ [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook) · 🔧 `$research-loop`
-- **L8. Week 8 — Open-Ended Discovery & Evolutionary Self-Improvement**
+- **Week 8 — Open-Ended Discovery & Evolutionary Self-Improvement**
   - Learning to evolve / relative-progress RL
   - Feedback Descent
   - Prompt optimization & translation across foundation models
   - ▶ [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook) · 🔧 `$open-ended-evolver`
-- **L9. Week 9 — Self-Improving Reasoning: Curricula at the Edge of Learnability**
+- **Week 9 — Self-Improving Reasoning: Curricula at the Edge of Learnability**
   - Teaching models to teach themselves
   - Process rewards & multi-agent scaling
   - Shared decision pivots
   - GRPO-guided controllers for hyperparameter sweeps
   - ▶ [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook) · 🔧 `$learnability-curriculum`
-- **L10. Week 10 — Tiny Recursive Models & Iterative Architectures**
+- **Week 10 — Tiny Recursive Models & Iterative Architectures**
   - Tiny autoregressive recursive models
   - Generative recursive reasoning models
   - Depth vs recursion
   - ▶ [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook) · 🔧 `$recursion-profiler`
-- **L11. Week 11 — Multimodal, World-Model & Embodied Self-Improvement**
+- **Week 11 — Multimodal, World-Model & Embodied Self-Improvement**
   - Self-improving world models
   - Self-improving VLA with data generation via residual RL
   - Residual off-policy RL
   - ▶ [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook) · 🔧 `$embodied-self-improver`
-- **L12. Week 12 — Benchmarks & Evidence: Proving a System Actually Self-Improved**
+- **Week 12 — Benchmarks & Evidence: Proving a System Actually Self-Improved**
   - PostTrainBench
   - Verifying the verifiers
   - ▶ [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook) · 🔧 `$rsi-evidence-audit`
-- **L13. Week 13 — Safety, Unlearning & Governance of Self-Improving Systems**
+- **Week 13 — Safety, Unlearning & Governance of Self-Improving Systems**
   - Tamper / fine-tuning robustness
   - Reward hacking
   - Machine unlearning
   - Bias amplification
   - ▶ [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook) · 🔧 `$rsi-safety-case`
+
+### Part C — Capstone: Build & Ship an Agentic AI System
+- **Milestone 1 — Proposal & Problem Framing**
+  - ▶ [`GokuMohandas/Made-With-ML`](https://github.com/GokuMohandas/Made-With-ML) · 🔧 `$project-charter`
+- **Milestone 2 — Data, RAG & Prototype**
+  - ▶ [`decodingml/llm-twin-course`](https://github.com/decodingml/llm-twin-course) · 🔧 `$rag-evaluator`
+- **Milestone 3 — Multi-Agent System with MCP + Fine-Tuning**
+  - ▶ [`Shubhamsaboo/awesome-llm-apps`](https://github.com/Shubhamsaboo/awesome-llm-apps) · 🔧 `$agent-orchestrator`
+- **Milestone 4 — Evaluation Harness & Safety Review**
+  - ▶ [`GokuMohandas/Made-With-ML`](https://github.com/GokuMohandas/Made-With-ML) · 🔧 `$eval-gate`
+- **Milestone 5 — LLMOps/AgentOps Production Deployment**
+  - ▶ [`GokuMohandas/Made-With-ML`](https://github.com/GokuMohandas/Made-With-ML) · 🔧 `$agentops-deployer`
+- **Milestone 6 — Monitored Production, Final Report & Showcase**
+  - ▶ [`GokuMohandas/Made-With-ML`](https://github.com/GokuMohandas/Made-With-ML) · 🔧 `$production-evidence-packet`
