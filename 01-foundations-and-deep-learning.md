@@ -35,6 +35,25 @@ _One academic quarter-track · 3 lecture-hrs/week · **22 lectures** across **2 
 12. **Week 12 — Capstone: A Built-From-Scratch GPT With an Evidence Packet**  ·  ▶ `VizuaraAILabs/nano-gpt-oss` · 🔧 `$model-evidence-packet`
 
 
+
+## How the book's skills are leveraged in this subject
+
+This subject is taught with the reusable **reader-skills** from *Harnessing LLM Skills to Master Machine Learning* (Appendix B) — each a small "machine for repeatable thinking" invoked as `$skill-name`. They are applied exactly where this subject needs them, alongside the program's own `$skills`. The book's learning loop — **concept → code → critique → reflection → rebuild** — and the **prompt → workflow → skill → harness** ladder structure every lecture's build and critique.
+
+| Book reader-skill | Book ch. | How it is leveraged in this subject |
+|---|---|---|
+| `$ml-math-translator` | 2 | Part A & B — every equation lecture (vectors, gradients, attention) uses its Formula→Symbols→Shapes→Plain-English→Code→Common-mistake template so there is no symbol panic. |
+| `$ml-problem-framer` | 3 | Part A — framing the prediction target, label, and leakage risks *before* modeling. |
+| `$ml-baseline-builder` | 4 | Part A — first-models lectures: a baseline must be beaten before complexity is earned. |
+| `$ml-tabular-model-review` | 5 | Part A — trees/ensembles lecture: honest split + slice + leakage comparison. |
+| `$ml-evaluation-review` | 6 | Part A — evaluation/error-analysis lecture; the habit is carried program-wide. |
+| `$ml-training-diagnostics` | 7 | Part A optimization + Part B neural-net training: read the loss curve, rank the causes. |
+| `$ml-neural-project` | 8 | Part B — turn notebook work into a reproducible, reviewable DL project. |
+| `$ml-architecture-reader` | 9 | Part B — read attention/Transformer architecture as engineering, not hype. |
+| `$ml-statistical-model-reader` · `$ml-inductive-bias-review` · `$ml-generalization-theory-translator` | 17–19 | Part A — GLM, inductive-bias, and capacity/VC lectures: translate theory into practical judgment. |
+
+---
+
 # Part A — Math & ML Foundations From Scratch
 
 **Track:** Foundations · **Altitude:** Learner · **Length:** 10 weeks (3 lecture hrs + 3 lab hrs/wk)

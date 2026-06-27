@@ -71,6 +71,23 @@ _One academic quarter-track · 3 lecture-hrs/week · **52 lectures** across **4 
 13. **Week 13 — Final Talks: Conference-Style Presentations & Defense**  ·  ▶ `VizuaraAI/paper-to-notebook` · 🔧 `$research-defense`
 
 
+
+## How the book's skills are leveraged in this subject
+
+This subject is taught with the reusable **reader-skills** from *Harnessing LLM Skills to Master Machine Learning* (Appendix B) — each a small "machine for repeatable thinking" invoked as `$skill-name`. They are applied exactly where this subject needs them, alongside the program's own `$skills`. The book's learning loop — **concept → code → critique → reflection → rebuild** — and the **prompt → workflow → skill → harness** ladder structure every lecture's build and critique.
+
+| Book reader-skill | Book ch. | How it is leveraged in this subject |
+|---|---|---|
+| `$ml-problem-framer` · `$ml-data-readiness` | 3, 13 | Part A — per-vertical framing (the real decision, regulation) and domain-data audits. |
+| `$ml-ranking-review` | 12 | Part A (retail) — recommendation/ranking: objective, feedback loops, offline-vs-online. |
+| `$ml-tabular-model-review` | 5 | Part A (fraud/finance) — honest structured-data model comparison. |
+| `$ml-risk-review` | 15 | Part A — high-stakes verticals (health, finance) and deployment-risk notes. |
+| `$ml-architecture-reader` | 9 | Part B (multimodal) — read ViT/CLIP/diffusion/VLM architectures. |
+| `$ml-graphical-model-reader` | 20 | Part C (RL) — hidden state, sequence, and world-model reasoning. |
+| `$ml-lookahead-bias-audit` · `$ml-walk-forward-backtest-review` · `$ml-factor-model-review` · `$ml-portfolio-risk-evaluation` | App. B (quant) | Part A finance — point-in-time correctness, honest backtests, factor stories, portfolio risk. |
+
+---
+
 # Part A — Domain-Specific Applied AI
 
 **Track:** Applied / Verticals · **Altitude:** Builder → Engineer · **Length:** 13 weeks (3 lecture hrs + 3 lab hrs/wk)

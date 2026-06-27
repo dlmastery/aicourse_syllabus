@@ -48,6 +48,21 @@ _One academic quarter-track · 3 lecture-hrs/week · **32 lectures** across **3 
 6. **Milestone 6 — Monitored Production, Final Report & Showcase**  ·  ▶ `GokuMohandas/Made-With-ML` · 🔧 `$production-evidence-packet`
 
 
+
+## How the book's skills are leveraged in this subject
+
+This subject is taught with the reusable **reader-skills** from *Harnessing LLM Skills to Master Machine Learning* (Appendix B) — each a small "machine for repeatable thinking" invoked as `$skill-name`. They are applied exactly where this subject needs them, alongside the program's own `$skills`. The book's learning loop — **concept → code → critique → reflection → rebuild** — and the **prompt → workflow → skill → harness** ladder structure every lecture's build and critique.
+
+| Book reader-skill | Book ch. | How it is leveraged in this subject |
+|---|---|---|
+| `$ml-risk-review` | 15 | Part A — the spine of the safety track: failure surfaces, who is harmed, residual-risk documentation. |
+| `$ml-evaluation-review` | 6 | Part B (RSI) — red-team→mitigation→eval and the *held-out, anti-gaming* evidence rule. |
+| `$ml-launch-readiness` | 14 | Part B & C — RSI safety gates / kill-switch and the capstone's monitored production deploy. |
+| `$ml-data-readiness` · `$ml-adaptation-decision` | 13, 10 | Part C (capstone) — data/RAG readiness and the prompt→RAG→fine-tune decision for the shipped system. |
+| `$ml-professional-growth` | 16 | Part C — turn the capstone into portfolio evidence of judgment; pick a specialization. |
+
+---
+
 # Part A — AI Safety, Alignment & Governance
 
 **Track:** Safety & Society · **Altitude:** Specialist · **Format:** seminar + live lab (3h seminar + 3h lab/wk) · **Length:** 13 weeks

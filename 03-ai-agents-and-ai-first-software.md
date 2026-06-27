@@ -37,6 +37,21 @@ _One academic quarter-track · 3 lecture-hrs/week · **24 lectures** across **2 
 12. **Week 12 — Capstone: Ship a Real Feature End-to-End with a Coding Agent**  ·  ▶ `krishnaik06/Deployment-flask` · 🔧 `$ai-delivery-evidence-packet`
 
 
+
+## How the book's skills are leveraged in this subject
+
+This subject is taught with the reusable **reader-skills** from *Harnessing LLM Skills to Master Machine Learning* (Appendix B) — each a small "machine for repeatable thinking" invoked as `$skill-name`. They are applied exactly where this subject needs them, alongside the program's own `$skills`. The book's learning loop — **concept → code → critique → reflection → rebuild** — and the **prompt → workflow → skill → harness** ladder structure every lecture's build and critique.
+
+| Book reader-skill | Book ch. | How it is leveraged in this subject |
+|---|---|---|
+| `$ml-problem-framer` | 3 | Both parts — frame the *decision* the agent supports and the prediction moment before building. |
+| `$ml-adaptation-decision` | 10 | Part A — when an agent/tool-loop is justified vs a simpler prompt or workflow. |
+| `$ml-evaluation-review` | 6 | Both parts — agent evaluation (tau-bench/pass^k, SWE-bench), what the headline number hides. |
+| `$ml-risk-review` | 15 | Part A security + Part B secure-vibe-coding: failure surfaces, prompt-injection, human-review effectiveness. |
+| `$ml-launch-readiness` | 14 | Both parts — agents/apps post-deployment: monitoring, rollback, human-in-the-loop gates. |
+
+---
+
 # Part A — AI Agent Engineering (MCP, A2A, Multi-Agent, AgentOps)
 
 **Track:** Engineering · **Altitude:** Engineer · **Length:** 12 weeks (3 lecture hrs + 4 lab hrs/wk)

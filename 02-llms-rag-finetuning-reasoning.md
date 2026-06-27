@@ -62,6 +62,23 @@ _One academic quarter-track · 3 lecture-hrs/week · **43 lectures** across **4 
 10. **Week 10 — Capstone: A Small Reasoning-RL Run That Provably Improves Math**  ·  ▶ `VizuaraAI/RL-in-Production-Bootcamp-Resources` · 🔧 `$reasoning-evidence-packet`
 
 
+
+## How the book's skills are leveraged in this subject
+
+This subject is taught with the reusable **reader-skills** from *Harnessing LLM Skills to Master Machine Learning* (Appendix B) — each a small "machine for repeatable thinking" invoked as `$skill-name`. They are applied exactly where this subject needs them, alongside the program's own `$skills`. The book's learning loop — **concept → code → critique → reflection → rebuild** — and the **prompt → workflow → skill → harness** ladder structure every lecture's build and critique.
+
+| Book reader-skill | Book ch. | How it is leveraged in this subject |
+|---|---|---|
+| `$ml-adaptation-decision` | 10 | Part C — choose prompt vs RAG vs PEFT vs full fine-tune with an explicit weighted scorecard. |
+| `$ml-retrieval-evaluation` | 11 | Part B (RAG) — define relevance, score retrieval, classify failure as representation/indexing/ranking. |
+| `$ml-evaluation-review` | 6 | All parts — benchmarking & eval lectures (what the metric hides, threshold/calibration, slices). |
+| `$ml-training-diagnostics` | 7 | Part A — pretraining/post-training runs (loss/throughput, instability, RL reward curves). |
+| `$ml-architecture-reader` | 9 | Part A — architecture & scaling-law lectures. |
+| `$ml-data-readiness` | 13 | Part A — data-curation lectures (filtering, dedup, decontamination, train-serve parity). |
+| `$ml-math-translator` | 2 | Part C & D — the RLHF/DPO/GRPO and test-time-compute math. |
+
+---
+
 # Part A — Large Language Models: Pretraining → Post-Training
 
 **Track:** Core · **Altitude:** Builder→Engineer · **Length:** 13 weeks (3 lecture hrs + 5 lab hrs/wk)

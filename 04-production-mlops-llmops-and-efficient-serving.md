@@ -37,6 +37,21 @@ _One academic quarter-track · 3 lecture-hrs/week · **24 lectures** across **2 
 12. **Week 12 — Capstone: FP16 → Quantized, Served, Benchmarked Endpoint**  ·  ▶ `VizuaraAI/infertutor-arena-capstone` · 🔧 `$efficiency-report`
 
 
+
+## How the book's skills are leveraged in this subject
+
+This subject is taught with the reusable **reader-skills** from *Harnessing LLM Skills to Master Machine Learning* (Appendix B) — each a small "machine for repeatable thinking" invoked as `$skill-name`. They are applied exactly where this subject needs them, alongside the program's own `$skills`. The book's learning loop — **concept → code → critique → reflection → rebuild** — and the **prompt → workflow → skill → harness** ladder structure every lecture's build and critique.
+
+| Book reader-skill | Book ch. | How it is leveraged in this subject |
+|---|---|---|
+| `$ml-data-readiness` | 13 | Part A — data pipelines, versioning, feature stores, train-serve mismatch audits. |
+| `$ml-launch-readiness` | 14 | Part A — the core skill: deployment gates, monitoring, drift, rollback, shadow/canary. |
+| `$ml-evaluation-review` | 6 | Part A — eval-gated CI/CD; promote only on a defensible offline+online story. |
+| `$ml-risk-review` | 15 | Part A — production risk surfaces, human-in-the-loop, AgentOps guardrails. |
+| `$ml-training-diagnostics` | 7 | Part B — efficiency/serving diagnostics (latency/throughput/cost, KV-cache, quantization). |
+
+---
+
 # Part A — Full-Stack AI: MLOps, LLMOps & AgentOps to Production
 
 **Track:** Production Engineering · **Altitude:** Engineer · **Length:** 12 weeks (3 lecture hrs + 4 lab hrs/wk; two-semester feel)
