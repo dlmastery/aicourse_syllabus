@@ -54,12 +54,6 @@ Per-week lab weights (the 55%): W1 5 · W2 5 · W3 6 · W4 7 · W5 6 · W6 8 · 
 
 ## Week 1 — Why Retrieval at All: Embeddings, Semantic Search & a Naive RAG Baseline
 
-### State of the Art (June 2026)
-- Embedding frontier: Voyage `voyage-3-large`, Cohere `embed-v4`, OpenAI `text-embedding-3-large`, open `BGE-M3` / `nomic-embed` — choose by retrieval eval, not leaderboard rank.
-- 1M-context models (Claude Opus 4.8, GPT-5.5, Gemini 3.1 Pro) make "just stuff everything" tempting, but cost, latency, and lost-in-the-middle keep retrieval essential.
-- Consensus is **retrieve-then-read**: long context reshapes RAG but doesn't kill it — RAG still owns freshness, citations, and cost control.
-- The durable 2026 lesson is unchanged: instrument the retrieval-miss vs generation-miss split on a frozen baseline *before* adding any machinery.
-
 **Altitude:** Builder · **Format:** 3h lecture + 4h lab
 **Anchor case:** ingest 200 AcmeCorp wiki pages, answer 20 hand-written questions with a "stuff-the-top-3-chunks" pipeline, and measure how often it's right.
 
@@ -159,13 +153,15 @@ def retrieve(question: str, k: int = 3) -> list[str]:
 
 ---
 
-## Week 2 — Chunking & Document Processing: The Unsexy Half of Retrieval Quality
-
 ### State of the Art (June 2026)
-- **Visual/layout-aware retrieval (ColPali / ColQwen3)** lets you retrieve PDFs and tables without brittle OCR — a major 2026 shift in document processing.
-- Parsing stack: `unstructured`, LlamaParse, `docling` for tables/figures; structure-aware and parent/child chunking are now the default over fixed-size.
-- 1M-context models tolerate larger chunks, but precision still rewards semantic / proposition-level splitting measured on your eval.
-- Agentic chunking (an LLM picks boundaries) is emerging but only cost-justified when it beats a recursive baseline on the frozen set.
+- Embedding frontier: Voyage `voyage-3-large`, Cohere `embed-v4`, OpenAI `text-embedding-3-large`, open `BGE-M3` / `nomic-embed` — choose by retrieval eval, not leaderboard rank.
+- 1M-context models (Claude Opus 4.8, GPT-5.5, Gemini 3.1 Pro) make "just stuff everything" tempting, but cost, latency, and lost-in-the-middle keep retrieval essential.
+- Consensus is **retrieve-then-read**: long context reshapes RAG but doesn't kill it — RAG still owns freshness, citations, and cost control.
+- The durable 2026 lesson is unchanged: instrument the retrieval-miss vs generation-miss split on a frozen baseline *before* adding any machinery.
+
+<!-- sota:04L01 -->
+
+## Week 2 — Chunking & Document Processing: The Unsexy Half of Retrieval Quality
 
 **Altitude:** Builder · **Anchor case:** the AcmeCorp PDFs (policy docs with tables, headers, multi-column layout) that Week 1's naive splitter mangled.
 
@@ -260,13 +256,15 @@ def semantic_chunks(sentences: list[str], emb, tau: float = 0.55) -> list[str]:
 
 ---
 
-## Week 3 — Vector Databases: Indexes, ANN, and Choosing Your Store
-
 ### State of the Art (June 2026)
-- Production stores: Qdrant, Weaviate, Pinecone (serverless), pgvector — HNSW the default index; native pre-filtering and hybrid search are now table stakes.
-- Vector quantization (binary / scalar / PQ, int8/FP8) cuts memory 4–32× at a controlled recall cost — measure recall@k vs exact, not just QPS.
-- Real selection criteria are metadata pre-filtering, multi-tenancy (namespaces/collections), and ops model — not raw benchmark throughput.
-- MoE + 1M-context models push the bottleneck back onto retrieval quality, so honest recall measurement matters more, not less.
+- **Visual/layout-aware retrieval (ColPali / ColQwen3)** lets you retrieve PDFs and tables without brittle OCR — a major 2026 shift in document processing.
+- Parsing stack: `unstructured`, LlamaParse, `docling` for tables/figures; structure-aware and parent/child chunking are now the default over fixed-size.
+- 1M-context models tolerate larger chunks, but precision still rewards semantic / proposition-level splitting measured on your eval.
+- Agentic chunking (an LLM picks boundaries) is emerging but only cost-justified when it beats a recursive baseline on the frozen set.
+
+<!-- sota:04L02 -->
+
+## Week 3 — Vector Databases: Indexes, ANN, and Choosing Your Store
 
 **Altitude:** Builder → Engineer · **Anchor case:** AcmeCorp grows to 1M chunks; brute-force cosine is too slow — you need a real index with metadata filters.
 
@@ -363,13 +361,15 @@ def recall_at_k(qc, E, queries, gt, k=10, ef=64):
 
 ---
 
-## Week 4 — Hybrid Search & Rerankers: BM25 + Dense, Then Cohere/BGE on Top
-
 ### State of the Art (June 2026)
-- Reranker frontier: **Cohere Rerank 3.5, Voyage `rerank-2.5`, `BGE-reranker-v2`** — cross-encoder rescoring of top-50 → top-5 is the standard precision upgrade.
-- BM25 + dense + **RRF** remains the robust default; exact-code/SKU queries keep lexical signal indispensable.
-- HyDE bridges query/doc vocabulary mismatch; reranking is still the highest-ROI single upgrade after a baseline.
-- Reranker latency/cost is now budgeted explicitly (cache + batch) rather than treated as free.
+- Production stores: Qdrant, Weaviate, Pinecone (serverless), pgvector — HNSW the default index; native pre-filtering and hybrid search are now table stakes.
+- Vector quantization (binary / scalar / PQ, int8/FP8) cuts memory 4–32× at a controlled recall cost — measure recall@k vs exact, not just QPS.
+- Real selection criteria are metadata pre-filtering, multi-tenancy (namespaces/collections), and ops model — not raw benchmark throughput.
+- MoE + 1M-context models push the bottleneck back onto retrieval quality, so honest recall measurement matters more, not less.
+
+<!-- sota:04L03 -->
+
+## Week 4 — Hybrid Search & Rerankers: BM25 + Dense, Then Cohere/BGE on Top
 
 **Altitude:** Engineer · **Anchor case:** AcmeCorp queries with exact codes/SKUs ("error E-4021") where pure dense retrieval whiffs but keyword match nails it.
 
@@ -464,13 +464,15 @@ def rerank(query, docs, cohere_client, top=5):
 
 ---
 
-## Week 5 — Late Interaction & ColBERT: Token-Level Retrieval
-
 ### State of the Art (June 2026)
-- Late-interaction lineage: ColBERTv2 → PLAID → **ColPali / ColQwen3** for visual/PDF retrieval without OCR — the 2026 headline shift.
-- Multimodal embeddings (`voyage-multimodal-3`, Qwen3-VL-Embedding) make screenshot/figure/table retrieval first-class.
-- Per-token indexes are still 10–100× larger; PLAID compression and on-disk indexes make them servable at scale.
-- The choice is empirical: a strong cross-encoder reranker often matches late interaction more cheaply — weigh index-size against measured lift.
+- Reranker frontier: **Cohere Rerank 3.5, Voyage `rerank-2.5`, `BGE-reranker-v2`** — cross-encoder rescoring of top-50 → top-5 is the standard precision upgrade.
+- BM25 + dense + **RRF** remains the robust default; exact-code/SKU queries keep lexical signal indispensable.
+- HyDE bridges query/doc vocabulary mismatch; reranking is still the highest-ROI single upgrade after a baseline.
+- Reranker latency/cost is now budgeted explicitly (cache + batch) rather than treated as free.
+
+<!-- sota:04L04 -->
+
+## Week 5 — Late Interaction & ColBERT: Token-Level Retrieval
 
 **Altitude:** Engineer · **Anchor case:** AcmeCorp queries where the answer hinges on one phrase buried in a long chunk that single-vector retrieval averages away.
 
@@ -562,13 +564,15 @@ def maxsim(Eq, Ed):                       # Eq:(Tq,D)  Ed:(Td,D), normalized
 
 ---
 
-## Week 6 — RAG Evaluation: Ragas, MAP/nDCG, and Faithfulness
-
 ### State of the Art (June 2026)
-- Eval/observability stack: **RAGAS, Arize Phoenix, LangSmith, Braintrust, DeepEval, UK AISI Inspect AI** — trajectory-level traces now standard.
-- **LLM-as-judge** is the default but bias-audited (position/verbosity); validate judge–human agreement (κ) — TrustJudge-style scrutiny.
-- Separate retrieval (nDCG/MAP/recall, context precision/recall) from generation (faithfulness/groundedness); faithfulness gating catches confident fabrication.
-- Frozen, versioned gold sets plus contamination checks are baseline hygiene, not extras.
+- Late-interaction lineage: ColBERTv2 → PLAID → **ColPali / ColQwen3** for visual/PDF retrieval without OCR — the 2026 headline shift.
+- Multimodal embeddings (`voyage-multimodal-3`, Qwen3-VL-Embedding) make screenshot/figure/table retrieval first-class.
+- Per-token indexes are still 10–100× larger; PLAID compression and on-disk indexes make them servable at scale.
+- The choice is empirical: a strong cross-encoder reranker often matches late interaction more cheaply — weigh index-size against measured lift.
+
+<!-- sota:04L05 -->
+
+## Week 6 — RAG Evaluation: Ragas, MAP/nDCG, and Faithfulness
 
 **Altitude:** Engineer · **Anchor case:** two AcmeCorp retriever stacks look equally good in demos — prove which one is actually better, and catch the one that hallucinates confidently.
 
@@ -664,13 +668,15 @@ print(report)                            # per-metric means
 
 ---
 
-## Week 7 — Advanced RAG I: HyDE, CRAG & Self-RAG
-
 ### State of the Art (June 2026)
-- **Agentic RAG** (iterative query rewriting + retrieval agents + LLM-judge loops) is the 2026 framing — RAG as a control loop, not a fixed pipeline.
-- CRAG / Self-RAG-style self-correction is now wired with **LangGraph durable checkpointing** + retrieval-grading nodes.
-- Adaptive retrieval (retrieve only when needed) cuts noise on easy queries — measured, not assumed.
-- Discipline holds: keep each technique only if it beats the frozen eval; ablate rather than stack on blog hype.
+- Eval/observability stack: **RAGAS, Arize Phoenix, LangSmith, Braintrust, DeepEval, UK AISI Inspect AI** — trajectory-level traces now standard.
+- **LLM-as-judge** is the default but bias-audited (position/verbosity); validate judge–human agreement (κ) — TrustJudge-style scrutiny.
+- Separate retrieval (nDCG/MAP/recall, context precision/recall) from generation (faithfulness/groundedness); faithfulness gating catches confident fabrication.
+- Frozen, versioned gold sets plus contamination checks are baseline hygiene, not extras.
+
+<!-- sota:04L06 -->
+
+## Week 7 — Advanced RAG I: HyDE, CRAG & Self-RAG
 
 **Altitude:** Engineer · **Anchor case:** AcmeCorp queries where the user's phrasing doesn't match the docs (HyDE), and where retrieval sometimes returns garbage that the model should *reject* (CRAG/Self-RAG).
 
@@ -763,13 +769,15 @@ def crag_grade(q: str, docs: list[str], grader_llm) -> str:
 
 ---
 
-## Week 8 — Advanced RAG II: Agentic RAG, GraphRAG & Text2SQL
-
 ### State of the Art (June 2026)
-- **GraphRAG** (Microsoft GraphRAG, `neo4j-graphrag`) handles multi-hop and global-summary queries a flat vector store can't.
-- Agentic loops via **LangGraph / OpenAI Agents SDK / Claude Agent SDK**; **MCP** (Linux Foundation Agentic AI Foundation) standardizes tool/data access across backends.
-- Text2SQL is hardened with schema-grounding + read-only sandboxes; query routing (vector / graph / SQL) is the orchestration layer.
-- Reliability thinking from **τ²-bench (pass^k)** is migrating into agentic-RAG evaluation.
+- **Agentic RAG** (iterative query rewriting + retrieval agents + LLM-judge loops) is the 2026 framing — RAG as a control loop, not a fixed pipeline.
+- CRAG / Self-RAG-style self-correction is now wired with **LangGraph durable checkpointing** + retrieval-grading nodes.
+- Adaptive retrieval (retrieve only when needed) cuts noise on easy queries — measured, not assumed.
+- Discipline holds: keep each technique only if it beats the frozen eval; ablate rather than stack on blog hype.
+
+<!-- sota:04L07 -->
+
+## Week 8 — Advanced RAG II: Agentic RAG, GraphRAG & Text2SQL
 
 **Altitude:** Engineer → Specialist · **Anchor case:** AcmeCorp questions that single-shot retrieval can't answer: multi-hop ("which products owned by the team that shipped X are affected by policy Y?"), global summary ("what are the themes across all incident reports?"), and structured ("how many P1 tickets last quarter?").
 
@@ -867,14 +875,15 @@ def route(q: str, clf_llm) -> str:
 
 ---
 
-## Week 9 — Long-Context vs RAG, Production Serving, Caching & Guardrails
-
 ### State of the Art (June 2026)
-- Cost core: **prompt caching** (up to ~90% off static prefixes) + semantic caching + model routing + batching.
-- Serving: **vLLM** with **FP8 KV-cache** and **FlashAttention-4** (Blackwell); serverless GPU (Modal/Baseten) pay-per-second.
-- Guardrails: prompt-injection defense on retrieved content (**OWASP LLM Top-10**), Llama-Guard-class validators, citation enforcement.
-- Long-context (1M) reshapes but doesn't replace RAG — measure the corpus-size crossover; retrieve-then-read wins in production.
-- **EU AI Act:** most GPAI rules apply **Aug 2, 2026** (Digital Omnibus defers Annex-III high-risk to **Dec 2, 2027**) — citations and audit trails matter.
+- **GraphRAG** (Microsoft GraphRAG, `neo4j-graphrag`) handles multi-hop and global-summary queries a flat vector store can't.
+- Agentic loops via **LangGraph / OpenAI Agents SDK / Claude Agent SDK**; **MCP** (Linux Foundation Agentic AI Foundation) standardizes tool/data access across backends.
+- Text2SQL is hardened with schema-grounding + read-only sandboxes; query routing (vector / graph / SQL) is the orchestration layer.
+- Reliability thinking from **τ²-bench (pass^k)** is migrating into agentic-RAG evaluation.
+
+<!-- sota:04L08 -->
+
+## Week 9 — Long-Context vs RAG, Production Serving, Caching & Guardrails
 
 **Altitude:** Engineer · **Anchor case:** AcmeCorp leadership asks "models have 1M-token context now — do we even need RAG?" and the portal must serve real traffic within a latency/cost SLA without leaking or hallucinating.
 
@@ -976,13 +985,16 @@ def injection_guard(chunk: str, guard_llm) -> bool:
 
 ---
 
-## Week 10 — Capstone: A Production Document-QA / Knowledge Portal
-
 ### State of the Art (June 2026)
-- Reference architecture: **agentic + hybrid + rerank + (graph/SQL where measured) + guarded generation + traced serving**.
-- Eval-gated shipping with RAGAS / Inspect AI + a frozen gold set + faithfulness gate + prompt-injection regression.
-- **MCP**-exposed tools and agent memory are increasingly part of "production RAG," not just a chatbot wrapper.
-- Governance: EU AI Act Aug-2026 transparency/audit expectations are baked into the evidence packet.
+- Cost core: **prompt caching** (up to ~90% off static prefixes) + semantic caching + model routing + batching.
+- Serving: **vLLM** with **FP8 KV-cache** and **FlashAttention-4** (Blackwell); serverless GPU (Modal/Baseten) pay-per-second.
+- Guardrails: prompt-injection defense on retrieved content (**OWASP LLM Top-10**), Llama-Guard-class validators, citation enforcement.
+- Long-context (1M) reshapes but doesn't replace RAG — measure the corpus-size crossover; retrieve-then-read wins in production.
+- **EU AI Act:** most GPAI rules apply **Aug 2, 2026** (Digital Omnibus defers Annex-III high-risk to **Dec 2, 2027**) — citations and audit trails matter.
+
+<!-- sota:04L09 -->
+
+## Week 10 — Capstone: A Production Document-QA / Knowledge Portal
 
 **Altitude:** Engineer (graduating toward Subject 05) · **Anchor case:** ship the full AcmeCorp Knowledge Portal as a defensible system with an evidence packet.
 
@@ -1072,6 +1084,14 @@ def gate(config) -> bool:
 - Source book Ch. 16 (turning a project into an evidence packet) + Appendix A (capstone blueprints).
 
 ---
+
+### State of the Art (June 2026)
+- Reference architecture: **agentic + hybrid + rerank + (graph/SQL where measured) + guarded generation + traced serving**.
+- Eval-gated shipping with RAGAS / Inspect AI + a frozen gold set + faithfulness gate + prompt-injection regression.
+- **MCP**-exposed tools and agent memory are increasingly part of "production RAG," not just a chatbot wrapper.
+- Governance: EU AI Act Aug-2026 transparency/audit expectations are baked into the evidence packet.
+
+<!-- sota:04L10 -->
 
 ## Course-level outcomes
 

@@ -66,11 +66,6 @@ Ship **two coupled artifacts**:
 
 ## Week 1 — Vision Transformers From Scratch: Images as Sequences of Patches
 
-### State of the Art (June 2026)
-- ViTs remain the multimodal backbone; **DINOv2 / DINOv3** self-supervised features and **SigLIP 2** encoders are the 2026 pretrained defaults feeding VLMs.
-- **Register tokens** and the **FlashAttention-3/4 SDPA backend** are standard ViT training practice; patchification is still a `Conv2d`.
-- Data-efficiency tricks (DeiT distillation, strong augmentation) still decide small-data ViT training.
-
 **Altitude:** Builder · **Format:** 3h lecture + 3h lab
 **Anchor case:** classify CIFAR-10 with a ViT you write yourself — patchify, embed, attend, pool, predict.
 
@@ -153,12 +148,14 @@ class PatchEmbed(nn.Module):
 
 ---
 
-## Week 2 — Contrastive Learning & CLIP: Aligning Images and Text
-
 ### State of the Art (June 2026)
-- **SigLIP 2** (sigmoid loss) is the 2026 contrastive default; **ColPali / ColQwen3** extend late-interaction contrastive retrieval to document images.
-- Multimodal embeddings (**voyage-multimodal-3, Qwen3-VL-Embedding, Cohere embed-v4**) productionize CLIP-style retrieval.
-- The modality-gap and batch-size-as-negatives lessons still hold; large-batch / sigmoid loss mitigate them.
+- ViTs remain the multimodal backbone; **DINOv2 / DINOv3** self-supervised features and **SigLIP 2** encoders are the 2026 pretrained defaults feeding VLMs.
+- **Register tokens** and the **FlashAttention-3/4 SDPA backend** are standard ViT training practice; patchification is still a `Conv2d`.
+- Data-efficiency tricks (DeiT distillation, strong augmentation) still decide small-data ViT training.
+
+<!-- sota:12L01 -->
+
+## Week 2 — Contrastive Learning & CLIP: Aligning Images and Text
 
 **Altitude:** Builder · **Anchor case:** train a small CLIP on a image–caption subset so "a photo of a dog" retrieves dog images.
 
@@ -236,12 +233,14 @@ def clip_loss(img_emb, txt_emb, logit_scale):
 
 ---
 
-## Week 3 — Vision-Language Models: LLaVA, Qwen-VL, Llama-Vision & Fine-Tuning
-
 ### State of the Art (June 2026)
-- 2026 open VLM leaders: **Qwen3-VL, Llama 4 (native-multimodal), InternVL 3, Molmo, Gemma 3 vision**; closed frontier: **Gemini 3.1 Pro, GPT-5.5, Claude Opus 4.8**.
-- **AnyRes / high-res tiling** for documents; **LoRA/QLoRA + trl** fine-tuning; **object-hallucination evals (POPE / HALault)** are mandatory.
-- Connector design (MLP vs resampler) plus the visual-token budget remain the core trade-offs.
+- **SigLIP 2** (sigmoid loss) is the 2026 contrastive default; **ColPali / ColQwen3** extend late-interaction contrastive retrieval to document images.
+- Multimodal embeddings (**voyage-multimodal-3, Qwen3-VL-Embedding, Cohere embed-v4**) productionize CLIP-style retrieval.
+- The modality-gap and batch-size-as-negatives lessons still hold; large-batch / sigmoid loss mitigate them.
+
+<!-- sota:12L02 -->
+
+## Week 3 — Vision-Language Models: LLaVA, Qwen-VL, Llama-Vision & Fine-Tuning
 
 **Altitude:** Builder → Engineer · **Anchor case:** stand up a VLM that answers questions about an image, then LoRA-fine-tune it on a target task.
 
@@ -324,12 +323,14 @@ def vqa(image, question):
 
 ---
 
-## Week 4 — Diffusion From Scratch I: DDPM (the Forward & Reverse Process)
-
 ### State of the Art (June 2026)
-- **DiT (Diffusion Transformer)** has displaced the U-Net as the scalable backbone; **ε/v-prediction + cosine/EDM schedules** are standard.
-- **FID + a memorization / nearest-neighbor check** is the honest eval; **EDM2** training recipes are the reference.
-- Foundations are still taught on CIFAR/CelebA at 32–64px on one GPU.
+- 2026 open VLM leaders: **Qwen3-VL, Llama 4 (native-multimodal), InternVL 3, Molmo, Gemma 3 vision**; closed frontier: **Gemini 3.1 Pro, GPT-5.5, Claude Opus 4.8**.
+- **AnyRes / high-res tiling** for documents; **LoRA/QLoRA + trl** fine-tuning; **object-hallucination evals (POPE / HALault)** are mandatory.
+- Connector design (MLP vs resampler) plus the visual-token budget remain the core trade-offs.
+
+<!-- sota:12L03 -->
+
+## Week 4 — Diffusion From Scratch I: DDPM (the Forward & Reverse Process)
 
 **Altitude:** Builder · **Anchor case:** train a denoising diffusion model on CIFAR-10/CelebA and sample images you generated yourself.
 
@@ -412,12 +413,14 @@ def loss_fn(model, x0):
 
 ---
 
-## Week 5 — Diffusion II: Latent Diffusion, Conditioning & Text-to-Image
-
 ### State of the Art (June 2026)
-- **Rectified-flow latent transformers** (SD3.5, **FLUX.1** — the open-weights leader) replaced classic LDM; closed leaders: **Nano Banana Pro, GPT Image, Midjourney v7**.
-- **LoRA / DreamBooth** is still the fine-tune path; eval = **CLIPScore (alignment) + FID/realism** with a CFG sweep.
-- Text rendering and instruction-following are the 2026 quality frontier.
+- **DiT (Diffusion Transformer)** has displaced the U-Net as the scalable backbone; **ε/v-prediction + cosine/EDM schedules** are standard.
+- **FID + a memorization / nearest-neighbor check** is the honest eval; **EDM2** training recipes are the reference.
+- Foundations are still taught on CIFAR/CelebA at 32–64px on one GPU.
+
+<!-- sota:12L04 -->
+
+## Week 5 — Diffusion II: Latent Diffusion, Conditioning & Text-to-Image
 
 **Altitude:** Builder → Engineer · **Anchor case:** fine-tune Stable-Diffusion-style latent diffusion to generate from text prompts. **(Midterm DDPM report due.)**
 
@@ -500,12 +503,14 @@ clip = CLIPScore(model_name_or_path="openai/clip-vit-base-patch16")
 
 ---
 
-## Week 6 — Flow Matching & Rectified Flow: The Modern Generative Backbone
-
 ### State of the Art (June 2026)
-- **Flow matching / rectified flow is the modern backbone** (SD3, FLUX, and most video models); **reflow + few-step distillation** give 1–4 step sampling.
-- **Consistency models / distilled samplers** (LCM, consistency-FM) push toward real-time generation.
-- The ODE-velocity-regression view (vs the diffusion SDE) is now the standard pedagogy.
+- **Rectified-flow latent transformers** (SD3.5, **FLUX.1** — the open-weights leader) replaced classic LDM; closed leaders: **Nano Banana Pro, GPT Image, Midjourney v7**.
+- **LoRA / DreamBooth** is still the fine-tune path; eval = **CLIPScore (alignment) + FID/realism** with a CFG sweep.
+- Text rendering and instruction-following are the 2026 quality frontier.
+
+<!-- sota:12L05 -->
+
+## Week 6 — Flow Matching & Rectified Flow: The Modern Generative Backbone
 
 **Altitude:** Engineer · **Anchor case:** retrain your small generator with a flow-matching objective and compare sample quality and steps against DDPM.
 
@@ -590,12 +595,14 @@ def sample(model, shape, steps=8):                 # Euler ODE integration noise
 
 ---
 
-## Week 7 — Video Generation: Spatiotemporal Diffusion & World Consistency
-
 ### State of the Art (June 2026)
-- 2026 video models: **Sora 2, Veo 3.1, Kling 3.0, Seedance 2.0, Runway Gen-4.5, Wan 2.6** — native 4K, synchronized audio, multi-shot.
-- The architecture to teach: **DiT over spatiotemporal latent patches**; eval = **VBench dimensions + FVD + temporal consistency**.
-- Controllability (camera/motion, image-to-video) and physical consistency are the open problems.
+- **Flow matching / rectified flow is the modern backbone** (SD3, FLUX, and most video models); **reflow + few-step distillation** give 1–4 step sampling.
+- **Consistency models / distilled samplers** (LCM, consistency-FM) push toward real-time generation.
+- The ODE-velocity-regression view (vs the diffusion SDE) is now the standard pedagogy.
+
+<!-- sota:12L06 -->
+
+## Week 7 — Video Generation: Spatiotemporal Diffusion & World Consistency
 
 **Altitude:** Engineer · **Anchor case:** generate short clips and reason about temporal consistency — why video is not "many independent images."
 
@@ -671,12 +678,14 @@ def temporal_consistency(frame_feats):             # frame_feats: (T, D) e.g. CL
 
 ---
 
-## Week 8 — Audio & Speech: ASR (Whisper), TTS & Audio Representations
-
 ### State of the Art (June 2026)
-- **Whisper-v3 / large** remain WER baselines; **neural codecs (EnCodec, DAC, Mimi/Moshi)** tokenize audio for audio-LLMs.
-- 2026 TTS/voice: **ElevenLabs Eleven v3, XTTS-v2, Parler, Kokoro**; full-duplex speech models (Moshi-style) are the frontier.
-- Robustness slices (accent/noise/code-switch) + identical text normalization on both sides are the eval discipline.
+- 2026 video models: **Sora 2, Veo 3.1, Kling 3.0, Seedance 2.0, Runway Gen-4.5, Wan 2.6** — native 4K, synchronized audio, multi-shot.
+- The architecture to teach: **DiT over spatiotemporal latent patches**; eval = **VBench dimensions + FVD + temporal consistency**.
+- Controllability (camera/motion, image-to-video) and physical consistency are the open problems.
+
+<!-- sota:12L07 -->
+
+## Week 8 — Audio & Speech: ASR (Whisper), TTS & Audio Representations
 
 **Altitude:** Builder → Engineer · **Anchor case:** a speech pipeline that transcribes audio (Whisper) and speaks responses (TTS) — the voice layer of a multimodal assistant.
 
@@ -755,12 +764,14 @@ def transcribe_wer(audio_path, reference):
 
 ---
 
-## Week 9 — Any-to-Any & Unified Multimodal Models
-
 ### State of the Art (June 2026)
-- **Natively-multimodal frontier models** (Gemini 3.1 Pro, GPT-5.5, Qwen3-Omni) do any-to-any in one model; **early-fusion (Chameleon-style)** is the architecture lens.
-- The 2026 question is **native generalist vs specialist pipeline** orchestrated by an agent SDK / **MCP** tools.
-- Interleaved text+image generation and unified token spaces are the standard framing.
+- **Whisper-v3 / large** remain WER baselines; **neural codecs (EnCodec, DAC, Mimi/Moshi)** tokenize audio for audio-LLMs.
+- 2026 TTS/voice: **ElevenLabs Eleven v3, XTTS-v2, Parler, Kokoro**; full-duplex speech models (Moshi-style) are the frontier.
+- Robustness slices (accent/noise/code-switch) + identical text normalization on both sides are the eval discipline.
+
+<!-- sota:12L08 -->
+
+## Week 9 — Any-to-Any & Unified Multimodal Models
 
 **Altitude:** Engineer · **Anchor case:** assemble (and probe) a model/system that takes mixed image+text+audio in and produces mixed outputs — the architecture behind native multimodal frontier models.
 
@@ -839,12 +850,14 @@ def multimodal_turn(audio_path, image):
 
 ---
 
-## Week 10 — World Models: Learning Simulators (IRIS, Genie-style)
-
 ### State of the Art (June 2026)
-- 2026 world models: **Genie 3** (real-time playable interactive worlds), **DreamerV3**, **IRIS/tokenized**, and **video-diffusion-as-world-model** (the dominant framing).
-- Action-conditioned generation + **compounding-error / rollout-horizon** evaluation is the core discipline; ties to robotics/VLA (S13).
-- "Neural game engines" and model-based RL inside learned simulators are the frontier.
+- **Natively-multimodal frontier models** (Gemini 3.1 Pro, GPT-5.5, Qwen3-Omni) do any-to-any in one model; **early-fusion (Chameleon-style)** is the architecture lens.
+- The 2026 question is **native generalist vs specialist pipeline** orchestrated by an agent SDK / **MCP** tools.
+- Interleaved text+image generation and unified token spaces are the standard framing.
+
+<!-- sota:12L09 -->
+
+## Week 10 — World Models: Learning Simulators (IRIS, Genie-style)
 
 **Altitude:** Engineer → Specialist · **Anchor case:** train/run a world model that predicts future frames/observations given actions — a learned simulator an agent can plan or train inside.
 
@@ -929,12 +942,14 @@ def horizon_error(world, traj):                    # compounding error vs ground
 
 ---
 
-## Week 11 — Multimodal RAG & Agents: Grounded, Tool-Using Multimodal Systems
-
 ### State of the Art (June 2026)
-- **ColPali / ColQwen3 page-image retrieval** (no OCR) + **agentic RAG** (zoom/OCR/search tools via the Claude Agent SDK / MCP) is the 2026 stack.
-- Rerankers (**Cohere Rerank 3.5, voyage-multimodal-3**) + grounded answering with **region/page citations**; abstention ("can't see it") is required.
-- Multimodal hallucination evals (POPE-style / LLM-judge) gate deployment.
+- 2026 world models: **Genie 3** (real-time playable interactive worlds), **DreamerV3**, **IRIS/tokenized**, and **video-diffusion-as-world-model** (the dominant framing).
+- Action-conditioned generation + **compounding-error / rollout-horizon** evaluation is the core discipline; ties to robotics/VLA (S13).
+- "Neural game engines" and model-based RL inside learned simulators are the frontier.
+
+<!-- sota:12L10 -->
+
+## Week 11 — Multimodal RAG & Agents: Grounded, Tool-Using Multimodal Systems
 
 **Altitude:** Engineer · **Anchor case:** a visual document assistant that retrieves over images+text and answers with grounded, hallucination-checked responses — and can call tools (OCR, zoom, search).
 
@@ -1014,12 +1029,14 @@ def mm_rag_answer(query, page_images, retriever, vlm, threshold=0.25):
 
 ---
 
-## Week 12 — Capstone: A Multimodal App + a Small Diffusion Model
-
 ### State of the Art (June 2026)
-- A coupled deliverable: a **from-scratch DiT / flow-matching generator (FID + memorization check)** + a **VLM assistant with grounding/hallucination eval and abstention**.
-- Frontier reference points: **FLUX.1** (open image), **Qwen3-VL** (open VLM), **Gemini 3.1 Pro** (multimodal frontier).
-- Every metric is reported against a baseline; an honest failure-mode catalog is the bar.
+- **ColPali / ColQwen3 page-image retrieval** (no OCR) + **agentic RAG** (zoom/OCR/search tools via the Claude Agent SDK / MCP) is the 2026 stack.
+- Rerankers (**Cohere Rerank 3.5, voyage-multimodal-3**) + grounded answering with **region/page citations**; abstention ("can't see it") is required.
+- Multimodal hallucination evals (POPE-style / LLM-judge) gate deployment.
+
+<!-- sota:12L11 -->
+
+## Week 12 — Capstone: A Multimodal App + a Small Diffusion Model
 
 **Altitude:** Engineer · **Anchor case:** your two coupled artifacts, shipped and honestly evaluated.
 
@@ -1093,6 +1110,13 @@ def capstone_gate(report): return {k: f(report) for k, f in ACCEPT.items()}
   - Chip Huyen, "AI Engineering," 2025 (evaluation & deployment chapters).
 
 ---
+
+### State of the Art (June 2026)
+- A coupled deliverable: a **from-scratch DiT / flow-matching generator (FID + memorization check)** + a **VLM assistant with grounding/hallucination eval and abstention**.
+- Frontier reference points: **FLUX.1** (open image), **Qwen3-VL** (open VLM), **Gemini 3.1 Pro** (multimodal frontier).
+- Every metric is reported against a baseline; an honest failure-mode catalog is the bar.
+
+<!-- sota:12L12 -->
 
 ## Course-level outcomes
 

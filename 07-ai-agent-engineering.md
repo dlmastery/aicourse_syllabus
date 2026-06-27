@@ -89,12 +89,6 @@ gate is green on a held-out task split, every agent action is traced, and a docu
 
 ## Week 1 — Agent Anatomy and the Agent Loop
 
-### State of the Art (June 2026)
-- Orchestrator-led agents are replacing monolithic loops; **agent memory** is now the production differentiator.
-- Agent SDKs ship the loop as a runtime: **Claude Agent SDK** (`query()`, subagents, hooks), **OpenAI Agents SDK** (Swarm successor), **Google ADK**, **Microsoft Agent Framework 1.0** (GA Apr 2026).
-- Tunable **"thinking effort"** (Claude Opus 4.8 effort controls, Gemini 3.1 Pro Low/Med/High) turns the planner/controller split into a dial.
-- **1M-context, sparse-MoE** models (Opus 4.8, GPT-5.5, Gemini 3.1, DeepSeek V4) are table stakes — state can hold whole transcripts.
-
 **Altitude:** Engineer · **Format:** 3h lecture + 4h lab
 **Anchor case:** stand up "Atlas v0" — a single agent that answers one T&E question by calling one fake tool in a loop.
 
@@ -212,13 +206,15 @@ def run(question: str) -> str:
 
 ---
 
-## Week 2 — Function Calling, Tool Schemas, and Structured Outputs
-
 ### State of the Art (June 2026)
-- Function calling + **constrained/structured decoding** (JSON-schema / Pydantic) is reliable across Opus 4.8, GPT-5.5, and Gemini 3.1.
-- **BFCL v4** is the live function-calling leaderboard; "irrelevance / when-not-to-call" detection is a scored axis.
-- **MCP** (Linux Foundation, 10k+ servers) shifts tools from per-app glue to a shared protocol — Week 3.
-- Idempotent single-purpose tools and **errors-as-observations** remain the core reliability levers.
+- Orchestrator-led agents are replacing monolithic loops; **agent memory** is now the production differentiator.
+- Agent SDKs ship the loop as a runtime: **Claude Agent SDK** (`query()`, subagents, hooks), **OpenAI Agents SDK** (Swarm successor), **Google ADK**, **Microsoft Agent Framework 1.0** (GA Apr 2026).
+- Tunable **"thinking effort"** (Claude Opus 4.8 effort controls, Gemini 3.1 Pro Low/Med/High) turns the planner/controller split into a dial.
+- **1M-context, sparse-MoE** models (Opus 4.8, GPT-5.5, Gemini 3.1, DeepSeek V4) are table stakes — state can hold whole transcripts.
+
+<!-- sota:07L01 -->
+
+## Week 2 — Function Calling, Tool Schemas, and Structured Outputs
 
 **Altitude:** Engineer · **Anchor case:** give Atlas a real tool belt: `search_flights`, `get_policy`, `file_expense`, with typed schemas the model can't misuse.
 
@@ -332,13 +328,15 @@ TOOL_SPECS = [{"name": "file_expense", "input_schema": FileExpense.model_json_sc
 
 ---
 
-## Week 3 — MCP: Build a Model Context Protocol Server (original module)
-
 ### State of the Art (June 2026)
-- MCP was **donated to the Linux Foundation's Agentic AI Foundation (Dec 2025)**; the new **2026-07-28 spec** adds a stateless core, Extensions, Tasks, MCP Apps, and hardened auth.
-- **10,000+ public MCP servers**; GA in VS Code, Copilot, Claude Desktop, ChatGPT, and AWS Bedrock.
-- **A2A** absorbed ACP and now sits beside MCP — agents↔agents vs agents↔tools (Week 7).
-- Security focus sharpening: tool-poisoning, confused-deputy, and auth hardening drive the new spec (Week 11).
+- Function calling + **constrained/structured decoding** (JSON-schema / Pydantic) is reliable across Opus 4.8, GPT-5.5, and Gemini 3.1.
+- **BFCL v4** is the live function-calling leaderboard; "irrelevance / when-not-to-call" detection is a scored axis.
+- **MCP** (Linux Foundation, 10k+ servers) shifts tools from per-app glue to a shared protocol — Week 3.
+- Idempotent single-purpose tools and **errors-as-observations** remain the core reliability levers.
+
+<!-- sota:07L02 -->
+
+## Week 3 — MCP: Build a Model Context Protocol Server (original module)
 
 **Altitude:** Engineer · **Anchor case:** wrap Atlas's expense/policy backend in a real **MCP server** so *any* MCP client (Claude Desktop, VS Code, your agent) can use it.
 
@@ -463,13 +461,15 @@ if __name__ == "__main__":
 
 ---
 
-## Week 4 — Reasoning and Planning: ReAct, Plan-and-Execute, Reflexion
-
 ### State of the Art (June 2026)
-- **RLVR (RL with Verifiable Rewards)** is the dominant reasoning post-training, displacing pure RLHF for reasoning.
-- Test-time compute = parallel sampling + sequential deliberation + **RL-trained verifier models** (RL^V ≈ 1.2–1.6× gains).
-- **Reward hacking / verifier gaming** is an active ICLR 2026 failure-mode thread — reflect against *external* signals, not self-grade.
-- Tunable extended thinking (Opus 4.8 effort, Gemini 3.1 thinking dial) is the compute-as-a-dial knob.
+- MCP was **donated to the Linux Foundation's Agentic AI Foundation (Dec 2025)**; the new **2026-07-28 spec** adds a stateless core, Extensions, Tasks, MCP Apps, and hardened auth.
+- **10,000+ public MCP servers**; GA in VS Code, Copilot, Claude Desktop, ChatGPT, and AWS Bedrock.
+- **A2A** absorbed ACP and now sits beside MCP — agents↔agents vs agents↔tools (Week 7).
+- Security focus sharpening: tool-poisoning, confused-deputy, and auth hardening drive the new spec (Week 11).
+
+<!-- sota:07L03 -->
+
+## Week 4 — Reasoning and Planning: ReAct, Plan-and-Execute, Reflexion
 
 **Altitude:** Engineer · **Anchor case:** Atlas books a multi-leg trip — a task too long for one shot — using an explicit plan, a reasoning loop, and a self-critique.
 
@@ -576,13 +576,15 @@ def reflexion(task, max_rounds=2, verify=None):
 
 ---
 
-## Week 5 — Agent Memory: Short-Term, Long-Term, Mem0 and LangMem
-
 ### State of the Art (June 2026)
-- **Agent memory is the production differentiator** in 2026; **Mem0** and **LangMem** are the standard managed layers.
-- 1M-token context reshapes but doesn't kill retrieval — **"lost in the middle"** persists, so retrieve, don't stuff.
-- Embeddings: **voyage-3-large, Cohere embed-v4, BGE-M3**; vector stores Qdrant / Weaviate / pgvector / Pinecone.
-- **Machine unlearning / scoped memory control** is rising for PII handling and retention.
+- **RLVR (RL with Verifiable Rewards)** is the dominant reasoning post-training, displacing pure RLHF for reasoning.
+- Test-time compute = parallel sampling + sequential deliberation + **RL-trained verifier models** (RL^V ≈ 1.2–1.6× gains).
+- **Reward hacking / verifier gaming** is an active ICLR 2026 failure-mode thread — reflect against *external* signals, not self-grade.
+- Tunable extended thinking (Opus 4.8 effort, Gemini 3.1 thinking dial) is the compute-as-a-dial knob.
+
+<!-- sota:07L04 -->
+
+## Week 5 — Agent Memory: Short-Term, Long-Term, Mem0 and LangMem
 
 **Altitude:** Engineer · **Anchor case:** Atlas remembers *this* employee's prior trips, preferences, and the running task — across turns and across sessions.
 
@@ -689,13 +691,15 @@ def recall(query: str, user_id: str, k=5):
 
 ---
 
-## Week 6 — Agent Frameworks: LangGraph, OpenAI/Claude Agent SDKs, CrewAI, AutoGen, Pydantic AI, Google ADK
-
 ### State of the Art (June 2026)
-- 2026 GA: **LangGraph** (durable checkpointing, crash recovery, time-travel debug), **OpenAI Agents SDK** (handoffs), **Claude Agent SDK** (subagents, hooks, computer-use), **Google ADK** (native A2A), **Microsoft Agent Framework 1.0** (AutoGen + Semantic Kernel, Apr 2026).
-- **Pydantic AI, CrewAI, smolagents** fill the typed / role-based / lightweight niches.
-- **Orchestrator-led multi-agent** is the dominant production topology.
-- All converge on **MCP for tools + A2A for agent-to-agent** — frameworks are conveniences over the same loop.
+- **Agent memory is the production differentiator** in 2026; **Mem0** and **LangMem** are the standard managed layers.
+- 1M-token context reshapes but doesn't kill retrieval — **"lost in the middle"** persists, so retrieve, don't stuff.
+- Embeddings: **voyage-3-large, Cohere embed-v4, BGE-M3**; vector stores Qdrant / Weaviate / pgvector / Pinecone.
+- **Machine unlearning / scoped memory control** is rising for PII handling and retention.
+
+<!-- sota:07L05 -->
+
+## Week 6 — Agent Frameworks: LangGraph, OpenAI/Claude Agent SDKs, CrewAI, AutoGen, Pydantic AI, Google ADK
 
 **Altitude:** Engineer · **Anchor case:** rebuild Atlas's loop in a real framework so it gains durability, streaming, retries, and human-in-the-loop — then justify the framework choice.
 
@@ -801,13 +805,15 @@ app = g.compile(checkpointer=MemorySaver(), interrupt_before=["human_approve"])
 
 ---
 
-## Week 7 — Multi-Agent Systems and A2A: Orchestrator, Specialists, Debate
-
 ### State of the Art (June 2026)
-- **A2A** (Agent Cards, discovery/delegation) is under the Linux Foundation; **ACP merged into A2A**.
-- **Orchestrator + specialists** is replacing monolithic agents in production.
-- **τ²-bench** (Sierra, dual-control) with **pass^k** measures multi-agent reliability, not just one lucky run.
-- A2A and MCP **compose**: agents call agents (A2A), agents call tools (MCP) — they don't compete.
+- 2026 GA: **LangGraph** (durable checkpointing, crash recovery, time-travel debug), **OpenAI Agents SDK** (handoffs), **Claude Agent SDK** (subagents, hooks, computer-use), **Google ADK** (native A2A), **Microsoft Agent Framework 1.0** (AutoGen + Semantic Kernel, Apr 2026).
+- **Pydantic AI, CrewAI, smolagents** fill the typed / role-based / lightweight niches.
+- **Orchestrator-led multi-agent** is the dominant production topology.
+- All converge on **MCP for tools + A2A for agent-to-agent** — frameworks are conveniences over the same loop.
+
+<!-- sota:07L06 -->
+
+## Week 7 — Multi-Agent Systems and A2A: Orchestrator, Specialists, Debate
 
 **Altitude:** Engineer · **Anchor case:** split Atlas into an **orchestrator** + **specialists** (FlightAgent, PolicyAgent, ExpenseAgent) that communicate over an **A2A**-style contract; add a debate step for a contested policy call.
 
@@ -916,13 +922,15 @@ def handle(task: str) -> str:
 
 ---
 
-## Week 8 — Computer-Use and Browser Agents
-
 ### State of the Art (June 2026)
-- Production CUA systems: **Claude Computer Use, OpenAI Operator/CUA, Gemini computer use**.
-- **Set-of-marks + DOM/accessibility grounding** is standard; multimodal VLMs read the screen directly.
-- **WebArena / WebVoyager / Mind2Web** remain the eval substrate — reliability is still the gap.
-- **API/MCP is preferred over GUI** whenever a tool exists; browser agents are the last resort.
+- **A2A** (Agent Cards, discovery/delegation) is under the Linux Foundation; **ACP merged into A2A**.
+- **Orchestrator + specialists** is replacing monolithic agents in production.
+- **τ²-bench** (Sierra, dual-control) with **pass^k** measures multi-agent reliability, not just one lucky run.
+- A2A and MCP **compose**: agents call agents (A2A), agents call tools (MCP) — they don't compete.
+
+<!-- sota:07L07 -->
+
+## Week 8 — Computer-Use and Browser Agents
 
 **Altitude:** Engineer · **Anchor case:** a browser agent that books a flight on a real (sandboxed) airline site when no API exists — Atlas's fallback when there is no tool, only a UI.
 
@@ -1025,13 +1033,15 @@ def step(page, goal):
 
 ---
 
-## Week 9 — Agent Evaluation: tau-bench, Long-Horizon, and pass^k
-
 ### State of the Art (June 2026)
-- Execution-based agent evals dominate: **τ-bench / τ²-bench** (dual-control, **pass^k** reliability), **SWE-bench Verified/Pro**, **ARC-AGI-2/3**.
-- **LLM-as-judge** is the default — with documented biases (**TrustJudge**).
-- Eval/observability frameworks: **LangSmith, Braintrust, Arize Phoenix, DeepEval, UK AISI Inspect AI**.
-- **Red-teaming / prompt-injection regression** is now a standard part of an agent eval suite (Week 11).
+- Production CUA systems: **Claude Computer Use, OpenAI Operator/CUA, Gemini computer use**.
+- **Set-of-marks + DOM/accessibility grounding** is standard; multimodal VLMs read the screen directly.
+- **WebArena / WebVoyager / Mind2Web** remain the eval substrate — reliability is still the gap.
+- **API/MCP is preferred over GUI** whenever a tool exists; browser agents are the last resort.
+
+<!-- sota:07L08 -->
+
+## Week 9 — Agent Evaluation: tau-bench, Long-Horizon, and pass^k
 
 **Altitude:** Engineer · **Anchor case:** answer "is Atlas good enough to ship?" with a real, reproducible eval suite — not a demo that worked once.
 
@@ -1139,13 +1149,15 @@ def report(tasks, k=5):
 
 ---
 
-## Week 10 — AgentOps: Observability, Cost, Guardrails, Human-in-the-Loop
-
 ### State of the Art (June 2026)
-- Observability stacks (**Langfuse, LangSmith, Arize Phoenix**) capture full **trajectories** with token/cost spans.
-- The cost trio: **prompt caching** (up to 90% off static prefixes) + **semantic caching** + **model routing**.
-- **Runtime guardrails** (input/output validators, prompt-injection focus) are standard.
-- Operate four assets explicitly: **weights, data, prompts, eval metrics**.
+- Execution-based agent evals dominate: **τ-bench / τ²-bench** (dual-control, **pass^k** reliability), **SWE-bench Verified/Pro**, **ARC-AGI-2/3**.
+- **LLM-as-judge** is the default — with documented biases (**TrustJudge**).
+- Eval/observability frameworks: **LangSmith, Braintrust, Arize Phoenix, DeepEval, UK AISI Inspect AI**.
+- **Red-teaming / prompt-injection regression** is now a standard part of an agent eval suite (Week 11).
+
+<!-- sota:07L09 -->
+
+## Week 10 — AgentOps: Observability, Cost, Guardrails, Human-in-the-Loop
 
 **Altitude:** Engineer · **Anchor case:** run Atlas like a production service — every run traced, every dollar counted, risky actions gated, regressions caught.
 
@@ -1251,13 +1263,15 @@ def resolve(ticket):
 
 ---
 
-## Week 11 — Agent Security: Prompt Injection, Tool Abuse, and the OWASP LLM Top 10
-
 ### State of the Art (June 2026)
-- **OWASP LLM Top 10 (2025)** + **AgentDojo / InjecAgent** are the injection benchmarks.
-- The **"lethal trifecta"** (untrusted content + tools + exfiltration) framing drives **dual-LLM/quarantine + least-privilege** defenses.
-- **MCP auth hardening** lands in the 2026-07-28 spec; **tool-poisoning** and **confused-deputy** are named threats.
-- **EU AI Act** GPAI obligations apply **Aug 2, 2026** — deployed agent systems are in scope.
+- Observability stacks (**Langfuse, LangSmith, Arize Phoenix**) capture full **trajectories** with token/cost spans.
+- The cost trio: **prompt caching** (up to 90% off static prefixes) + **semantic caching** + **model routing**.
+- **Runtime guardrails** (input/output validators, prompt-injection focus) are standard.
+- Operate four assets explicitly: **weights, data, prompts, eval metrics**.
+
+<!-- sota:07L10 -->
+
+## Week 11 — Agent Security: Prompt Injection, Tool Abuse, and the OWASP LLM Top 10
 
 **Altitude:** Engineer · **Anchor case:** red-team Atlas — a malicious expense receipt with hidden instructions tries to make it email data or approve fraud — then harden it.
 
@@ -1364,13 +1378,15 @@ def handle_untrusted(content, task):
 
 ---
 
-## Week 12 — Capstone: Deploy a Multi-Agent System with an MCP Server
-
 ### State of the Art (June 2026)
-- The 2026 production bar: **MCP tools + A2A orchestration + agent memory + pass^k eval gate + trajectory tracing + injection regression**.
-- Frontier models **Claude Opus 4.8 / GPT-5.5 / Gemini 3.1 Pro** (1M context, tunable thinking) — provider-swappable.
-- **EU AI Act** enforcement (Aug 2026) makes the evidence packet / audit trail a compliance asset.
-- Open-weight fallbacks (**DeepSeek V4, Qwen 3.5, Llama 4**) keep the system vendor-neutral.
+- **OWASP LLM Top 10 (2025)** + **AgentDojo / InjecAgent** are the injection benchmarks.
+- The **"lethal trifecta"** (untrusted content + tools + exfiltration) framing drives **dual-LLM/quarantine + least-privilege** defenses.
+- **MCP auth hardening** lands in the 2026-07-28 spec; **tool-poisoning** and **confused-deputy** are named threats.
+- **EU AI Act** GPAI obligations apply **Aug 2, 2026** — deployed agent systems are in scope.
+
+<!-- sota:07L11 -->
+
+## Week 12 — Capstone: Deploy a Multi-Agent System with an MCP Server
 
 **Altitude:** Engineer (graduating to Specialist) · **Anchor case:** ship **Atlas** for real — the full T&E operations agent, deployed, evaluated, secured, and operated.
 
@@ -1459,6 +1475,14 @@ def ship_gate():
 - Krish Naik, "Agentic AI with AgentOps" end-to-end deployment projects (krishnaik.in, 2025–2026).
 
 ---
+
+### State of the Art (June 2026)
+- The 2026 production bar: **MCP tools + A2A orchestration + agent memory + pass^k eval gate + trajectory tracing + injection regression**.
+- Frontier models **Claude Opus 4.8 / GPT-5.5 / Gemini 3.1 Pro** (1M context, tunable thinking) — provider-swappable.
+- **EU AI Act** enforcement (Aug 2026) makes the evidence packet / audit trail a compliance asset.
+- Open-weight fallbacks (**DeepSeek V4, Qwen 3.5, Llama 4**) keep the system vendor-neutral.
+
+<!-- sota:07L12 -->
 
 ## Course-level outcomes
 

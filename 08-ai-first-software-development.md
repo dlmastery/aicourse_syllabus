@@ -92,12 +92,6 @@ roll it back in one command and explain the monitoring you'd watch.
 
 ## Week 1 — How Coding LLMs Actually Work (a usable mental model)
 
-### State of the Art (June 2026)
-- Coding frontier: **GPT-5.5** (~59% SWE-bench, strict-coding lead), **Claude Opus 4.8**, **Gemini 3.1 Pro**; 1M context standard.
-- Open-weight code models **Qwen3-Coder** and **DeepSeek V4** run offline via vLLM/Ollama for vendor-free labs.
-- **"Lost in the middle"** persists despite 1M windows — context curation is still decisive.
-- The capability-vs-grounding gap is mostly a **context** problem, not a model problem.
-
 **Altitude:** Builder · **Format:** 3h lecture + 4h lab
 **Anchor case:** profile a coding model on Quill — where it shines (boilerplate, tests, glue) and where it confidently fails (your codebase's conventions, cross-file logic).
 
@@ -205,13 +199,15 @@ def profile(model, repo):
 
 ---
 
-## Week 2 — Prompt Engineering for Developers: Specs, Context, and PRDs
-
 ### State of the Art (June 2026)
-- **Spec-driven / context engineering** is the dominant practice; **PRDs-as-MCP-resources** keep one source of truth.
-- **DSPy**-style compiled prompts and eval-graded specs beat hand-tuned wording.
-- **SWE-bench Verified** issues are the corpus for "what a good vs underspecified issue looks like."
-- **Prompt caching** rewards stable spec prefixes (up to 90% off repeated context).
+- Coding frontier: **GPT-5.5** (~59% SWE-bench, strict-coding lead), **Claude Opus 4.8**, **Gemini 3.1 Pro**; 1M context standard.
+- Open-weight code models **Qwen3-Coder** and **DeepSeek V4** run offline via vLLM/Ollama for vendor-free labs.
+- **"Lost in the middle"** persists despite 1M windows — context curation is still decisive.
+- The capability-vs-grounding gap is mostly a **context** problem, not a model problem.
+
+<!-- sota:08L01 -->
+
+## Week 2 — Prompt Engineering for Developers: Specs, Context, and PRDs
 
 **Altitude:** Builder · **Anchor case:** turn a vague Quill request ("let people share notes") into a precise spec + curated context the agent can execute without guessing.
 
@@ -285,6 +281,17 @@ this week is qualitative + your A/B numbers.
 ```markdown
 <!-- prd/share-notes.md — the agent-and-human source of truth -->
 # PRD: Shared Notebooks
+
+---
+
+### State of the Art (June 2026)
+- **Spec-driven / context engineering** is the dominant practice; **PRDs-as-MCP-resources** keep one source of truth.
+- **DSPy**-style compiled prompts and eval-graded specs beat hand-tuned wording.
+- **SWE-bench Verified** issues are the corpus for "what a good vs underspecified issue looks like."
+- **Prompt caching** rewards stable spec prefixes (up to 90% off repeated context).
+
+<!-- sota:08L02 -->
+
 ## Problem & users
 Teams need to share notes read/write or read-only with specific members.
 ## Requirements (testable)
@@ -318,12 +325,6 @@ Teams need to share notes read/write or read-only with specific members.
 ---
 
 ## Week 3 — Building a Coding Agent From Scratch
-
-### State of the Art (June 2026)
-- **SWE-bench Verified/Pro** is the capability benchmark; **SWE-agent** and **Aider** are the OSS references.
-- **"Agentless"**-style localization remains competitive with complex agent scaffolds.
-- **Claude Agent SDK** (`query()`, subagents, hooks) and **OpenAI Agents SDK** productionize the read→edit→test loop.
-- **Verification-in-the-loop** (run tests, trust the exit code) is the core reliability lever.
 
 **Altitude:** Builder → Engineer · **Anchor case:** build a minimal coding agent (read → edit → run → repeat) and use it to fix a real bug in the *CLI-utility* case, then on Quill.
 
@@ -428,13 +429,15 @@ def fix(task, max_steps=12):
 
 ---
 
-## Week 4 — The AI IDE: Context, Embeddings, and PRDs as MCP Resources
-
 ### State of the Art (June 2026)
-- **MCP resources** (Linux Foundation; new 2026-07-28 spec) expose PRDs/schemas to IDE + agent as live context.
-- **Cursor, Claude Code, Copilot agent-mode** index repos with embeddings + rules files (`CLAUDE.md`, `.cursor/rules`).
-- Repo-grounded evals: **CrossCodeEval, RepoBench** for cross-file completion.
-- Context **curation/ordering** still beats dumping despite 1M-token windows.
+- **SWE-bench Verified/Pro** is the capability benchmark; **SWE-agent** and **Aider** are the OSS references.
+- **"Agentless"**-style localization remains competitive with complex agent scaffolds.
+- **Claude Agent SDK** (`query()`, subagents, hooks) and **OpenAI Agents SDK** productionize the read→edit→test loop.
+- **Verification-in-the-loop** (run tests, trust the exit code) is the core reliability lever.
+
+<!-- sota:08L03 -->
+
+## Week 4 — The AI IDE: Context, Embeddings, and PRDs as MCP Resources
 
 **Altitude:** Engineer · **Anchor case:** configure Cursor/Claude Code for Quill so the agent *automatically* has the right context — repo index, types, conventions, and the PRD — without manual pasting.
 
@@ -520,6 +523,17 @@ def schema() -> str:
 ```
 ```markdown
 <!-- CLAUDE.md (excerpt) — durable, injected-every-prompt conventions -->
+
+---
+
+### State of the Art (June 2026)
+- **MCP resources** (Linux Foundation; new 2026-07-28 spec) expose PRDs/schemas to IDE + agent as live context.
+- **Cursor, Claude Code, Copilot agent-mode** index repos with embeddings + rules files (`CLAUDE.md`, `.cursor/rules`).
+- Repo-grounded evals: **CrossCodeEval, RepoBench** for cross-file completion.
+- Context **curation/ordering** still beats dumping despite 1M-token windows.
+
+<!-- sota:08L04 -->
+
 ## Conventions
 - Errors: return Result types, never throw across module boundaries. Tests: vitest, colocated *.test.ts.
 - Authz: enforce in `authz.can()` server-side only. Run `pnpm verify` (lint+typecheck+test) before "done".
@@ -544,12 +558,6 @@ def schema() -> str:
 ---
 
 ## Week 5 — Coding-Agent Autonomy Patterns and Human-in-the-Loop Gates
-
-### State of the Art (June 2026)
-- **Plan-mode + permission gates** are standard in Claude Code / Cursor / Copilot agent mode.
-- **METR** long-horizon autonomy evals track where agents go wrong over many steps.
-- **Small reversible steps + irreversible-action gates** are the production discipline.
-- Orchestrator-led **subagents** (Claude Agent SDK) bound blast radius for multi-file work.
 
 **Altitude:** Engineer · **Anchor case:** decide *how much* to let the agent do unattended on Quill — and where a human must approve — across a spectrum from autocomplete to multi-file autonomous PRs.
 
@@ -650,13 +658,15 @@ def run_gated(task):
 
 ---
 
-## Week 6 — The Modern AI Terminal and Sandboxing
-
 ### State of the Art (June 2026)
-- Ephemeral sandboxes: **E2B, Modal, Daytona, Claude Code sandbox** — disposable per-task boxes.
-- **Warp agent-mode** + dev containers for scoped, explained command execution.
-- **AgentDojo** execution/exfiltration scenarios validate containment.
-- Defaults: **least-privilege JIT creds, network-off-by-default, command allow-lists**.
+- **Plan-mode + permission gates** are standard in Claude Code / Cursor / Copilot agent mode.
+- **METR** long-horizon autonomy evals track where agents go wrong over many steps.
+- **Small reversible steps + irreversible-action gates** are the production discipline.
+- Orchestrator-led **subagents** (Claude Agent SDK) bound blast radius for multi-file work.
+
+<!-- sota:08L05 -->
+
+## Week 6 — The Modern AI Terminal and Sandboxing
 
 **Altitude:** Engineer · **Anchor case:** run Quill's agent-generated code and commands safely — in a sandbox with scoped permissions — using an AI terminal (Warp) and dev containers.
 
@@ -765,13 +775,15 @@ def agent_run(cmd):
 
 ---
 
-## Week 7 — AI-Generated Tests and Test Quality
-
 ### State of the Art (June 2026)
-- **Mutation testing** (mutmut / Stryker) is the real bar over coverage %.
-- **Property-based testing** (Hypothesis) for invariants the model proposes and a human validates.
-- **EvalPlus / HumanEval+** for test-based correctness; **Defects4J / BugsInPy** as real-bug corpora.
-- **Reward-hacking audits** for self-tested coding agents — don't let the agent grade its own bugs.
+- Ephemeral sandboxes: **E2B, Modal, Daytona, Claude Code sandbox** — disposable per-task boxes.
+- **Warp agent-mode** + dev containers for scoped, explained command execution.
+- **AgentDojo** execution/exfiltration scenarios validate containment.
+- Defaults: **least-privilege JIT creds, network-off-by-default, command allow-lists**.
+
+<!-- sota:08L06 -->
+
+## Week 7 — AI-Generated Tests and Test Quality
 
 **Altitude:** Engineer · **Anchor case:** get Quill's new feature to *real* coverage — AI-generated tests that catch bugs, not tests that merely pass.
 
@@ -875,13 +887,15 @@ def test_viewer_cannot_edit():                           # human-authored constr
 
 ---
 
-## Week 8 — AI Security and Secure "Vibe Coding"
-
 ### State of the Art (June 2026)
-- **Slopsquatting / package hallucination** (USENIX Security 2025) is a named supply-chain risk in agent-suggested deps.
-- The layered gate: **SAST (Semgrep), secrets (gitleaks), deps (Trivy), DAST (OWASP ZAP)**.
-- Checklists: **OWASP LLM Top 10 (2025)** + **OWASP Top 10 (2021)**.
-- Studies still show AI-assisted devs ship **more insecure code while feeling more confident**.
+- **Mutation testing** (mutmut / Stryker) is the real bar over coverage %.
+- **Property-based testing** (Hypothesis) for invariants the model proposes and a human validates.
+- **EvalPlus / HumanEval+** for test-based correctness; **Defects4J / BugsInPy** as real-bug corpora.
+- **Reward-hacking audits** for self-tested coding agents — don't let the agent grade its own bugs.
+
+<!-- sota:08L07 -->
+
+## Week 8 — AI Security and Secure "Vibe Coding"
 
 **Altitude:** Engineer · **Anchor case:** AI-generated Quill code introduces a subtle SQL-injection + a leaked secret; catch them with SAST/DAST/secret scanning before they ship.
 
@@ -986,13 +1000,15 @@ jobs:
 
 ---
 
-## Week 9 — AI Code Review Gates
-
 ### State of the Art (June 2026)
-- **Claude Code review, CodeRabbit, Copilot code review** productionize grounded AI review as a gate.
-- The consensus split: **AI for mechanical/local issues, humans for design and intent**.
-- **Signal/noise tuning** is decisive — false positives mute reviewers.
-- **LLM-judge biases** (TrustJudge) inform reviewer calibration and thresholds.
+- **Slopsquatting / package hallucination** (USENIX Security 2025) is a named supply-chain risk in agent-suggested deps.
+- The layered gate: **SAST (Semgrep), secrets (gitleaks), deps (Trivy), DAST (OWASP ZAP)**.
+- Checklists: **OWASP LLM Top 10 (2025)** + **OWASP Top 10 (2021)**.
+- Studies still show AI-assisted devs ship **more insecure code while feeling more confident**.
+
+<!-- sota:08L08 -->
+
+## Week 9 — AI Code Review Gates
 
 **Altitude:** Engineer · **Anchor case:** every Quill PR passes an **AI reviewer + a human reviewer**, with the AI catching the mechanical issues so the human focuses on design and intent.
 
@@ -1095,13 +1111,15 @@ jobs:
 
 ---
 
-## Week 10 — Automated UI and App Building
-
 ### State of the Art (June 2026)
-- Prompt-to-UI: **v0, Lovable, Bolt.new**; **shadcn/ui + Tailwind** the reconcile target.
-- Multimodal models (**Gemini 3.1, GPT-5.5**) drive **screenshot→critique→revise** visual loops.
-- **Design2Code**-style benchmarks track front-end automation progress.
-- **Reconciliation** (real API/types/states) is the actual engineering now, not the generation.
+- **Claude Code review, CodeRabbit, Copilot code review** productionize grounded AI review as a gate.
+- The consensus split: **AI for mechanical/local issues, humans for design and intent**.
+- **Signal/noise tuning** is decisive — false positives mute reviewers.
+- **LLM-judge biases** (TrustJudge) inform reviewer calibration and thresholds.
+
+<!-- sota:08L09 -->
+
+## Week 10 — Automated UI and App Building
 
 **Altitude:** Builder → Engineer · **Anchor case:** build Quill's sharing UI with a generative UI tool (v0/Lovable/Bolt), then reconcile the generated code into the real, tested, convention-following codebase.
 
@@ -1209,13 +1227,15 @@ test("owner shares editor; viewer blocked from editing", async ({ page }) => {
 
 ---
 
-## Week 11 — Agents Post-Deployment: Monitoring, Incident Response, and SWE-bench-Style Evaluation
-
 ### State of the Art (June 2026)
-- **SWE-bench Verified/Pro/Multimodal/Live** are the moving capability benchmarks.
-- **Sentry + OpenTelemetry GenAI semantic conventions** for shipped-feature telemetry.
-- **Feature flags + canary** (OpenFeature/LaunchDarkly) + **one-command rollback** are standard.
-- **AI-assisted incident response** (RCA draft, telemetry correlation) with human-gated prod changes.
+- Prompt-to-UI: **v0, Lovable, Bolt.new**; **shadcn/ui + Tailwind** the reconcile target.
+- Multimodal models (**Gemini 3.1, GPT-5.5**) drive **screenshot→critique→revise** visual loops.
+- **Design2Code**-style benchmarks track front-end automation progress.
+- **Reconciliation** (real API/types/states) is the actual engineering now, not the generation.
+
+<!-- sota:08L10 -->
+
+## Week 11 — Agents Post-Deployment: Monitoring, Incident Response, and SWE-bench-Style Evaluation
 
 **Altitude:** Engineer · **Anchor case:** Quill's feature is live — now operate it: monitor it, catch a regression, run an incident drill, and benchmark your *agentic SWE workflow* on SWE-bench Verified.
 
@@ -1323,13 +1343,15 @@ def evaluate(agent):
 
 ---
 
-## Week 12 — Capstone: Ship a Real Feature End-to-End with a Coding Agent
-
 ### State of the Art (June 2026)
-- The 2026 delivery bar: **spec → agent → AI+human review → mutation-tested tests → SAST/DAST → flag/canary/rollback → monitor**.
-- Frontier coding models **GPT-5.5 / Opus 4.8 / Gemini 3.1**, with open-weight **Qwen3-Coder** fallback.
-- **MCP resources + Agent SDKs** are the grounding + runtime substrate.
-- **EU AI Act** (Aug 2, 2026) makes the evidence packet a compliance artifact, not just hygiene.
+- **SWE-bench Verified/Pro/Multimodal/Live** are the moving capability benchmarks.
+- **Sentry + OpenTelemetry GenAI semantic conventions** for shipped-feature telemetry.
+- **Feature flags + canary** (OpenFeature/LaunchDarkly) + **one-command rollback** are standard.
+- **AI-assisted incident response** (RCA draft, telemetry correlation) with human-gated prod changes.
+
+<!-- sota:08L11 -->
+
+## Week 12 — Capstone: Ship a Real Feature End-to-End with a Coding Agent
 
 **Altitude:** Engineer (graduating to Specialist) · **Anchor case:** take one **Quill** feature from spec to production using everything in the course.
 
@@ -1422,6 +1444,14 @@ def ship_gate():
 - Harvard AC215 full-stack ML capstone rubric (5 milestones, 2025); Krish Naik end-to-end deployable-project structure (2025–2026).
 
 ---
+
+### State of the Art (June 2026)
+- The 2026 delivery bar: **spec → agent → AI+human review → mutation-tested tests → SAST/DAST → flag/canary/rollback → monitor**.
+- Frontier coding models **GPT-5.5 / Opus 4.8 / Gemini 3.1**, with open-weight **Qwen3-Coder** fallback.
+- **MCP resources + Agent SDKs** are the grounding + runtime substrate.
+- **EU AI Act** (Aug 2, 2026) makes the evidence packet a compliance artifact, not just hygiene.
+
+<!-- sota:08L12 -->
 
 ## Course-level outcomes
 

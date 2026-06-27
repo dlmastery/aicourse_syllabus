@@ -71,11 +71,6 @@ checkpoint 10% + capstone 20% + labs 60% = 100%.)
 
 ## Week 1 — The Neuron, the Forward Pass, and Scalar Autodiff From Scratch
 
-### State of the Art (June 2026)
-- Your `Value`/micrograd engine is the conceptual core of **PyTorch 2.7 autograd**, the trainer behind every 2026 frontier model; reverse-mode AD has not been displaced.
-- Input normalization scales to **RMSNorm** — the 2026 default norm in **Llama 4 / Qwen 3.5 / DeepSeek V4** — the same "condition the activations" motive you meet on image 1.
-- The compute graph you record is what frameworks lower to fused kernels (**FlashAttention-4**, Blackwell); graph thinking is the bridge from toy to frontier.
-
 **Altitude:** Learner · **Format:** 3h lecture + 4h lab
 **Anchor case:** Fashion-MNIST as a flat 784-vector; build one neuron, then a layer, predicting a single class logit.
 
@@ -190,12 +185,14 @@ class Value:
 
 ---
 
-## Week 2 — Backpropagation Through an MLP, By Hand (NumPy)
-
 ### State of the Art (June 2026)
-- The `(p − onehot(y))/B` softmax-CE gradient you derive is the exact output-layer gradient of every LLM trained in 2026 — the vocab-sized version of this MLP.
-- Hand-derived backprop + grad-check is still how custom kernels (e.g., a **FlashAttention-4** backward, fused MoE) are validated at the frontier.
-- ReLU's gradient mask generalizes to **SwiGLU/GeGLU** gating used in 2026 transformer MLPs — the same "which units pass gradient" reasoning.
+- Your `Value`/micrograd engine is the conceptual core of **PyTorch 2.7 autograd**, the trainer behind every 2026 frontier model; reverse-mode AD has not been displaced.
+- Input normalization scales to **RMSNorm** — the 2026 default norm in **Llama 4 / Qwen 3.5 / DeepSeek V4** — the same "condition the activations" motive you meet on image 1.
+- The compute graph you record is what frameworks lower to fused kernels (**FlashAttention-4**, Blackwell); graph thinking is the bridge from toy to frontier.
+
+<!-- sota:02L01 -->
+
+## Week 2 — Backpropagation Through an MLP, By Hand (NumPy)
 
 **Altitude:** Learner · **Format:** 3h lecture + 4h lab
 **Anchor case:** a 2-layer MLP classifying Fashion-MNIST (784→128→10) trained with hand-derived backprop.
@@ -300,12 +297,14 @@ def backward(X, Z1, A1, P, Y, W2):     # Y is one-hot (B,10)
 
 ---
 
-## Week 3 — Optimizers: SGD, Momentum, RMSProp, Adam From Scratch
-
 ### State of the Art (June 2026)
-- **AdamW** (decoupled decay) is still the default for 2026 frontier pretraining; the Adam you build is unchanged at trillion-param scale.
-- Modern twists to preview: **Muon, 8-bit optimizers, and μP hyperparameter transfer** — but bias correction and per-parameter scaling are exactly the accumulators you implement.
-- Optimizer-vs-LR fairness (matched seeds/sweeps) is the same rigor that separates a real training improvement from noise in 2026 ablations.
+- The `(p − onehot(y))/B` softmax-CE gradient you derive is the exact output-layer gradient of every LLM trained in 2026 — the vocab-sized version of this MLP.
+- Hand-derived backprop + grad-check is still how custom kernels (e.g., a **FlashAttention-4** backward, fused MoE) are validated at the frontier.
+- ReLU's gradient mask generalizes to **SwiGLU/GeGLU** gating used in 2026 transformer MLPs — the same "which units pass gradient" reasoning.
+
+<!-- sota:02L02 -->
+
+## Week 3 — Optimizers: SGD, Momentum, RMSProp, Adam From Scratch
 
 **Altitude:** Learner→Builder · **Format:** 3h lecture + 4h lab
 **Anchor case:** the same Fashion-MNIST MLP, now trained four ways; compare convergence on one plot.
@@ -407,12 +406,14 @@ class Adam:
 
 ---
 
-## Week 4 — From NumPy to PyTorch + Regularization (Dropout, BatchNorm, Weight Decay)
-
 ### State of the Art (June 2026)
-- The NumPy↔PyTorch parity test is the discipline behind every 2026 framework port; **PyTorch 2.7** (CUDA 12.6) + `torch.compile` is the current reference.
-- **Weight decay via AdamW** is the production default; **Dropout** persists, but RMSNorm/LayerNorm + residuals carry most of the stabilization in modern stacks.
-- The same low-rank "regularized update" idea reappears as **LoRA/QLoRA/DoRA** — the dominant 2026 fine-tuning regularizers (Subject 03).
+- **AdamW** (decoupled decay) is still the default for 2026 frontier pretraining; the Adam you build is unchanged at trillion-param scale.
+- Modern twists to preview: **Muon, 8-bit optimizers, and μP hyperparameter transfer** — but bias correction and per-parameter scaling are exactly the accumulators you implement.
+- Optimizer-vs-LR fairness (matched seeds/sweeps) is the same rigor that separates a real training improvement from noise in 2026 ablations.
+
+<!-- sota:02L03 -->
+
+## Week 4 — From NumPy to PyTorch + Regularization (Dropout, BatchNorm, Weight Decay)
 
 **Altitude:** Builder · **Format:** 3h lecture + 4h lab · **Quiz 1 (mechanics) this week.**
 **Anchor case:** re-implement the Fashion-MNIST MLP in PyTorch, then add regularizers and measure the generalization gap.
@@ -517,12 +518,14 @@ loss_fn = nn.CrossEntropyLoss()
 
 ---
 
-## Week 5 — Convolutional Networks: Built, Then Trained on Fashion-MNIST
-
 ### State of the Art (June 2026)
-- CNNs remain SOTA for many vision tasks, but 2026 multimodal frontier models use **ViT/DiT patch encoders**; your conv/shape reasoning is the bridge to "patchify."
-- **DiT (Diffusion Transformer) over spatiotemporal latent patches** is the standard architecture behind 2026 video models (**Sora 2, Veo 3.1, Seedance 2.0**) — convolutional inductive bias vs attention is a live design axis.
-- Output-shape arithmetic and channel-order discipline are exactly what make **ColPali/ColQwen3** visual-document encoders correct.
+- The NumPy↔PyTorch parity test is the discipline behind every 2026 framework port; **PyTorch 2.7** (CUDA 12.6) + `torch.compile` is the current reference.
+- **Weight decay via AdamW** is the production default; **Dropout** persists, but RMSNorm/LayerNorm + residuals carry most of the stabilization in modern stacks.
+- The same low-rank "regularized update" idea reappears as **LoRA/QLoRA/DoRA** — the dominant 2026 fine-tuning regularizers (Subject 03).
+
+<!-- sota:02L04 -->
+
+## Week 5 — Convolutional Networks: Built, Then Trained on Fashion-MNIST
 
 **Altitude:** Builder · **Format:** 3h lecture + 4h lab
 **Anchor case:** beat the MLP on Fashion-MNIST with a small CNN, and *see* what the filters learn.
@@ -618,12 +621,14 @@ class SmallCNN(nn.Module):
 
 ---
 
-## Week 6 — Sequence Models: RNNs and LSTMs From Scratch (and the Char-LM)
-
 ### State of the Art (June 2026)
-- RNN/LSTM are largely historical for LMs, but the **vanishing-gradient problem they expose** is precisely why attention won — essential motivation for Weeks 7–8.
-- 2026 efficiency research revives recurrence: **state-space / linear-attention hybrids (Mamba-style, and hybrid blocks in several open models)** trade O(T²) attention for O(T) recurrence — the gradient-highway idea you build in the LSTM cell.
-- BPC and single-batch-overfit sanity checks remain the cheapest correctness tests for any sequence model in 2026.
+- CNNs remain SOTA for many vision tasks, but 2026 multimodal frontier models use **ViT/DiT patch encoders**; your conv/shape reasoning is the bridge to "patchify."
+- **DiT (Diffusion Transformer) over spatiotemporal latent patches** is the standard architecture behind 2026 video models (**Sora 2, Veo 3.1, Seedance 2.0**) — convolutional inductive bias vs attention is a live design axis.
+- Output-shape arithmetic and channel-order discipline are exactly what make **ColPali/ColQwen3** visual-document encoders correct.
+
+<!-- sota:02L05 -->
+
+## Week 6 — Sequence Models: RNNs and LSTMs From Scratch (and the Char-LM)
 
 **Altitude:** Builder · **Format:** 3h lecture + 4h lab · **Mid-course checkpoint (NumPy→PyTorch parity report) due.**
 **Anchor case:** introduce the language-model case — predict the next character of TinyShakespeare with an RNN, then an LSTM.
@@ -725,12 +730,14 @@ class CharLSTM(nn.Module):
 
 ---
 
-## Week 7 — Attention From Scratch: Why It Replaced Recurrence
-
 ### State of the Art (June 2026)
-- The scaled-dot-product attention you build is unchanged in 2026 frontier models; what changed is the **kernel: FlashAttention-3 (Hopper) / FlashAttention-4 (Blackwell)** computes the same `softmax(QKᵀ/√d)V` tiled and IO-aware.
-- **GQA (grouped-query attention)** is the 2026 default (Llama 4, Qwen 3.5) — sharing K/V across heads to shrink the KV-cache; you meet it again in Subject 03.
-- "Attention ≠ explanation" connects directly to 2026 **mechanistic interpretability** — attention maps are computation, not faithful reasons (corroborate with SAEs/ablations).
+- RNN/LSTM are largely historical for LMs, but the **vanishing-gradient problem they expose** is precisely why attention won — essential motivation for Weeks 7–8.
+- 2026 efficiency research revives recurrence: **state-space / linear-attention hybrids (Mamba-style, and hybrid blocks in several open models)** trade O(T²) attention for O(T) recurrence — the gradient-highway idea you build in the LSTM cell.
+- BPC and single-batch-overfit sanity checks remain the cheapest correctness tests for any sequence model in 2026.
+
+<!-- sota:02L06 -->
+
+## Week 7 — Attention From Scratch: Why It Replaced Recurrence
 
 **Altitude:** Builder · **Format:** 3h lecture + 4h lab
 **Anchor case:** add a single self-attention layer to the char-LM and watch it attend to relevant earlier characters.
@@ -828,12 +835,14 @@ def causal_self_attention(x, Wq, Wk, Wv):     # x: (B,T,d)
 
 ---
 
-## Week 8 — The Transformer Block, Built End to End
-
 ### State of the Art (June 2026)
-- Your pre-norm block is the 2026 frontier default; current models swap **LayerNorm→RMSNorm**, learned/sinusoidal PE→**RoPE**, and dense MLP→**SwiGLU** (often **MoE**) — same skeleton, modernized parts.
-- **RoPE** is the universal 2026 positional scheme (extends to long context via **NTK/YaRN**); the "inject position" lesson is exactly why.
-- Multi-head reshaping correctness is what makes **GQA/MoE** kernels and **FlashAttention-4** valid — the einops discipline scales straight up.
+- The scaled-dot-product attention you build is unchanged in 2026 frontier models; what changed is the **kernel: FlashAttention-3 (Hopper) / FlashAttention-4 (Blackwell)** computes the same `softmax(QKᵀ/√d)V` tiled and IO-aware.
+- **GQA (grouped-query attention)** is the 2026 default (Llama 4, Qwen 3.5) — sharing K/V across heads to shrink the KV-cache; you meet it again in Subject 03.
+- "Attention ≠ explanation" connects directly to 2026 **mechanistic interpretability** — attention maps are computation, not faithful reasons (corroborate with SAEs/ablations).
+
+<!-- sota:02L07 -->
+
+## Week 8 — The Transformer Block, Built End to End
 
 **Altitude:** Builder · **Format:** 3h lecture + 4h lab
 **Anchor case:** assemble a full decoder block — multi-head attention + positional encodings + LayerNorm + residuals + MLP — for the char-LM.
@@ -936,12 +945,14 @@ class MultiHeadAttention(nn.Module):
 
 ---
 
-## Week 9 — Tokenization and Byte-Pair Encoding From Scratch
-
 ### State of the Art (June 2026)
-- BPE/byte-level tokenizers remain standard in 2026 (**GPT-5.5, Llama 4, Qwen 3.5**); fertility and round-trip are still the metrics that matter.
-- Tokenization still explains frontier failures — **digit-splitting, code, and multilingual** fertility drive measurable quality and cost gaps; the probe you build is current practice.
-- Visual-document pipelines bypass text tokenization entirely via **ColPali/ColQwen3 late-interaction** over image patches — a 2026 shift worth contrasting with subword BPE.
+- Your pre-norm block is the 2026 frontier default; current models swap **LayerNorm→RMSNorm**, learned/sinusoidal PE→**RoPE**, and dense MLP→**SwiGLU** (often **MoE**) — same skeleton, modernized parts.
+- **RoPE** is the universal 2026 positional scheme (extends to long context via **NTK/YaRN**); the "inject position" lesson is exactly why.
+- Multi-head reshaping correctness is what makes **GQA/MoE** kernels and **FlashAttention-4** valid — the einops discipline scales straight up.
+
+<!-- sota:02L08 -->
+
+## Week 9 — Tokenization and Byte-Pair Encoding From Scratch
 
 **Altitude:** Builder · **Format:** 3h lecture + 4h lab · **Quiz 2 (attention/transformer) this week.**
 **Anchor case:** switch the LM from characters to BPE subwords; train your own tokenizer on WikiText-2.
@@ -1046,12 +1057,14 @@ def train_bpe(words, vocab_size):
 
 ---
 
-## Week 10 — Training a Small GPT: nanoGPT From Scratch
-
 ### State of the Art (June 2026)
-- nanoGPT remains the canonical teaching reference; 2026 open-weights training (**DeepSeek V4, Qwen 3.5, Llama 4**) is the same loop with **MoE, RoPE, GQA, FP8** added.
-- LR schedule + perplexity + sampling are unchanged fundamentals; modern runs add **MFU** and **FP8 KV-cache** monitoring.
-- Your from-scratch GPT is the substrate Subject 03 grows into a full pretrain→post-train lifecycle (SFT → DPO/GRPO).
+- BPE/byte-level tokenizers remain standard in 2026 (**GPT-5.5, Llama 4, Qwen 3.5**); fertility and round-trip are still the metrics that matter.
+- Tokenization still explains frontier failures — **digit-splitting, code, and multilingual** fertility drive measurable quality and cost gaps; the probe you build is current practice.
+- Visual-document pipelines bypass text tokenization entirely via **ColPali/ColQwen3 late-interaction** over image patches — a 2026 shift worth contrasting with subword BPE.
+
+<!-- sota:02L09 -->
+
+## Week 10 — Training a Small GPT: nanoGPT From Scratch
 
 **Altitude:** Builder→Engineer · **Format:** 3h lecture + 4h lab
 **Anchor case:** assemble Weeks 7–9 into a ~10M-parameter GPT and train it end-to-end on TinyShakespeare (then a WikiText-2 BPE run).
@@ -1158,12 +1171,14 @@ def generate(model, idx, n_new, block_size, temp=1.0, top_k=50):
 
 ---
 
-## Week 11 — Scaling, Efficiency, and Honest Evaluation of Your Small GPT
-
 ### State of the Art (June 2026)
-- 2026 serving reference: **vLLM** with **FP8 KV-cache** (≈half KV memory, ~2× decode-latency-slope), **FlashAttention-4**, and **speculative decoding** (2–5× at low concurrency; note the KV-quant incompatibility gotcha).
-- **Scaling laws + tunable thinking-effort + sparse MoE** are the 2026 default assumptions for reasoning about cost vs quality.
-- Evaluation triangulation now means **execution-based + reliability** benchmarks (**SWE-bench Verified, τ²-bench pass^k**) plus **LLM-as-judge** with documented biases — not a single perplexity number.
+- nanoGPT remains the canonical teaching reference; 2026 open-weights training (**DeepSeek V4, Qwen 3.5, Llama 4**) is the same loop with **MoE, RoPE, GQA, FP8** added.
+- LR schedule + perplexity + sampling are unchanged fundamentals; modern runs add **MFU** and **FP8 KV-cache** monitoring.
+- Your from-scratch GPT is the substrate Subject 03 grows into a full pretrain→post-train lifecycle (SFT → DPO/GRPO).
+
+<!-- sota:02L10 -->
+
+## Week 11 — Scaling, Efficiency, and Honest Evaluation of Your Small GPT
 
 **Altitude:** Engineer · **Format:** 3h lecture + 4h lab
 **Anchor case:** make your GPT bigger/faster/better and prove the improvement with metrics, not vibes.
@@ -1267,12 +1282,14 @@ def fit_scaling(params, losses):                          # L ≈ a*N^-alpha + L
 
 ---
 
-## Week 12 — Capstone: A Built-From-Scratch GPT With an Evidence Packet
-
 ### State of the Art (June 2026)
-- **Model Cards** + one-command reproducibility (pinned seed/config/data hash) are the 2026 industry artifacts your packet mirrors; **EU AI Act** transparency obligations (main rules **Aug 2, 2026**) make them increasingly mandatory.
-- Honest evaluation = triangulated metrics + named failures + next step — exactly the **LLM-as-judge + execution-based** discipline frontier labs publish.
-- The packet is the bridge into Subject 03's full lifecycle and into the agentic / RAG / serving subjects that follow.
+- 2026 serving reference: **vLLM** with **FP8 KV-cache** (≈half KV memory, ~2× decode-latency-slope), **FlashAttention-4**, and **speculative decoding** (2–5× at low concurrency; note the KV-quant incompatibility gotcha).
+- **Scaling laws + tunable thinking-effort + sparse MoE** are the 2026 default assumptions for reasoning about cost vs quality.
+- Evaluation triangulation now means **execution-based + reliability** benchmarks (**SWE-bench Verified, τ²-bench pass^k**) plus **LLM-as-judge** with documented biases — not a single perplexity number.
+
+<!-- sota:02L11 -->
+
+## Week 12 — Capstone: A Built-From-Scratch GPT With an Evidence Packet
 
 **Altitude:** Engineer (graduating to Subject 03) · **Format:** project week (6 lab hrs)
 **Anchor case:** your own small GPT — chosen corpus, your tokenizer, your training loop — defended with evidence.
@@ -1357,6 +1374,13 @@ json.dump(metrics, open("capstone/metrics.json", "w"))   # every report claim ->
 - Stanford CS224N (Winter 2026) final-project guidelines (build/finetune a GPT-2) — structure reference.
 
 ---
+
+### State of the Art (June 2026)
+- **Model Cards** + one-command reproducibility (pinned seed/config/data hash) are the 2026 industry artifacts your packet mirrors; **EU AI Act** transparency obligations (main rules **Aug 2, 2026**) make them increasingly mandatory.
+- Honest evaluation = triangulated metrics + named failures + next step — exactly the **LLM-as-judge + execution-based** discipline frontier labs publish.
+- The packet is the bridge into Subject 03's full lifecycle and into the agentic / RAG / serving subjects that follow.
+
+<!-- sota:02L12 -->
 
 ## Course-level outcomes
 

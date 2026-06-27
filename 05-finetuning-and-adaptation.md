@@ -52,12 +52,6 @@ Per-week lab weights (the 55%): W1 5 · W2 6 · W3 7 · W4 6 · W5 7 · W6 6 · 
 
 ## Week 1 — The Adaptation Decision: Prompt vs RAG vs Fine-Tune (and a Baseline You Must Beat)
 
-### State of the Art (June 2026)
-- Canonical ordering: **Prompt → RAG → Fine-tune → Distill**; fine-tune for behavior/format/skill, RAG for knowledge.
-- Strong prompted baselines now run on 1M-context + tunable thinking-effort (Claude Opus 4.8, GPT-5.5, Gemini 3.1 Pro) — a high bar the tuned small model must beat.
-- Economic case: QLoRA-tune an 8B on a single A100 (~$12) vs frontier per-token cost — fine-tuning's win is usually cost-at-fixed-quality.
-- Open bases for adaptation: **DeepSeek V4, Qwen 3.5, Llama 4 Scout/Maverick, Gemma 4, Mistral Small 4**.
-
 **Altitude:** Engineer · **Format:** 3h lecture + 4h lab
 **Anchor case:** before tuning anything, get SupportGenie as good as possible with *prompting alone* on a frontier model — that's the number fine-tuning has to justify itself against.
 
@@ -154,13 +148,15 @@ def eval_prompted(model, eval_set) -> dict:
 
 ---
 
-## Week 2 — Data Preparation & Formatting: The 80% That Decides the Outcome
-
 ### State of the Art (June 2026)
-- Synthetic data is standard: generate with a frontier teacher, then **decontaminate vs the eval** (n-gram + embedding) — non-negotiable hygiene.
-- Data-quality-over-quantity (LIMA / Tulu 3 lesson) holds; chat-template + loss-masking correctness is still the top silent bug.
-- Tooling: HF `datasets`, `distilabel`-style synthetic pipelines, MinHash dedup; dataset cards treated as versioned artifacts.
-- Packing with attention-boundary isolation is now built into TRL / Axolotl.
+- Canonical ordering: **Prompt → RAG → Fine-tune → Distill**; fine-tune for behavior/format/skill, RAG for knowledge.
+- Strong prompted baselines now run on 1M-context + tunable thinking-effort (Claude Opus 4.8, GPT-5.5, Gemini 3.1 Pro) — a high bar the tuned small model must beat.
+- Economic case: QLoRA-tune an 8B on a single A100 (~$12) vs frontier per-token cost — fine-tuning's win is usually cost-at-fixed-quality.
+- Open bases for adaptation: **DeepSeek V4, Qwen 3.5, Llama 4 Scout/Maverick, Gemma 4, Mistral Small 4**.
+
+<!-- sota:05L01 -->
+
+## Week 2 — Data Preparation & Formatting: The 80% That Decides the Outcome
 
 **Altitude:** Engineer · **Anchor case:** turn AcmeCorp's raw tickets into a clean, chat-templated, decontaminated SFT set — and watch quality track data quality far more than hyperparameters.
 
@@ -257,13 +253,15 @@ def decontaminate(train, eval_texts, n=13, thresh=0.8):
 
 ---
 
-## Week 3 — PEFT I: LoRA From the Math Up
-
 ### State of the Art (June 2026)
-- Default PEFT stack: **LoRA / QLoRA / DoRA**; target attention + MLP, rank-stabilized variants common.
-- Tooling: HF `peft` + `trl`, **Axolotl** (config-driven), **Unsloth** (2–5× faster); A100/H100 or serverless GPU bursts.
-- Adapters are MB-sized and hot-swappable — multi-LoRA serving makes per-tenant tuning cheap.
-- Frontier open bases (Qwen 3.5, Llama 4, Gemma 4) are all LoRA-friendly out of the box.
+- Synthetic data is standard: generate with a frontier teacher, then **decontaminate vs the eval** (n-gram + embedding) — non-negotiable hygiene.
+- Data-quality-over-quantity (LIMA / Tulu 3 lesson) holds; chat-template + loss-masking correctness is still the top silent bug.
+- Tooling: HF `datasets`, `distilabel`-style synthetic pipelines, MinHash dedup; dataset cards treated as versioned artifacts.
+- Packing with attention-boundary isolation is now built into TRL / Axolotl.
+
+<!-- sota:05L02 -->
+
+## Week 3 — PEFT I: LoRA From the Math Up
 
 **Altitude:** Engineer · **Anchor case:** fine-tune SupportGenie with LoRA on a single GPU and prove it beats prompting on format compliance — then run the small-clean vs large-noisy data showdown.
 
@@ -362,13 +360,15 @@ trainer.train()        # eval on FROZEN gold_v1.jsonl, compare to prompted basel
 
 ---
 
-## Week 4 — PEFT II: QLoRA, Quantization for Training & Going Bigger on One GPU
-
 ### State of the Art (June 2026)
-- QLoRA (4-bit NF4 base + bf16 adapters, double-quant, paged optimizers) tunes an 8B on a single 24–48GB GPU.
-- **Unsloth** pushes QLoRA throughput and longer context; gradient checkpointing is standard.
-- Serving-side quantization (FP8/INT4/AWQ/GPTQ) is a *distinct* step — always re-eval the served artifact, not just the training eval.
-- **DoRA** and rank-stabilized LoRA close most of the remaining full-fine-tune gap on many tasks.
+- Default PEFT stack: **LoRA / QLoRA / DoRA**; target attention + MLP, rank-stabilized variants common.
+- Tooling: HF `peft` + `trl`, **Axolotl** (config-driven), **Unsloth** (2–5× faster); A100/H100 or serverless GPU bursts.
+- Adapters are MB-sized and hot-swappable — multi-LoRA serving makes per-tenant tuning cheap.
+- Frontier open bases (Qwen 3.5, Llama 4, Gemma 4) are all LoRA-friendly out of the box.
+
+<!-- sota:05L03 -->
+
+## Week 4 — PEFT II: QLoRA, Quantization for Training & Going Bigger on One GPU
 
 **Altitude:** Engineer · **Anchor case:** fit a larger base (or longer context) on the same GPU by training in 4-bit — and check whether you paid any quality tax.
 
@@ -464,13 +464,15 @@ bnb = BitsAndBytesConfig(
 
 ---
 
-## Week 5 — Preference Optimization I: DPO and the RLHF Lineage
-
 ### State of the Art (June 2026)
-- **DPO** is the default offline preference method; reference-anchored, β/KL-tuned, with **length-controlled eval** to catch verbosity hacking.
-- Preference sets (UltraFeedback / HH-RLHF style) are increasingly AI-generated (RLAIF) with quality filtering.
-- Classic RLHF (reward model + PPO) is now mostly reserved for fuzzy goals; verifiable tasks move to **RLVR/GRPO**.
-- Post-training recipe: **SFT → DPO/GRPO → optional model merging**.
+- QLoRA (4-bit NF4 base + bf16 adapters, double-quant, paged optimizers) tunes an 8B on a single 24–48GB GPU.
+- **Unsloth** pushes QLoRA throughput and longer context; gradient checkpointing is standard.
+- Serving-side quantization (FP8/INT4/AWQ/GPTQ) is a *distinct* step — always re-eval the served artifact, not just the training eval.
+- **DoRA** and rank-stabilized LoRA close most of the remaining full-fine-tune gap on many tasks.
+
+<!-- sota:05L04 -->
+
+## Week 5 — Preference Optimization I: DPO and the RLHF Lineage
 
 **Altitude:** Engineer · **Anchor case:** SupportGenie's SFT model is fluent but sometimes terse/off-tone — align it to *preferred* answers with DPO using chosen/rejected pairs.
 
@@ -562,13 +564,15 @@ trainer.train()
 
 ---
 
-## Week 6 — Preference Optimization II: ORPO, KTO, SimPO & Choosing the Right Objective
-
 ### State of the Art (June 2026)
-- Method zoo matched to data shape: **DPO** (pairs), **ORPO** (single-stage, no ref), **KTO** (unpaired thumbs), **SimPO** (ref-free, length-normalized), IPO.
-- SimPO's length normalization directly targets the 2026 verbosity-hacking pathology.
-- TRL ships all objectives; the choice is data-shape + observed-pathology driven, not hype.
-- **Model merging** (SLERP / TIES / DARE) is increasingly paired with preference tuning to combine skills.
+- **DPO** is the default offline preference method; reference-anchored, β/KL-tuned, with **length-controlled eval** to catch verbosity hacking.
+- Preference sets (UltraFeedback / HH-RLHF style) are increasingly AI-generated (RLAIF) with quality filtering.
+- Classic RLHF (reward model + PPO) is now mostly reserved for fuzzy goals; verifiable tasks move to **RLVR/GRPO**.
+- Post-training recipe: **SFT → DPO/GRPO → optional model merging**.
+
+<!-- sota:05L05 -->
+
+## Week 6 — Preference Optimization II: ORPO, KTO, SimPO & Choosing the Right Objective
 
 **Altitude:** Engineer · **Anchor case:** you don't always have clean pairwise preferences — pick the preference method that matches the *data you actually have* and the compute you can spend.
 
@@ -659,13 +663,15 @@ kto = KTOTrainer(model=sft, train_dataset=binary_ds, processing_class=tok,
 
 ---
 
-## Week 7 — RLHF, RFT & Distillation: When You Need More Than Offline Preferences
-
 ### State of the Art (June 2026)
-- **RFT/RLVR** with programmatic rewards (json-valid, unit-test, `math-verify`) is the verifiable-task default — the bridge to GRPO (Subject 06).
-- **GRPO** (critic-free, group-relative) is in TRL; verifier-gaming / reward-hacking is the active failure mode to audit.
-- Distillation from frontier teachers (Opus 4.8 / GPT-5.5 / Gemini 3.1) into small open bases is a standard cost play.
-- RLAIF / constitutional feedback is common where human labels are scarce.
+- Method zoo matched to data shape: **DPO** (pairs), **ORPO** (single-stage, no ref), **KTO** (unpaired thumbs), **SimPO** (ref-free, length-normalized), IPO.
+- SimPO's length normalization directly targets the 2026 verbosity-hacking pathology.
+- TRL ships all objectives; the choice is data-shape + observed-pathology driven, not hype.
+- **Model merging** (SLERP / TIES / DARE) is increasingly paired with preference tuning to combine skills.
+
+<!-- sota:05L06 -->
+
+## Week 7 — RLHF, RFT & Distillation: When You Need More Than Offline Preferences
 
 **Altitude:** Engineer → Specialist · **Anchor case:** for a sub-skill where you *can verify correctness* (valid tool-call JSON, schema-correct output), use reinforcement fine-tuning with a programmatic reward; and shrink a strong teacher into SupportGenie via distillation.
 
@@ -763,13 +769,15 @@ trainer.train()    # INSPECT top-reward samples for gaming; compare vs SFT-only
 
 ---
 
-## Week 8 — Evaluation & Regression Testing of Fine-Tunes (No Silent Forgetting)
-
 ### State of the Art (June 2026)
-- Multi-axis gating: target task + general suite (**MMLU-Pro, GSM8K, IFEval**) + safety — quantify the alignment tax.
-- Harnesses: `lm-evaluation-harness`, **UK AISI Inspect AI**, LangSmith / Braintrust; LLM-judge with validated κ.
-- Execution-based + contamination-aware evals (LiveBench-style) are replacing static leaderboards.
-- Prompt-injection / red-team regression (OWASP LLM Top-10) is now part of the ship gate.
+- **RFT/RLVR** with programmatic rewards (json-valid, unit-test, `math-verify`) is the verifiable-task default — the bridge to GRPO (Subject 06).
+- **GRPO** (critic-free, group-relative) is in TRL; verifier-gaming / reward-hacking is the active failure mode to audit.
+- Distillation from frontier teachers (Opus 4.8 / GPT-5.5 / Gemini 3.1) into small open bases is a standard cost play.
+- RLAIF / constitutional feedback is common where human labels are scarce.
+
+<!-- sota:05L07 -->
+
+## Week 8 — Evaluation & Regression Testing of Fine-Tunes (No Silent Forgetting)
 
 **Altitude:** Engineer · **Anchor case:** your DPO+RFT SupportGenie is great on support — prove it didn't get worse at general reasoning, safety, or instruction-following before anyone ships it.
 
@@ -863,13 +871,15 @@ def ship(matrix, base, cand, eps=0.02) -> bool:
 
 ---
 
-## Week 9 — Serving Adapters: Quantization for Inference, Multi-LoRA & Cost
-
 ### State of the Art (June 2026)
-- **vLLM** reference engine: **multi-LoRA** (`--enable-lora`), **FP8 KV-cache**, **FlashAttention-4**, speculative decoding (mind KV-quant incompatibility).
-- Inference quantization AWQ/GPTQ/FP8/INT4; **S-LoRA** / LoRAX serve thousands of adapters on one base.
-- Cost core: serverless GPU pay-per-second + **prompt caching** + batching; report $/1k-answers.
-- Always re-run the regression gate on the *quantized served* artifact, not the training-time eval.
+- Multi-axis gating: target task + general suite (**MMLU-Pro, GSM8K, IFEval**) + safety — quantify the alignment tax.
+- Harnesses: `lm-evaluation-harness`, **UK AISI Inspect AI**, LangSmith / Braintrust; LLM-judge with validated κ.
+- Execution-based + contamination-aware evals (LiveBench-style) are replacing static leaderboards.
+- Prompt-injection / red-team regression (OWASP LLM Top-10) is now part of the ship gate.
+
+<!-- sota:05L08 -->
+
+## Week 9 — Serving Adapters: Quantization for Inference, Multi-LoRA & Cost
 
 **Altitude:** Engineer · **Anchor case:** serve SupportGenie cheaply at scale — quantize for inference, host many LoRA adapters on one base, and meet a latency/cost SLA.
 
@@ -961,13 +971,15 @@ def answer(prompt, adapter_path, adapter_id):
 
 ---
 
-## Week 10 — Capstone: A Fine-Tuned Model That Provably Beats Prompting
-
 ### State of the Art (June 2026)
-- End-to-end open recipe to model on: **Tülu 3-style SFT → DPO → (RLVR) → merge → quantized multi-LoRA serving**.
-- Evidence-packet discipline: every claim → a run; cuts documented; served-cost proven.
-- Governance: **EU AI Act** GPAI transparency obligations apply **Aug 2, 2026** — document data provenance + eval.
-- Frontier baselines (Opus 4.8 / GPT-5.5) are the cost/quality bar the tuned small model must clear.
+- **vLLM** reference engine: **multi-LoRA** (`--enable-lora`), **FP8 KV-cache**, **FlashAttention-4**, speculative decoding (mind KV-quant incompatibility).
+- Inference quantization AWQ/GPTQ/FP8/INT4; **S-LoRA** / LoRAX serve thousands of adapters on one base.
+- Cost core: serverless GPU pay-per-second + **prompt caching** + batching; report $/1k-answers.
+- Always re-run the regression gate on the *quantized served* artifact, not the training-time eval.
+
+<!-- sota:05L09 -->
+
+## Week 10 — Capstone: A Fine-Tuned Model That Provably Beats Prompting
 
 **Altitude:** Engineer (graduating toward Subject 06) · **Anchor case:** ship adapted SupportGenie (or your own domain task) end-to-end, with an evidence packet proving it beats prompting at lower cost without regressing.
 
@@ -1060,6 +1072,14 @@ def capstone_gate(base, candidate_ckpt, adapter) -> dict:
 - Source book Ch. 16 (project → evidence packet) + Subject 04 `$rag-eval` discipline reused.
 
 ---
+
+### State of the Art (June 2026)
+- End-to-end open recipe to model on: **Tülu 3-style SFT → DPO → (RLVR) → merge → quantized multi-LoRA serving**.
+- Evidence-packet discipline: every claim → a run; cuts documented; served-cost proven.
+- Governance: **EU AI Act** GPAI transparency obligations apply **Aug 2, 2026** — document data provenance + eval.
+- Frontier baselines (Opus 4.8 / GPT-5.5) are the cost/quality bar the tuned small model must clear.
+
+<!-- sota:05L10 -->
 
 ## Course-level outcomes
 

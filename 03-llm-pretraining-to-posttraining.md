@@ -77,11 +77,6 @@ reproduction checkpoint 9% + capstone 25% = 100%.)
 
 ## Week 1 — The LLM Lifecycle, End to End (and a Reproducible Tiny Pretraining Run)
 
-### State of the Art (June 2026)
-- The 2026 lifecycle is standardized: **pretrain → SFT → LoRA/QLoRA → DPO or GRPO/RLVR → (merge) → serve**; you execute each stage on a real open base (Pythia/SmolLM2/Qwen3/Llama).
-- Frontier defaults to assume: **1M context, sparse MoE, tunable thinking-effort** (**Opus 4.8, GPT-5.5 router, Gemini 3.1 Pro, DeepSeek V4**).
-- `FLOPs ≈ 6ND` + **MFU** accounting is the same cost language used to plan trillion-token runs in 2026.
-
 **Altitude:** Builder · **Format:** 3h lecture + 5h lab
 **Anchor case:** stand up the repo and continue-pretrain a SmolLM2-135M-scale model on a tiny corpus for 1k steps to map the whole pipeline before zooming in.
 
@@ -175,12 +170,14 @@ Trainer(model=model, args=args, train_dataset=ds).train()
 
 ---
 
-## Week 2 — Data Curation I: Common Crawl, Extraction, Filtering, Language ID
-
 ### State of the Art (June 2026)
-- **FineWeb / FineWeb-Edu** (plus Dolma, Nemotron-CC) are the 2026 reference open pipelines; model-based quality classifiers (FineWeb-Edu style) now beat pure heuristics.
-- **EU AI Act** GPAI data-governance/transparency obligations (in force since Aug 2025; main rules **Aug 2, 2026**) make provenance + licensing a legal requirement, not hygiene.
-- **`datatrove` / `nemo-curator`** are the current curation toolchains; the funnel-with-sampled-drops you build is standard practice.
+- The 2026 lifecycle is standardized: **pretrain → SFT → LoRA/QLoRA → DPO or GRPO/RLVR → (merge) → serve**; you execute each stage on a real open base (Pythia/SmolLM2/Qwen3/Llama).
+- Frontier defaults to assume: **1M context, sparse MoE, tunable thinking-effort** (**Opus 4.8, GPT-5.5 router, Gemini 3.1 Pro, DeepSeek V4**).
+- `FLOPs ≈ 6ND` + **MFU** accounting is the same cost language used to plan trillion-token runs in 2026.
+
+<!-- sota:03L01 -->
+
+## Week 2 — Data Curation I: Common Crawl, Extraction, Filtering, Language ID
 
 **Altitude:** Builder→Engineer · **Format:** 3h lecture + 5h lab
 **Anchor case:** build a real (small-scale) web-text curation pipeline from raw Common Crawl WARC to clean training shards.
@@ -275,12 +272,14 @@ LocalPipelineExecutor(pipeline=pipeline, tasks=4).run()
 
 ---
 
-## Week 3 — Data Curation II: Deduplication, Decontamination, and Tokenizer Training
-
 ### State of the Art (June 2026)
-- **MinHash/LSH dedup + n-gram decontamination** are 2026 standard (Dolma, FineWeb); contamination is the documented cause of **fake "emergence"** and inflated benchmarks.
-- Tokenizer fertility vs **Llama 4 / Qwen 3.5 / GPT-5.5** tokenizers is the current quality check; domain/code/digit handling drives real cost.
-- Decontamination is now an eval-integrity obligation as much as a quality one — directly feeding Week 7's honest evaluation.
+- **FineWeb / FineWeb-Edu** (plus Dolma, Nemotron-CC) are the 2026 reference open pipelines; model-based quality classifiers (FineWeb-Edu style) now beat pure heuristics.
+- **EU AI Act** GPAI data-governance/transparency obligations (in force since Aug 2025; main rules **Aug 2, 2026**) make provenance + licensing a legal requirement, not hygiene.
+- **`datatrove` / `nemo-curator`** are the current curation toolchains; the funnel-with-sampled-drops you build is standard practice.
+
+<!-- sota:03L02 -->
+
+## Week 3 — Data Curation II: Deduplication, Decontamination, and Tokenizer Training
 
 **Altitude:** Engineer · **Format:** 3h lecture + 5h lab
 **Anchor case:** dedup the Week-2 corpus, decontaminate it against eval sets, then train a tokenizer on it.
@@ -377,12 +376,14 @@ def dedup(docs, threshold=0.8):
 
 ---
 
-## Week 4 — Architecture, Hyperparameters, and Scaling Laws
-
 ### State of the Art (June 2026)
-- The 2026 frontier decoder stack is exactly **RoPE + RMSNorm + SwiGLU + GQA (+ MoE)** — Llama 4, Qwen 3.5, and DeepSeek V4 all share this skeleton.
-- **Chinchilla-style scaling laws** (and successors) + **μP hyperparameter transfer** are the current tools for choosing params-vs-tokens and porting LR across scale.
-- Sparse **MoE** (DeepSeek V4 49B-active/1.6T-total) is now the dominant way to add capacity without proportional FLOPs — the active-vs-total distinction you formalize in Week 6.
+- **MinHash/LSH dedup + n-gram decontamination** are 2026 standard (Dolma, FineWeb); contamination is the documented cause of **fake "emergence"** and inflated benchmarks.
+- Tokenizer fertility vs **Llama 4 / Qwen 3.5 / GPT-5.5** tokenizers is the current quality check; domain/code/digit handling drives real cost.
+- Decontamination is now an eval-integrity obligation as much as a quality one — directly feeding Week 7's honest evaluation.
+
+<!-- sota:03L03 -->
+
+## Week 4 — Architecture, Hyperparameters, and Scaling Laws
 
 **Altitude:** Engineer · **Format:** 3h lecture + 5h lab · **Quiz 1 (scaling/architecture) this week.**
 **Anchor case:** fit your own scaling law across a few small models and use it to choose a compute-optimal config.
@@ -478,12 +479,14 @@ def fit_scaling(runs):                      # runs: list of (N_params, D_tokens,
 
 ---
 
-## Week 5 — Distributed Pretraining: Data/Tensor/Pipeline Parallel, FSDP & ZeRO
-
 ### State of the Art (June 2026)
-- **FSDP2** (native PyTorch) and **DeepSpeed ZeRO-3** are the 2026 reference shards; Megatron-style TP/PP for the largest models.
-- **FP8 training** (Blackwell) + **MFU** are the current efficiency metrics; the scaling-efficiency gap-from-linear analysis is exactly what frontier labs report.
-- **5D parallelism (DP/TP/PP/CP/EP)** is the 2026 frontier vocabulary — expert-parallel (EP) added specifically for MoE.
+- The 2026 frontier decoder stack is exactly **RoPE + RMSNorm + SwiGLU + GQA (+ MoE)** — Llama 4, Qwen 3.5, and DeepSeek V4 all share this skeleton.
+- **Chinchilla-style scaling laws** (and successors) + **μP hyperparameter transfer** are the current tools for choosing params-vs-tokens and porting LR across scale.
+- Sparse **MoE** (DeepSeek V4 49B-active/1.6T-total) is now the dominant way to add capacity without proportional FLOPs — the active-vs-total distinction you formalize in Week 6.
+
+<!-- sota:03L04 -->
+
+## Week 5 — Distributed Pretraining: Data/Tensor/Pipeline Parallel, FSDP & ZeRO
 
 **Altitude:** Engineer · **Format:** 3h lecture + 5h lab
 **Anchor case:** scale your pretraining job across 2–8 GPUs (or simulate the mechanism) and measure scaling efficiency.
@@ -576,12 +579,14 @@ def setup_fsdp(model):
 
 ---
 
-## Week 6 — Mixture-of-Experts and Long-Context Pretraining
-
 ### State of the Art (June 2026)
-- **MoE is the dominant 2026 frontier architecture** (DeepSeek V4 1.6T/49B, Qwen 3.5 397B/17B, Llama 4); top-k routing + load-balancing loss + capacity factor are exactly what you implement.
-- Long context is table stakes (**1M+ context; Llama 4 Scout ~10M**); **RoPE scaling / YaRN / NTK** + continued training are the current extension recipes.
-- Router-collapse monitoring and active-vs-total accounting are live production concerns in 2026 MoE serving.
+- **FSDP2** (native PyTorch) and **DeepSpeed ZeRO-3** are the 2026 reference shards; Megatron-style TP/PP for the largest models.
+- **FP8 training** (Blackwell) + **MFU** are the current efficiency metrics; the scaling-efficiency gap-from-linear analysis is exactly what frontier labs report.
+- **5D parallelism (DP/TP/PP/CP/EP)** is the 2026 frontier vocabulary — expert-parallel (EP) added specifically for MoE.
+
+<!-- sota:03L05 -->
+
+## Week 6 — Mixture-of-Experts and Long-Context Pretraining
 
 **Altitude:** Engineer · **Format:** 3h lecture + 5h lab
 **Anchor case:** convert your dense model's MLP into a sparse MoE layer and reason about long-context training.
@@ -681,12 +686,14 @@ class MoEFFN(nn.Module):
 
 ---
 
-## Week 7 — Pretraining Evaluation & a Paper-Reproduction Checkpoint
-
 ### State of the Art (June 2026)
-- 2026 capability benchmarks: **MMLU-Pro, GPQA Diamond, ARC-AGI-2, AIME, HellaSwag/ARC** via **lm-evaluation-harness / LightEval**; report CIs + format notes.
-- **Contamination → fake emergence** (Schaeffer et al.) is the central honesty concern; decontamination (Week 3) is the antidote.
-- Reproduction discipline mirrors **UK AISI Inspect AI / reproducible-eval** practice — re-deriving a published number is the strongest evidence of understanding.
+- **MoE is the dominant 2026 frontier architecture** (DeepSeek V4 1.6T/49B, Qwen 3.5 397B/17B, Llama 4); top-k routing + load-balancing loss + capacity factor are exactly what you implement.
+- Long context is table stakes (**1M+ context; Llama 4 Scout ~10M**); **RoPE scaling / YaRN / NTK** + continued training are the current extension recipes.
+- Router-collapse monitoring and active-vs-total accounting are live production concerns in 2026 MoE serving.
+
+<!-- sota:03L06 -->
+
+## Week 7 — Pretraining Evaluation & a Paper-Reproduction Checkpoint
 
 **Altitude:** Engineer · **Format:** 3h lecture + 5h lab · **Paper-reproduction checkpoint due.**
 **Anchor case:** evaluate your base model with a real harness and reproduce one published small-scale result.
@@ -776,12 +783,14 @@ results = lm_eval.simple_evaluate(
 
 ---
 
-## Week 8 — Supervised Fine-Tuning & Instruction Tuning
-
 ### State of the Art (June 2026)
-- The 2026 default PEFT stack is **LoRA/QLoRA/DoRA** via HF **trl/peft + unsloth/axolotl** (2–5× faster QLoRA; ~$12 to tune 8B on one A100).
-- **Data quality > quantity** (LIMA, Tülu 3) is reinforced; **assistant-only loss masking + chat templates** are non-negotiable correctness checks.
-- Synthetic SFT data (distilled from frontier models) is standard 2026 practice — with model-collapse caveats.
+- 2026 capability benchmarks: **MMLU-Pro, GPQA Diamond, ARC-AGI-2, AIME, HellaSwag/ARC** via **lm-evaluation-harness / LightEval**; report CIs + format notes.
+- **Contamination → fake emergence** (Schaeffer et al.) is the central honesty concern; decontamination (Week 3) is the antidote.
+- Reproduction discipline mirrors **UK AISI Inspect AI / reproducible-eval** practice — re-deriving a published number is the strongest evidence of understanding.
+
+<!-- sota:03L07 -->
+
+## Week 8 — Supervised Fine-Tuning & Instruction Tuning
 
 **Altitude:** Engineer · **Format:** 3h lecture + 5h lab
 **Anchor case:** turn your base model into an instruction-follower with SFT (full + LoRA/QLoRA) on a curated instruction set.
@@ -874,12 +883,14 @@ trainer.train()
 
 ---
 
-## Week 9 — Reward Modeling & RLHF (PPO)
-
 ### State of the Art (June 2026)
-- **RLVR is displacing pure RLHF** for reasoning, but Bradley-Terry reward models + PPO remain the foundation and the clearest place to see **reward hacking / verifier gaming** (active ICLR 2026 thread).
-- KL-to-reference control and held-out **LLM-as-judge** checks are the current guards against reward-hacked policies.
-- Tooling: **TRL, veRL, OpenRLHF** are the 2026 scalable-RL references.
+- The 2026 default PEFT stack is **LoRA/QLoRA/DoRA** via HF **trl/peft + unsloth/axolotl** (2–5× faster QLoRA; ~$12 to tune 8B on one A100).
+- **Data quality > quantity** (LIMA, Tülu 3) is reinforced; **assistant-only loss masking + chat templates** are non-negotiable correctness checks.
+- Synthetic SFT data (distilled from frontier models) is standard 2026 practice — with model-collapse caveats.
+
+<!-- sota:03L08 -->
+
+## Week 9 — Reward Modeling & RLHF (PPO)
 
 **Altitude:** Engineer · **Format:** 3h lecture + 5h lab · **Quiz 2 (post-training math) this week.**
 **Anchor case:** train a reward model on human/AI preferences, then improve your SFT model with PPO-based RLHF.
@@ -973,12 +984,14 @@ ppo_cfg = PPOConfig(output_dir="ppo", kl_coef=0.05, batch_size=64)
 
 ---
 
-## Week 10 — Direct Preference Optimization: DPO, ORPO, KTO
-
 ### State of the Art (June 2026)
-- **DPO (and ORPO/KTO)** are the 2026 default preference-optimization methods — simpler than PPO, no separate reward model; the standard "→ DPO or GRPO" step in the post-training stack.
-- **Tülu 3** and most open post-training recipes use DPO-family losses; you compare them head-to-head.
-- **Model merging** after DPO is an increasingly common final step worth previewing.
+- **RLVR is displacing pure RLHF** for reasoning, but Bradley-Terry reward models + PPO remain the foundation and the clearest place to see **reward hacking / verifier gaming** (active ICLR 2026 thread).
+- KL-to-reference control and held-out **LLM-as-judge** checks are the current guards against reward-hacked policies.
+- Tooling: **TRL, veRL, OpenRLHF** are the 2026 scalable-RL references.
+
+<!-- sota:03L09 -->
+
+## Week 10 — Direct Preference Optimization: DPO, ORPO, KTO
 
 **Altitude:** Engineer · **Format:** 3h lecture + 5h lab
 **Anchor case:** align the SFT model *without* a separate reward model or RL loop, and compare DPO/ORPO/KTO head-to-head against Week 9's PPO.
@@ -1068,12 +1081,14 @@ dpo.train()
 
 ---
 
-## Week 11 — RL for Reasoning: GRPO and Verifiable Rewards
-
 ### State of the Art (June 2026)
-- **GRPO + RLVR (RL with Verifiable Rewards)** is the dominant 2026 reasoning-post-training method — behind DeepSeek-R1-style models; format + correctness rewards are exactly what you build.
-- **Verifier models** (RL-trained critics) + test-time parallel/sequential scaling give ~1.2–1.6× (RL^V); **reward hacking** is the key failure mode.
-- Variants to know: **DAPO** and other GRPO refinements; **AIME / GPQA** are the standard reasoning benchmarks.
+- **DPO (and ORPO/KTO)** are the 2026 default preference-optimization methods — simpler than PPO, no separate reward model; the standard "→ DPO or GRPO" step in the post-training stack.
+- **Tülu 3** and most open post-training recipes use DPO-family losses; you compare them head-to-head.
+- **Model merging** after DPO is an increasingly common final step worth previewing.
+
+<!-- sota:03L10 -->
+
+## Week 11 — RL for Reasoning: GRPO and Verifiable Rewards
 
 **Altitude:** Engineer/Specialist · **Format:** 3h lecture + 5h lab
 **Anchor case:** push your model's math reasoning with GRPO using a verifiable (answer-checking) reward on GSM8K-style problems.
@@ -1169,12 +1184,14 @@ GRPOTrainer(model="./dpo-ckpt", reward_funcs=[correctness_reward],
 
 ---
 
-## Week 12 — Long-Context, Safety Fine-Tuning, and Serving
-
 ### State of the Art (June 2026)
-- Serving reference: **vLLM / SGLang** with **FP8 KV-cache**, **FlashAttention-4**, **speculative decoding**, and **prompt caching** (up to ~90% off static prefixes) — the 2026 cost core.
-- Safety: **Constitutional AI with dynamic constitutions + automated red-teaming**; **runtime guardrails** (prompt-injection focus) with refusal *and* over-refusal both measured.
-- Governance: **EU AI Act** main obligations apply **Aug 2, 2026** (Annex III high-risk deferred to **Dec 2, 2027** via the Digital Omnibus); long-context extension via **YaRN/NTK**.
+- **GRPO + RLVR (RL with Verifiable Rewards)** is the dominant 2026 reasoning-post-training method — behind DeepSeek-R1-style models; format + correctness rewards are exactly what you build.
+- **Verifier models** (RL-trained critics) + test-time parallel/sequential scaling give ~1.2–1.6× (RL^V); **reward hacking** is the key failure mode.
+- Variants to know: **DAPO** and other GRPO refinements; **AIME / GPQA** are the standard reasoning benchmarks.
+
+<!-- sota:03L11 -->
+
+## Week 12 — Long-Context, Safety Fine-Tuning, and Serving
 
 **Altitude:** Engineer/Specialist · **Format:** 3h lecture + 5h lab
 **Anchor case:** extend your assistant's context, safety-tune it, red-team it, and serve it efficiently.
@@ -1266,12 +1283,14 @@ out = llm.generate(prompts, SamplingParams(max_tokens=512, temperature=0.7))
 
 ---
 
-## Week 13 — Capstone: A Full Pretrain → Post-Train Pipeline With an Evidence Packet
-
 ### State of the Art (June 2026)
-- The capstone mirrors the 2026 open-model playbook end-to-end (**Tülu 3 / Llama 4 lifecycle**): curate → tokenize → pretrain → SFT → DPO/GRPO → eval → safety → serve.
-- Evidence discipline = **Model Cards + CIs + LLM-as-judge + named failures**, now partly mandated by **EU AI Act** transparency (main rules **Aug 2, 2026**).
-- One-command reproducibility (pinned seeds/config/data hashes) is both the frontier-lab and the emerging regulatory standard your packet targets.
+- Serving reference: **vLLM / SGLang** with **FP8 KV-cache**, **FlashAttention-4**, **speculative decoding**, and **prompt caching** (up to ~90% off static prefixes) — the 2026 cost core.
+- Safety: **Constitutional AI with dynamic constitutions + automated red-teaming**; **runtime guardrails** (prompt-injection focus) with refusal *and* over-refusal both measured.
+- Governance: **EU AI Act** main obligations apply **Aug 2, 2026** (Annex III high-risk deferred to **Dec 2, 2027** via the Digital Omnibus); long-context extension via **YaRN/NTK**.
+
+<!-- sota:03L12 -->
+
+## Week 13 — Capstone: A Full Pretrain → Post-Train Pipeline With an Evidence Packet
 
 **Altitude:** Engineer/Specialist (graduating toward the agents/RAG/serving subjects) · **Format:** project week (7 lab hrs)
 **Anchor case:** your own small assistant, taken through (a curated slice of) the entire lifecycle and defended with evidence.
@@ -1361,6 +1380,13 @@ json.dump(report, open("capstone/metrics.json", "w"))    # every report claim ->
 - Stanford CS336 (Spring 2025) capstone (RL-for-reasoning) + Princeton COS 597R (Fall 2024) project guidelines.
 
 ---
+
+### State of the Art (June 2026)
+- The capstone mirrors the 2026 open-model playbook end-to-end (**Tülu 3 / Llama 4 lifecycle**): curate → tokenize → pretrain → SFT → DPO/GRPO → eval → safety → serve.
+- Evidence discipline = **Model Cards + CIs + LLM-as-judge + named failures**, now partly mandated by **EU AI Act** transparency (main rules **Aug 2, 2026**).
+- One-command reproducibility (pinned seeds/config/data hashes) is both the frontier-lab and the emerging regulatory standard your packet targets.
+
+<!-- sota:03L13 -->
 
 ## Course-level outcomes
 

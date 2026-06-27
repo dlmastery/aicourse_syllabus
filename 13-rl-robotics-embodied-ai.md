@@ -36,11 +36,6 @@ _1 academic quarter · 3 lecture-hours/week · 14 lectures (~42 contact hrs). Fu
 
 ## Week 1 — MDPs, Bellman Equations & Dynamic Programming From Scratch
 
-### State of the Art (June 2026)
-- RLVR (RL with Verifiable Rewards) made the Bellman/advantage machinery the substrate under every 2026 reasoning model (DeepSeek-R1, GPT-5.5 thinking) — same value estimation, LLM-scale.
-- Gymnasium 1.x (Farama) is the maintained API standard (`terminated`/`truncated`); MuJoCo is fully open-source (Apache-2.0).
-- Tunable thinking-effort in Claude Opus 4.8 / Gemini 3.1 Pro is literally test-time planning depth — the MDP horizon as a product dial.
-
 **Altitude:** Engineer · **Format:** 3h lecture + 4h lab
 **Anchor case:** a 4×4 `FrozenLake`-style gridworld where you can read every value by hand and check the math.
 
@@ -132,12 +127,14 @@ def value_iteration(P, R, gamma=0.99, tol=1e-8):
 
 ---
 
-## Week 2 — Model-Free Prediction & Control: Monte Carlo, TD, Q-Learning, SARSA
-
 ### State of the Art (June 2026)
-- TD/Q-learning targets are unchanged, but 2026 RLVR trainers (veRL, OpenRLHF) reuse the same advantage estimators at token level.
-- The on/off-policy distinction now frames agentic-RL: stale-rollout drift in distributed trainers is the modern ‘cliff’.
-- Gymnasium 1.x vectorized envs + seeded, multi-seed reporting are the de-facto reproducibility standard.
+- RLVR (RL with Verifiable Rewards) made the Bellman/advantage machinery the substrate under every 2026 reasoning model (DeepSeek-R1, GPT-5.5 thinking) — same value estimation, LLM-scale.
+- Gymnasium 1.x (Farama) is the maintained API standard (`terminated`/`truncated`); MuJoCo is fully open-source (Apache-2.0).
+- Tunable thinking-effort in Claude Opus 4.8 / Gemini 3.1 Pro is literally test-time planning depth — the MDP horizon as a product dial.
+
+<!-- sota:13L01 -->
+
+## Week 2 — Model-Free Prediction & Control: Monte Carlo, TD, Q-Learning, SARSA
 
 **Altitude:** Engineer · **Anchor case:** `FrozenLake` and `CliffWalking` where the model is now *hidden* — you only get samples.
 
@@ -229,12 +226,14 @@ def q_learning(env, episodes=500, alpha=0.5, gamma=0.99, eps=0.1):
 
 ---
 
-## Week 3 — Deep Q-Networks: DQN → Double → Dueling → Rainbow
-
 ### State of the Art (June 2026)
-- Value-based DQN is niche vs policy methods now, but Double-Q/distributional ideas resurface in 2026 verifier/critic models (RL^V, ~1.2–1.6× test-time gains).
-- FlashAttention-4 (Blackwell) + FP8 KV-cache are serving defaults even for RL rollout/eval networks.
-- Atari-100k sample-efficiency remains the canonical deep-RL smoke test.
+- TD/Q-learning targets are unchanged, but 2026 RLVR trainers (veRL, OpenRLHF) reuse the same advantage estimators at token level.
+- The on/off-policy distinction now frames agentic-RL: stale-rollout drift in distributed trainers is the modern ‘cliff’.
+- Gymnasium 1.x vectorized envs + seeded, multi-seed reporting are the de-facto reproducibility standard.
+
+<!-- sota:13L02 -->
+
+## Week 3 — Deep Q-Networks: DQN → Double → Dueling → Rainbow
 
 **Altitude:** Engineer · **Anchor case:** `LunarLander-v3` and one Atari game (`Breakout`) — where tabular dies and function approximation is mandatory.
 
@@ -323,12 +322,14 @@ def dqn_loss(batch, q_net, target_net, gamma=0.99, double=True):
 
 ---
 
-## Week 4 — Policy Gradients & Actor-Critic: REINFORCE, Baselines, A2C
-
 ### State of the Art (June 2026)
-- Policy-gradient is the backbone of all 2026 LLM post-training: GRPO/DAPO are PG with group-relative advantages and no critic.
-- Advantage normalization + entropy control are standard ‘healthy training’ signals across TRL/veRL.
-- Continuous-control PG (MetaDrive, MuJoCo) is the bridge to robotics VLA fine-tuning.
+- Value-based DQN is niche vs policy methods now, but Double-Q/distributional ideas resurface in 2026 verifier/critic models (RL^V, ~1.2–1.6× test-time gains).
+- FlashAttention-4 (Blackwell) + FP8 KV-cache are serving defaults even for RL rollout/eval networks.
+- Atari-100k sample-efficiency remains the canonical deep-RL smoke test.
+
+<!-- sota:13L03 -->
+
+## Week 4 — Policy Gradients & Actor-Critic: REINFORCE, Baselines, A2C
 
 **Altitude:** Engineer · **Anchor case:** `CartPole` (discrete) then `MetaDrive` (continuous) — where we need policies that *output actions directly*.
 
@@ -415,12 +416,14 @@ def reinforce_step(logps, rewards, gamma=0.99, baseline=None):
 
 ---
 
-## Week 5 — Trust Regions & PPO: TRPO, GAE, and the Workhorse of Modern RL
-
 ### State of the Art (June 2026)
-- PPO-clip is still the workhorse — GPT-5.5 / Claude-class RLHF and most RLVR recipes wrap a PPO core.
-- GAE λ and clip-fraction/approx-KL are the canonical health signals tracked in W&B/LangSmith RL dashboards.
-- veRL (HybridFlow) + Ray + vLLM is the 2026 reference stack for scaled PPO/GRPO.
+- Policy-gradient is the backbone of all 2026 LLM post-training: GRPO/DAPO are PG with group-relative advantages and no critic.
+- Advantage normalization + entropy control are standard ‘healthy training’ signals across TRL/veRL.
+- Continuous-control PG (MetaDrive, MuJoCo) is the bridge to robotics VLA fine-tuning.
+
+<!-- sota:13L04 -->
+
+## Week 5 — Trust Regions & PPO: TRPO, GAE, and the Workhorse of Modern RL
 
 **Altitude:** Engineer → Specialist · **Anchor case:** `MetaDrive` continuous control and `MuJoCo HalfCheetah` — the locomotion warm-up for robotics.
 
@@ -505,12 +508,14 @@ def ppo_clip_loss(logp, logp_old, adv, eps=0.2):
 
 ---
 
-## Week 6 — Offline RL & Imitation Learning
-
 ### State of the Art (June 2026)
-- Offline RL + imitation underpin 2026 robot-learning data engines (LeRobot datasets, action chunking); BC→DAgger→IQL is still the ladder.
-- Decision-Transformer ‘RL-as-sequence’ converged with VLA models that tokenize actions.
-- Minari (Farama) is the maintained D4RL successor for trajectory datasets.
+- PPO-clip is still the workhorse — GPT-5.5 / Claude-class RLHF and most RLVR recipes wrap a PPO core.
+- GAE λ and clip-fraction/approx-KL are the canonical health signals tracked in W&B/LangSmith RL dashboards.
+- veRL (HybridFlow) + Ray + vLLM is the 2026 reference stack for scaled PPO/GRPO.
+
+<!-- sota:13L05 -->
+
+## Week 6 — Offline RL & Imitation Learning
 
 **Altitude:** Specialist · **Anchor case:** `D4RL`/`Minari` driving + locomotion logs — learning a policy *without* environment interaction.
 
@@ -595,12 +600,14 @@ def iql_value_loss(q_net, v_net, s, a, expectile=0.7):
 
 ---
 
-## Week 7 — Model-Based RL, MCTS & World Models (IRIS)
-
 ### State of the Art (June 2026)
-- World models went mainstream via video-diffusion framing (Genie-style interactive environments); DiT over spatiotemporal latents is the architecture to know.
-- DreamerV3 and IRIS remain the open references; model-exploitation + trust-horizon are the live failure modes.
-- MCTS/AlphaZero search resurfaces as test-time deliberation in reasoning models.
+- Offline RL + imitation underpin 2026 robot-learning data engines (LeRobot datasets, action chunking); BC→DAgger→IQL is still the ladder.
+- Decision-Transformer ‘RL-as-sequence’ converged with VLA models that tokenize actions.
+- Minari (Farama) is the maintained D4RL successor for trajectory datasets.
+
+<!-- sota:13L06 -->
+
+## Week 7 — Model-Based RL, MCTS & World Models (IRIS)
 
 **Altitude:** Specialist · **Anchor case:** Atari from pixels with a *learned* world model; a board game with MCTS.
 
@@ -684,12 +691,14 @@ def uct_select(node, c=1.41):
 
 ---
 
-## Week 8 — RLHF & Preference Optimization: PPO-RLHF, DPO, SimPO, KTO, ORPO
-
 ### State of the Art (June 2026)
-- DPO/ORPO/KTO are the default preference-optimization stack (HF trl); SimPO reference-free length control is standard.
-- Length-controlled win-rate (AlpacaEval-LC) + cross-family LLM-judge are the honest-eval norm; TrustJudge documents judge biases.
-- RLHF is now mostly a thin PPO/DPO layer atop SFT; RLVR displaces it for verifiable tasks.
+- World models went mainstream via video-diffusion framing (Genie-style interactive environments); DiT over spatiotemporal latents is the architecture to know.
+- DreamerV3 and IRIS remain the open references; model-exploitation + trust-horizon are the live failure modes.
+- MCTS/AlphaZero search resurfaces as test-time deliberation in reasoning models.
+
+<!-- sota:13L07 -->
+
+## Week 8 — RLHF & Preference Optimization: PPO-RLHF, DPO, SimPO, KTO, ORPO
 
 **Altitude:** Specialist · **Anchor case:** post-train a small instruct model (`Qwen3-0.6B`/`Llama-3.2-1B`) on a preference dataset.
 
@@ -772,12 +781,14 @@ def dpo_loss(pi_lw, pi_ll, ref_lw, ref_ll, beta=0.1):
 
 ---
 
-## Week 9 — RLVR & the GRPO Lineage: GRPO (DeepSeek-R1), DAPO, Dr.GRPO
-
 ### State of the Art (June 2026)
-- GRPO (DeepSeek-R1) → DAPO → Dr.GRPO is the 2026 reasoning-RL lineage; group-relative advantage removes the value net.
-- RLVR (verifiable rewards) is now dominant for reasoning post-training, displacing pure RLHF.
-- Reward/verifier hacking (length inflation, leaky checkers) is an active ICLR-2026 thread; Dr.GRPO fixes the normalization bias.
+- DPO/ORPO/KTO are the default preference-optimization stack (HF trl); SimPO reference-free length control is standard.
+- Length-controlled win-rate (AlpacaEval-LC) + cross-family LLM-judge are the honest-eval norm; TrustJudge documents judge biases.
+- RLHF is now mostly a thin PPO/DPO layer atop SFT; RLVR displaces it for verifiable tasks.
+
+<!-- sota:13L08 -->
+
+## Week 9 — RLVR & the GRPO Lineage: GRPO (DeepSeek-R1), DAPO, Dr.GRPO
 
 **Altitude:** Specialist · **Anchor case:** train a small model to *reason* on math (`GSM8K`/`MATH`) with verifiable rewards.
 
@@ -863,12 +874,14 @@ def grpo_advantages(rewards, group_size, drgrpo=False):
 
 ---
 
-## Week 10 — Agentic RL: SWE-RL, DeepSWE & Distributed RL Infrastructure
-
 ### State of the Art (June 2026)
-- DeepSWE/SWE-RL pushed open RL coding agents to strong SWE-bench-Verified numbers; the environment = repo + test suite.
-- Distributed RLVR stack: veRL/OpenRLHF + Ray + vLLM rollouts; stale-policy drift is the headline infra bug.
-- Execution-based agent evals (SWE-bench Pro/Verified, τ²-bench pass^k) are the 2026 standard.
+- GRPO (DeepSeek-R1) → DAPO → Dr.GRPO is the 2026 reasoning-RL lineage; group-relative advantage removes the value net.
+- RLVR (verifiable rewards) is now dominant for reasoning post-training, displacing pure RLHF.
+- Reward/verifier hacking (length inflation, leaky checkers) is an active ICLR-2026 thread; Dr.GRPO fixes the normalization bias.
+
+<!-- sota:13L09 -->
+
+## Week 10 — Agentic RL: SWE-RL, DeepSWE & Distributed RL Infrastructure
 
 **Altitude:** Specialist · **Anchor case:** the `SWE-RL` coding-agent case — environment = a repo + test suite; reward = tests pass.
 
@@ -956,12 +969,14 @@ class SWEEnv:
 
 ---
 
-## Week 11 — Robotics & Embodied AI: VLA Models (SmolVLA), Sim-to-Real
-
 ### State of the Art (June 2026)
-- VLA models (SmolVLA, π0-class, OpenVLA successors) with action chunking are the 2026 robot-learning default.
-- LeRobot (HF) is the de-facto open robot-learning hub; ManiSkill/Isaac Lab for massively parallel sim.
-- Residual RL on top of behavior-cloned policies is the standard sim-to-real fine-tune.
+- DeepSWE/SWE-RL pushed open RL coding agents to strong SWE-bench-Verified numbers; the environment = repo + test suite.
+- Distributed RLVR stack: veRL/OpenRLHF + Ray + vLLM rollouts; stale-policy drift is the headline infra bug.
+- Execution-based agent evals (SWE-bench Pro/Verified, τ²-bench pass^k) are the 2026 standard.
+
+<!-- sota:13L10 -->
+
+## Week 11 — Robotics & Embodied AI: VLA Models (SmolVLA), Sim-to-Real
 
 **Altitude:** Specialist · **Anchor case:** a manipulation task in simulation, fine-tuned from a vision-language-action model.
 
@@ -1048,12 +1063,14 @@ def rollout(env, instruction, horizon=200, chunk=10):
 
 ---
 
-## Week 12 — Humanoid Locomotion & Multi-Agent RL
-
 ### State of the Art (June 2026)
-- Massively parallel sim (Isaac Lab / MJX, 4096+ envs on one GPU) is how 2026 humanoid locomotion is trained.
-- CTDE (centralized-training, decentralized-execution) remains the MARL workhorse; PettingZoo/Safety-Gymnasium for benchmarks.
-- Sim-to-real locomotion transfers via domain randomization + residual RL.
+- VLA models (SmolVLA, π0-class, OpenVLA successors) with action chunking are the 2026 robot-learning default.
+- LeRobot (HF) is the de-facto open robot-learning hub; ManiSkill/Isaac Lab for massively parallel sim.
+- Residual RL on top of behavior-cloned policies is the standard sim-to-real fine-tune.
+
+<!-- sota:13L11 -->
+
+## Week 12 — Humanoid Locomotion & Multi-Agent RL
 
 **Altitude:** Specialist · **Anchor case:** train a `Humanoid` to walk via massively parallel sim; then a multi-agent game.
 
@@ -1137,12 +1154,14 @@ ppo_update(policy, buffer, adv, ret)                 # reuse $ppo-trainer
 
 ---
 
-## Week 13 — RL Safety: Reward Hacking, Specification Gaming & Safe RL
-
 ### State of the Art (June 2026)
-- Reward hacking / specification gaming is the central 2026 RL-safety failure — same root as LLM verifier-gaming (ICLR-2026 RSI thread).
-- Constrained MDPs + safe-RL (Safety-Gymnasium) and runtime guardrails are the mitigation stack.
-- Reward-model over-optimization (Goodhart) is measured with held-out judges + KL control.
+- Massively parallel sim (Isaac Lab / MJX, 4096+ envs on one GPU) is how 2026 humanoid locomotion is trained.
+- CTDE (centralized-training, decentralized-execution) remains the MARL workhorse; PettingZoo/Safety-Gymnasium for benchmarks.
+- Sim-to-real locomotion transfers via domain randomization + residual RL.
+
+<!-- sota:13L12 -->
+
+## Week 13 — RL Safety: Reward Hacking, Specification Gaming & Safe RL
 
 **Altitude:** Specialist · **Anchor case:** deliberately break each prior week's agent by exploiting its reward, then defend it.
 
@@ -1224,12 +1243,14 @@ def constrained_objective(reward_adv, cost_adv, lam, budget_violation):
 
 ---
 
-## Week 14 — Capstone: An Agentic-RL System With a Safety Audit
-
 ### State of the Art (June 2026)
-- 2026 agentic-RL capstones ship on the veRL/OpenRLHF + Ray + vLLM stack with execution-based evals and a reward-hacking audit.
-- Evidence-over-demos: held-out resolved-rate, ≥3 seeds, and a documented safety audit are the bar.
-- Tracks mirror the field: SWE-RL coding, MetaDrive driving, LeRobot/ManiSkill embodied.
+- Reward hacking / specification gaming is the central 2026 RL-safety failure — same root as LLM verifier-gaming (ICLR-2026 RSI thread).
+- Constrained MDPs + safe-RL (Safety-Gymnasium) and runtime guardrails are the mitigation stack.
+- Reward-model over-optimization (Goodhart) is measured with held-out judges + KL control.
+
+<!-- sota:13L13 -->
+
+## Week 14 — Capstone: An Agentic-RL System With a Safety Audit
 
 **Altitude:** Specialist (graduating to Subjects 14/16) · **Anchor case:** your choice — extend the SWE-RL coding agent, a MetaDrive driving agent, or an embodied VLA task.
 
@@ -1306,6 +1327,13 @@ save_packet(env, agent, report, audit)   # $rl-evidence-packet
 - Stanford CS234 (2026) final-project guidelines; Vizuara *RL in Production* capstone briefs.
 
 ---
+
+### State of the Art (June 2026)
+- 2026 agentic-RL capstones ship on the veRL/OpenRLHF + Ray + vLLM stack with execution-based evals and a reward-hacking audit.
+- Evidence-over-demos: held-out resolved-rate, ≥3 seeds, and a documented safety audit are the bar.
+- Tracks mirror the field: SWE-RL coding, MetaDrive driving, LeRobot/ManiSkill embodied.
+
+<!-- sota:13L14 -->
 
 ## Course-level Assessment & grading
 

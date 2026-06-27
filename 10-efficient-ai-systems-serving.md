@@ -57,11 +57,6 @@ Per-week weights below are the share of the 58% lab bucket, expressed as **% of 
 
 ## Week 1 — The GPU Execution & Memory Model (and How to Profile It)
 
-### State of the Art (June 2026)
-- Roofline reasoning is now standard tooling: **NVIDIA Nsight Compute 2026** + the PyTorch 2.6 profiler with `torch.cuda` memory snapshots; **Blackwell B200/GB200** (HBM3e ~8 TB/s) shifts the FLOP:bandwidth ratio so even more ops are memory-bound than on Hopper.
-- **1M-token context is table stakes** (Claude Opus 4.8, Gemini 3.1 Pro, DeepSeek V4) → the KV-cache, not the weights, dominates the memory budget you profile.
-- Sparse **MoE** is the dominant frontier architecture (DeepSeek V4 1.6T/49B-active, Qwen 3.5 397B/17B-active), so "active vs total params" is now a first-order accounting question.
-
 **Altitude:** Engineer · **Format:** 3h lecture + 4h lab
 **Anchor case:** profile a single forward pass of `shrink-an-8B` (FP16) and find out where the time and memory actually go.
 
@@ -152,12 +147,14 @@ print("alloc GB:", torch.cuda.max_memory_allocated()/1e9)   # compare to your bu
 
 ---
 
-## Week 2 — Numerics: Mixed Precision, FP8 & Why Bits Matter
-
 ### State of the Art (June 2026)
-- **FP8 inference is the default on Hopper/Blackwell**; **Blackwell adds FP4/MXFP4** microscaling formats (vLLM v0.20+ kernels) — sub-8-bit floats now ship in production.
-- **FP8 KV-cache** (`--kv-cache-dtype fp8`) ~halves KV memory and ~2×'s the decode-latency slope — the highest-leverage numeric lever of 2026.
-- NVIDIA **Transformer Engine** + `torchao` MXFP8/MXFP4 recipes are the reference; per-block microscaling replaces single global scales.
+- Roofline reasoning is now standard tooling: **NVIDIA Nsight Compute 2026** + the PyTorch 2.6 profiler with `torch.cuda` memory snapshots; **Blackwell B200/GB200** (HBM3e ~8 TB/s) shifts the FLOP:bandwidth ratio so even more ops are memory-bound than on Hopper.
+- **1M-token context is table stakes** (Claude Opus 4.8, Gemini 3.1 Pro, DeepSeek V4) → the KV-cache, not the weights, dominates the memory budget you profile.
+- Sparse **MoE** is the dominant frontier architecture (DeepSeek V4 1.6T/49B-active, Qwen 3.5 397B/17B-active), so "active vs total params" is now a first-order accounting question.
+
+<!-- sota:10L01 -->
+
+## Week 2 — Numerics: Mixed Precision, FP8 & Why Bits Matter
 
 **Altitude:** Engineer · **Anchor case:** run `shrink-an-8B` in FP16, BF16, and FP8 and measure the speed/memory/quality tradeoffs of each.
 
@@ -245,12 +242,14 @@ print(results)        # -> tradeoff-table.md
 
 ---
 
-## Week 3 — Post-Training Quantization: GPTQ, AWQ, SmoothQuant
-
 ### State of the Art (June 2026)
-- **llm-compressor** (Neural Magic / Red Hat) is the de-facto PTQ toolkit feeding vLLM (GPTQ + AWQ + SmoothQuant + FP8 in one flow).
-- **INT4 (AWQ/GPTQ) is the production default** for weight-only; **FP8 W8A8** dominates server-side where Blackwell kernels exist.
-- Frontier open weights (DeepSeek V4, Qwen 3.5, Llama 4) ship with first-party quantized checkpoints — calibration recipes (NeMo / llm-compressor) are now standardized.
+- **FP8 inference is the default on Hopper/Blackwell**; **Blackwell adds FP4/MXFP4** microscaling formats (vLLM v0.20+ kernels) — sub-8-bit floats now ship in production.
+- **FP8 KV-cache** (`--kv-cache-dtype fp8`) ~halves KV memory and ~2×'s the decode-latency slope — the highest-leverage numeric lever of 2026.
+- NVIDIA **Transformer Engine** + `torchao` MXFP8/MXFP4 recipes are the reference; per-block microscaling replaces single global scales.
+
+<!-- sota:10L02 -->
+
+## Week 3 — Post-Training Quantization: GPTQ, AWQ, SmoothQuant
 
 **Altitude:** Engineer · **Anchor case:** quantize `shrink-an-8B` to INT4 (AWQ and GPTQ) and W8A8 (SmoothQuant), and find which keeps quality at the best speed/memory.
 
@@ -337,12 +336,14 @@ model.save_quantized("Qwen3-8B-awq-int4")
 
 ---
 
-## Week 4 — QAT, Low-Bit Frontiers & Serving Quantized Models
-
 ### State of the Art (June 2026)
-- **QLoRA/DoRA on NF4** remains the one-GPU fine-tune default; **unsloth** gives 2–5× faster QLoRA, and `trl` + `peft` are the standard stack.
-- **Marlin / Machete** low-bit GPU kernels make INT4/FP8 actually fast to *serve* in vLLM — the format must match an accelerated kernel or there is no served win.
-- Sub-4-bit (2–3 bit) is still research-grade; the production quality floor sits at ~INT4/FP8.
+- **llm-compressor** (Neural Magic / Red Hat) is the de-facto PTQ toolkit feeding vLLM (GPTQ + AWQ + SmoothQuant + FP8 in one flow).
+- **INT4 (AWQ/GPTQ) is the production default** for weight-only; **FP8 W8A8** dominates server-side where Blackwell kernels exist.
+- Frontier open weights (DeepSeek V4, Qwen 3.5, Llama 4) ship with first-party quantized checkpoints — calibration recipes (NeMo / llm-compressor) are now standardized.
+
+<!-- sota:10L03 -->
+
+## Week 4 — QAT, Low-Bit Frontiers & Serving Quantized Models
 
 **Altitude:** Engineer · **Anchor case:** push `shrink-an-8B` further — QLoRA-style NF4, FP8 serving on vLLM, and a peek at sub-4-bit — then serve the best variant and re-measure end to end.
 
@@ -426,12 +427,14 @@ m = get_peft_model(m, LoraConfig(r=16, lora_alpha=32, target_modules=["q_proj","
 
 ---
 
-## Week 5 — Pruning, Sparsity, Distillation & NAS
-
 ### State of the Art (June 2026)
-- **2:4 semi-structured sparsity** on Hopper/Blackwell sparse tensor cores is the only pruning that reliably yields a wall-clock speedup (`torchao`, SparseGPT/Wanda one-shot).
-- Distillation is now **synthetic-data + on-policy** (teacher = a frontier model such as Opus 4.8 / DeepSeek V4); distilled SLMs (Gemma 4, Qwen 3.5 small, Llama 4 Scout) power edge deployment.
-- **KV-cache compression (EvicPress, QuantSpec)** is the 2026 sparsity frontier for inference, more than weight pruning.
+- **QLoRA/DoRA on NF4** remains the one-GPU fine-tune default; **unsloth** gives 2–5× faster QLoRA, and `trl` + `peft` are the standard stack.
+- **Marlin / Machete** low-bit GPU kernels make INT4/FP8 actually fast to *serve* in vLLM — the format must match an accelerated kernel or there is no served win.
+- Sub-4-bit (2–3 bit) is still research-grade; the production quality floor sits at ~INT4/FP8.
+
+<!-- sota:10L04 -->
+
+## Week 5 — Pruning, Sparsity, Distillation & NAS
 
 **Altitude:** Engineer · **Anchor case:** `tiny-on-edge` — compress a small model with structured pruning + distillation; on the server, try 2:4 sparsity on the 8B.
 
@@ -517,12 +520,14 @@ print("dense vs 2:4:", bench(dense), bench(m), "  MMLU delta:", eval_mmlu(m)-bas
 
 ---
 
-## Week 6 — Attention at Scale: FlashAttention-3, KV-Cache & PagedAttention
-
 ### State of the Art (June 2026)
-- **FlashAttention-4** is the Blackwell default (vLLM v0.20+); **FA-3** remains the Hopper path — both exact and IO-aware.
-- **PagedAttention** is universal; **prefix caching / RadixAttention** (SGLang) + **FP8 KV-cache** are standard at long context.
-- KV-cache eviction/compression (**StreamingLLM sinks, H2O, KVQuant, EvicPress**) is how 1M-context serving stays in memory.
+- **2:4 semi-structured sparsity** on Hopper/Blackwell sparse tensor cores is the only pruning that reliably yields a wall-clock speedup (`torchao`, SparseGPT/Wanda one-shot).
+- Distillation is now **synthetic-data + on-policy** (teacher = a frontier model such as Opus 4.8 / DeepSeek V4); distilled SLMs (Gemma 4, Qwen 3.5 small, Llama 4 Scout) power edge deployment.
+- **KV-cache compression (EvicPress, QuantSpec)** is the 2026 sparsity frontier for inference, more than weight pruning.
+
+<!-- sota:10L05 -->
+
+## Week 6 — Attention at Scale: FlashAttention-3, KV-Cache & PagedAttention
 
 **Altitude:** Engineer → Specialist · **Anchor case:** make `shrink-an-8B` cheaper at long context — quantify FlashAttention-3 and KV-cache management on memory and throughput.
 
@@ -608,12 +613,14 @@ for attn in ["eager", "flash_attention_3"]:
 
 ---
 
-## Week 7 — Inference Serving Engines: vLLM, SGLang & TensorRT-LLM
-
 ### State of the Art (June 2026)
-- **vLLM is the reference engine** (FA-4, FP8 KV, chunked prefill, speculative); **SGLang** (RadixAttention) and **TensorRT-LLM** are the production alternatives.
-- **Disaggregated prefill/decode serving** (separate pools — vLLM/Dynamo, Mooncake) is the 2026 throughput frontier.
-- Benchmarking standardized on **GuideLLM** + vLLM `benchmark_serving` (TTFT/ITL/throughput swept over concurrency); **serverless GPU** (Modal, Baseten, RunPod FlashBoot) is the default deploy substrate.
+- **FlashAttention-4** is the Blackwell default (vLLM v0.20+); **FA-3** remains the Hopper path — both exact and IO-aware.
+- **PagedAttention** is universal; **prefix caching / RadixAttention** (SGLang) + **FP8 KV-cache** are standard at long context.
+- KV-cache eviction/compression (**StreamingLLM sinks, H2O, KVQuant, EvicPress**) is how 1M-context serving stays in memory.
+
+<!-- sota:10L06 -->
+
+## Week 7 — Inference Serving Engines: vLLM, SGLang & TensorRT-LLM
 
 **Altitude:** Engineer → Specialist · **Anchor case:** serve the quantized 8B on vLLM, SGLang, and TensorRT-LLM; benchmark continuous batching and pick a stack on evidence.
 
@@ -696,12 +703,14 @@ python -m vllm.entrypoints.benchmark_serving \
 
 ---
 
-## Week 8 — Speculative & Parallel Decoding
-
 ### State of the Art (June 2026)
-- **EAGLE-3** is the leading speculative method (feature-level drafting); **Medusa** (extra heads) and n-gram/lookahead remain in vLLM.
-- Speculation gives **2–5× at low concurrency** and shrinks under heavy batching — and **conflicts with some KV-quant** configs (a teachable 2026 gotcha).
-- **RL-trained / verifier-style drafts** and built-in self-speculation are emerging in frontier serving stacks.
+- **vLLM is the reference engine** (FA-4, FP8 KV, chunked prefill, speculative); **SGLang** (RadixAttention) and **TensorRT-LLM** are the production alternatives.
+- **Disaggregated prefill/decode serving** (separate pools — vLLM/Dynamo, Mooncake) is the 2026 throughput frontier.
+- Benchmarking standardized on **GuideLLM** + vLLM `benchmark_serving` (TTFT/ITL/throughput swept over concurrency); **serverless GPU** (Modal, Baseten, RunPod FlashBoot) is the default deploy substrate.
+
+<!-- sota:10L07 -->
+
+## Week 8 — Speculative & Parallel Decoding
 
 **Altitude:** Specialist · **Anchor case:** cut `shrink-an-8B` decode latency with speculative decoding (draft model, EAGLE-3, Medusa) without changing outputs.
 
@@ -784,12 +793,14 @@ out = llm.generate(prompts, sp)
 
 ---
 
-## Week 9 — Mixture-of-Experts: Sparse Models at Scale
-
 ### State of the Art (June 2026)
-- **MoE is the dominant frontier architecture**: DeepSeek V4 (1.6T total / 49B active), Qwen 3.5 (397B/17B), Llama 4 Scout/Maverick, the Mixtral lineage.
-- Serving is a **memory-capacity + expert-parallel all-to-all communication** problem; **DeepEP** expert-parallel kernels and **fine-grained + shared-expert** routing (DeepSeekMoE) are standard.
-- The teachable tension: cheap per-token FLOPs, but all experts must reside in VRAM.
+- **EAGLE-3** is the leading speculative method (feature-level drafting); **Medusa** (extra heads) and n-gram/lookahead remain in vLLM.
+- Speculation gives **2–5× at low concurrency** and shrinks under heavy batching — and **conflicts with some KV-quant** configs (a teachable 2026 gotcha).
+- **RL-trained / verifier-style drafts** and built-in self-speculation are emerging in frontier serving stacks.
+
+<!-- sota:10L08 -->
+
+## Week 9 — Mixture-of-Experts: Sparse Models at Scale
 
 **Altitude:** Specialist · **Anchor case:** run and serve an MoE model (e.g., Qwen3-MoE / Mixtral-style) and measure the active-vs-total parameter tradeoff and its serving implications.
 
@@ -878,12 +889,14 @@ print("expert load (should be roughly flat):", counts)
 
 ---
 
-## Week 10 — Long-Context Efficiency
-
 ### State of the Art (June 2026)
-- **1M-token context is table stakes** (Opus 4.8, Gemini 3.1 Pro, DeepSeek V4; Llama 4 Scout ~10M) — KV-cache memory, not compute, is the binding constraint.
-- Standard levers: **FP8/INT4 KV-cache, StreamingLLM sinks, H2O/EvicPress eviction, YaRN scaling**, sliding-window/sparse attention.
-- **Long-context vs Agentic RAG** is an explicit cost decision; RAG (with ColPali/late-interaction retrieval) usually wins on $/accuracy below the context limit.
+- **MoE is the dominant frontier architecture**: DeepSeek V4 (1.6T total / 49B active), Qwen 3.5 (397B/17B), Llama 4 Scout/Maverick, the Mixtral lineage.
+- Serving is a **memory-capacity + expert-parallel all-to-all communication** problem; **DeepEP** expert-parallel kernels and **fine-grained + shared-expert** routing (DeepSeekMoE) are standard.
+- The teachable tension: cheap per-token FLOPs, but all experts must reside in VRAM.
+
+<!-- sota:10L09 -->
+
+## Week 10 — Long-Context Efficiency
 
 **Altitude:** Specialist · **Anchor case:** make `shrink-an-8B` viable at 128k context — KV-cache quantization, sliding-window/sparse attention, and the long-context-vs-RAG decision.
 
@@ -970,12 +983,14 @@ for seq in [16384, 65536, 131072]:
 
 ---
 
-## Week 11 — Distributed Training & Inference: FSDP, ZeRO, Tensor/Pipeline Parallelism
-
 ### State of the Art (June 2026)
-- **PyTorch FSDP2** + **DeepSpeed ZeRO-3** are the sharding defaults; **5D parallelism** (data/tensor/pipeline/context/expert) is the frontier vocabulary (HF *Ultra-Scale Playbook*).
-- **Context parallelism** (Ring-style) is now required for 1M-context training; **expert parallelism** (DeepEP) for MoE.
-- Serving large models uses **TP within an NVLink node, PP/DP across nodes**; **disaggregated serving + GB200 NVL72** scale-up changes the interconnect calculus.
+- **1M-token context is table stakes** (Opus 4.8, Gemini 3.1 Pro, DeepSeek V4; Llama 4 Scout ~10M) — KV-cache memory, not compute, is the binding constraint.
+- Standard levers: **FP8/INT4 KV-cache, StreamingLLM sinks, H2O/EvicPress eviction, YaRN scaling**, sliding-window/sparse attention.
+- **Long-context vs Agentic RAG** is an explicit cost decision; RAG (with ColPali/late-interaction retrieval) usually wins on $/accuracy below the context limit.
+
+<!-- sota:10L10 -->
+
+## Week 11 — Distributed Training & Inference: FSDP, ZeRO, Tensor/Pipeline Parallelism
 
 **Altitude:** Specialist · **Anchor case:** scale `shrink-an-8B` beyond a single GPU — shard it with FSDP/ZeRO for training and split it with tensor/pipeline parallelism for serving a bigger model.
 
@@ -1061,12 +1076,14 @@ for batch in dl:
 
 ---
 
-## Week 12 — Capstone: FP16 → Quantized, Served, Benchmarked Endpoint
-
 ### State of the Art (June 2026)
-- The 2026 reference pipeline: **INT4/FP8 quantize (llm-compressor) → vLLM serve with FA-4 + FP8 KV + prefix caching → EAGLE-3 speculative → GuideLLM benchmark → serverless-GPU deploy**.
-- Cost is reported as **$/1M tokens** with **prompt caching** (up to ~90% off static prefixes) and **model routing** as first-class levers.
-- Pareto framing (quality vs latency vs cost) on disclosed Blackwell/Hopper hardware is the deliverable standard.
+- **PyTorch FSDP2** + **DeepSpeed ZeRO-3** are the sharding defaults; **5D parallelism** (data/tensor/pipeline/context/expert) is the frontier vocabulary (HF *Ultra-Scale Playbook*).
+- **Context parallelism** (Ring-style) is now required for 1M-context training; **expert parallelism** (DeepEP) for MoE.
+- Serving large models uses **TP within an NVLink node, PP/DP across nodes**; **disaggregated serving + GB200 NVL72** scale-up changes the interconnect calculus.
+
+<!-- sota:10L11 -->
+
+## Week 12 — Capstone: FP16 → Quantized, Served, Benchmarked Endpoint
 
 **Altitude:** Specialist · **Anchor case:** your own model, taken the full efficiency distance, with a defended deployment recommendation.
 
@@ -1149,6 +1166,13 @@ Before the final benchmark, write down the operating point (quality/latency/cost
 - Neural Magic **GuideLLM** + vLLM `benchmark_serving` docs (2025) — the benchmarking method reference.
 
 ---
+
+### State of the Art (June 2026)
+- The 2026 reference pipeline: **INT4/FP8 quantize (llm-compressor) → vLLM serve with FA-4 + FP8 KV + prefix caching → EAGLE-3 speculative → GuideLLM benchmark → serverless-GPU deploy**.
+- Cost is reported as **$/1M tokens** with **prompt caching** (up to ~90% off static prefixes) and **model routing** as first-class levers.
+- Pareto framing (quality vs latency vs cost) on disclosed Blackwell/Hopper hardware is the deliverable standard.
+
+<!-- sota:10L12 -->
 
 ## Course-level outcomes
 

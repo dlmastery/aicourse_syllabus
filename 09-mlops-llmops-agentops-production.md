@@ -62,12 +62,6 @@ Per-week weights below are the share of the 60% lab bucket, expressed as **% of 
 
 ## Week 1 — The Production Mindset & Containerizing a Model
 
-### State of the Art (June 2026)
-- Reproducible artifacts + MLOps maturity unchanged; **uv + multi-stage slim images** are the 2026 default.
-- **Serverless GPU** (Modal, RunPod FlashBoot, Baseten) pay-per-second reshapes "where it runs."
-- **Prompt caching** is the highest-leverage cost lever for the LLM service (up to 90% off static prefixes).
-- Operate four managed assets: **weights, data, prompts, eval metrics**.
-
 **Altitude:** Engineer · **Format:** 3h lecture + 4h lab
 **Anchor case:** wrap `delivery-eta` in a reproducible Docker image that runs identically on your laptop and a teammate's.
 
@@ -160,13 +154,15 @@ CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]
 
 ---
 
-## Week 2 — Orchestration: Kubernetes & Serverless GPU
-
 ### State of the Art (June 2026)
-- **vLLM** is the reference serving engine; **FlashAttention-4** (Blackwell) is the default in vLLM v0.20+.
-- **Serverless GPU** (Modal / RunPod FlashBoot / Baseten) vs self-managed K8s is the live cost/control trade-off.
-- **KEDA** event/queue-depth autoscaling beats raw CPU targets for GPU/IO workloads.
-- **Scale-to-zero + cold-start** is the central cost/latency tension for spiky inference.
+- Reproducible artifacts + MLOps maturity unchanged; **uv + multi-stage slim images** are the 2026 default.
+- **Serverless GPU** (Modal, RunPod FlashBoot, Baseten) pay-per-second reshapes "where it runs."
+- **Prompt caching** is the highest-leverage cost lever for the LLM service (up to 90% off static prefixes).
+- Operate four managed assets: **weights, data, prompts, eval metrics**.
+
+<!-- sota:09L01 -->
+
+## Week 2 — Orchestration: Kubernetes & Serverless GPU
 
 **Altitude:** Engineer · **Anchor case:** deploy `delivery-eta` to a local Kubernetes cluster with health/readiness probes and an autoscaler; deploy the same image to a serverless GPU platform and compare.
 
@@ -261,13 +257,15 @@ spec:
 
 ---
 
-## Week 3 — Data Pipelines & Versioning: Airflow, DVC, Feature Stores
-
 ### State of the Art (June 2026)
-- **Data contracts** + pandera / Great Expectations gate pipelines; **DVC / LakeFS** for versioning.
-- **Feature stores** (Feast) for offline/online parity — **train/serve skew** is still the #1 silent killer.
-- **RAG-lifecycle drift** (stale index, changed docs) is a newly-monitored data axis (ties to Week 9).
-- **Dagster** is gaining on Airflow for asset-centric pipelines.
+- **vLLM** is the reference serving engine; **FlashAttention-4** (Blackwell) is the default in vLLM v0.20+.
+- **Serverless GPU** (Modal / RunPod FlashBoot / Baseten) vs self-managed K8s is the live cost/control trade-off.
+- **KEDA** event/queue-depth autoscaling beats raw CPU targets for GPU/IO workloads.
+- **Scale-to-zero + cold-start** is the central cost/latency tension for spiky inference.
+
+<!-- sota:09L02 -->
+
+## Week 3 — Data Pipelines & Versioning: Airflow, DVC, Feature Stores
 
 **Altitude:** Engineer · **Anchor case:** an Airflow DAG that refreshes `delivery-eta` features daily, with the dataset and model versioned in DVC and features served from Feast.
 
@@ -363,13 +361,15 @@ eta_features()
 
 ---
 
-## Week 4 — Experiment Tracking, Model Registry & Reproducible Training
-
 ### State of the Art (June 2026)
-- **W&B + MLflow 3.x registry** are standard; **lineage** (data hash + git SHA) is the audit anchor.
-- **RLVR / GRPO** post-training runs are tracked like any other sweep.
-- Model + prompt + eval-set versioning unify as the **"four assets."**
-- Reproducibility discipline (seeds, pinned data) is the cross-run comparability bar.
+- **Data contracts** + pandera / Great Expectations gate pipelines; **DVC / LakeFS** for versioning.
+- **Feature stores** (Feast) for offline/online parity — **train/serve skew** is still the #1 silent killer.
+- **RAG-lifecycle drift** (stale index, changed docs) is a newly-monitored data axis (ties to Week 9).
+- **Dagster** is gaining on Airflow for asset-centric pipelines.
+
+<!-- sota:09L03 -->
+
+## Week 4 — Experiment Tracking, Model Registry & Reproducible Training
 
 **Altitude:** Engineer · **Anchor case:** retrain `delivery-eta` with every run logged to W&B, the winning model promoted in the MLflow registry, and a one-command path from "experiment" to "registered, stage=Staging."
 
@@ -458,13 +458,15 @@ with mlflow.start_run():
 
 ---
 
-## Week 5 — Model Serving I: FastAPI, vLLM & Triton
-
 ### State of the Art (June 2026)
-- **vLLM continuous batching + FP8 KV-cache** (`--kv-cache-dtype fp8`, ~half KV memory, ~2× decode slope).
-- **Speculative decoding** gives 2–5× at low concurrency (incompatible with some KV-quant — a teachable gotcha).
-- **FlashAttention-3** (Hopper) / **FlashAttention-4** (Blackwell) are the attention defaults.
-- p50/p95/p99 + tokens/sec are the honest metrics; **Triton vs vLLM** is chosen by workload.
+- **W&B + MLflow 3.x registry** are standard; **lineage** (data hash + git SHA) is the audit anchor.
+- **RLVR / GRPO** post-training runs are tracked like any other sweep.
+- Model + prompt + eval-set versioning unify as the **"four assets."**
+- Reproducibility discipline (seeds, pinned data) is the cross-run comparability bar.
+
+<!-- sota:09L04 -->
+
+## Week 5 — Model Serving I: FastAPI, vLLM & Triton
 
 **Altitude:** Engineer · **Anchor case:** serve `delivery-eta` behind a FastAPI service *and* stand up the `support-copilot` LLM on a self-hosted **vLLM** OpenAI-compatible endpoint; compare to a Triton-served path.
 
@@ -561,13 +563,15 @@ def predict(r: Req, resp: Response):
 
 ---
 
-## Week 6 — CI/CD for Models *and* Prompts/Evals (Eval-Gated Deploys)
-
 ### State of the Art (June 2026)
-- **promptfoo + DeepEval** are the eval-gate tooling; **prompts are versioned, evaluated artifacts.**
-- **CI/CD/CT** (continuous training) + **eval-gated deploys** are the LLMOps maturity bar.
-- Golden/regression sets kept out of few-shot to avoid leakage.
-- LLM-judge gates need a **fixed judge + seed + tolerance band** (TrustJudge biases).
+- **vLLM continuous batching + FP8 KV-cache** (`--kv-cache-dtype fp8`, ~half KV memory, ~2× decode slope).
+- **Speculative decoding** gives 2–5× at low concurrency (incompatible with some KV-quant — a teachable gotcha).
+- **FlashAttention-3** (Hopper) / **FlashAttention-4** (Blackwell) are the attention defaults.
+- p50/p95/p99 + tokens/sec are the honest metrics; **Triton vs vLLM** is chosen by workload.
+
+<!-- sota:09L05 -->
+
+## Week 6 — CI/CD for Models *and* Prompts/Evals (Eval-Gated Deploys)
 
 **Altitude:** Engineer · **Anchor case:** a GitHub Actions pipeline that builds, tests, **evaluates**, and (only if the eval passes) deploys both `eta-model` and `support-copilot`. A prompt change to the copilot must clear an offline eval gate before it can ship.
 
@@ -658,13 +662,15 @@ jobs:
 
 ---
 
-## Week 7 — LLMOps: Gateways, Prompt Management, Semantic Caching & Cost/Latency Control
-
 ### State of the Art (June 2026)
-- The cost trio: **prompt caching** (up to 90%) + **semantic caching** + **model routing/escalation**.
-- Gateways: **LiteLLM, Portkey, Cloudflare AI Gateway** for keys/fallback/budgets.
-- **Model routing** across Opus 4.8 / GPT-5.5 / open-weight tiers by request difficulty.
-- **Cost-as-an-SLO** with spend kill-switches; prompt management as versioned artifacts.
+- **promptfoo + DeepEval** are the eval-gate tooling; **prompts are versioned, evaluated artifacts.**
+- **CI/CD/CT** (continuous training) + **eval-gated deploys** are the LLMOps maturity bar.
+- Golden/regression sets kept out of few-shot to avoid leakage.
+- LLM-judge gates need a **fixed judge + seed + tolerance band** (TrustJudge biases).
+
+<!-- sota:09L06 -->
+
+## Week 7 — LLMOps: Gateways, Prompt Management, Semantic Caching & Cost/Latency Control
 
 **Altitude:** Engineer · **Anchor case:** route every `support-copilot` LLM call through an **LLM gateway** (LiteLLM) with centralized keys, fallback, **semantic caching**, per-tenant budgets, and a live cost/latency dashboard.
 
@@ -754,13 +760,15 @@ litellm_settings:
 
 ---
 
-## Week 8 — Observability: Tracing, Metrics & LLM/Agent Telemetry
-
 ### State of the Art (June 2026)
-- **OpenTelemetry GenAI semantic conventions** are standard; **Langfuse / Arize Phoenix / LangSmith** for LLM traces.
-- **Trace-linked evals** score real production traces, not synthetic copies.
-- **RED + LLM metrics** (tokens, $/req, cache-hit, eval score) on one dashboard.
-- High-cardinality data (prompts, doc-ids) lives in **traces, not metric labels**.
+- The cost trio: **prompt caching** (up to 90%) + **semantic caching** + **model routing/escalation**.
+- Gateways: **LiteLLM, Portkey, Cloudflare AI Gateway** for keys/fallback/budgets.
+- **Model routing** across Opus 4.8 / GPT-5.5 / open-weight tiers by request difficulty.
+- **Cost-as-an-SLO** with spend kill-switches; prompt management as versioned artifacts.
+
+<!-- sota:09L07 -->
+
+## Week 8 — Observability: Tracing, Metrics & LLM/Agent Telemetry
 
 **Altitude:** Engineer · **Anchor case:** full **OpenTelemetry** tracing of a `support-copilot` request (gateway → retrieval → tool calls → LLM), exported to **Langfuse** (LLM traces) and **Prometheus/Grafana** (RED metrics), with **Arize Phoenix** for retrieval/LLM evals on traces.
 
@@ -852,13 +860,15 @@ def answer(query: str) -> str:
 
 ---
 
-## Week 9 — Monitoring, Drift Detection & Alerting in Production
-
 ### State of the Art (June 2026)
-- **Evidently / NannyML** for data + performance drift; NannyML **estimates performance without labels**.
-- LLM proxy signals: **eval-on-sample, refusal rate, retrieval relevance, user feedback**.
-- **RAG-lifecycle drift** (index staleness) is now a first-class monitored axis.
-- **SLO / error-budget + for-duration** alerts to beat pager fatigue.
+- **OpenTelemetry GenAI semantic conventions** are standard; **Langfuse / Arize Phoenix / LangSmith** for LLM traces.
+- **Trace-linked evals** score real production traces, not synthetic copies.
+- **RED + LLM metrics** (tokens, $/req, cache-hit, eval score) on one dashboard.
+- High-cardinality data (prompts, doc-ids) lives in **traces, not metric labels**.
+
+<!-- sota:09L08 -->
+
+## Week 9 — Monitoring, Drift Detection & Alerting in Production
 
 **Altitude:** Engineer · **Anchor case:** detect when `delivery-eta` accuracy decays (new neighborhoods, holiday traffic) and when `support-copilot` quality drifts (new product line), with alerts that page only on real problems.
 
@@ -946,13 +956,15 @@ if share > 0.3:                 # tune from history, not gut feel
 
 ---
 
-## Week 10 — Safe Release: Shadow, Canary, Rollback & Human-in-the-Loop Gates
-
 ### State of the Art (June 2026)
-- **Argo Rollouts** canary + **AnalysisTemplate** for metric-driven auto-rollback.
-- **Shadow mode** (side-effects stubbed) → canary → blue-green/rolling is the progression.
-- **HITL gates** on irreversible agent actions with audit trails.
-- **A/B / interleaving** to decide promotion on a real metric, not a hunch.
+- **Evidently / NannyML** for data + performance drift; NannyML **estimates performance without labels**.
+- LLM proxy signals: **eval-on-sample, refusal rate, retrieval relevance, user feedback**.
+- **RAG-lifecycle drift** (index staleness) is now a first-class monitored axis.
+- **SLO / error-budget + for-duration** alerts to beat pager fatigue.
+
+<!-- sota:09L09 -->
+
+## Week 10 — Safe Release: Shadow, Canary, Rollback & Human-in-the-Loop Gates
 
 **Altitude:** Engineer · **Anchor case:** ship a new `eta-model` version and a new `support-copilot` prompt/model via **shadow mode → canary → rolling release**, with automated rollback on SLO breach and an HITL approval gate for high-risk agent actions.
 
@@ -1041,13 +1053,15 @@ strategy:
 
 ---
 
-## Week 11 — AgentOps: Operating Multi-Step Agent Systems in Production
-
 ### State of the Art (June 2026)
-- Agent SDKs (**LangGraph** durable checkpointing, **Claude Agent SDK**, **Google ADK** native A2A) are the runtimes.
-- **Trajectory-level evals** (τ²-bench dual-control, **pass^k**) over final-answer scoring.
-- Guardrails: **step/cost/time budgets, loop detection, tool allow-lists, injection filters**.
-- **Agent memory** (Mem0/LangMem) + retention/PII policy is the production differentiator.
+- **Argo Rollouts** canary + **AnalysisTemplate** for metric-driven auto-rollback.
+- **Shadow mode** (side-effects stubbed) → canary → blue-green/rolling is the progression.
+- **HITL gates** on irreversible agent actions with audit trails.
+- **A/B / interleaving** to decide promotion on a real metric, not a hunch.
+
+<!-- sota:09L10 -->
+
+## Week 11 — AgentOps: Operating Multi-Step Agent Systems in Production
 
 **Altitude:** Engineer→Specialist · **Anchor case:** promote `support-copilot` from a single LLM call to a **tool-using, multi-step agent** (LangGraph) and operate it: per-step tracing, loop/cost guards, agent-specific evals (tau-bench-style), memory, and security against prompt injection.
 
@@ -1139,13 +1153,15 @@ agent = g.compile()
 
 ---
 
-## Week 12 — Capstone: One Model + One Agent, Notebook → Monitored Production
-
 ### State of the Art (June 2026)
-- The 2026 production bar: **containerized + eval-gated CI/CD + gateway cost control + OTel traces + drift alerts + auto-rollback + AgentOps**.
-- Serving: **vLLM + FP8 KV-cache + FlashAttention-4**, with serverless GPU for spiky load.
-- **EU AI Act** GPAI obligations (**Aug 2, 2026**) make audit trails / evidence a compliance asset.
-- Frontier models swappable (**Opus 4.8 / GPT-5.5 / Gemini 3.1**) with open-weight fallback (**DeepSeek V4, Qwen 3.5**).
+- Agent SDKs (**LangGraph** durable checkpointing, **Claude Agent SDK**, **Google ADK** native A2A) are the runtimes.
+- **Trajectory-level evals** (τ²-bench dual-control, **pass^k**) over final-answer scoring.
+- Guardrails: **step/cost/time budgets, loop detection, tool allow-lists, injection filters**.
+- **Agent memory** (Mem0/LangMem) + retention/PII policy is the production differentiator.
+
+<!-- sota:09L11 -->
+
+## Week 12 — Capstone: One Model + One Agent, Notebook → Monitored Production
 
 **Altitude:** Engineer (graduating to Specialist) · **Anchor case:** your own model + your own agent, taken the full distance.
 
@@ -1231,6 +1247,14 @@ Student-chosen, but must be **versioned (DVC)** and **documented** (size + licen
 - Sculley et al., *Hidden Technical Debt in ML Systems* (2015) — re-read as the capstone post-mortem lens.
 
 ---
+
+### State of the Art (June 2026)
+- The 2026 production bar: **containerized + eval-gated CI/CD + gateway cost control + OTel traces + drift alerts + auto-rollback + AgentOps**.
+- Serving: **vLLM + FP8 KV-cache + FlashAttention-4**, with serverless GPU for spiky load.
+- **EU AI Act** GPAI obligations (**Aug 2, 2026**) make audit trails / evidence a compliance asset.
+- Frontier models swappable (**Opus 4.8 / GPT-5.5 / Gemini 3.1**) with open-weight fallback (**DeepSeek V4, Qwen 3.5**).
+
+<!-- sota:09L12 -->
 
 ## Course-level outcomes
 

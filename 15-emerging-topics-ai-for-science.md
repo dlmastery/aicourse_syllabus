@@ -67,11 +67,6 @@ Produce **either** a faithful reproduction (with an ablation that goes beyond th
 
 ## Week 1 — Operating at the Frontier: Reading Papers, Choosing a Thread, Signal vs Hype
 
-### State of the Art (June 2026)
-- Reproducibility crisis + benchmark contamination are first-order concerns; the AI Index 2025 gives landscape context.
-- Papers With Code + released checkpoints define reproducibility tiers; the 1M-context/MoE frontier inflates ‘SOTA’ churn.
-- LLM-as-judge leaderboards need contamination + bias scrutiny (TrustJudge).
-
 **Altitude:** Specialist · **Format:** 3h seminar + 3h lab
 **Anchor case:** take one over-hyped 2025–2026 result and a sober follow-up that tempered it; learn to hold both.
 
@@ -154,12 +149,14 @@ def triage_complete(t): return all(v for v in t.values())   # gate before presen
 
 ---
 
-## Week 2 — Autonomous Research Agents: The "AI Scientist"
-
 ### State of the Art (June 2026)
-- AI-Scientist (Sakana), Coscientist, and FunSearch are the references; the verification bottleneck (not ideation) is the limit.
-- Novelty-vs-recombination and automated-reviewer bias are active critiques (Si et al. human study).
-- Execution-grounded research loops (Claude Agent SDK + MCP tools) are the 2026 build pattern.
+- Reproducibility crisis + benchmark contamination are first-order concerns; the AI Index 2025 gives landscape context.
+- Papers With Code + released checkpoints define reproducibility tiers; the 1M-context/MoE frontier inflates ‘SOTA’ churn.
+- LLM-as-judge leaderboards need contamination + bias scrutiny (TrustJudge).
+
+<!-- sota:15L01 -->
+
+## Week 2 — Autonomous Research Agents: The "AI Scientist"
 
 **Altitude:** Specialist · **Anchor case:** an agent that proposes hypotheses, runs experiments, and writes them up — and the question of whether its "discoveries" are real.
 
@@ -239,12 +236,14 @@ def audit_claim(claim: dict, rerun_fn, n_seeds=5):
 
 ---
 
-## Week 3 — AI for Science I: Structure Prediction (AlphaFold-style) & Geometric DL
-
 ### State of the Art (June 2026)
-- AlphaFold3 (biomolecular complexes) + ESMFold (MSA-free LM) are the references; pLDDT/PAE confidence calibration is the honesty check.
-- e3nn / SE(3)-equivariance is the geometric-DL standard; failure regimes are dynamics and novel folds.
-- PDB/CASP remain ground truth.
+- AI-Scientist (Sakana), Coscientist, and FunSearch are the references; the verification bottleneck (not ideation) is the limit.
+- Novelty-vs-recombination and automated-reviewer bias are active critiques (Si et al. human study).
+- Execution-grounded research loops (Claude Agent SDK + MCP tools) are the 2026 build pattern.
+
+<!-- sota:15L02 -->
+
+## Week 3 — AI for Science I: Structure Prediction (AlphaFold-style) & Geometric DL
 
 **Altitude:** Specialist · **Anchor case:** protein structure prediction as the field's proof that ML can solve a 50-year scientific problem — and what generalizes from it. **(Reproduction milestone M1 due.)**
 
@@ -327,12 +326,14 @@ def fold(seq):
 
 ---
 
-## Week 4 — AI for Science II: Molecules, Materials & Generative Design
-
 ### State of the Art (June 2026)
-- GNoME + MatterGen (Nature 2023/2025) are the generative-discovery references; the proposed-vs-validated gap is the headline critique (Cheetham/Seshadri).
-- Validity funnels (RDKit / formation-energy) + applicability-domain/uncertainty gate OOD overconfidence.
-- Materials Project API + QM9 are the open datasets.
+- AlphaFold3 (biomolecular complexes) + ESMFold (MSA-free LM) are the references; pLDDT/PAE confidence calibration is the honesty check.
+- e3nn / SE(3)-equivariance is the geometric-DL standard; failure regimes are dynamics and novel folds.
+- PDB/CASP remain ground truth.
+
+<!-- sota:15L03 -->
+
+## Week 4 — AI for Science II: Molecules, Materials & Generative Design
 
 **Altitude:** Specialist · **Anchor case:** generative design of molecules/materials (GNoME, MatterGen-style) and the gap between *proposed* and *validated* candidates.
 
@@ -411,12 +412,14 @@ def validity_funnel(smiles_list, train_set):
 
 ---
 
-## Week 5 — Physics-Informed ML: PINNs, Neural Operators & Scientific Surrogates
-
 ### State of the Art (June 2026)
-- PINNs vs Fourier Neural Operators (FNO) is the core contrast; neural operators win for families/surrogates.
-- Training pathologies (spectral bias, loss imbalance) need Fourier features / curriculum / gradient weighting.
-- DeepXDE + neuraloperator are the tooling; always validate against a numerical solver.
+- GNoME + MatterGen (Nature 2023/2025) are the generative-discovery references; the proposed-vs-validated gap is the headline critique (Cheetham/Seshadri).
+- Validity funnels (RDKit / formation-energy) + applicability-domain/uncertainty gate OOD overconfidence.
+- Materials Project API + QM9 are the open datasets.
+
+<!-- sota:15L04 -->
+
+## Week 5 — Physics-Informed ML: PINNs, Neural Operators & Scientific Surrogates
 
 **Altitude:** Specialist · **Anchor case:** solving/【learning】a PDE with a physics-informed network vs a neural operator — and when each is the right tool.
 
@@ -500,12 +503,14 @@ def loss(net, x_d, t_d, u_d, x_c, t_c, lam=1.0):
 
 ---
 
-## Week 6 — Emergence, Scaling & In-Context Learning
-
 ### State of the Art (June 2026)
-- Emergence-as-metric-artifact (Schaeffer 2023) vs Wei 2022 is the live debate; grokking is the clean small-scale lab.
-- Chinchilla compute-optimal scaling still frames training; power-law over-extrapolation is the warning.
-- Pythia suite + BIG-Bench enable cross-scale reproduction.
+- PINNs vs Fourier Neural Operators (FNO) is the core contrast; neural operators win for families/surrogates.
+- Training pathologies (spectral bias, loss imbalance) need Fourier features / curriculum / gradient weighting.
+- DeepXDE + neuraloperator are the tooling; always validate against a numerical solver.
+
+<!-- sota:15L05 -->
+
+## Week 6 — Emergence, Scaling & In-Context Learning
 
 **Altitude:** Specialist · **Anchor case:** the "emergent abilities" debate — real phase transitions vs artifacts of discontinuous metrics. **(Reproduction milestone M2 due.)**
 
@@ -588,12 +593,14 @@ def token_edit_sim(pred, gold):                     # continuous: smooth credit
 
 ---
 
-## Week 7 — Mechanistic Interpretability: Circuits, SAEs & CoT Monitoring
-
 ### State of the Art (June 2026)
-- SAEs for monosemantic features (Scaling Monosemanticity, Gemma Scope) + activation patching for causal circuits; a MIT 2026 mech-interp breakthrough accelerated the field.
-- Induction heads remain the canonical circuit; causal patching beats correlational stories.
-- TransformerLens + SAELens/Neuronpedia tooling.
+- Emergence-as-metric-artifact (Schaeffer 2023) vs Wei 2022 is the live debate; grokking is the clean small-scale lab.
+- Chinchilla compute-optimal scaling still frames training; power-law over-extrapolation is the warning.
+- Pythia suite + BIG-Bench enable cross-scale reproduction.
+
+<!-- sota:15L06 -->
+
+## Week 7 — Mechanistic Interpretability: Circuits, SAEs & CoT Monitoring
 
 **Altitude:** Specialist · **Anchor case:** reverse-engineering a small circuit and extracting interpretable features with a sparse autoencoder.
 
@@ -675,12 +682,14 @@ def patch_and_measure(clean, corrupt, layer, pos):
 
 ---
 
-## Week 8 — Neuro-Symbolic Methods: Combining Learning and Reasoning
-
 ### State of the Art (June 2026)
-- LLM-as-program-generator + solver (PAL-style) with generate→execute→verify→repair is the reliable 2026 pattern; ARC-AGI-2 is the systematic-reasoning bar.
-- Verifiability is the payoff — symbolic answers are checkable; differentiable logic (DeepProbLog) stays brittle/niche.
-- Execution grounding beats ‘the LLM looked right’.
+- SAEs for monosemantic features (Scaling Monosemanticity, Gemma Scope) + activation patching for causal circuits; a MIT 2026 mech-interp breakthrough accelerated the field.
+- Induction heads remain the canonical circuit; causal patching beats correlational stories.
+- TransformerLens + SAELens/Neuronpedia tooling.
+
+<!-- sota:15L07 -->
+
+## Week 8 — Neuro-Symbolic Methods: Combining Learning and Reasoning
 
 **Altitude:** Specialist · **Anchor case:** a task where pure neural nets fail at systematic reasoning and a neuro-symbolic hybrid succeeds (e.g., program synthesis / constraint solving / abstract reasoning).
 
@@ -760,12 +769,14 @@ def neurosymbolic_solve(problem, llm, max_repairs=3):
 
 ---
 
-## Week 9 — World Models & Simulation for Reasoning and Control
-
 ### State of the Art (June 2026)
-- DreamerV3 + IRIS remain references; Genie-style interactive environments and video-diffusion world models are the 2026 shift (DiT over spatiotemporal latents).
-- Model exploitation + compounding error bound the trustworthy horizon; report the imagined-vs-real gap.
-- World models double as embodied training simulators.
+- LLM-as-program-generator + solver (PAL-style) with generate→execute→verify→repair is the reliable 2026 pattern; ARC-AGI-2 is the systematic-reasoning bar.
+- Verifiability is the payoff — symbolic answers are checkable; differentiable logic (DeepProbLog) stays brittle/niche.
+- Execution grounding beats ‘the LLM looked right’.
+
+<!-- sota:15L08 -->
+
+## Week 9 — World Models & Simulation for Reasoning and Control
 
 **Altitude:** Specialist · **Anchor case:** using a learned world model/simulator for planning or as a training environment — and the limits of imagined experience. **(Experiment milestone M3 due.)**
 
@@ -844,12 +855,14 @@ def exploitation_gap(world, policy, real_env, n=20):
 
 ---
 
-## Week 10 — Synthetic Data, Self-Improvement & the Efficiency/SSM Frontier
-
 ### State of the Art (June 2026)
-- STaR-style verifier-filtered self-improvement is standard; model collapse (Shumailov, Nature 2024) bounds it.
-- Mamba/SSMs + Transformer-SSM hybrids (Jamba) are the linear-time frontier; recall gaps vs attention are the tradeoff.
-- Synthetic data is the default scaling fuel — verification gates error amplification.
+- DreamerV3 + IRIS remain references; Genie-style interactive environments and video-diffusion world models are the 2026 shift (DiT over spatiotemporal latents).
+- Model exploitation + compounding error bound the trustworthy horizon; report the imagined-vs-real gap.
+- World models double as embodied training simulators.
+
+<!-- sota:15L09 -->
+
+## Week 10 — Synthetic Data, Self-Improvement & the Efficiency/SSM Frontier
 
 **Altitude:** Specialist · **Anchor case:** training on model-generated data (self-improvement) and the architectures (Mamba/SSMs) that change the cost frontier.
 
@@ -930,12 +943,14 @@ def self_improve_round(model, problems, verify):
 
 ---
 
-## Week 11 — Theorem Proving, Autoformalization & the Societal-Impact Panel
-
 ### State of the Art (June 2026)
-- AlphaProof (LLM + Lean + RL) is the reference for verifiable reasoning; a formal proof is a ground-truth reward (RLVR’s purest form).
-- Autoformalization + LeanDojo/mathlib are the tooling; Lean 4 is standard.
-- Verifiable reasoning ties directly to the governance panel on frontier stakes.
+- STaR-style verifier-filtered self-improvement is standard; model collapse (Shumailov, Nature 2024) bounds it.
+- Mamba/SSMs + Transformer-SSM hybrids (Jamba) are the linear-time frontier; recall gaps vs attention are the tradeoff.
+- Synthetic data is the default scaling fuel — verification gates error amplification.
+
+<!-- sota:15L10 -->
+
+## Week 11 — Theorem Proving, Autoformalization & the Societal-Impact Panel
 
 **Altitude:** Specialist · **Anchor case:** AlphaProof-style automated theorem proving (LLM + Lean + RL) — verifiable reasoning — paired with a panel on the societal stakes of frontier AI.
 
@@ -1019,12 +1034,14 @@ def attempt_proof(theorem: Theorem, llm, max_steps=50):
 
 ---
 
-## Week 12 — In-Class Hackathon: Build at the Frontier Under Pressure
-
 ### State of the Art (June 2026)
-- Frontier sprints lean on released checkpoints + serverless GPU (Modal/RunPod, pay-per-second) and prompt caching for cost.
-- Reproduce-the-trend (a scaled-down ablation) beats hero runs under time pressure.
-- Inspect AI / DeepEval give fast, honest evals.
+- AlphaProof (LLM + Lean + RL) is the reference for verifiable reasoning; a formal proof is a ground-truth reward (RLVR’s purest form).
+- Autoformalization + LeanDojo/mathlib are the tooling; Lean 4 is standard.
+- Verifiable reasoning ties directly to the governance panel on frontier stakes.
+
+<!-- sota:15L11 -->
+
+## Week 12 — In-Class Hackathon: Build at the Frontier Under Pressure
 
 **Altitude:** Specialist · **Anchor case:** a one-day sprint extending your thread or combining two frontier ideas.
 
@@ -1098,12 +1115,14 @@ def sprint_ready(s): return s["result"] is not None and s["baseline"] and s["lim
 
 ---
 
-## Week 13 — Final Talks: Conference-Style Presentations & Defense
-
 ### State of the Art (June 2026)
-- Conference-grade reproduction = primary-source map + reproduced number with delta + your own ablation + honest limitations.
-- Pinned environments (uv) and one-command repro are the reproducibility bar.
-- The real-vs-hype claim is the deliverable, not the headline number.
+- Frontier sprints lean on released checkpoints + serverless GPU (Modal/RunPod, pay-per-second) and prompt caching for cost.
+- Reproduce-the-trend (a scaled-down ablation) beats hero runs under time pressure.
+- Inspect AI / DeepEval give fast, honest evals.
+
+<!-- sota:15L12 -->
+
+## Week 13 — Final Talks: Conference-Style Presentations & Defense
 
 **Altitude:** Specialist · **Anchor case:** present and defend your term project as a conference talk to a panel of peers + instructors.
 
@@ -1175,6 +1194,13 @@ def final_gate(project: dict): return {k: bool(project.get(k)) for k in FINAL_GA
   - Lipton & Steinhardt, "Troubling Trends in Machine Learning Scholarship," 2018 (revisited as a self-check).
 
 ---
+
+### State of the Art (June 2026)
+- Conference-grade reproduction = primary-source map + reproduced number with delta + your own ablation + honest limitations.
+- Pinned environments (uv) and one-command repro are the reproducibility bar.
+- The real-vs-hype claim is the deliverable, not the headline number.
+
+<!-- sota:15L13 -->
 
 ## Course-level outcomes
 

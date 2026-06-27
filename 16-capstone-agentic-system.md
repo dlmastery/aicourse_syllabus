@@ -43,11 +43,6 @@ This is a **portfolio** course. The six milestones below sum to **100%**. Each m
 
 ## Milestone 1 — Proposal & Problem Framing
 
-### State of the Art (June 2026)
-- Evaluation-driven development (Huyen, AI Engineering 2025): set numeric task-success/latency/cost/safety targets before building.
-- Ordering Prompt → RAG → Fine-tune → Distill keeps scope shippable; MCP-first tool design is the 2026 default.
-- 1M-context + tunable thinking-effort change the feasibility frontier for a vertical slice.
-
 **Altitude:** Engineer → Specialist · **Anchor:** the decision your system improves and the user who feels it.
 
 ### Learning goals
@@ -124,12 +119,14 @@ groundedness:        {target: 0.90, measure: "RAG faithfulness judge", gate: M2}
 
 ---
 
-## Milestone 2 — Data, RAG & Prototype
-
 ### State of the Art (June 2026)
-- 2026 RAG = agentic RAG (iterative rewrite + LLM-judge) + GraphRAG for multi-hop; ColPali/ColQwen3 late-interaction for PDF/visual retrieval without OCR.
-- Stack: BM25/dense → reranker (Cohere Rerank 3.5 / Voyage rerank-2.5 / BGE-v2) → synthesis; Ragas for groundedness.
-- Embeddings: voyage-3-large, cohere embed-v4, BGE-M3; vector DBs Qdrant/Pinecone/pgvector.
+- Evaluation-driven development (Huyen, AI Engineering 2025): set numeric task-success/latency/cost/safety targets before building.
+- Ordering Prompt → RAG → Fine-tune → Distill keeps scope shippable; MCP-first tool design is the 2026 default.
+- 1M-context + tunable thinking-effort change the feasibility frontier for a vertical slice.
+
+<!-- sota:16L01 -->
+
+## Milestone 2 — Data, RAG & Prototype
 
 **Altitude:** Engineer · **Anchor:** the knowledge your agent must ground on, and a first end-to-end vertical slice.
 
@@ -209,12 +206,14 @@ def rag_answer(query, retriever, reranker, llm, k=20, top=5):
 
 ---
 
-## Milestone 3 — Multi-Agent System with MCP + Fine-Tuning
-
 ### State of the Art (June 2026)
-- MCP is the de-facto tool standard (Linux Foundation Agentic AI Foundation; 2026-07-28 spec with Tasks/Extensions/auth); A2A handles agent-to-agent delegation.
-- Orchestrator-led multi-agent (LangGraph durable checkpointing, OpenAI Agents SDK handoffs, Claude Agent SDK subagents) replaces monolithic agents.
-- Fine-tune stack: SFT→LoRA/QLoRA/DoRA→DPO (trl/peft/unsloth, 2–5× faster); agent memory is the production differentiator.
+- 2026 RAG = agentic RAG (iterative rewrite + LLM-judge) + GraphRAG for multi-hop; ColPali/ColQwen3 late-interaction for PDF/visual retrieval without OCR.
+- Stack: BM25/dense → reranker (Cohere Rerank 3.5 / Voyage rerank-2.5 / BGE-v2) → synthesis; Ragas for groundedness.
+- Embeddings: voyage-3-large, cohere embed-v4, BGE-M3; vector DBs Qdrant/Pinecone/pgvector.
+
+<!-- sota:16L02 -->
+
+## Milestone 3 — Multi-Agent System with MCP + Fine-Tuning
 
 **Altitude:** Engineer → Specialist · **Anchor:** the orchestrated agents and tools that do the actual work.
 
@@ -301,12 +300,14 @@ async def orchestrate(task, mcp_sessions, agents):
 
 ---
 
-## Milestone 4 — Evaluation Harness & Safety Review
-
 ### State of the Art (June 2026)
-- Execution-based agent evals: SWE-bench Verified/Pro, τ²-bench pass^k reliability, AgentDojo for injection; LLM-judge with documented biases (TrustJudge).
-- Eval-gated CI is standard; red-team / prompt-injection regression lives in the pipeline.
-- UK AISI Inspect AI / DeepEval / LangSmith / Braintrust for harness + tracing.
+- MCP is the de-facto tool standard (Linux Foundation Agentic AI Foundation; 2026-07-28 spec with Tasks/Extensions/auth); A2A handles agent-to-agent delegation.
+- Orchestrator-led multi-agent (LangGraph durable checkpointing, OpenAI Agents SDK handoffs, Claude Agent SDK subagents) replaces monolithic agents.
+- Fine-tune stack: SFT→LoRA/QLoRA/DoRA→DPO (trl/peft/unsloth, 2–5× faster); agent memory is the production differentiator.
+
+<!-- sota:16L03 -->
+
+## Milestone 4 — Evaluation Harness & Safety Review
 
 **Altitude:** Specialist · **Anchor:** the eval and safety evidence that decides whether this system may ship.
 
@@ -387,12 +388,14 @@ def eval_gate(system, test_set, judge, redteam, targets):
 
 ---
 
-## Milestone 5 — LLMOps/AgentOps Production Deployment
-
 ### State of the Art (June 2026)
-- Cost trio: prompt caching (up to 90% off static prefixes) + model routing + semantic caching + batching; serverless GPU (Modal/RunPod FlashBoot/Baseten) pay-per-second.
-- Serving: vLLM + FP8 KV-cache + FlashAttention-4; speculative decoding for low concurrency.
-- Observability: Langfuse/LangSmith/Arize Phoenix trace retrieval+prompt+latency+cost; LiteLLM/Portkey gateway.
+- Execution-based agent evals: SWE-bench Verified/Pro, τ²-bench pass^k reliability, AgentDojo for injection; LLM-judge with documented biases (TrustJudge).
+- Eval-gated CI is standard; red-team / prompt-injection regression lives in the pipeline.
+- UK AISI Inspect AI / DeepEval / LangSmith / Braintrust for harness + tracing.
+
+<!-- sota:16L04 -->
+
+## Milestone 5 — LLMOps/AgentOps Production Deployment
 
 **Altitude:** Engineer → Specialist · **Anchor:** the running, observable, cost-bounded system in front of real (or shadow) traffic.
 
@@ -475,12 +478,14 @@ jobs:
 
 ---
 
-## Milestone 6 — Monitored Production, Final Report & Showcase
-
 ### State of the Art (June 2026)
-- Production assets to manage: weights, data, prompts, eval metrics; prompt management as versioned, evaluated artifacts.
-- Drift detection via live LLM-judge sampling; incident postmortems close the loop.
-- Evidence-over-demos: report against M1 targets including the misses.
+- Cost trio: prompt caching (up to 90% off static prefixes) + model routing + semantic caching + batching; serverless GPU (Modal/RunPod FlashBoot/Baseten) pay-per-second.
+- Serving: vLLM + FP8 KV-cache + FlashAttention-4; speculative decoding for low concurrency.
+- Observability: Langfuse/LangSmith/Arize Phoenix trace retrieval+prompt+latency+cost; LiteLLM/Portkey gateway.
+
+<!-- sota:16L05 -->
+
+## Milestone 6 — Monitored Production, Final Report & Showcase
 
 **Altitude:** All altitudes (integrated) · **Anchor:** proof the system runs in the wild and the story that ties it together.
 
@@ -560,6 +565,13 @@ def monitor_drift(prod_logs, judge, baseline_quality, window=200, drop=0.05):
 - Source book Ch. 16 (projects into evidence) + Appendix A (capstone blueprints).
 
 ---
+
+### State of the Art (June 2026)
+- Production assets to manage: weights, data, prompts, eval metrics; prompt management as versioned, evaluated artifacts.
+- Drift detection via live LLM-judge sampling; incident postmortems close the loop.
+- Evidence-over-demos: report against M1 targets including the misses.
+
+<!-- sota:16L06 -->
 
 ## Example Capstone Tracks (choose one; 6–8 options)
 

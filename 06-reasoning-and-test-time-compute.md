@@ -52,12 +52,6 @@ Per-week lab weights (the 55%): W1 5 · W2 6 · W3 6 · W4 7 · W5 7 · W6 7 · 
 
 ## Week 1 — What Reasoning Buys You: CoT, and Spending Compute at Inference
 
-### State of the Art (June 2026)
-- Tunable **thinking-effort** is now a product control: Claude Opus 4.8 adaptive thinking, GPT-5.5 router to "GPT-5 thinking," Gemini 3.1 Low/Med/High dial.
-- Framing shift: reasoning = **test-time compute you spend**, measured in tokens vs accuracy — not just bigger weights.
-- Verifiable math eval (GSM8K/MATH with `math-verify`) + contamination probes is the honest baseline.
-- Frontier reasoning ceilings for comparison: Gemini 3.1 GPQA-Diamond 94.3%, ARC-AGI-2 77.1% — a target to measure against, not to expect.
-
 **Altitude:** Engineer · **Format:** 3h lecture + 4h lab
 **Anchor case:** measure how much plain chain-of-thought prompting moves MathTutor-R's GSM8K accuracy over direct answering — the first "test-time compute" lever, for free.
 
@@ -154,13 +148,15 @@ def eval_set(model, problems, cot=True) -> dict:
 
 ---
 
-## Week 2 — Self-Consistency, Best-of-N & the Test-Time Scaling Curve
-
 ### State of the Art (June 2026)
-- Test-time scaling = parallel sampling + sequential deliberation; **verifier models** (RL-trained critics) aggregate samples — RL^V reports ~1.2–1.6× lifts.
-- Compute-optimal inference ("Large Language Monkeys," Snell et al.) — find the knee and report accuracy-per-token, not raw N.
-- Long-deliberation models internalize some self-consistency, but external best-of-N still wins with a good verifier.
-- AIME / MATH-500 are the standard hard sets for plotting scaling curves.
+- Tunable **thinking-effort** is now a product control: Claude Opus 4.8 adaptive thinking, GPT-5.5 router to "GPT-5 thinking," Gemini 3.1 Low/Med/High dial.
+- Framing shift: reasoning = **test-time compute you spend**, measured in tokens vs accuracy — not just bigger weights.
+- Verifiable math eval (GSM8K/MATH with `math-verify`) + contamination probes is the honest baseline.
+- Frontier reasoning ceilings for comparison: Gemini 3.1 GPQA-Diamond 94.3%, ARC-AGI-2 77.1% — a target to measure against, not to expect.
+
+<!-- sota:06L01 -->
+
+## Week 2 — Self-Consistency, Best-of-N & the Test-Time Scaling Curve
 
 **Altitude:** Engineer · **Anchor case:** spend more inference compute on MathTutor-R via sampling many chains and aggregating — and plot accuracy vs samples to see the scaling curve.
 
@@ -252,13 +248,15 @@ def scaling_curve(model, problems, Ns=(1,2,4,8,16,32)):
 
 ---
 
-## Week 3 — Verifiers & Reward Models: PRMs, ORMs & Process vs Outcome
-
 ### State of the Art (June 2026)
-- **Verifier models** are the 2026 lever: RL-trained critics score/aggregate samples; prefer verifiable reward over a learned RM where the answer is checkable.
-- PRM (Math-Shepherd / PRM800K lineage) vs ORM tradeoff; auto-labeled process supervision cuts step-label cost.
-- **Reward-hacking / verifier-gaming** is an active ICLR-2026 thread — probe for mis-scored chains and harden the checker.
-- `math-verify` / `sympy` + sandboxed code-exec (`e2b`) are the workhorse outcome verifiers.
+- Test-time scaling = parallel sampling + sequential deliberation; **verifier models** (RL-trained critics) aggregate samples — RL^V reports ~1.2–1.6× lifts.
+- Compute-optimal inference ("Large Language Monkeys," Snell et al.) — find the knee and report accuracy-per-token, not raw N.
+- Long-deliberation models internalize some self-consistency, but external best-of-N still wins with a good verifier.
+- AIME / MATH-500 are the standard hard sets for plotting scaling curves.
+
+<!-- sota:06L02 -->
+
+## Week 3 — Verifiers & Reward Models: PRMs, ORMs & Process vs Outcome
 
 **Altitude:** Engineer → Specialist · **Anchor case:** build the *scorer* that makes best-of-N and (later) RL work — an outcome verifier for math and a process reward model that scores each step.
 
@@ -351,13 +349,15 @@ def prm_score(chain: str, prm) -> float:   # process reward = min/mean step scor
 
 ---
 
-## Week 4 — ReAct, Tool Use & Search: Reasoning That Acts
-
 ### State of the Art (June 2026)
-- **MCP** is the de-facto tool/data standard (donated to the Linux Foundation Agentic AI Foundation; new 2026-07-28 spec) — agents call tools over MCP; **A2A** handles agent-to-agent delegation.
-- Agent SDKs: **LangGraph** (durable checkpointing), **OpenAI Agents SDK** (handoffs), **Claude Agent SDK** (subagents, computer-use), **Google ADK** (native A2A).
-- Deep-research agents (plan→search→read→synthesize→cite) with step/cost budgets; computer-use / browser agents are mainstream.
-- Evaluated on **GAIA / τ²-bench** (dual-control, pass^k) — full trajectory + safety, not just the final answer.
+- **Verifier models** are the 2026 lever: RL-trained critics score/aggregate samples; prefer verifiable reward over a learned RM where the answer is checkable.
+- PRM (Math-Shepherd / PRM800K lineage) vs ORM tradeoff; auto-labeled process supervision cuts step-label cost.
+- **Reward-hacking / verifier-gaming** is an active ICLR-2026 thread — probe for mis-scored chains and harden the checker.
+- `math-verify` / `sympy` + sandboxed code-exec (`e2b`) are the workhorse outcome verifiers.
+
+<!-- sota:06L03 -->
+
+## Week 4 — ReAct, Tool Use & Search: Reasoning That Acts
 
 **Altitude:** Engineer → Specialist · **Anchor case:** DeepResearch-lite — a ReAct agent that interleaves thinking with tool calls (calculator, code, web search) to answer questions a single chain can't.
 
@@ -451,13 +451,15 @@ def react(model, question, tools, max_steps=8, max_cost=0.5):
 
 ---
 
-## Week 5 — RLVR & GRPO: The DeepSeek-R1 Recipe From Scratch
-
 ### State of the Art (June 2026)
-- **RLVR** has displaced pure RLHF for reasoning post-training; **GRPO** (critic-free, group-relative advantage) is the reference algorithm.
-- Reproduction stack: TRL `GRPOTrainer`, **veRL**, OpenRLHF; **vLLM** for fast rollouts; Unsloth single-GPU path.
-- R1-Zero vs R1 (pure RL vs SFT cold-start) framing; **DeepSeek V4** (MIT, open) extends the lineage.
-- Co-plot reward with held-out eval — reward-up / eval-flat is the canonical reward-hacking tell.
+- **MCP** is the de-facto tool/data standard (donated to the Linux Foundation Agentic AI Foundation; new 2026-07-28 spec) — agents call tools over MCP; **A2A** handles agent-to-agent delegation.
+- Agent SDKs: **LangGraph** (durable checkpointing), **OpenAI Agents SDK** (handoffs), **Claude Agent SDK** (subagents, computer-use), **Google ADK** (native A2A).
+- Deep-research agents (plan→search→read→synthesize→cite) with step/cost budgets; computer-use / browser agents are mainstream.
+- Evaluated on **GAIA / τ²-bench** (dual-control, pass^k) — full trajectory + safety, not just the final answer.
+
+<!-- sota:06L04 -->
+
+## Week 5 — RLVR & GRPO: The DeepSeek-R1 Recipe From Scratch
 
 **Altitude:** Specialist · **Anchor case:** train MathTutor-R with **GRPO** and a verifiable reward — reproduce, at small scale, the core of the DeepSeek-R1 recipe and watch reasoning emerge from RL.
 
@@ -552,13 +554,15 @@ trainer.train()
 
 ---
 
-## Week 6 — GRPO in Practice: DAPO, Dr.GRPO & Stabilizing the Run
-
 ### State of the Art (June 2026)
-- 2025–26 stabilizers: **DAPO** (decoupled clip-higher, dynamic sampling, token-level loss, overlong shaping) and **Dr.GRPO** (length/difficulty debias).
-- Length bias + entropy collapse are the named pathologies — monitor entropy and length, and compare eval-per-compute.
-- **DAPO-Math-17k** / **DeepScaleR** are the standard verifiable-RL prompt pools.
-- "Does RL incentivize reasoning beyond the base model?" (Yue et al. 2025) remains an actively-debated open question.
+- **RLVR** has displaced pure RLHF for reasoning post-training; **GRPO** (critic-free, group-relative advantage) is the reference algorithm.
+- Reproduction stack: TRL `GRPOTrainer`, **veRL**, OpenRLHF; **vLLM** for fast rollouts; Unsloth single-GPU path.
+- R1-Zero vs R1 (pure RL vs SFT cold-start) framing; **DeepSeek V4** (MIT, open) extends the lineage.
+- Co-plot reward with held-out eval — reward-up / eval-flat is the canonical reward-hacking tell.
+
+<!-- sota:06L05 -->
+
+## Week 6 — GRPO in Practice: DAPO, Dr.GRPO & Stabilizing the Run
 
 **Altitude:** Specialist · **Anchor case:** your Week-5 GRPO run is unstable / length-explodes / plateaus — apply the 2025 fixes (DAPO, Dr.GRPO) and diagnose what each addresses.
 
@@ -649,13 +653,15 @@ cfg = GRPOConfig(
 
 ---
 
-## Week 7 — Long-Horizon Reasoning & Self-Improving Agents
-
 ### State of the Art (June 2026)
-- **Agentic RL** over tool-use trajectories: the **SWE-RL / DeepSWE** lineage drives strong SWE-bench scores from RL.
-- Self-improvement (**STaR / ReST-EM / rejection sampling**): verify→filter→SFT loops; guard against self-amplified narrowness.
-- Long-horizon credit assignment via process rewards / step verifiers; **success-at-budget** is the honest metric.
-- Reproducible, seeded environments are the bottleneck for trainable agentic RL.
+- 2025–26 stabilizers: **DAPO** (decoupled clip-higher, dynamic sampling, token-level loss, overlong shaping) and **Dr.GRPO** (length/difficulty debias).
+- Length bias + entropy collapse are the named pathologies — monitor entropy and length, and compare eval-per-compute.
+- **DAPO-Math-17k** / **DeepScaleR** are the standard verifiable-RL prompt pools.
+- "Does RL incentivize reasoning beyond the base model?" (Yue et al. 2025) remains an actively-debated open question.
+
+<!-- sota:06L06 -->
+
+## Week 7 — Long-Horizon Reasoning & Self-Improving Agents
 
 **Altitude:** Specialist · **Anchor case:** push DeepResearch-lite to multi-step, long-horizon tasks where credit assignment spans many actions — and let the agent learn from its own trajectories.
 
@@ -748,13 +754,15 @@ def self_improve(model, prompts, verifier, iters=3, n=8):
 
 ---
 
-## Week 8 — Reasoning Evaluation: AIME, GPQA, ARC-AGI & Contamination
-
 ### State of the Art (June 2026)
-- Hard, contamination-resistant suites: **ARC-AGI-2/3, GPQA-Diamond, AIME, Humanity's Last Exam** — report error bars on tiny sets.
-- Contamination control via perturbation (**GSM-Symbolic**) + fresh sets (**LiveBench**); separate reasoning from recall.
-- Report **pass@k vs maj@k vs single-shot** with compute; run a faithfulness audit for right-answer / wrong-chain cases.
-- Frontier ref: Gemini 3.1 ARC-AGI-2 77.1% — still well short of human, a live frontier.
+- **Agentic RL** over tool-use trajectories: the **SWE-RL / DeepSWE** lineage drives strong SWE-bench scores from RL.
+- Self-improvement (**STaR / ReST-EM / rejection sampling**): verify→filter→SFT loops; guard against self-amplified narrowness.
+- Long-horizon credit assignment via process rewards / step verifiers; **success-at-budget** is the honest metric.
+- Reproducible, seeded environments are the bottleneck for trainable agentic RL.
+
+<!-- sota:06L07 -->
+
+## Week 8 — Reasoning Evaluation: AIME, GPQA, ARC-AGI & Contamination
 
 **Altitude:** Specialist · **Anchor case:** prove MathTutor-R's gains are *real reasoning*, not memorization — evaluate on hard, contamination-resistant benchmarks and audit for cheating.
 
@@ -845,13 +853,15 @@ def perturbation_drop(model, problems, perturb):
 
 ---
 
-## Week 9 — Reasoning at Inference: Budgets, Faithfulness & Deployment
-
 ### State of the Art (June 2026)
-- Adaptive test-time compute (think-effort dials, difficulty routing) — spend tokens only on hard inputs.
-- Serving: **vLLM** FP8 KV-cache + **FlashAttention-4** + speculative decoding for long reasoning outputs, under budget caps.
-- **CoT faithfulness** is unresolved (Anthropic 2025, "models don't always say what they think") — perturbation probes for monitoring/safety.
-- Effort/budget controls are now exposed by frontier APIs (Opus 4.8, GPT-5.5, Gemini 3.1) — mirror them in your system.
+- Hard, contamination-resistant suites: **ARC-AGI-2/3, GPQA-Diamond, AIME, Humanity's Last Exam** — report error bars on tiny sets.
+- Contamination control via perturbation (**GSM-Symbolic**) + fresh sets (**LiveBench**); separate reasoning from recall.
+- Report **pass@k vs maj@k vs single-shot** with compute; run a faithfulness audit for right-answer / wrong-chain cases.
+- Frontier ref: Gemini 3.1 ARC-AGI-2 77.1% — still well short of human, a live frontier.
+
+<!-- sota:06L08 -->
+
+## Week 9 — Reasoning at Inference: Budgets, Faithfulness & Deployment
 
 **Altitude:** Specialist · **Anchor case:** ship MathTutor-R / DeepResearch-lite with controllable thinking budgets, faithful chains, and a cost/latency SLA — reasoning you can deploy and trust.
 
@@ -947,13 +957,15 @@ def faithfulness(model, q, chain, hint):
 
 ---
 
-## Week 10 — Capstone: A Small Reasoning-RL Run That Provably Improves Math
-
 ### State of the Art (June 2026)
-- End-to-end miniature DeepSeek-R1: **baseline → verifier → GRPO (+DAPO/Dr.GRPO) → hard-eval audit → bounded serving**.
-- Reproduction-audit discipline: reward↔eval aligned, perturbation drop small, eval-per-compute fair.
-- Tooling: TRL / veRL + vLLM + `math-verify` + Inspect AI; **DAPO-Math-17k / DeepScaleR** prompt pools.
-- Governance: document compute, contamination checks, and the reward-hacking audit in the evidence packet.
+- Adaptive test-time compute (think-effort dials, difficulty routing) — spend tokens only on hard inputs.
+- Serving: **vLLM** FP8 KV-cache + **FlashAttention-4** + speculative decoding for long reasoning outputs, under budget caps.
+- **CoT faithfulness** is unresolved (Anthropic 2025, "models don't always say what they think") — perturbation probes for monitoring/safety.
+- Effort/budget controls are now exposed by frontier APIs (Opus 4.8, GPT-5.5, Gemini 3.1) — mirror them in your system.
+
+<!-- sota:06L09 -->
+
+## Week 10 — Capstone: A Small Reasoning-RL Run That Provably Improves Math
 
 **Altitude:** Specialist · **Anchor case:** reproduce, end-to-end, a small reasoning-RL pipeline that takes a base/SFT model to a measurably better math reasoner — with an evidence packet that survives a reproduction audit.
 
@@ -1048,6 +1060,14 @@ def capstone_gate(base, prompts, verifier, heldout, perturbed):
 - Source book Ch. 16 (project → evidence packet); Subjects 04–05 eval/regression discipline reused.
 
 ---
+
+### State of the Art (June 2026)
+- End-to-end miniature DeepSeek-R1: **baseline → verifier → GRPO (+DAPO/Dr.GRPO) → hard-eval audit → bounded serving**.
+- Reproduction-audit discipline: reward↔eval aligned, perturbation drop small, eval-per-compute fair.
+- Tooling: TRL / veRL + vLLM + `math-verify` + Inspect AI; **DAPO-Math-17k / DeepScaleR** prompt pools.
+- Governance: document compute, contamination checks, and the reward-hacking audit in the evidence packet.
+
+<!-- sota:06L10 -->
 
 ## Course-level outcomes
 

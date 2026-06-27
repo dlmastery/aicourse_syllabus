@@ -37,11 +37,6 @@ _1 academic quarter · 3 lecture-hours/week · 13 lectures (~39 contact hrs). Fu
 
 ## Week 1 — The AI Risk Landscape & How to Reason About It
 
-### State of the Art (June 2026)
-- The International AI Safety Report (2025/2026) + frontier system cards frame misuse / misalignment / systemic risk; defense-in-depth is the consensus posture.
-- EU AI Act: most rules apply Aug 2 2026; the Digital Omnibus (provisional May 2026) defers Annex-III high-risk to Dec 2 2027 — dated facts matter.
-- Pre-deployment threat-modeling (assets/actors/vectors/impact) is now standard practice.
-
 **Altitude:** Specialist · **Format:** 3h seminar + 3h lab
 **Anchor case:** map the risk surface of the customer-support assistant before touching any model.
 
@@ -127,12 +122,14 @@ def measure_harm_rate(model, behaviors, judge):
 
 ---
 
-## Week 2 — Where Safety Enters Modern LLM Training (RLHF, RLVR, Safety Fine-Tuning)
-
 ### State of the Art (June 2026)
-- Default post-train stack is SFT → DPO/GRPO → safety FT; RLVR handles verifiable behaviors.
-- Alignment tax + over-refusal (XSTest) are measured, not assumed; Qi et al. ‘fine-tuning breaks safety’ is the cautionary result.
-- Safety is injected at multiple stages (data, RLHF, system) — a prompt-layer-only defense is brittle.
+- The International AI Safety Report (2025/2026) + frontier system cards frame misuse / misalignment / systemic risk; defense-in-depth is the consensus posture.
+- EU AI Act: most rules apply Aug 2 2026; the Digital Omnibus (provisional May 2026) defers Annex-III high-risk to Dec 2 2027 — dated facts matter.
+- Pre-deployment threat-modeling (assets/actors/vectors/impact) is now standard practice.
+
+<!-- sota:14L01 -->
+
+## Week 2 — Where Safety Enters Modern LLM Training (RLHF, RLVR, Safety Fine-Tuning)
 
 **Altitude:** Specialist · **Anchor case:** the small open model — add a safety behavior and measure the alignment tax.
 
@@ -213,12 +210,14 @@ def evaluate_intervention(model, harm_set, cap_set, benign_set, judge):
 
 ---
 
-## Week 3 — Adversarial Robustness I: Jailbreaks
-
 ### State of the Art (June 2026)
-- GCG (nanoGCG) and PAIR/TAP remain canonical; HarmBench is the standardized ASR framework with calibrated judges.
-- Jailbreak transferability across open→closed models is a 2026 concern with the MoE/1M-context frontier.
-- Automated red-teaming is now folded into constitutional-AI training loops.
+- Default post-train stack is SFT → DPO/GRPO → safety FT; RLVR handles verifiable behaviors.
+- Alignment tax + over-refusal (XSTest) are measured, not assumed; Qi et al. ‘fine-tuning breaks safety’ is the cautionary result.
+- Safety is injected at multiple stages (data, RLHF, system) — a prompt-layer-only defense is brittle.
+
+<!-- sota:14L02 -->
+
+## Week 3 — Adversarial Robustness I: Jailbreaks
 
 **Altitude:** Specialist · **Anchor case:** break the safety-tuned model from Week 2 with real jailbreak techniques.
 
@@ -300,12 +299,14 @@ def gcg_jailbreak(model, tokenizer, prompt, target="Sure, here is"):
 
 ---
 
-## Week 4 — Adversarial Robustness II: Prompt Injection, Agent Hijacking & Weight Protection
-
 ### State of the Art (June 2026)
-- Indirect prompt injection is the #1 agent threat (OWASP LLM Top-10 2025); MCP’s 2026 auth hardening is a direct response.
-- Defenses: spotlighting, dual-LLM/quarantine, least-privilege tool scoping; AgentDojo/InjecAgent are the benchmarks.
-- Computer-use/browser agents (Claude Computer Use, OpenAI Operator) widen the injection surface.
+- GCG (nanoGCG) and PAIR/TAP remain canonical; HarmBench is the standardized ASR framework with calibrated judges.
+- Jailbreak transferability across open→closed models is a 2026 concern with the MoE/1M-context frontier.
+- Automated red-teaming is now folded into constitutional-AI training loops.
+
+<!-- sota:14L03 -->
+
+## Week 4 — Adversarial Robustness II: Prompt Injection, Agent Hijacking & Weight Protection
 
 **Altitude:** Specialist · **Anchor case:** the support assistant gains tools (web, email) — now indirect prompt injection becomes the dominant threat.
 
@@ -390,12 +391,14 @@ def answer_with_rag(query, retriever, llm, defend=False):
 
 ---
 
-## Week 5 — Model Specs, Content Policies & Moderation (Llama Guard, NeMo Guardrails)
-
 ### State of the Art (June 2026)
-- OpenAI Model Spec + Anthropic’s constitution are the testable-policy templates; Llama Guard 3/4 + NeMo Guardrails are the guard stack.
-- Runtime input/output validators (prompt-injection focus) are the production guardrail norm.
-- Operating-point tuning on PR curves over harmful AND benign traffic is standard.
+- Indirect prompt injection is the #1 agent threat (OWASP LLM Top-10 2025); MCP’s 2026 auth hardening is a direct response.
+- Defenses: spotlighting, dual-LLM/quarantine, least-privilege tool scoping; AgentDojo/InjecAgent are the benchmarks.
+- Computer-use/browser agents (Claude Computer Use, OpenAI Operator) widen the injection surface.
+
+<!-- sota:14L04 -->
+
+## Week 5 — Model Specs, Content Policies & Moderation (Llama Guard, NeMo Guardrails)
 
 **Altitude:** Specialist · **Anchor case:** write the support assistant's model spec and enforce it with a guard model + guardrail layer.
 
@@ -479,12 +482,14 @@ def moderate(text, role="user"):
 
 ---
 
-## Week 6 — Scheming, Deception & Situational Awareness
-
 ### State of the Art (June 2026)
-- Alignment-faking (Anthropic 2024) and Apollo in-context-scheming evals are the references; SAD measures situational awareness.
-- Eval-gaming/sandbagging means behavioral evals alone are insufficient — pair with interpretability.
-- Matched-pair, cue-controlled probes + pre-registration are the rigor bar.
+- OpenAI Model Spec + Anthropic’s constitution are the testable-policy templates; Llama Guard 3/4 + NeMo Guardrails are the guard stack.
+- Runtime input/output validators (prompt-injection focus) are the production guardrail norm.
+- Operating-point tuning on PR curves over harmful AND benign traffic is standard.
+
+<!-- sota:14L05 -->
+
+## Week 6 — Scheming, Deception & Situational Awareness
 
 **Altitude:** Specialist · **Anchor case:** probe the reasoning model for eval-gaming and behavior that changes when it "thinks" it is being watched.
 
@@ -565,12 +570,14 @@ def behavior_delta(model, tasks, judge):
 
 ---
 
-## Week 7 — Mechanistic Interpretability I: Sparse Autoencoders (SAEs)
-
 ### State of the Art (June 2026)
-- SAEs for monosemantic features are the fastest-moving alignment area (Scaling Monosemanticity, Gemma Scope); a MIT 2026 mech-interp breakthrough accelerated it.
-- Activation atlases for deceptive-alignment detection are emerging.
-- SAELens + TransformerLens are the standard tooling.
+- Alignment-faking (Anthropic 2024) and Apollo in-context-scheming evals are the references; SAD measures situational awareness.
+- Eval-gaming/sandbagging means behavioral evals alone are insufficient — pair with interpretability.
+- Matched-pair, cue-controlled probes + pre-registration are the rigor bar.
+
+<!-- sota:14L06 -->
+
+## Week 7 — Mechanistic Interpretability I: Sparse Autoencoders (SAEs)
 
 **Altitude:** Specialist · **Anchor case:** train a tiny SAE on the reasoning model's activations and find interpretable features.
 
@@ -657,12 +664,14 @@ def sae_loss(x, x_hat, h, l1=1e-3):
 
 ---
 
-## Week 8 — Mechanistic Interpretability II: CoT Monitoring & Faithfulness
-
 ### State of the Art (June 2026)
-- CoT monitoring is a promising-but-fragile oversight tool (Korbak et al. 2025); optimization pressure erodes monitorability (OpenAI 2025).
-- Faithfulness perturbation tests (hint injection) quantify unfaithful CoT.
-- Don’t RL against the monitor — obfuscation is the documented failure.
+- SAEs for monosemantic features are the fastest-moving alignment area (Scaling Monosemanticity, Gemma Scope); a MIT 2026 mech-interp breakthrough accelerated it.
+- Activation atlases for deceptive-alignment detection are emerging.
+- SAELens + TransformerLens are the standard tooling.
+
+<!-- sota:14L07 -->
+
+## Week 8 — Mechanistic Interpretability II: CoT Monitoring & Faithfulness
 
 **Altitude:** Specialist · **Anchor case:** monitor the reasoning model's chain-of-thought for misbehavior and test whether the CoT is *faithful*.
 
@@ -745,12 +754,14 @@ def monitor_and_gate(agent, monitor, task):
 
 ---
 
-## Week 9 — Scalable Oversight, Constitutional AI & RLAIF
-
 ### State of the Art (June 2026)
-- Constitutional AI with dynamic constitutions + automated red-teaming is a 2026 frontier (Collective CAI principles).
-- RLAIF scales oversight but inherits the labeler-model’s blind spots; weak-to-strong and debate are active directions.
-- AI-feedback preference sets feed DPO/RLAIF in the standard trl stack.
+- CoT monitoring is a promising-but-fragile oversight tool (Korbak et al. 2025); optimization pressure erodes monitorability (OpenAI 2025).
+- Faithfulness perturbation tests (hint injection) quantify unfaithful CoT.
+- Don’t RL against the monitor — obfuscation is the documented failure.
+
+<!-- sota:14L08 -->
+
+## Week 9 — Scalable Oversight, Constitutional AI & RLAIF
 
 **Altitude:** Specialist · **Anchor case:** align the support assistant using AI feedback against a written constitution instead of per-example human labels.
 
@@ -831,12 +842,14 @@ def constitutional_revise(model, prompt, constitution):
 
 ---
 
-## Week 10 — Dangerous Capabilities, Responsible Scaling & Takeoff
-
 ### State of the Art (June 2026)
-- Responsible Scaling Policies / OpenAI Preparedness set capability thresholds; UK AISI Inspect AI is the eval harness.
-- Under-elicitation is the core measurement error — best-effort scaffolding/tools/fine-tune required (Cybench/WMDP benign proxies).
-- Machine unlearning (WMDP-style) is the emerging capability-removal safeguard; verify with relearning probes.
+- Constitutional AI with dynamic constitutions + automated red-teaming is a 2026 frontier (Collective CAI principles).
+- RLAIF scales oversight but inherits the labeler-model’s blind spots; weak-to-strong and debate are active directions.
+- AI-feedback preference sets feed DPO/RLAIF in the standard trl stack.
+
+<!-- sota:14L09 -->
+
+## Week 10 — Dangerous Capabilities, Responsible Scaling & Takeoff
 
 **Altitude:** Specialist · **Anchor case:** run a dangerous-capability eval and draft a responsible-scaling decision for the support assistant's next model upgrade.
 
@@ -922,12 +935,14 @@ def capability_task(dataset, tools):
 
 ---
 
-## Week 11 — Agent Safety: Autonomy, Permissions & Multi-Agent Risk
-
 ### State of the Art (June 2026)
-- Agent autonomy risk is governed by least-privilege authz + human-gates; τ-bench/τ²-bench (pass^k reliability) and AgentDojo are the evals.
-- Containment/sandboxing + full audit trails are production requirements; A2A delegation adds multi-agent risk.
-- Agent memory + computer-use widen the blast radius.
+- Responsible Scaling Policies / OpenAI Preparedness set capability thresholds; UK AISI Inspect AI is the eval harness.
+- Under-elicitation is the core measurement error — best-effort scaffolding/tools/fine-tune required (Cybench/WMDP benign proxies).
+- Machine unlearning (WMDP-style) is the emerging capability-removal safeguard; verify with relearning probes.
+
+<!-- sota:14L10 -->
+
+## Week 11 — Agent Safety: Autonomy, Permissions & Multi-Agent Risk
 
 **Altitude:** Specialist · **Anchor case:** the support assistant becomes an autonomous agent with real tools — bound its autonomy safely.
 
@@ -1011,12 +1026,14 @@ def guarded_execute(action, args, context, human_gate):
 
 ---
 
-## Week 12 — Governance: EU AI Act, NIST AI RMF, OWASP & Standards
-
 ### State of the Art (June 2026)
-- EU AI Act enforcement starts Aug 2 2026; the Digital Omnibus defers Annex-III high-risk to Dec 2 2027; fines up to €35M / 7% turnover.
-- NIST AI RMF + GenAI Profile, OWASP LLM Top-10, ISO/IEC 42001 are the mappable control frameworks.
-- Safety cases (UK AISI, Clymer et al.) are the documentation form.
+- Agent autonomy risk is governed by least-privilege authz + human-gates; τ-bench/τ²-bench (pass^k reliability) and AgentDojo are the evals.
+- Containment/sandboxing + full audit trails are production requirements; A2A delegation adds multi-agent risk.
+- Agent memory + computer-use widen the blast radius.
+
+<!-- sota:14L11 -->
+
+## Week 12 — Governance: EU AI Act, NIST AI RMF, OWASP & Standards
 
 **Altitude:** Specialist · **Anchor case:** produce a compliance dossier for shipping the support assistant in the EU.
 
@@ -1100,12 +1117,14 @@ gaps = [k for k, v in controls.items() if v["status"] != "met"]
 
 ---
 
-## Week 13 — Capstone: A Full Red-Team → Mitigation → Eval Cycle
-
 ### State of the Art (June 2026)
-- 2026 safety cases bundle threat model → multi-family red-team (calibrated ASR) → quantified mitigations → governance mapping.
-- Evidence-over-demos: before/after ASR, an explicit residual-risk statement, every claim artifact-linked.
-- Inspect AI + HarmBench + AgentDojo + τ-bench compose the capstone harness.
+- EU AI Act enforcement starts Aug 2 2026; the Digital Omnibus defers Annex-III high-risk to Dec 2 2027; fines up to €35M / 7% turnover.
+- NIST AI RMF + GenAI Profile, OWASP LLM Top-10, ISO/IEC 42001 are the mappable control frameworks.
+- Safety cases (UK AISI, Clymer et al.) are the documentation form.
+
+<!-- sota:14L12 -->
+
+## Week 13 — Capstone: A Full Red-Team → Mitigation → Eval Cycle
 
 **Altitude:** Specialist (graduating to Subject 16) · **Anchor case:** take one real system (the support assistant, or your own) through the entire safety lifecycle.
 
@@ -1183,6 +1202,13 @@ assert reeval.residual_risk_documented and card.every_claim_has_evidence
 - Boaz Barak, Harvard CS2881R, final-project guidelines (2025).
 
 ---
+
+### State of the Art (June 2026)
+- 2026 safety cases bundle threat model → multi-family red-team (calibrated ASR) → quantified mitigations → governance mapping.
+- Evidence-over-demos: before/after ASR, an explicit residual-risk statement, every claim artifact-linked.
+- Inspect AI + HarmBench + AgentDojo + τ-bench compose the capstone harness.
+
+<!-- sota:14L13 -->
 
 ## Course-level Assessment & grading
 

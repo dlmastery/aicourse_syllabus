@@ -35,12 +35,6 @@ _1 academic quarter · 3 lecture-hours/week · 10 lectures (~30 contact hrs). Fu
 
 ## Week 1 — Why Math Is the Operating Language of ML (and Python/NumPy From Scratch)
 
-### State of the Art (June 2026)
-- **NumPy 2.x / Python 3.12** are still the substrate every framework lowers to; the `X @ w` you hand-code is the same op a 1.6T-param MoE like **DeepSeek V4** runs billions of times — matmul literacy still underpins the frontier.
-- **Tunable "thinking effort"** is now a standard control on **Claude Opus 4.8 / Gemini 3.1 Pro / GPT-5.5** — the modern face of "more compute per query" inside the train→evaluate→revise loop you start here.
-- **Reproducibility at scale** (pinned configs, seeded RNG, config hashes) is a 2026 frontier-lab discipline; the seeded-repo habit in this lab is exactly what makes trillion-token runs auditable.
-- Even **MMLU-Pro / GPQA Diamond** scores are only comparable under a fixed harness + seed — the baseline-and-evidence reflex starts in Week 1.
-
 **Altitude:** Learner · **Format:** 3h lecture + 3h lab
 **Anchor case:** load the raw delivery-time CSV and compute a "predict the mean" baseline by hand.
 
@@ -109,12 +103,15 @@ and what **changed** in your mental model of "why NumPy exists."
 
 ---
 
-## Week 2 — Linear Algebra as Shapes You Can Reason About
-
 ### State of the Art (June 2026)
-- Shape literacy scales straight up: **FlashAttention-4** (Blackwell default in vLLM v0.20+) is a shape- and memory-aware re-tiling of the same `QKᵀ` matmul — dimension-tracking is what makes such kernels correct.
-- **Sparse MoE** models (**DeepSeek V4** 49B-active/1.6T-total, **Qwen 3.5** 17B/397B) route each token through different weight matrices; reasoning about "which matrix multiplies which vector" is now a frontier-architecture skill.
-- Norms/distance underpin modern retrieval: 2026 **embedding models** (Voyage voyage-3-large, Cohere embed-v4, BGE-M3) rank documents by the vector similarity / `‖a−b‖` geometry you build here.
+- **NumPy 2.x / Python 3.12** are still the substrate every framework lowers to; the `X @ w` you hand-code is the same op a 1.6T-param MoE like **DeepSeek V4** runs billions of times — matmul literacy still underpins the frontier.
+- **Tunable "thinking effort"** is now a standard control on **Claude Opus 4.8 / Gemini 3.1 Pro / GPT-5.5** — the modern face of "more compute per query" inside the train→evaluate→revise loop you start here.
+- **Reproducibility at scale** (pinned configs, seeded RNG, config hashes) is a 2026 frontier-lab discipline; the seeded-repo habit in this lab is exactly what makes trillion-token runs auditable.
+- Even **MMLU-Pro / GPQA Diamond** scores are only comparable under a fixed harness + seed — the baseline-and-evidence reflex starts in Week 1.
+
+<!-- sota:01L01 -->
+
+## Week 2 — Linear Algebra as Shapes You Can Reason About
 
 **Altitude:** Learner · **Anchor case:** batch-predict delivery times for all orders at once with one matrix op.
 
@@ -172,12 +169,14 @@ Predict the output shape of `X @ w` for `X:(100,3)`, `w:(3,)`. Run. Then break i
 
 ---
 
-## Week 3 — Derivatives, Gradients & the Seed of Backpropagation
-
 ### State of the Art (June 2026)
-- Reverse-mode autodiff (the chain rule you hand-derive) still powers every 2026 trainer — **PyTorch 2.7 autograd**, JAX — at 1M-context, trillion-param scale; nothing about the frontier removes the gradient.
-- **Gradient checking** remains the canonical correctness test for any custom kernel (e.g., a new **FlashAttention-4** backward); the finite-difference habit is a frontier-engineering practice, not a toy.
-- The **test-time-compute** trend (RLVR, verifier models) optimizes *inference*, but the underlying models are still fit by gradient descent on a differentiable loss.
+- Shape literacy scales straight up: **FlashAttention-4** (Blackwell default in vLLM v0.20+) is a shape- and memory-aware re-tiling of the same `QKᵀ` matmul — dimension-tracking is what makes such kernels correct.
+- **Sparse MoE** models (**DeepSeek V4** 49B-active/1.6T-total, **Qwen 3.5** 17B/397B) route each token through different weight matrices; reasoning about "which matrix multiplies which vector" is now a frontier-architecture skill.
+- Norms/distance underpin modern retrieval: 2026 **embedding models** (Voyage voyage-3-large, Cohere embed-v4, BGE-M3) rank documents by the vector similarity / `‖a−b‖` geometry you build here.
+
+<!-- sota:01L02 -->
+
+## Week 3 — Derivatives, Gradients & the Seed of Backpropagation
 
 **Altitude:** Learner · **Anchor case:** measure how delivery-MAE changes as you nudge one weight.
 
@@ -235,12 +234,14 @@ Predict whether increasing the distance-weight raises or lowers predicted delive
 
 ---
 
-## Week 4 — Probability & Statistics: The Language of Uncertainty
-
 ### State of the Art (June 2026)
-- The pretraining objective of every frontier LLM (**Opus 4.8, GPT-5.5, Gemini 3.1 Pro**) is still **maximum likelihood** / cross-entropy next-token — the MLE↔loss bridge you derive here is literally the loss they minimize.
-- **Calibration** is a live 2026 eval concern, and **LLM-as-judge** scores carry documented biases (TrustJudge); "80% confident" needing careful interpretation is now an industry problem.
-- Reliability metrics like **τ²-bench pass^k** measure whether an agent succeeds k-for-k — treating outcomes as random variables with variance, not point facts.
+- Reverse-mode autodiff (the chain rule you hand-derive) still powers every 2026 trainer — **PyTorch 2.7 autograd**, JAX — at 1M-context, trillion-param scale; nothing about the frontier removes the gradient.
+- **Gradient checking** remains the canonical correctness test for any custom kernel (e.g., a new **FlashAttention-4** backward); the finite-difference habit is a frontier-engineering practice, not a toy.
+- The **test-time-compute** trend (RLVR, verifier models) optimizes *inference*, but the underlying models are still fit by gradient descent on a differentiable loss.
+
+<!-- sota:01L03 -->
+
+## Week 4 — Probability & Statistics: The Language of Uncertainty
 
 **Altitude:** Learner · **Anchor case:** ticket-urgency as a *probability*, not a hard label.
 
@@ -298,12 +299,14 @@ Predict whether a 90%-accurate ticket classifier is "good" when only 5% of ticke
 
 ---
 
-## Week 5 — The Learning Problem: Loss, Empirical Risk & Gradient Descent From Scratch
-
 ### State of the Art (June 2026)
-- **AdamW** remains the default optimizer for 2026 frontier pretraining; the SGD→mini-batch loop you build is the same one scaled across thousands of GPUs.
-- Reading a loss curve to diagnose LR problems is now a distributed-training skill — **MFU** and loss-spike monitoring gate trillion-token runs.
-- **RLVR / GRPO** post-training (DeepSeek-R1-style reasoning) is still gradient descent on a (verifiable) reward — empirical-risk minimization with a different objective, which you meet again in Subject 03.
+- The pretraining objective of every frontier LLM (**Opus 4.8, GPT-5.5, Gemini 3.1 Pro**) is still **maximum likelihood** / cross-entropy next-token — the MLE↔loss bridge you derive here is literally the loss they minimize.
+- **Calibration** is a live 2026 eval concern, and **LLM-as-judge** scores carry documented biases (TrustJudge); "80% confident" needing careful interpretation is now an industry problem.
+- Reliability metrics like **τ²-bench pass^k** measure whether an agent succeeds k-for-k — treating outcomes as random variables with variance, not point facts.
+
+<!-- sota:01L04 -->
+
+## Week 5 — The Learning Problem: Loss, Empirical Risk & Gradient Descent From Scratch
 
 **Altitude:** Learner→Builder · **Anchor case:** train the delivery model by gradient descent, watching the loss curve.
 
@@ -359,12 +362,14 @@ Predict which of three learning rates will diverge before running the sweep. Rec
 
 ---
 
-## Week 6 — First Models I: Linear & Logistic Regression (Now With, Then Without, scikit-learn)
-
 ### State of the Art (June 2026)
-- Logistic regression is still the **strong, interpretable baseline** practitioners reach for before an LLM; the "earn complexity" discipline is reinforced by 2026 **model routing** (cheap model first, escalate only when needed).
-- The classification head of every transformer is a softmax/logistic layer over the vocabulary — the sigmoid/cross-entropy you build *is* the LLM output layer at `d = vocab`.
-- L1/L2 regularization generalizes to **weight decay** in modern training and to **LoRA/DoRA** low-rank constraints in fine-tuning — the same "prefer simpler explanations" principle.
+- **AdamW** remains the default optimizer for 2026 frontier pretraining; the SGD→mini-batch loop you build is the same one scaled across thousands of GPUs.
+- Reading a loss curve to diagnose LR problems is now a distributed-training skill — **MFU** and loss-spike monitoring gate trillion-token runs.
+- **RLVR / GRPO** post-training (DeepSeek-R1-style reasoning) is still gradient descent on a (verifiable) reward — empirical-risk minimization with a different objective, which you meet again in Subject 03.
+
+<!-- sota:01L05 -->
+
+## Week 6 — First Models I: Linear & Logistic Regression (Now With, Then Without, scikit-learn)
 
 **Altitude:** Builder · **Anchor case:** delivery time (regression) and ticket urgency (classification).
 
@@ -421,12 +426,14 @@ Predict which feature gets the largest logistic weight for ticket urgency; fit; 
 
 ---
 
-## Week 7 — First Models II: Trees, Ensembles & Strong Baselines
-
 ### State of the Art (June 2026)
-- **Gradient-boosted trees (XGBoost/LightGBM)** remain SOTA on tabular data in 2026 — frontier LLMs still do not reliably beat them on structured prediction; the "flashy model isn't the lesson" point is current.
-- Leakage auditing maps directly to **benchmark decontamination** (a 2026 eval crisis): contaminated test sets produce fake "emergence" — the same shortcut-that-lies you hunt here.
-- Feature-importance humility prefigures **mechanistic interpretability / SAEs** — both warn against over-reading a model's internal "explanations."
+- Logistic regression is still the **strong, interpretable baseline** practitioners reach for before an LLM; the "earn complexity" discipline is reinforced by 2026 **model routing** (cheap model first, escalate only when needed).
+- The classification head of every transformer is a softmax/logistic layer over the vocabulary — the sigmoid/cross-entropy you build *is* the LLM output layer at `d = vocab`.
+- L1/L2 regularization generalizes to **weight decay** in modern training and to **LoRA/DoRA** low-rank constraints in fine-tuning — the same "prefer simpler explanations" principle.
+
+<!-- sota:01L06 -->
+
+## Week 7 — First Models II: Trees, Ensembles & Strong Baselines
 
 **Altitude:** Builder · **Anchor case:** fraud screening — where a "flashy" model is *not* the lesson.
 
@@ -482,12 +489,14 @@ Predict which model wins the rare fraud slice before running; compare; record wh
 
 ---
 
-## Week 8 — Evaluation, Error Analysis & Experiment Design
-
 ### State of the Art (June 2026)
-- 2026 evaluation has gone **execution-based and reliability-aware**: **SWE-bench Verified**, **τ²-bench pass^k**, **ARC-AGI-2** — the "metric must match the decision" lesson, now with k-for-k reliability instead of single-shot accuracy.
-- **LLM-as-judge** is the default scaled evaluator but carries documented biases (TrustJudge); slice analysis and calibration are exactly the guards against trusting an averaged judge score.
-- Frameworks **LangSmith, Braintrust, Arize Phoenix, DeepEval, RAGAS, UK AISI Inspect AI** operationalize the threshold-sweep + slice-table discipline you build by hand.
+- **Gradient-boosted trees (XGBoost/LightGBM)** remain SOTA on tabular data in 2026 — frontier LLMs still do not reliably beat them on structured prediction; the "flashy model isn't the lesson" point is current.
+- Leakage auditing maps directly to **benchmark decontamination** (a 2026 eval crisis): contaminated test sets produce fake "emergence" — the same shortcut-that-lies you hunt here.
+- Feature-importance humility prefigures **mechanistic interpretability / SAEs** — both warn against over-reading a model's internal "explanations."
+
+<!-- sota:01L07 -->
+
+## Week 8 — Evaluation, Error Analysis & Experiment Design
 
 **Altitude:** Builder→Engineer · **Anchor case:** is the new fraud model *actually* better?
 
@@ -542,12 +551,14 @@ Predict the precision at the recall you need *before* sweeping the threshold; sw
 
 ---
 
-## Week 9 — Bias, Variance, Regularization & Generalization (Learning-Theory Intuition)
-
 ### State of the Art (June 2026)
-- **Scaling laws (Chinchilla and 2026 successors)** are the modern, quantitative face of the capacity/data trade-off — undertrained large models are the bias-variance lesson at frontier scale.
-- The **double-descent / "benign overfitting"** thread (Belkin et al.) remains an open 2026 research question; your degree-vs-error curve is the entry point.
-- Contamination-driven **fake emergence** (Schaeffer et al.) shows why held-out, decontaminated evaluation — not training error — is the only honest generalization signal in 2026.
+- 2026 evaluation has gone **execution-based and reliability-aware**: **SWE-bench Verified**, **τ²-bench pass^k**, **ARC-AGI-2** — the "metric must match the decision" lesson, now with k-for-k reliability instead of single-shot accuracy.
+- **LLM-as-judge** is the default scaled evaluator but carries documented biases (TrustJudge); slice analysis and calibration are exactly the guards against trusting an averaged judge score.
+- Frameworks **LangSmith, Braintrust, Arize Phoenix, DeepEval, RAGAS, UK AISI Inspect AI** operationalize the threshold-sweep + slice-table discipline you build by hand.
+
+<!-- sota:01L08 -->
+
+## Week 9 — Bias, Variance, Regularization & Generalization (Learning-Theory Intuition)
 
 **Altitude:** Builder→Engineer · **Anchor case:** a model with great training error and a useless test error.
 
@@ -602,12 +613,14 @@ Predict the polynomial degree where validation error bottoms out; run the sweep;
 
 ---
 
-## Week 10 — Capstone: A From-Scratch ML Project With an Evidence Packet
-
 ### State of the Art (June 2026)
-- The **evidence-packet** discipline mirrors 2026 governance: **EU AI Act** main obligations apply **Aug 2, 2026** (high-risk Annex III deferred to **Dec 2, 2027** by the Digital Omnibus) — documented data, evaluation, and limitations are now legally relevant.
-- **Model Cards** plus one-command reproducible runs (pinned seed/config/data hash) are the industry-standard artifacts your packet anticipates.
-- Cost-aware framing (cheap baseline → escalate) reflects the 2026 LLMOps cost trio (**semantic caching + model routing + batching**); judgment about *when* a complex model is justified is the transferable capstone skill.
+- **Scaling laws (Chinchilla and 2026 successors)** are the modern, quantitative face of the capacity/data trade-off — undertrained large models are the bias-variance lesson at frontier scale.
+- The **double-descent / "benign overfitting"** thread (Belkin et al.) remains an open 2026 research question; your degree-vs-error curve is the entry point.
+- Contamination-driven **fake emergence** (Schaeffer et al.) shows why held-out, decontaminated evaluation — not training error — is the only honest generalization signal in 2026.
+
+<!-- sota:01L09 -->
+
+## Week 10 — Capstone: A From-Scratch ML Project With an Evidence Packet
 
 **Altitude:** Builder (graduating to Subject 02) · **Anchor case:** your choice of a small real tabular dataset.
 
@@ -660,6 +673,13 @@ real lesson — record it.
 - Vizuara capstones (Fashion MNIST, California Housing). Krish Naik end-to-end project structure (for the deployment preview into Subject 09).
 
 ---
+
+### State of the Art (June 2026)
+- The **evidence-packet** discipline mirrors 2026 governance: **EU AI Act** main obligations apply **Aug 2, 2026** (high-risk Annex III deferred to **Dec 2, 2027** by the Digital Omnibus) — documented data, evaluation, and limitations are now legally relevant.
+- **Model Cards** plus one-command reproducible runs (pinned seed/config/data hash) are the industry-standard artifacts your packet anticipates.
+- Cost-aware framing (cheap baseline → escalate) reflects the 2026 LLMOps cost trio (**semantic caching + model routing + batching**); judgment about *when* a complex model is justified is the transferable capstone skill.
+
+<!-- sota:01L10 -->
 
 ## Course-level outcomes
 
