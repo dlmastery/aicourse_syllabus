@@ -1,0 +1,1207 @@
+# Master Table of Contents — Modern AI Mastery (June 2026)
+
+_One course, **17 subjects**. **Each subject = one academic quarter, 3 lecture-hours/week.** Every bullet is a topic taught that week. Per-subject detail in [`_toc/`](_toc/)._
+
+| # | Subject | Length | Lecture hrs |
+|---|---|---|---|
+| 01 | Math & ML Foundations From Scratch | ~10 wks (1 qtr) | ~30h |
+| 02 | Deep Learning & the Transformer, Built by Hand | ~12 wks (1 qtr) | ~36h |
+| 03 | Large Language Models: Pretraining → Post-Training | ~13 wks (1 qtr) | ~39h |
+| 04 | Retrieval-Augmented Generation & Knowledge Systems | ~10 wks (1 qtr) | ~30h |
+| 05 | Fine-Tuning & Model Adaptation | ~10 wks (1 qtr) | ~30h |
+| 06 | Reasoning Models & Test-Time Compute | ~10 wks (1 qtr) | ~30h |
+| 07 | AI Agent Engineering (MCP, A2A, Multi-Agent, AgentOps) | ~12 wks (1 qtr) | ~36h |
+| 08 | AI-First Software Development | ~12 wks (1 qtr) | ~36h |
+| 09 | Full-Stack AI: MLOps, LLMOps & AgentOps to Production | ~12 wks (1 qtr) | ~36h |
+| 10 | Efficient AI: Quantization, Serving & Systems | ~12 wks (1 qtr) | ~36h |
+| 11 | Domain-Specific Applied AI | ~13 wks (1 qtr) | ~39h |
+| 12 | Multimodal & Generative AI | ~12 wks (1 qtr) | ~36h |
+| 13 | Reinforcement Learning, Robotics & Embodied AI | ~14 wks (1 qtr) | ~42h |
+| 14 | AI Safety, Alignment & Governance | ~13 wks (1 qtr) | ~39h |
+| 15 | Emerging Topics & AI for Science | ~13 wks (1 qtr) | ~39h |
+| 16 | Capstone: Build & Ship an Agentic AI System | 6 milestones (2 qtr) | ~18h |
+| 17 | Recursive Self-Improvement: Self-Evolving Agents, Models & Systems | ~13 wks (1 qtr) | ~39h |
+
+## Subject 01 — Math & ML Foundations From Scratch
+_`01-foundations-math-ml-from-scratch.md` · 1 quarter · 3 hrs/wk · 10 lectures · [full](_toc/01-foundations-math-ml-from-scratch-toc.md)_
+
+- **L1. Week 1 — Why Math Is the Operating Language of ML (and Python/NumPy From Scratch)**
+  - ML as iterative improvement
+  - The data matrix X and target y
+  - Matrix multiplication
+  - Reproducibility as a precondition for learning anything
+  - 🧪 matmul.py: implement matmul(A, B) with nested Python loops; unit-test it against np.dot; b · 🔧 `$study-harness`
+- **L2. Week 2 — Linear Algebra as Shapes You Can Reason About**
+  - Vector as one structured example
+  - Linear prediction
+  - Norms and distance
+  - Broadcasting
+  - 🧪 Extend the math library: dot, matvec, l2_norm, standardize(X) — all from scratch, all unit · 🔧 `$shape-checker`
+- **L3. Week 3 — Derivatives, Gradients & the Seed of Backpropagation**
+  - Derivative
+  - Partial derivative & gradient
+  - Chain rule
+  - 🧪 grads.py: analytic gradient of squared-error loss for linear regression; numerical_grad()  · 🔧 `$gradient-check`
+- **L4. Week 4 — Probability & Statistics: The Language of Uncertainty**
+  - Random variable, distribution, expectation
+  - Conditional probability & Bayes
+  - MLE → loss
+  - Variance & noise
+  - 🧪 stats.py: sample from distributions, estimate mean/variance, build a histogram from scratc · 🔧 `$uncertainty-reader`
+- **L5. Week 5 — The Learning Problem: Loss, Empirical Risk & Gradient Descent From Scratch**
+  - Empirical risk
+  - Gradient descent
+  - Mini-batch / SGD
+  - 🧪 gd.py: train linear regression on delivery data with your own GD loop; log loss per epoch; · 🔧 `$training-diagnostics`
+- **L6. Week 6 — First Models I: Linear & Logistic Regression (Now With, Then Without, scikit-learn)**
+  - Linear regression
+  - Logistic regression
+  - Cross-entropy loss
+  - Regularization (L1/L2)
+  - 🧪 logreg.py from scratch (sigmoid + cross-entropy + GD), gradient-checked; then reproduce wi · 🔧 `$baseline-builder`
+- **L7. Week 7 — First Models II: Trees, Ensembles & Strong Baselines**
+  - Decision tree
+  - Bagging / Random Forest
+  - Boosting (gradient boosting / XGBoost-style)
+  - Feature importance
+  - 🧪 Implement a small decision tree from scratch (Gini, max-depth); then use sklearn/xgboost f · 🔧 `$tabular-model-review`
+- **L8. Week 8 — Evaluation, Error Analysis & Experiment Design**
+  - Metric–decision fit
+  - Threshold sweep
+  - Slices
+  - Calibration
+  - 🧪 eval.py: confusion matrix, precision/recall/F1, ROC/PR, a threshold sweep CSV, and a per-s · 🔧 `$evaluation-review`
+- **L9. Week 9 — Bias, Variance, Regularization & Generalization (Learning-Theory Intuition)**
+  - Empirical vs population risk
+  - Bias–variance
+  - Capacity / VC intuition
+  - Regularization & early stopping
+  - 🧪 generalization_lab.py: fit polynomials of increasing degree to the delivery data; plot tra · 🔧 `$generalization-translator`
+- **L10. Week 10 — Capstone: A From-Scratch ML Project With an Evidence Packet**
+  - 🧪 Pick a dataset (e.g., California Housing or a Fashion-MNIST subset, per Vizuara's capstone · 🔧 `$project-evidence-packet`
+
+## Subject 02 — Deep Learning & the Transformer, Built by Hand
+_`02-deep-learning-transformers-from-scratch.md` · 1 quarter · 3 hrs/wk · 12 lectures · [full](_toc/02-deep-learning-transformers-from-scratch-toc.md)_
+
+- **L1. Week 1 — The Neuron, the Forward Pass, and Scalar Autodiff From Scratch**
+  - Artificial neuron
+  - Computation graph & reverse-mode autodiff
+  - Nonlinearity necessity
+  - Input normalization
+  - 🧪 engine.py: a Value class wrapping a float with .data, .grad, _backward, supporting + * tan · 🔧 `$autodiff-tracer`
+- **L2. Week 2 — Backpropagation Through an MLP, By Hand (NumPy)**
+  - Softmax
+  - Cross-entropy loss
+  - The backward pass
+  - Batching
+  - 🧪 mlp_numpy.py: forward(X), backward(...), step(lr) for a 784→128→10 MLP with ReLU + softmax · 🔧 `$layer-backprop-derive`
+- **L3. Week 3 — Optimizers: SGD, Momentum, RMSProp, Adam From Scratch**
+  - SGD
+  - Momentum
+  - RMSProp
+  - Adam
+  - 🧪 optim.py: SGD, Momentum, RMSProp, Adam as classes with a uniform .step(params, grads) API · 🔧 `$optimizer-bench`
+- **L4. Week 4 — From NumPy to PyTorch + Regularization (Dropout, BatchNorm, Weight Decay)**
+  - autograd = your Week-1 engine at scale
+  - Dropout
+  - Batch normalization
+  - Weight decay / L2
+  - 🧪 mlp_torch.py: nn.Module MLP matching mlp_numpy.py; assert outputs agree on a fixed batch t · 🔧 `$regularization-ablation`
+- **L5. Week 5 — Convolutional Networks: Built, Then Trained on Fashion-MNIST**
+  - Convolution
+  - Output-size formula
+  - Pooling
+  - Parameter sharing
+  - 🧪 conv_numpy.py: conv2d_forward (im2col allowed) + maxpool2d; check against torch.nn.functio · 🔧 `$conv-shape-planner`
+- **L6. Week 6 — Sequence Models: RNNs and LSTMs From Scratch (and the Char-LM)**
+  - RNN recurrence
+  - BPTT
+  - Vanishing/exploding gradients
+  - LSTM gates
+  - 🧪 rnn_numpy.py: a vanilla RNN cell + BPTT, gradient-checked on a 5-step sequence · 🔧 `$sequence-sanity`
+- **L7. Week 7 — Attention From Scratch: Why It Replaced Recurrence**
+  - Scaled dot-product attention
+  - Causal mask
+  - Q/K/V projections
+  - Attention ≠ explanation
+  - 🧪 attention_numpy.py: scaled_dot_product_attention(Q,K,V,mask) + a causal mask; check vs a P · 🔧 `$attention-inspector`
+- **L8. Week 8 — The Transformer Block, Built End to End**
+  - Multi-head attention
+  - Positional encoding
+  - Residual connections
+  - LayerNorm + pre-norm
+  - 🧪 transformer_block.py: MultiHeadAttention, PositionalEncoding, TransformerBlock (pre-norm)  · 🔧 `$transformer-block-validator`
+- **L9. Week 9 — Tokenization and Byte-Pair Encoding From Scratch**
+  - BPE training
+  - Encoding/decoding
+  - Vocab size trade-off
+  - Byte-level fallback
+  - 🧪 bpe.py: train_bpe(corpus, vocab_size), encode(text), decode(ids); assert exact round-trip  · 🔧 `$tokenizer-probe`
+- **L10. Week 10 — Training a Small GPT: nanoGPT From Scratch**
+  - GPT forward pass
+  - LR schedule
+  - Sampling
+  - Perplexity
+  - 🧪 gpt.py: a configurable GPT (n_layer, n_head, d_model, block_size) reusing your Week-8 bloc · 🔧 `$mini-train-loop`
+- **L11. Week 11 — Scaling, Efficiency, and Honest Evaluation of Your Small GPT**
+  - Scaling laws (intuition)
+  - Mixed precision
+  - KV-cache
+  - Evaluation triangulation
+  - 🧪 scaling_study.py: train 3–4 model sizes (e.g., 1M/3M/10M params) on a fixed token budget;  · 🔧 `$eval-triangulator`
+- **L12. Week 12 — Capstone: A Built-From-Scratch GPT With an Evidence Packet**
+  - 🧪 Pick a corpus (TinyShakespeare, a WikiText subset, TinyStories, or your own ≤ 50 MB clean  · 🔧 `$model-evidence-packet`
+
+## Subject 03 — Large Language Models: Pretraining → Post-Training
+_`03-llm-pretraining-to-posttraining.md` · 1 quarter · 3 hrs/wk · 13 lectures · [full](_toc/03-llm-pretraining-to-posttraining-toc.md)_
+
+- **L1. Week 1 — The LLM Lifecycle, End to End (and a Reproducible Tiny Pretraining Run)**
+  - Pretraining objective
+  - The lifecycle as stages with different objectives
+  - Compute/throughput accounting
+  - Reproducibility at scale
+  - 🧪 Initialize llm-lifecycle/ with configs/, data/, src/, evidence/, an accelerate config, and · 🔧 `$lifecycle-map`
+- **L2. Week 2 — Data Curation I: Common Crawl, Extraction, Filtering, Language ID**
+  - Extraction
+  - Quality filtering
+  - Language identification
+  - Provenance & licensing
+  - 🧪 curate.py using datatrove: read a small Common Crawl / FineWeb WARC sample → trafilatura e · 🔧 `$data-funnel`
+- **L3. Week 3 — Data Curation II: Deduplication, Decontamination, and Tokenizer Training**
+  - Exact dedup
+  - Near-dup (MinHash + LSH)
+  - Decontamination
+  - Tokenizer quality
+  - 🧪 dedup.py: exact hash dedup + datasketch MinHashLSH near-dup removal; report duplicate rate · 🔧 `$dedup-decontam`
+- **L4. Week 4 — Architecture, Hyperparameters, and Scaling Laws**
+  - RoPE
+  - RMSNorm + SwiGLU
+  - GQA (grouped-query attention)
+  - Scaling laws / Chinchilla
+  - 🧪 arch.py: a configurable modern decoder (RoPE + RMSNorm + SwiGLU + GQA); verify a forward p · 🔧 `$scaling-fit`
+- **L5. Week 5 — Distributed Pretraining: Data/Tensor/Pipeline Parallel, FSDP & ZeRO**
+  - Data parallel (DDP)
+  - ZeRO / FSDP sharding
+  - Tensor & pipeline parallel
+  - MFU & scaling efficiency
+  - 🧪 train_fsdp.py: wrap the Week-4 model in FSDP2 (or DeepSpeed ZeRO-3) + activation checkpoin · 🔧 `$distributed-profiler`
+- **L6. Week 6 — Mixture-of-Experts and Long-Context Pretraining**
+  - MoE FFN
+  - Load-balancing loss
+  - Capacity factor
+  - Long context
+  - 🧪 moe.py: replace a dense MLP with a top-2 MoE (8 experts) + a load-balancing aux loss; veri · 🔧 `$moe-router-monitor`
+- **L7. Week 7 — Pretraining Evaluation & a Paper-Reproduction Checkpoint**
+  - Perplexity vs capability
+  - Benchmark formats
+  - Contamination & emergence
+  - Reproduction discipline
+  - 🧪 eval_base.py: run lm-eval-harness on HellaSwag, ARC-easy, MMLU (subset), and GSM8K for you · 🔧 `$benchmark-runner`
+- **L8. Week 8 — Supervised Fine-Tuning & Instruction Tuning**
+  - SFT objective
+  - Chat templating
+  - LoRA / QLoRA
+  - Data quality > quantity
+  - 🧪 sft.py using TRL SFTTrainer: chat-template a dataset, mask prompt tokens, pack sequences;  · 🔧 `$sft-recipe`
+- **L9. Week 9 — Reward Modeling & RLHF (PPO)**
+  - Bradley-Terry reward model
+  - RLHF/PPO objective
+  - Value function / advantage
+  - Reward hacking
+  - 🧪 reward_model.py: train a BT reward model on a preference dataset; report pairwise accuracy · 🔧 `$rlhf-monitor`
+- **L10. Week 10 — Direct Preference Optimization: DPO, ORPO, KTO**
+  - DPO
+  - ORPO
+  - KTO
+  - DPO vs RLHF
+  - 🧪 dpo.py, orpo.py, kto.py via TRL on the same preferences (KTO uses a binarized variant); tr · 🔧 `$preference-align-bench`
+- **L11. Week 11 — RL for Reasoning: GRPO and Verifiable Rewards**
+  - GRPO
+  - Verifiable reward (RLVR)
+  - Test-time compute
+  - Format + correctness rewards
+  - 🧪 grpo.py via TRL GRPOTrainer: a verifiable reward function (parse \boxed{} / final number,  · 🔧 `$verifiable-reward`
+- **L12. Week 12 — Long-Context, Safety Fine-Tuning, and Serving**
+  - Long-context extension
+  - Safety fine-tuning
+  - Red-teaming
+  - Efficient serving
+  - 🧪 longctx.py: RoPE-scale + briefly continue-train; run a needle-in-a-haystack eval across co · 🔧 `$safety-serving-audit`
+- **L13. Week 13 — Capstone: A Full Pretrain → Post-Train Pipeline With an Evidence Packet**
+  - 🧪 Pick a domain assistant (support, coding helper, math tutor). Assemble: a curated+decontam · 🔧 `$lifecycle-evidence-packet`
+
+## Subject 04 — Retrieval-Augmented Generation & Knowledge Systems
+_`04-rag-and-knowledge-systems.md` · 1 quarter · 3 hrs/wk · 10 lectures · [full](_toc/04-rag-and-knowledge-systems-toc.md)_
+
+- **L1. Week 1 — Why Retrieval at All: Embeddings, Semantic Search & a Naive RAG Baseline**
+  - The RAG loop
+  - Embedding
+  - Cosine similarity
+  - Top-k retrieval & context stuffing
+  - 🧪 ingest.py: load 200 wiki pages, fixed 512-token chunks, embed with bge-m3, store vectors + · 🔧 `$rag-baseline`
+- **L2. Week 2 — Chunking & Document Processing: The Unsexy Half of Retrieval Quality**
+  - Chunk
+  - Recursive splitting
+  - Semantic chunking
+  - Structure-aware & parent/child
+  - 🧪 chunkers.py: implement/compare fixed, recursive, and semantic chunkers; parse PDFs with un · 🔧 `$chunk-strategist`
+- **L3. Week 3 — Vector Databases: Indexes, ANN, and Choosing Your Store**
+  - ANN vs exact search
+  - HNSW
+  - Metadata filtering
+  - Distance metric must match training
+  - 🧪 vectordb_bench.py: load 1M chunks (AcmeCorp + synthetic padding) into Chroma, pgvector, an · 🔧 `$vectordb-selector`
+- **L4. Week 4 — Hybrid Search & Rerankers: BM25 + Dense, Then Cohere/BGE on Top**
+  - BM25
+  - Dense vs sparse failure modes
+  - Reciprocal Rank Fusion
+  - Cross-encoder reranker
+  - 🧪 hybrid.py: BM25 (rank_bm25 or OpenSearch) + dense, fuse with RRF; rerank.py: re-score fuse · 🔧 `$retriever-stack`
+- **L5. Week 5 — Late Interaction & ColBERT: Token-Level Retrieval**
+  - Single-vector bottleneck
+  - Late interaction (ColBERT)
+  - PLAID / compression
+  - When to use it
+  - 🧪 colbert_lab.py: index AcmeCorp + a BEIR set with ColBERTv2 via RAGatouille; compare nDCG@1 · 🔧 `$late-interaction-eval`
+- **L6. Week 6 — RAG Evaluation: Ragas, MAP/nDCG, and Faithfulness**
+  - Retrieval metrics
+  - Context precision/recall (Ragas)
+  - Faithfulness / groundedness
+  - LLM-as-judge validity
+  - 🧪 ragas_eval.py: assemble a 100-question gold set (HotpotQA + 50 AcmeCorp) with reference an · 🔧 `$rag-eval`
+- **L7. Week 7 — Advanced RAG I: HyDE, CRAG & Self-RAG**
+  - HyDE
+  - CRAG
+  - Self-RAG
+  - Adaptive retrieval
+  - 🧪 hyde.py, crag.py, self_rag.py as LangGraph nodes over the Week 6 pipeline; each is an abla · 🔧 `$rag-ablation`
+- **L8. Week 8 — Advanced RAG II: Agentic RAG, GraphRAG & Text2SQL**
+  - Agentic RAG
+  - GraphRAG
+  - Text2SQL
+  - Query routing
+  - 🧪 agentic_rag.py (LangGraph): planner + retriever + reflector with a step budget · 🔧 `$knowledge-router`
+- **L9. Week 9 — Long-Context vs RAG, Production Serving, Caching & Guardrails**
+  - Long-context vs RAG
+  - Semantic caching
+  - Prompt injection via retrieved content
+  - Grounding/citation guardrail
+  - 🧪 serve.py: FastAPI portal with an LLM gateway, semantic cache, and streaming; measure p95 l · 🔧 `$rag-prod-harness`
+- **L10. Week 10 — Capstone: A Production Document-QA / Knowledge Portal**
+  - 🧪 Pick a real corpus (your own org's docs, a public dataset like a Wikipedia subset, or exte · 🔧 `$rag-evidence-packet`
+
+## Subject 05 — Fine-Tuning & Model Adaptation
+_`05-finetuning-and-adaptation.md` · 1 quarter · 3 hrs/wk · 10 lectures · [full](_toc/05-finetuning-and-adaptation-toc.md)_
+
+- **L1. Week 1 — The Adaptation Decision: Prompt vs RAG vs Fine-Tune (and a Baseline You Must Beat)**
+  - What fine-tuning is for
+  - The decision ladder
+  - Catastrophic forgetting
+  - Baseline economics
+  - 🧪 baseline_prompt.py: best-effort prompted SupportGenie on a frontier model (few-shot + form · 🔧 `$adaptation-decision`
+- **L2. Week 2 — Data Preparation & Formatting: The 80% That Decides the Outcome**
+  - Chat template & loss masking
+  - Decontamination
+  - Data quality > quantity
+  - Packing
+  - 🧪 prep.py: format AcmeCorp tickets into chat-template SFT JSONL; dedup (MinHash), decontamin · 🔧 `$sft-data-prep`
+- **L3. Week 3 — PEFT I: LoRA From the Math Up**
+  - LoRA
+  - Rank r and alpha
+  - Why it works
+  - Merging vs keeping separate
+  - 🧪 train_lora.py: LoRA SFT of an 8B base on the small-clean set; log loss to W&B; eval on the · 🔧 `$lora-trainer`
+- **L4. Week 4 — PEFT II: QLoRA, Quantization for Training & Going Bigger on One GPU**
+  - Quantization (training-time)
+  - Double quantization & paged optimizers
+  - Quality tax
+  - NF4 vs other 4-bit
+  - 🧪 train_qlora.py: QLoRA SFT of the same (or a larger) base on the small-clean set; compare m · 🔧 `$qlora-trainer`
+- **L5. Week 5 — Preference Optimization I: DPO and the RLHF Lineage**
+  - RLHF (for context)
+  - DPO
+  - β / KL anchor
+  - Preference data quality
+  - 🧪 prep_prefs.py: build chosen/rejected support pairs (from edits, human ranking, or stronger · 🔧 `$preference-tuner`
+- **L6. Week 6 — Preference Optimization II: ORPO, KTO, SimPO & Choosing the Right Objective**
+  - Bradley-Terry backbone
+  - ORPO
+  - KTO
+  - SimPO / IPO
+  - 🧪 compare_prefs.py: run ORPO and KTO (and re-use Week 5 DPO) on matched data where possible; · 🔧 `$preference-method-selector`
+- **L7. Week 7 — RLHF, RFT & Distillation: When You Need More Than Offline Preferences**
+  - RLHF vs RLAIF vs RFT
+  - Verifiable reward
+  - Distillation
+  - RFT vs more SFT
+  - 🧪 rft_format.py: a minimal policy-gradient/GRPO-style loop (TRL) on the function-call case w · 🔧 `$verifiable-rft`
+- **L8. Week 8 — Evaluation & Regression Testing of Fine-Tunes (No Silent Forgetting)**
+  - Target vs general eval
+  - Catastrophic forgetting check
+  - Alignment tax
+  - Regression gate
+  - 🧪 regression_suite.py: assemble target eval + general suite (MMLU-Pro slice, GSM8K, IFEval,  · 🔧 `$finetune-regression`
+- **L9. Week 9 — Serving Adapters: Quantization for Inference, Multi-LoRA & Cost**
+  - Inference quantization
+  - Multi-LoRA serving
+  - Merge vs keep-separate
+  - Cost/latency
+  - 🧪 serve_vllm.py: serve the quantized SupportGenie base + ≥2 LoRA adapters via vLLM multi-LoR · 🔧 `$adapter-serving`
+- **L10. Week 10 — Capstone: A Fine-Tuned Model That Provably Beats Prompting**
+  - 🧪 Pick the target task (SupportGenie or your own: a domain classifier, a strict-format gener · 🔧 `$adaptation-evidence-packet`
+
+## Subject 06 — Reasoning Models & Test-Time Compute
+_`06-reasoning-and-test-time-compute.md` · 1 quarter · 3 hrs/wk · 10 lectures · [full](_toc/06-reasoning-and-test-time-compute-toc.md)_
+
+- **L1. Week 1 — What Reasoning Buys You: CoT, and Spending Compute at Inference**
+  - Chain-of-thought
+  - Test-time compute
+  - Verifiable eval
+  - Contamination
+  - 🧪 eval_math.py: GSM8K + a 500-problem MATH subset; direct-answer vs CoT prompting; robust an · 🔧 `$reasoning-eval`
+- **L2. Week 2 — Self-Consistency, Best-of-N & the Test-Time Scaling Curve**
+  - Self-consistency
+  - Best-of-N
+  - Test-time scaling curve
+  - Parallel vs sequential compute
+  - 🧪 self_consistency.py: sample N∈{1,2,4,8,16,32} chains, majority-vote; best_of_n.py: score w · 🔧 `$test-time-scaler`
+- **L3. Week 3 — Verifiers & Reward Models: PRMs, ORMs & Process vs Outcome**
+  - Outcome reward (ORM / verifier)
+  - Process reward (PRM)
+  - Verifier-guided selection
+  - Verifiable vs learned reward
+  - 🧪 verifier.py: a robust math outcome verifier; prm.py: use an off-the-shelf PRM (e.g., a Mat · 🔧 `$verifier-suite`
+- **L4. Week 4 — ReAct, Tool Use & Search: Reasoning That Acts**
+  - ReAct
+  - Tool-augmented computation
+  - Deep research
+  - Reasoning + retrieval boundary
+  - 🧪 react_agent.py (LangGraph/Agents SDK): Thought/Action/Observation loop with a code tool an · 🔧 `$reasoning-agent`
+- **L5. Week 5 — RLVR & GRPO: The DeepSeek-R1 Recipe From Scratch**
+  - RLVR
+  - GRPO
+  - Why no critic
+  - R1-Zero vs R1
+  - 🧪 train_grpo.py: GRPO on an 8B base/SFT checkpoint with outcome_reward (+ a light format rew · 🔧 `$grpo-trainer`
+- **L6. Week 6 — GRPO in Practice: DAPO, Dr.GRPO & Stabilizing the Run**
+  - Length bias
+  - Entropy collapse
+  - DAPO
+  - Dr.GRPO
+  - 🧪 train_grpo_v2.py: add DAPO/Dr.GRPO options to the Week-5 loop; run an ablation (vanilla GR · 🔧 `$grpo-stabilizer`
+- **L7. Week 7 — Long-Horizon Reasoning & Self-Improving Agents**
+  - Long-horizon credit assignment
+  - Self-improvement (STaR / ReST / rejection sampling)
+  - Agentic RL
+  - Honest long-horizon eval
+  - 🧪 self_improve.py: rejection-sampling / STaR loop on MATH (sample → verify → SFT on correct) · 🔧 `$self-improve-loop`
+- **L8. Week 8 — Reasoning Evaluation: AIME, GPQA, ARC-AGI & Contamination**
+  - AIME / MATH
+  - GPQA
+  - ARC-AGI
+  - Contamination & faithfulness
+  - 🧪 eval_hard.py: runners for AIME (with bootstrap error bars), a GPQA-Diamond subset, and an  · 🔧 `$reasoning-audit`
+- **L9. Week 9 — Reasoning at Inference: Budgets, Faithfulness & Deployment**
+  - Adaptive test-time compute
+  - CoT faithfulness
+  - Reasoning-model serving
+  - Effort/budget controls
+  - 🧪 adaptive_compute.py: a difficulty router that sets thinking budget / sample count per quer · 🔧 `$reasoning-deploy`
+- **L10. Week 10 — Capstone: A Small Reasoning-RL Run That Provably Improves Math**
+  - 🧪 Pick the task: math (GSM8K/MATH, recommended) or another verifiable-reward domain (code wi · 🔧 `$reasoning-evidence-packet`
+
+## Subject 07 — AI Agent Engineering (MCP, A2A, Multi-Agent, AgentOps)
+_`07-ai-agent-engineering.md` · 1 quarter · 3 hrs/wk · 12 lectures · [full](_toc/07-ai-agent-engineering-toc.md)_
+
+- **L1. Week 1 — Agent Anatomy and the Agent Loop**
+  - The agent loop
+  - Planner vs controller
+  - Critic / verifier
+  - Workflow vs agent (the autonomy dial)
+  - Tools as the action space
+  - 🧪 atlas/loop.py: a from-scratch agent loop (no LangGraph yet). One model call per turn; pars · 🔧 `$agent-anatomy-map`
+- **L2. Week 2 — Function Calling, Tool Schemas, and Structured Outputs**
+  - Tool schema
+  - Description as prompt
+  - Structured outputs / constrained decoding
+  - Tool granularity & idempotency
+  - Errors as observations
+  - 🧪 atlas/tools.py: define 5 tools as Pydantic models with enums, ranges, and model-facing err · 🔧 `$tool-schema-designer`
+- **L3. Week 3 — MCP: Build a Model Context Protocol Server (original module)**
+  - Why MCP (the "USB-C for tools" framing)
+  - Three primitives
+  - Client–server–host
+  - Transport & capability negotiation
+  - The trust boundary
+  - 🧪 atlas_mcp/server.py with **FastMCP**: expose ≥3 tools (search_flights, get_policy, file_ex · 🔧 `$mcp-server-scaffold`
+- **L4. Week 4 — Reasoning and Planning: ReAct, Plan-and-Execute, Reflexion**
+  - ReAct
+  - Plan-and-execute
+  - Reflexion / self-refine
+  - Test-time compute as a dial
+  - Verifier vs generator
+  - 🧪 atlas/planners.py: implement three strategies — react, plan_execute, reflexion — behind on · 🔧 `$reasoning-strategy-picker`
+- **L5. Week 5 — Agent Memory: Short-Term, Long-Term, Mem0 and LangMem**
+  - Working vs long-term memory
+  - Episodic / semantic / procedural
+  - Memory write policy
+  - Retrieval policy
+  - Forgetting / decay & conflict
+  - 🧪 atlas/memory_raw.py: from-scratch long-term memory (embed with a small model, store in pgv · 🔧 `$agent-memory-designer`
+- **L6. Week 6 — Agent Frameworks: LangGraph, OpenAI/Claude Agent SDKs, CrewAI, AutoGen, Pydantic AI, Google ADK**
+  - Graph / state machine (LangGraph)
+  - Agent SDK runtimes (Claude Agent SDK, OpenAI Agents SDK)
+  - Role-based crews (CrewAI)
+  - Conversational multi-agent (AutoGen)
+  - Typed agents (Pydantic AI) & Google ADK
+  - The meta-point:
+  - 🧪 atlas/graph.py in **LangGraph**: nodes for plan → act → (human-approve if amount>$500) → f · 🔧 `$framework-selector`
+- **L7. Week 7 — Multi-Agent Systems and A2A: Orchestrator, Specialists, Debate**
+  - When multi-agent helps
+  - Orchestrator + specialists
+  - A2A protocol
+  - Multi-agent debate / critic
+  - Cost/latency multiplication
+  - 🧪 atlas/multi/: an orchestrator + 3 specialists; specialists expose **A2A agent cards**; orc · 🔧 `$multi-agent-architect`
+- **L8. Week 8 — Computer-Use and Browser Agents**
+  - Perception → action loop
+  - Grounding strategy: pixels vs DOM/a11y
+  - Set-of-marks / element tagging
+  - Verification after action
+  - API > GUI when possible
+  - 🧪 atlas/browser/agent.py with **Playwright**: a perceive→act→verify loop over a *sandboxed*  · 🔧 `$browser-agent-debugger`
+- **L9. Week 9 — Agent Evaluation: tau-bench, Long-Horizon, and pass^k**
+  - Task success check
+  - Simulated user
+  - pass^k vs pass@k
+  - Failure taxonomy
+  - Eval-gated deploys
+  - 🧪 eval/atlas_bench.py: ≥40 T&E tasks with simulated users + DB state checks; run each k=5 ti · 🔧 `$agent-eval-suite`
+- **L10. Week 10 — AgentOps: Observability, Cost, Guardrails, Human-in-the-Loop**
+  - Tracing / spans
+  - Cost & latency accounting
+  - Guardrails
+  - Human-in-the-loop gates
+  - AgentOps lifecycle
+  - 🧪 Wire **Langfuse** into Atlas: every LLM/tool/sub-agent call is a span; tag runs with cost, · 🔧 `$agentops-instrumenter`
+- **L11. Week 11 — Agent Security: Prompt Injection, Tool Abuse, and the OWASP LLM Top 10**
+  - Direct vs indirect injection
+  - Why agents are uniquely exposed
+  - Least-privilege & privilege separation
+  - Tool/MCP poisoning & confused deputy
+  - Defense in depth
+  - 🧪 Build an **attack set**: 15 indirect-injection payloads embedded in receipts/web content/e · 🔧 `$agent-red-team`
+- **L12. Week 12 — Capstone: Deploy a Multi-Agent System with an MCP Server**
+  - 🧪 Ship **Atlas** end-to-end with: (a) a custom **MCP server** for the expense/policy backend · 🔧 `$agent-system-evidence-packet`
+
+## Subject 08 — AI-First Software Development
+_`08-ai-first-software-development.md` · 1 quarter · 3 hrs/wk · 12 lectures · [full](_toc/08-ai-first-software-development-toc.md)_
+
+- **L1. Week 1 — How Coding LLMs Actually Work (a usable mental model)**
+  - Next-token prediction over code
+  - Context window & code tokenization
+  - Lost in the middle
+  - Capability vs grounding
+  - Determinism & temperature
+  - 🧪 experiments/code_profile/: give a model 12 Quill tasks across a difficulty ladder (one-lin · 🔧 `$coding-model-profile`
+- **L2. Week 2 — Prompt Engineering for Developers: Specs, Context, and PRDs**
+  - Spec over wish
+  - Acceptance tests in the prompt
+  - Context curation & ordering
+  - Few-shot from your repo
+  - PRD as shared source of truth
+  - 🧪 prd/share-notes.md: a real PRD for Quill's sharing feature (problem, users, requirements,  · 🔧 `$spec-to-prd`
+- **L3. Week 3 — Building a Coding Agent From Scratch**
+  - The coding-agent loop
+  - Diff/patch edits vs full rewrites
+  - Verification as the inner loop
+  - Localization (find the right file)
+  - Stop rule & budgets
+  - 🧪 minicoder/: a from-scratch coding agent with tools read_file, grep, apply_patch, run_tests · 🔧 `$coding-agent-loop`
+- **L4. Week 4 — The AI IDE: Context, Embeddings, and PRDs as MCP Resources**
+  - Repo indexing & retrieval
+  - @-mentions & manual context
+  - Rules / conventions files
+  - PRDs/schemas as MCP resources
+  - Context cost/quality trade-off
+  - 🧪 Configure Quill's IDE: a CLAUDE.md/rules file (conventions, commands, architecture), @-men · 🔧 `$project-context-pack`
+- **L5. Week 5 — Coding-Agent Autonomy Patterns and Human-in-the-Loop Gates**
+  - Autonomy spectrum
+  - Plan-approval checkpoint
+  - Irreversible-action gates
+  - Small reversible steps
+  - Sandboxing & scoped permissions
+  - 🧪 Implement a **plan-gate workflow**: the agent must output a plan/diff outline; a human app · 🔧 `$autonomy-gate-designer`
+- **L6. Week 6 — The Modern AI Terminal and Sandboxing**
+  - AI terminal
+  - Why sandbox
+  - Sandbox dimensions
+  - Ephemeral sandboxes (E2B / cloud)
+  - Allow-listed commands
+  - 🧪 Configure a **Docker dev container** for Quill with the repo mounted, network off by defau · 🔧 `$agent-sandbox-config`
+- **L7. Week 7 — AI-Generated Tests and Test Quality**
+  - Coverage ≠ quality
+  - Mutation testing
+  - Property-based testing
+  - AI-assisted TDD
+  - Test independence from the implementer
+  - 🧪 For Quill's sharing feature: have the agent generate a test suite; then **harden it** — ad · 🔧 `$ai-test-hardener`
+- **L8. Week 8 — AI Security and Secure "Vibe Coding"**
+  - Why AI code is insecure
+  - SAST
+  - Secret scanning
+  - DAST
+  - Dependency/supply-chain scanning
+  - 🧪 Add a **security gate** to Quill CI: semgrep (SAST), gitleaks (secrets), trivy (deps/conta · 🔧 `$secure-code-gate`
+- **L9. Week 9 — AI Code Review Gates**
+  - AI vs human review division of labor
+  - Reviewer grounding
+  - Signal vs noise
+  - Review as a gate, not advice
+  - Self-review prompt for the author
+  - 🧪 Configure an **AI reviewer** on Quill PRs grounded in the rules file + PRD, with a focused · 🔧 `$ai-review-gate`
+- **L10. Week 10 — Automated UI and App Building**
+  - Generative UI
+  - Reconciliation
+  - Visual feedback loop
+  - Component/E2E verification
+  - Prototype vs keep
+  - 🧪 Generate Quill's sharing UI (share dialog, permissions list, role selector) with **v0/Lova · 🔧 `$ui-reconcile`
+- **L11. Week 11 — Agents Post-Deployment: Monitoring, Incident Response, and SWE-bench-Style Evaluation**
+  - Observability for shipped features
+  - SLOs & alerts
+  - Feature flags + canary + rollback
+  - AI-assisted incident response
+  - SWE-bench-style self-evaluation
+  - 🧪 Instrument Quill's feature with **Sentry + OpenTelemetry**: error tracking, p95 latency, a · 🔧 `$ai-incident-runbook`
+- **L12. Week 12 — Capstone: Ship a Real Feature End-to-End with a Coding Agent**
+  - 🧪 Ship one **non-trivial Quill feature** end-to-end: a committed **PRD (as an MCP resource)* · 🔧 `$ai-delivery-evidence-packet`
+
+## Subject 09 — Full-Stack AI: MLOps, LLMOps & AgentOps to Production
+_`09-mlops-llmops-agentops-production.md` · 1 quarter · 3 hrs/wk · 12 lectures · [full](_toc/09-mlops-llmops-agentops-production-toc.md)_
+
+- **L1. Week 1 — The Production Mindset & Containerizing a Model**
+  - Reproducible artifact
+  - Image layers & build cache
+  - Twelve-factor for ML
+  - MLOps maturity (Google's levels 0/1/2)
+  - 🧪 Create fullstack-ai-platform/ monorepo: services/eta-model/, services/support-copilot/, li · 🔧 `$repro-image`
+- **L2. Week 2 — Orchestration: Kubernetes & Serverless GPU**
+  - Desired-state reconciliation
+  - Liveness vs readiness
+  - Requests vs limits
+  - Scale-to-zero
+  - 🧪 Helm chart infra/charts/eta-model/ with Deployment, Service, HPA (CPU target 60%), probes, · 🔧 `$k8s-deploy`
+- **L3. Week 3 — Data Pipelines & Versioning: Airflow, DVC, Feature Stores**
+  - DAG idempotency
+  - Data versioning (DVC)
+  - Train/serve skew
+  - Data contract
+  - 🧪 pipelines/eta_features.py: Airflow DAG with tasks extract → validate (Great Expectations / · 🔧 `$data-contract`
+- **L4. Week 4 — Experiment Tracking, Model Registry & Reproducible Training**
+  - Experiment vs run vs artifact
+  - Model registry & stages
+  - Lineage
+  - Sweep/HPO
+  - 🧪 Add wandb logging to train_eta.py (config, metrics, learning curves, the DVC data hash as  · 🔧 `$run-ledger`
+- **L5. Week 5 — Model Serving I: FastAPI, vLLM & Triton**
+  - Online vs offline/batch inference
+  - Continuous batching (vLLM)
+  - Throughput vs latency tradeoff
+  - Backpressure
+  - 🧪 services/eta-model/main.py: FastAPI with Pydantic request/response, model version header,  · 🔧 `$serve-bench`
+- **L6. Week 6 — CI/CD for Models *and* Prompts/Evals (Eval-Gated Deploys)**
+  - CI vs CD vs CT
+  - Eval-gated deploy
+  - Prompt as code
+  - Golden/regression set
+  - 🧪 .github/workflows/eta.yml and support-copilot.yml: full pipeline with caching, OIDC cloud  · 🔧 `$eval-gate`
+- **L7. Week 7 — LLMOps: Gateways, Prompt Management, Semantic Caching & Cost/Latency Control**
+  - LLM gateway
+  - Semantic cache
+  - Model routing / escalation
+  - Cost as a first-class SLO
+  - 🧪 Deploy **LiteLLM Proxy**: register Bedrock/Anthropic + the self-hosted vLLM model; set per · 🔧 `$llm-gateway`
+- **L8. Week 8 — Observability: Tracing, Metrics & LLM/Agent Telemetry**
+  - Traces vs metrics vs logs
+  - Span & attributes
+  - RED + LLM metrics
+  - Trace-linked eval
+  - 🧪 Add **OpenTelemetry** SDK + Langfuse callback to the copilot; create spans for retrieve /  · 🔧 `$trace-debug`
+- **L9. Week 9 — Monitoring, Drift Detection & Alerting in Production**
+  - Data vs concept drift
+  - Proxy quality signals for LLMs
+  - SLI/SLO/error budget
+  - Delayed labels
+  - 🧪 Add **Evidently**/NannyML drift monitors to eta-model (feature drift +, once labels arrive · 🔧 `$drift-watch`
+- **L10. Week 10 — Safe Release: Shadow, Canary, Rollback & Human-in-the-Loop Gates**
+  - Shadow mode
+  - Canary + automated analysis
+  - Blue-green vs rolling
+  - HITL gate
+  - 🧪 Deploy a new eta-model in **shadow mode**; compare shadow vs prod predictions offline for  · 🔧 `$safe-release`
+- **L11. Week 11 — AgentOps: Operating Multi-Step Agent Systems in Production**
+  - Trajectory non-determinism
+  - Tool side-effects & blast radius
+  - Loop/cost runaway
+  - Prompt injection / tool poisoning
+  - Agent memory
+  - 🧪 Refactor the copilot into a **LangGraph** agent (planner → tools → critic) with full per-n · 🔧 `$agent-ops`
+- **L12. Week 12 — Capstone: One Model + One Agent, Notebook → Monitored Production**
+  - 🔧 `$production-readiness-review`
+
+## Subject 10 — Efficient AI: Quantization, Serving & Systems
+_`10-efficient-ai-systems-serving.md` · 1 quarter · 3 hrs/wk · 12 lectures · [full](_toc/10-efficient-ai-systems-serving-toc.md)_
+
+- **L1. Week 1 — The GPU Execution & Memory Model (and How to Profile It)**
+  - Memory-bound vs compute-bound
+  - GPU memory hierarchy
+  - Roofline model
+  - The memory budget of an LLM
+  - 🧪 profile_forward.py: load the 8B in FP16, run a profiled forward pass, export a Chrome trac · 🔧 `$gpu-profile`
+- **L2. Week 2 — Numerics: Mixed Precision, FP8 & Why Bits Matter**
+  - Range vs precision
+  - Mixed precision
+  - FP8 (E4M3/E5M2)
+  - Dynamic range & scaling
+  - 🧪 precision_sweep.py: run the same generation in FP16/BF16/FP8 (via torchao/Transformer Engi · 🔧 `$precision-sweep`
+- **L3. Week 3 — Post-Training Quantization: GPTQ, AWQ, SmoothQuant**
+  - PTQ vs QAT
+  - Quantization granularity
+  - AWQ
+  - SmoothQuant
+  - Calibration set
+  - 🧪 Quantize the 8B with **AutoAWQ** (INT4, group 128) and **llm-compressor** (GPTQ INT4 and S · 🔧 `$quantize-and-verify`
+- **L4. Week 4 — QAT, Low-Bit Frontiers & Serving Quantized Models**
+  - QAT & the straight-through estimator
+  - NF4 + QLoRA
+  - Served vs offline speedup
+  - Low-bit cliff
+  - 🧪 QLoRA-fine-tune the 8B (NF4) on a small instruction set; merge/serve; compare quality to t · 🔧 `$lowbit-serve`
+- **L5. Week 5 — Pruning, Sparsity, Distillation & NAS**
+  - Unstructured vs structured pruning
+  - 2:4 sparsity
+  - Distillation
+  - SparseGPT / Wanda
+  - NAS / once-for-all
+  - 🧪 Distill tiny-on-edge from a larger teacher; report the accuracy gap vs a same-size from-sc · 🔧 `$compress-verify`
+- **L6. Week 6 — Attention at Scale: FlashAttention-3, KV-Cache & PagedAttention**
+  - Naive attention is IO-bound
+  - FlashAttention (tiling + online softmax)
+  - KV-cache
+  - PagedAttention
+  - 🧪 Benchmark generation with eager attention vs **FlashAttention-3** (or FA-2 if HW-limited)  · 🔧 `$attention-bench`
+- **L7. Week 7 — Inference Serving Engines: vLLM, SGLang & TensorRT-LLM**
+  - Prefill vs decode
+  - Continuous batching
+  - TTFT vs ITL vs throughput
+  - Prefix caching / RadixAttention
+  - 🧪 Serve the same quantized checkpoint on **vLLM**, **SGLang**, and **TensorRT-LLM**; run ben · 🔧 `$serving-engine-bench`
+- **L8. Week 8 — Speculative & Parallel Decoding**
+  - Why decode is slow
+  - Speculative decoding (verify-in-parallel)
+  - Acceptance rate
+  - Medusa / EAGLE
+  - 🧪 Configure vLLM speculative decoding with (a) a 1B draft model and (b) **EAGLE-3** or **n-g · 🔧 `$spec-decode`
+- **L9. Week 9 — Mixture-of-Experts: Sparse Models at Scale**
+  - Sparse activation
+  - Router + top-k gating
+  - Load balancing
+  - Expert parallelism
+  - 🧪 Serve an MoE model on vLLM/SGLang; measure tokens/s and memory; compare *active* vs *total · 🔧 `$moe-analyze`
+- **L10. Week 10 — Long-Context Efficiency**
+  - KV-cache dominates long context
+  - KV-cache quantization & eviction
+  - Sliding-window / sparse attention
+  - RoPE scaling / YaRN
+  - Long-context vs RAG
+  - 🧪 Serve the 8B with **quantized KV-cache** (FP8) and **StreamingLLM/sliding-window**; measur · 🔧 `$longctx-budget`
+- **L11. Week 11 — Distributed Training & Inference: FSDP, ZeRO, Tensor/Pipeline Parallelism**
+  - Data parallelism
+  - ZeRO / FSDP sharding
+  - Tensor parallelism
+  - Pipeline parallelism
+  - Choosing a plan
+  - 🧪 Train/fine-tune the 8B with **FSDP2** (or DeepSpeed ZeRO-3) across 2+ GPUs; record peak me · 🔧 `$parallel-plan`
+- **L12. Week 12 — Capstone: FP16 → Quantized, Served, Benchmarked Endpoint**
+  - 🔧 `$efficiency-report`
+
+## Subject 11 — Domain-Specific Applied AI
+_`11-domain-specific-applied-ai.md` · 1 quarter · 3 hrs/wk · 13 lectures · [full](_toc/11-domain-specific-applied-ai-toc.md)_
+
+- **L1. Week 1 — What Makes a Domain Hard: The Six-Lens Method & Picking Your Anchor**
+  - Prediction ≠ decision
+  - Cost asymmetry
+  - Regulatory tiering (EU AI Act)
+  - Distribution shift is the default, not the exception
+  - Automation bias & feedback loops
+  - 🧪 Take one provided dataset (Telco churn) and write three **decision memos** — the same pred · 🔧 `$domain-readiness`
+- **L2. Week 2 — Healthcare I: Medical Imaging & Explainable Diagnosis (HIPAA, FDA SaMD)**
+  - Patient-level splitting
+  - Dice / IoU vs accuracy
+  - Calibration & abstention
+  - XAI as a *failure detector*
+  - HIPAA Safe Harbor
+  - 🧪 Train a tumor classifier on the **Br35H** brain-MRI set (or a segmenter on **BraTS** subse · 🔧 `$xai-audit`
+- **L3. Week 3 — Healthcare II: Clinical NLP on Notes (De-identification, RAG, Hallucination Safety)**
+  - PHI de-identification on text
+  - Clinical NER & concept normalization
+  - Negation & uncertainty
+  - Grounded generation (faithfulness)
+  - 🧪 On the **MIMIC-III/IV de-identified note subset** (credentialed) or the open **n2c2/i2b2** · 🔧 `$faithfulness-judge`
+- **L4. Week 4 — Legal: Contract Analysis & RAG over Case Law (Citation Integrity)**
+  - Clause-level extraction
+  - Long-document handling
+  - Citation grounding & verification
+  - GraphRAG over precedent
+  - 🧪 On **CUAD** (Contract Understanding Atticus Dataset), train/prompt a clause classifier for · 🔧 `$citation-verifier`
+- **L5. Week 5 — Finance I: Fraud Detection & Point-in-Time Correctness**
+  - Point-in-time correctness
+  - Class imbalance & cost
+  - Temporal validation
+  - Adversarial & label-delay dynamics
+  - 🧪 On **IEEE-CIS Fraud** (or **Sparkov**/credit-card-fraud), engineer entity-level velocity f · 🔧 `$pit-leakage-audit`
+- **L6. Week 6 — Finance II: Credit Risk, Time-Series & Model Governance (SR 11-7, ECOA/FCRA)**
+  - Calibration over discrimination
+  - Reason codes / adverse action
+  - Fairness testing
+  - Probabilistic forecasting & intervals
+  - SR 11-7 model risk
+  - 🧪 On **Lending Club / Give Me Some Credit / German Credit**, train a PD model; produce a rel · 🔧 `$model-governance-card`
+- **L7. Week 7 — Retail & E-commerce I: Recommendation Systems at Scale**
+  - Two-stage architecture
+  - Implicit feedback
+  - Ranking metrics
+  - Popularity & feedback bias
+  - 🧪 On **Instacart** (or **H&M Personalized Fashion**, **RetailRocket**), build a two-tower re · 🔧 `$recsys-slice-eval`
+- **L8. Week 8 — Retail & E-commerce II: Demand Forecasting & Inventory Decisions**
+  - Asymmetric cost → quantile forecast
+  - Scale-free accuracy
+  - Intermittent demand
+  - Hierarchical coherence
+  - 🧪 On **M5 / Corporación Favorita / Rossmann**, build per-SKU forecasts (statsforecast baseli · 🔧 `$decision-forecast-eval`
+- **L9. Week 9 — Manufacturing & Industry 4.0: Predictive Maintenance & Vision QC**
+  - RUL regression / health index
+  - Unsupervised/one-class defect detection
+  - Localization vs detection
+  - Operational thresholds
+  - 🧪 On **MVTec-AD**, train an Anomalib one-class detector (PatchCore) per category; report ima · 🔧 `$anomaly-qc-eval`
+- **L10. Week 10 — Education: Tutoring Agents & Learning Science (FERPA, Pedagogical Safety)**
+  - Scaffolding vs answer-leakage
+  - Knowledge tracing / mastery
+  - Correctness guardrail
+  - FERPA & minors
+  - 🧪 Build a tutoring agent (Claude Agent SDK) over a problem set (**GSM8K / MATH** items or a  · 🔧 `$pedagogy-eval`
+- **L11. Week 11 — AI for Science: Surrogates, Property Prediction & Inverse Design**
+  - Scaffold splitting
+  - Graph/representation choice
+  - Physics-informed constraints
+  - OOD honesty & uncertainty
+  - 🧪 On **MoleculeNet (ESOL/BBBP/Tox21)** or **Materials Project**, train a GNN (or chemprop) p · 🔧 `$ood-science-eval`
+- **L12. Week 12 — Capstone Build & Deployment-Risk Dossier**
+  - 🧪 Finish **M2** (model/agent passing eval) and **M3** (deployment-risk dossier) for your anc · 🔧 `$deployment-risk-dossier`
+- **L13. Week 13 — Ship Review: Stakeholder + Regulator Panel & Cross-Vertical Synthesis**
+  - 🧪 **M4:** 12-minute ship review + 8-minute panel defense; submit final repo · 🔧 `$ship-review`
+
+## Subject 12 — Multimodal & Generative AI
+_`12-multimodal-and-generative-ai.md` · 1 quarter · 3 hrs/wk · 12 lectures · [full](_toc/12-multimodal-and-generative-ai-toc.md)_
+
+- **L1. Week 1 — Vision Transformers From Scratch: Images as Sequences of Patches**
+  - Patch embedding
+  - Self-attention recap
+  - Inductive bias trade-off
+  - Class token vs mean pooling
+  - 🧪 Implement PatchEmbed, multi-head attention, a transformer block, and a ViT classifier in p · 🔧 `$from-scratch-verifier`
+- **L2. Week 2 — Contrastive Learning & CLIP: Aligning Images and Text**
+  - Contrastive (InfoNCE) loss
+  - Zero-shot classification
+  - Batch size as negatives
+  - Modality gap
+  - 🧪 Implement CLIP's symmetric loss; train a small dual-encoder (ViT image tower + a small tex · 🔧 `$contrastive-eval`
+- **L3. Week 3 — Vision-Language Models: LLaVA, Qwen-VL, Llama-Vision & Fine-Tuning**
+  - Connector / projector
+  - Visual tokens in context
+  - Instruction tuning for VLMs
+  - VLM hallucination
+  - 🧪 Run zero-shot VQA/captioning with an open VLM on **VQAv2 / TextVQA / DocVQA** samples; mea · 🔧 `$vlm-probe`
+- **L4. Week 4 — Diffusion From Scratch I: DDPM (the Forward & Reverse Process)**
+  - Forward process
+  - Reverse process / objective
+  - Time conditioning
+  - Sampling steps
+  - 🧪 Implement the DDPM schedule, a small time-conditioned U-Net, the ε-loss, and an ancestral  · 🔧 `$generative-eval`
+- **L5. Week 5 — Diffusion II: Latent Diffusion, Conditioning & Text-to-Image**
+  - Latent diffusion
+  - Cross-attention text conditioning
+  - Classifier-free guidance (CFG)
+  - CLIPScore vs FID for text-to-image
+  - 🧪 Run diffusers Stable-Diffusion inference; sweep the CFG scale and document the quality/ali · 🔧 `$t2i-eval`
+- **L6. Week 6 — Flow Matching & Rectified Flow: The Modern Generative Backbone**
+  - Continuous-time view
+  - Conditional flow matching loss
+  - Rectified flow
+  - DDIM bridge
+  - 🧪 Implement conditional flow matching on the same CIFAR/CelebA setup; sample with a fixed-st · 🔧 `$sampler-benchmark`
+- **L7. Week 7 — Video Generation: Spatiotemporal Diffusion & World Consistency**
+  - Temporal modeling
+  - Latent video diffusion + DiT
+  - Conditioning modes
+  - Evaluation
+  - 🧪 Run an open model (**Stable Video Diffusion / CogVideoX**) for image- and text-to-video on · 🔧 `$video-consistency-eval`
+- **L8. Week 8 — Audio & Speech: ASR (Whisper), TTS & Audio Representations**
+  - ASR & WER
+  - Mel-spectrogram pipeline
+  - Neural audio codecs
+  - Robustness slices
+  - 🧪 Transcribe a **LibriSpeech** subset with Whisper; compute WER overall and on a noisy/accen · 🔧 `$asr-robustness-eval`
+- **L9. Week 9 — Any-to-Any & Unified Multimodal Models**
+  - Unified token space
+  - Early vs late fusion
+  - Interleaved generation
+  - The specialist-vs-generalist trade-off
+  - 🧪 Build an any-to-any **system** (not necessarily one model): speech-in (Whisper) → VLM reas · 🔧 `$modality-router-eval`
+- **L10. Week 10 — World Models: Learning Simulators (IRIS, Genie-style)**
+  - Latent dynamics
+  - Transformer/tokenized world models (IRIS)
+  - Action-conditioned generation (Genie)
+  - Compounding error / rollout horizon
+  - 🧪 Run a tokenized world model (IRIS or a DreamerV3 latent model) on an Atari/gym environment · 🔧 `$rollout-eval`
+- **L11. Week 11 — Multimodal RAG & Agents: Grounded, Tool-Using Multimodal Systems**
+  - Multimodal retrieval
+  - Grounded multimodal generation
+  - Agentic tools for vision
+  - Multimodal hallucination guardrail
+  - 🧪 Build a multimodal-RAG assistant over a document image set (**DocVQA / InfographicVQA**) w · 🔧 `$mm-grounding-eval`
+- **L12. Week 12 — Capstone: A Multimodal App + a Small Diffusion Model**
+  - 🧪 Finish **M3** (multimodal-RAG/agent hardening) and **M4** (demo + report) coupling (A) the · 🔧 `$multimodal-capstone-packet`
+
+## Subject 13 — Reinforcement Learning, Robotics & Embodied AI
+_`13-rl-robotics-embodied-ai.md` · 1 quarter · 3 hrs/wk · 14 lectures · [full](_toc/13-rl-robotics-embodied-ai-toc.md)_
+
+- **L1. Week 1 — MDPs, Bellman Equations & Dynamic Programming From Scratch**
+  - Markov Decision Process
+  - Return & discounting
+  - State-value & action-value
+  - Bellman optimality
+  - Contraction & convergence
+  - 🧪 mdp.py: represent the gridworld as explicit P[s,a,s'] and R[s,a] arrays · 🔧 `$mdp-modeler`
+- **L2. Week 2 — Model-Free Prediction & Control: Monte Carlo, TD, Q-Learning, SARSA**
+  - TD(0) update
+  - Q-learning (off-policy)
+  - SARSA (on-policy)
+  - Exploration
+  - Bias–variance of targets
+  - 🧪 tabular.py: Q-learning and SARSA sharing one ε-greedy/rollout harness · 🔧 `$rollout-harness`
+- **L3. Week 3 — Deep Q-Networks: DQN → Double → Dueling → Rainbow**
+  - Q-network
+  - Replay buffer + target net
+  - Double DQN
+  - Dueling architecture
+  - Prioritized replay / n-step / distributional / noisy nets
+  - 🧪 dqn.py: replay buffer, target net, ε-greedy, Huber loss on LunarLander · 🔧 `$value-debugger`
+- **L4. Week 4 — Policy Gradients & Actor-Critic: REINFORCE, Baselines, A2C**
+  - Policy-gradient theorem
+  - Baseline / advantage
+  - Actor-Critic
+  - Continuous policies
+  - 🧪 pg.py: REINFORCE on CartPole; add a learned-value baseline; plot variance of the gradient  · 🔧 `$gradient-variance-meter`
+- **L5. Week 5 — Trust Regions & PPO: TRPO, GAE, and the Workhorse of Modern RL**
+  - Surrogate objective / importance ratio
+  - PPO-clip
+  - GAE
+  - TRPO vs PPO
+  - 🧪 ppo.py: full PPO-clip + GAE + value-clipping + entropy bonus on MuJoCo HalfCheetah and Met · 🔧 `$ppo-trainer`
+- **L6. Week 6 — Offline RL & Imitation Learning**
+  - Behavior cloning
+  - Distributional shift
+  - Conservative value (CQL)
+  - Implicit Q-Learning (IQL)
+  - Decision Transformer
+  - 🧪 bc.py + dagger.py on a MuJoCo expert; show DAgger fixes compounding error · 🔧 `$offline-data-auditor`
+- **L7. Week 7 — Model-Based RL, MCTS & World Models (IRIS)**
+  - Model-based RL
+  - MCTS
+  - AlphaZero loop
+  - World models (IRIS)
+  - 🧪 mcts.py: UCT on a small game (Connect-Four); plug a value net for AlphaZero-lite self-play · 🔧 `$model-trust-auditor`
+- **L8. Week 8 — RLHF & Preference Optimization: PPO-RLHF, DPO, SimPO, KTO, ORPO**
+  - Reward model (Bradley-Terry)
+  - PPO-RLHF objective
+  - DPO
+  - SimPO / KTO / ORPO
+  - 🧪 dpo_train.py with TRL: SFT → DPO on UltraFeedback; then swap in SimPO/KTO/ORPO configs · 🔧 `$preference-tuner`
+- **L9. Week 9 — RLVR & the GRPO Lineage: GRPO (DeepSeek-R1), DAPO, Dr.GRPO**
+  - RLVR
+  - GRPO
+  - GRPO biases (Dr.GRPO)
+  - DAPO
+  - 🧪 grpo_train.py with **veRL** (or TRL GRPOTrainer): train Qwen3-1.7B on GSM8K with an exact- · 🔧 `$rlvr-trainer`
+- **L10. Week 10 — Agentic RL: SWE-RL, DeepSWE & Distributed RL Infrastructure**
+  - Agentic MDP
+  - SWE-RL / DeepSWE
+  - Distributed RL stack
+  - Reward sparsity & shaping
+  - 🧪 swe_rl_env.py: wrap a small Python repo + pytest into a Gymnasium-style env (apply patch → · 🔧 `$agentic-rl-env`
+- **L11. Week 11 — Robotics & Embodied AI: VLA Models (SmolVLA), Sim-to-Real**
+  - VLA model
+  - Action chunking
+  - Sim-to-real gap
+  - Imitation vs RL fine-tuning
+  - 🧪 vla_finetune.py with **LeRobot**: fine-tune **SmolVLA** on a LeRobot teleop dataset for a  · 🔧 `$embodied-eval`
+- **L12. Week 12 — Humanoid Locomotion & Multi-Agent RL**
+  - Massively parallel sim
+  - Locomotion reward
+  - Stochastic game
+  - CTDE (centralized training, decentralized execution)
+  - 🧪 humanoid_ppo.py in **Isaac Lab** (or MuJoCo MJX): train a humanoid to track velocity comma · 🔧 `$reward-shaping-auditor`
+- **L13. Week 13 — RL Safety: Reward Hacking, Specification Gaming & Safe RL**
+  - Specification gaming
+  - Goodhart / reward over-optimization
+  - Constrained MDP
+  - Mitigations
+  - 🧪 reward_hacking_lab.py: reproduce a specification-gaming exploit (e.g., a shaped-reward Car · 🔧 `$reward-hacking-redteam`
+- **L14. Week 14 — Capstone: An Agentic-RL System With a Safety Audit**
+  - 🧪 Pick one track: (a) agentic SWE-RL agent (GRPO + $agentic-rl-env), (b) MetaDrive PPO drivi · 🔧 `$rl-evidence-packet`
+
+## Subject 14 — AI Safety, Alignment & Governance
+_`14-ai-safety-alignment-governance.md` · 1 quarter · 3 hrs/wk · 13 lectures · [full](_toc/14-ai-safety-alignment-governance-toc.md)_
+
+- **L1. Week 1 — The AI Risk Landscape & How to Reason About It**
+  - Risk taxonomy
+  - Threat model
+  - Capability vs propensity
+  - Defense in depth
+  - 🧪 Write threat_model.yaml for the support assistant: assets, actors, vectors, impact, curren · 🔧 `$threat-modeler`
+- **L2. Week 2 — Where Safety Enters Modern LLM Training (RLHF, RLVR, Safety Fine-Tuning)**
+  - Pipeline & injection points
+  - Safety fine-tuning
+  - Alignment tax
+  - Over-refusal
+  - 🧪 safety_ft.py with TRL: fine-tune the small model on a refusal dataset; evaluate harm-rate  · 🔧 `$alignment-tax-meter`
+- **L3. Week 3 — Adversarial Robustness I: Jailbreaks**
+  - Jailbreak
+  - GCG (greedy coordinate gradient)
+  - PAIR / TAP
+  - Transferability
+  - 🧪 gcg_attack.py with **nanoGCG**: find a suffix that jailbreaks the local model on a HarmBen · 🔧 `$jailbreak-suite`
+- **L4. Week 4 — Adversarial Robustness II: Prompt Injection, Agent Hijacking & Weight Protection**
+  - Prompt injection
+  - Indirect injection
+  - Confused deputy / exfiltration
+  - Defenses
+  - 🧪 injection_demo.py: plant an instruction in a RAG doc that makes the assistant exfiltrate a · 🔧 `$injection-redteam`
+- **L5. Week 5 — Model Specs, Content Policies & Moderation (Llama Guard, NeMo Guardrails)**
+  - Model spec
+  - Guard model
+  - Programmable guardrails
+  - Operating point
+  - 🧪 model_spec.md: a testable spec for the assistant (allowed/refused/deferred behaviors + exa · 🔧 `$policy-enforcer`
+- **L6. Week 6 — Scheming, Deception & Situational Awareness**
+  - Deceptive alignment / scheming
+  - Situational awareness
+  - Sandbagging / eval-gaming
+  - Detection
+  - 🧪 eval_gaming_probe.py: present the model the same task with/without explicit "this is a tes · 🔧 `$deception-probe`
+- **L7. Week 7 — Mechanistic Interpretability I: Sparse Autoencoders (SAEs)**
+  - Superposition
+  - Sparse autoencoder
+  - Feature validation
+  - Limits
+  - 🧪 train_sae.py: hook a layer's residual stream (via TransformerLens/SAELens), collect activa · 🔧 `$sae-feature-lab`
+- **L8. Week 8 — Mechanistic Interpretability II: CoT Monitoring & Faithfulness**
+  - CoT monitoring
+  - Faithfulness
+  - Optimization pressure erodes monitorability
+  - Monitor design
+  - 🧪 cot_monitor.py: a monitor LLM that scores each reasoning step of an agent for unsafe inten · 🔧 `$cot-monitor`
+- **L9. Week 9 — Scalable Oversight, Constitutional AI & RLAIF**
+  - Scalable oversight
+  - Constitutional AI
+  - RLAIF vs RLHF
+  - Debate / weak-to-strong
+  - 🧪 constitutional_ai.py: a critique→revise pipeline using a written constitution on harmful p · 🔧 `$constitutional-aligner`
+- **L10. Week 10 — Dangerous Capabilities, Responsible Scaling & Takeoff**
+  - Dangerous-capability eval
+  - Responsible scaling policy
+  - Recursive self-improvement / takeoff
+  - Elicitation
+  - 🧪 capability_eval.py with **Inspect AI** (UK AISI): run a dangerous-capability proxy eval wi · 🔧 `$capability-eval`
+- **L11. Week 11 — Agent Safety: Autonomy, Permissions & Multi-Agent Risk**
+  - Autonomy risk
+  - Authorization layer
+  - Containment / sandboxing
+  - Multi-agent risk
+  - 🧪 agent_authz.py: wrap the assistant's tools with a least-privilege policy + human-gate for  · 🔧 `$agent-safety-harness`
+- **L12. Week 12 — Governance: EU AI Act, NIST AI RMF, OWASP & Standards**
+  - EU AI Act risk tiers
+  - NIST AI RMF
+  - OWASP LLM Top-10 / ISO 42001
+  - Documentation artifacts
+  - 🧪 compliance_dossier/: EU AI Act tier classification + obligations checklist; NIST RMF mappi · 🔧 `$compliance-mapper`
+- **L13. Week 13 — Capstone: A Full Red-Team → Mitigation → Eval Cycle**
+  - 🧪 Pick a system. Run: (1) threat model, (2) a multi-family red-team with measured ASR, (3) ≥ · 🔧 `$safety-case-builder`
+
+## Subject 15 — Emerging Topics & AI for Science
+_`15-emerging-topics-ai-for-science.md` · 1 quarter · 3 hrs/wk · 13 lectures · [full](_toc/15-emerging-topics-ai-for-science-toc.md)_
+
+- **L1. Week 1 — Operating at the Frontier: Reading Papers, Choosing a Thread, Signal vs Hype**
+  - Claim–evidence–gap
+  - Reproducibility tiers
+  - Benchmark contamination & gaming
+  - The hype cycle
+  - 🧪 Run the $paper-triage skill on 3 candidate papers in your thread; pick one to reproduce; g · 🔧 `$paper-triage`
+- **L2. Week 2 — Autonomous Research Agents: The "AI Scientist"**
+  - The research loop as an agent
+  - Verification bottleneck
+  - Novelty vs recombination
+  - Automated reviewing & its biases
+  - 🧪 Run an AI-Scientist-style agent (or build a scoped one with the Claude Agent SDK) on a sma · 🔧 `$research-claim-audit`
+- **L3. Week 3 — AI for Science I: Structure Prediction (AlphaFold-style) & Geometric DL**
+  - Equivariance
+  - MSA / evolutionary signal
+  - Confidence (pLDDT/PAE)
+  - Generalization limits
+  - 🧪 Run **ESMFold** (or OpenFold) on a handful of sequences; compare predicted structures to P · 🔧 `$scientific-repro`
+- **L4. Week 4 — AI for Science II: Molecules, Materials & Generative Design**
+  - Property prediction + screening
+  - Generative proposal
+  - Validation gap
+  - Distribution shift / novelty
+  - 🧪 Run a property/stability screen on **Materials Project** (or a molecular generator like a  · 🔧 `$discovery-validity-check`
+- **L5. Week 5 — Physics-Informed ML: PINNs, Neural Operators & Scientific Surrogates**
+  - Physics-informed loss
+  - PINN vs neural operator
+  - Training pathologies
+  - Validation against the solver
+  - 🧪 Implement a PINN for a 1D Burgers'/heat equation in PyTorch/deepxde; compare to a numerica · 🔧 `$physics-validity`
+- **L6. Week 6 — Emergence, Scaling & In-Context Learning**
+  - Scaling laws
+  - Emergent abilities & the metric critique
+  - In-context learning
+  - Grokking
+  - 🧪 Reproduce **grokking** on modular arithmetic (small transformer) *or* an emergence curve w · 🔧 `$emergence-probe`
+- **L7. Week 7 — Mechanistic Interpretability: Circuits, SAEs & CoT Monitoring**
+  - Superposition
+  - Sparse autoencoders (SAEs)
+  - Circuits & activation patching
+  - CoT monitoring & faithfulness
+  - 🧪 Use transformer-lens to find an induction head / a small circuit in a small model via acti · 🔧 `$interp-evidence`
+- **L8. Week 8 — Neuro-Symbolic Methods: Combining Learning and Reasoning**
+  - Why hybridize
+  - LLM-as-program-generator + solver
+  - Differentiable/relaxed logic
+  - Verifiability
+  - 🧪 Build an LLM+solver hybrid for a reasoning task (e.g., **ARC-AGI** subset via program sear · 🔧 `$neurosymbolic-loop`
+- **L9. Week 9 — World Models & Simulation for Reasoning and Control**
+  - Planning in imagination
+  - Model exploitation
+  - Compounding error & horizon
+  - Generative interactive environments (Genie)
+  - 🧪 Run a Dreamer-style or tokenized world model on a control/Atari task; compare planning-in- · 🔧 `$sim-fidelity-eval`
+- **L10. Week 10 — Synthetic Data, Self-Improvement & the Efficiency/SSM Frontier**
+  - Synthetic data & self-improvement
+  - Model collapse
+  - State-space models (Mamba)
+  - Hybrids
+  - 🧪 **Either** run a small **self-improvement** loop (generate→verify→filter→fine-tune) on a r · 🔧 `$frontier-tradeoff`
+- **L11. Week 11 — Theorem Proving, Autoformalization & the Societal-Impact Panel**
+  - Formal verification as ground truth
+  - Autoformalization
+  - LLM + search + RL (AlphaProof)
+  - Governance frameworks
+  - 🧪 Run an LLM-driven proof search on a small Lean benchmark (**MiniF2F** via LeanDojo); repor · 🔧 `$verifiable-reasoning-eval`
+- **L12. Week 12 — In-Class Hackathon: Build at the Frontier Under Pressure**
+  - 🧪 A timed hackathon: ship a working frontier mini-build (e.g., an SAE feature steering demo, · 🔧 `$frontier-sprint`
+- **L13. Week 13 — Final Talks: Conference-Style Presentations & Defense**
+  - 🧪 **M4:** 12-minute conference talk + 8-minute defense; submit the short paper · 🔧 `$research-defense`
+
+## Subject 16 — Capstone: Build & Ship an Agentic AI System
+_`16-capstone-agentic-system.md` · 1 quarter · 3 hrs/wk · 6 milestones · [full](_toc/16-capstone-agentic-system-toc.md)_
+
+- **M1. Milestone 1 — Proposal & Problem Framing**
+  - 🔧 `$project-charter`
+- **M2. Milestone 2 — Data, RAG & Prototype**
+  - 🔧 `$rag-evaluator`
+- **M3. Milestone 3 — Multi-Agent System with MCP + Fine-Tuning**
+  - 🔧 `$agent-orchestrator`
+- **M4. Milestone 4 — Evaluation Harness & Safety Review**
+  - 🔧 `$eval-gate`
+- **M5. Milestone 5 — LLMOps/AgentOps Production Deployment**
+  - 🔧 `$agentops-deployer`
+- **M6. Milestone 6 — Monitored Production, Final Report & Showcase**
+  - 🔧 `$production-evidence-packet`
+
+## Subject 17 — Recursive Self-Improvement: Self-Evolving Agents, Models & Systems
+_`17-recursive-self-improvement.md` · 1 quarter · 3 hrs/wk · 13 lectures · [full](_toc/17-recursive-self-improvement-toc.md)_
+
+- **L1. Week 1 — Foundations: The Five Lenses, Taxonomy & Theory of RSI**
+  - The self-improvement loop
+  - Iterative computation as a unifying view
+  - A task-centric theory
+  - Interestingness / novelty
+  - 🧪 Stand up Agent0-Loop skeleton: generate_tasks → solve(tool-integrated) → verify → select → · 🔧 `$rsi-classifier`
+- **L2. Week 2 — Self-Generated Data & Self-Play (and the Collapse Problem)**
+  - Self-play loop
+  - Model collapse
+  - Self-play ≈ adversarial imitation
+  - 🧪 Implement a proposer/solver self-play loop on a small reasoning task; add a diversity/veri · 🔧 `$collapse-monitor`
+- **L3. Week 3 — Test-Time Self-Improvement & Inference-Time Scaling**
+  - Compute-as-teacher
+  - Test-time self-distillation
+  - Reusable test-time computation
+  - Fast tree-search self-improvement
+  - 🧪 Add a test-time loop: sample-many → verify → self-distill the best trace into the model's  · 🔧 `$test-time-improver`
+- **L4. Week 4 — Agentic Memory & Lifelong/Continual Learning**
+  - Meta-learned memory designs
+  - Agentic context engineering
+  - Continual learning without forgetting
+  - Real-time procedural learning from experience
+  - 🧪 Add a memory module that writes verified solution "skills," retrieves them, and periodical · 🔧 `$memory-evolver`
+- **L5. Week 5 — Verifiers, Rewards & the Reward-Hacking Problem**
+  - Verifiers > solvers as a bottleneck
+  - Self-evolving, interpretable rubrics
+  - Reward hacking in self-improving code agents
+  - Self-improving VLM judges without human labels
+  - 🧪 Train a small verifier; run the loop; then *red-team* it — find inputs where the agent inf · 🔧 `$verifier-auditor`
+- **L6. Week 6 — Self-Evolving Coding Agents**
+  - Adversarial self-generated unit tests + preference optimization
+  - Repository context files (AGENTS.md)
+  - Sobering baseline:
+  - Deep agentic reasoning systems
+  - 🧪 Code agent loop: generate feature → synthesize tests/harness → self-improve via pass/fail  · 🔧 `$code-harness-synth`
+- **L7. Week 7 — Automated AI Research & Scientific Discovery ("AI Scientists")**
+  - Can agents automate post-training?
+  - Discovery limits:
+  - Evolutionary optimization by LLMs
+  - 🧪 An agent that proposes + runs small training-config experiments, reads results, and iterat · 🔧 `$research-loop`
+- **L8. Week 8 — Open-Ended Discovery & Evolutionary Self-Improvement**
+  - Learning to evolve / relative-progress RL
+  - Feedback Descent
+  - Prompt optimization & translation across foundation models
+  - 🧪 An evolutionary loop over prompts/programs driven by pairwise "which is more interesting/b · 🔧 `$open-ended-evolver`
+- **L9. Week 9 — Self-Improving Reasoning: Curricula at the Edge of Learnability**
+  - Teaching models to teach themselves
+  - Process rewards & multi-agent scaling
+  - Shared decision pivots
+  - GRPO-guided controllers for hyperparameter sweeps
+  - 🧪 Add a curriculum scheduler that estimates per-task learnability and samples near the front · 🔧 `$learnability-curriculum`
+- **L10. Week 10 — Tiny Recursive Models & Iterative Architectures**
+  - Tiny autoregressive recursive models
+  - Generative recursive reasoning models
+  - Depth vs recursion
+  - 🧪 Train a small looped/recursive model on an algorithmic task (e.g., jigsaw/sorting); compar · 🔧 `$recursion-profiler`
+- **L11. Week 11 — Multimodal, World-Model & Embodied Self-Improvement**
+  - Self-improving world models
+  - Self-improving VLA with data generation via residual RL
+  - Residual off-policy RL
+  - 🧪 In a sim environment, run a loop where the policy generates trajectories, a learned world  · 🔧 `$embodied-self-improver`
+- **L12. Week 12 — Benchmarks & Evidence: Proving a System Actually Self-Improved**
+  - PostTrainBench
+  - Verifying the verifiers
+  - 🧪 Build an evaluation harness with: a frozen held-out set, a leakage audit, an independent v · 🔧 `$rsi-evidence-audit`
+- **L13. Week 13 — Safety, Unlearning & Governance of Self-Improving Systems**
+  - Tamper / fine-tuning robustness
+  - Reward hacking
+  - Machine unlearning
+  - Bias amplification
+  - 🧪 Run a safety battery on your system: attempt a tamper/jailbreak (TamperBench-style), attem · 🔧 `$rsi-safety-case`

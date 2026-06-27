@@ -1,0 +1,25 @@
+# Research: Stanford + MIT (2025–2026)
+
+_Source: research-stanford-mit agent, live course sites, June 2026._
+
+## Stanford
+- **CS224N — NLP with Deep Learning (Winter 2026)**: Word vectors; backprop/matrix calculus; RNNs; Transformers; Pretraining (BERT, Llama 3, scaling/systems/data); Post-training (RLHF, SFT, DPO); Efficient adaptation (prompting + PEFT/LoRA); **Agents, Tool Use, RAG (ReAct)**; Benchmarking & Evaluation; **Reasoning 1 (CoT, self-consistency, test-time scaling)**; **Reasoning 2 (verification, speculative decoding)**; tokenization/multilinguality; interpretability; multimodality; LoRA (Schulman guest). A1 word vectors → A4 **LLM eval**; final = build/finetune GPT-2. https://web.stanford.edu/class/cs224n/
+- **CS336 — Language Modeling from Scratch (Spring 2025)**: tokenization; PyTorch & resource accounting; architectures/hyperparams; **MoE**; GPUs; **Triton kernels**; parallelism (data/tensor/pipeline); scaling laws; inference; evaluation; data (Common Crawl, filtering, dedup); alignment SFT/RLHF/RL. 5 from-scratch assignments incl. **FlashAttention-2**, scaling-law fitting, **RL-for-reasoning (math)** capstone. The flagship build-an-LLM-end-to-end course. https://cs336.stanford.edu/spring2025/
+- **CS25 — Transformers United V6 (Spring 2026)**: history; JEPA/world modeling; **SSMs vs Transformers (Albert Gu)**; **ultra-scale training (HuggingFace)**; next-gen pretraining (Mistral); generalization params vs context (Anthropic); **agents for science/medicine (DeepMind)**; native multimodal; **production inference/serving (Modal)**. https://web.stanford.edu/class/cs25/
+- **CS234 — Reinforcement Learning (Winter 2026)**: MDP planning; policy eval; Q-learning & function approx; policy search; **Offline RL & Imitation**; **Offline RL & RLHF**; bandits; exploration; **RL & MCTS**; Alignment & Impacts. HW incl. RLHF basics; project. https://web.stanford.edu/class/cs234/
+- **CS329A — Self-Improving AI Agents (Autumn 2025, NEW)**: test-time compute scaling; robust verification; learning from feedback w/ tools/code; multi-step reasoning/planning; train-time scaling RL; **open-ended evolution of self-improving agents**; **search & deep-research agents**; **agentic frameworks for SWE**; **agent memory**; **agentic evals & long-horizon tasks**. 3 HW + research project. https://cs329a.stanford.edu/
+- **CS329H — ML from Human Preferences (Autumn 2025)**: preference modeling; choice-model theory (Bradley-Terry, Luce, RUM); learning utilities; elicitation/optimal experimental design; **dueling, RLHF, LMArena**; preference aggregation/personalization (Community Notes); privacy. Theory behind RLHF/DPO. https://web.stanford.edu/class/cs329h/
+- **CS230 — Deep Learning (Fall 2025)**: full DL project cycle; adversarial robustness & generative models; deep RL; **enhancing LLM applications**; **interpretability**; Transformer in TF. https://cs230.stanford.edu/
+- **CS229 — ML**: classic foundations (GLMs, SVMs, NNs, unsupervised, learning theory, RL) — math/ML anchor. https://cs229.stanford.edu/
+- **CS224V — Conversational Assistants (Autumn 2024)**: grounding LLMs vs hallucination; knowledge curation (STORM); ReAct agents; deployable assistants.
+- **CS329S — ML Systems Design**: now the book "Designing ML Systems"/"AI Engineering" (Chip Huyen) — reading reference.
+
+## MIT
+- **6.S191 — Intro to Deep Learning (2026)**: DL; deep sequence modeling; deep CV; deep generative modeling; deep RL; new frontiers; **Three Laws of AI (safety/ethics)**; **AI for Science**; **massively parallel training (ZeRO, FSDP, MoE)**. Labs: music gen; facial detection + bias; **fine-tune an LLM**; project pitch competition. https://introtodeeplearning.com/
+- **6.7960 — Deep Learning (Fall 2025)**: building blocks; SGD/backprop/autodiff; CNNs; RNN/LSTM; **Transformers**; generalization theory; representation learning (autoencoders/SSL, contrastive/retrieval, info theory); **foundation models: pretraining, scaling laws, post-training**; generative (VAE/GAN, **diffusion & flows**); OOD/adversarial; transfer & distillation; **inference-time algorithms**; **evaluation**. 5 psets + project. Text: Prince "Understanding Deep Learning". https://deeplearning6-7960.github.io/
+- **6.8610 (ex 6.861) — Advanced NLP (Spring 2026)**: probabilistic modeling + representation learning; modern transformer/LLM methods; retrieval; original group research project. https://mit-6861.github.io/
+- **6.5940 — TinyML & Efficient DL (Fall 2024; not offered F25)**: pruning, quantization (AWQ/SmoothQuant), NAS, distillation, **efficient LLM serving**, long-context, distributed training, on-device, diffusion acceleration. https://efficientml.ai
+- **6.S890 — Topics in Multi-Agent Learning**: game-theoretic/optimization view, MARL, adversarial learning.
+
+## Cross-cutting NEW themes
+Agents/tool-use/RAG in core courses; reasoning & test-time compute (o1/R1-style); post-training SFT/RLHF/DPO standard; efficiency (MoE, FlashAttention, Triton, parallelism); evals first-class; diffusion & flow matching; multimodality; safety/alignment/interpretability; AI for Science; SSMs vs Transformers.

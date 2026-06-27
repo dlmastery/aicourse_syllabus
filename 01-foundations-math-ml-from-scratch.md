@@ -1,0 +1,664 @@
+# Subject 01 — Math & ML Foundations From Scratch
+
+**Track:** Foundations · **Altitude:** Learner · **Length:** 10 weeks (2 lecture hrs + 3 lab hrs/wk)
+**Prerequisites:** programming in any language; high-school algebra. No prior ML.
+**Pedagogy:** Vizuara-style *build-every-component-without-libraries* + the source book's
+*concept → code → critique → reflection → rebuild* loop. You will not `import sklearn` until Week 6,
+and only after you have re-implemented the same thing in NumPy.
+
+**Course anchor case (carried all 10 weeks):** *delivery-time prediction* — predict how many minutes
+a food-delivery order will take, from distance, item count, and weather. A second case,
+*support-ticket urgency* (low/high), is introduced for classification. Both are reused so every new
+idea lands on familiar ground.
+
+**What you leave with:** a personal `ml-foundations/` repo containing a from-scratch math library, a
+hand-coded neural layer, five reusable skills, and an evidence log — not a folder of finished notebooks.
+
+---
+
+<!-- DETAILED-TOC v2 -->
+## 📑 Detailed table of contents
+_1 academic quarter · 3 lecture-hours/week · 10 lectures (~30 contact hrs). Full time-boxed lecture plan: [`_toc/01-foundations-math-ml-from-scratch-toc.md`](_toc/01-foundations-math-ml-from-scratch-toc.md)._
+
+1. **Lecture 1 — Why Math Is the Operating Language of ML (and Python/NumPy From Scratch)** — ML as iterative improvement · The data matrix X and target y · Matrix multiplication · Reproducibility as a precondition for learning anything  ·  🔧 `$study-harness`
+2. **Lecture 2 — Linear Algebra as Shapes You Can Reason About** — Vector as one structured example · Linear prediction · Norms and distance · Broadcasting  ·  🔧 `$shape-checker`
+3. **Lecture 3 — Derivatives, Gradients & the Seed of Backpropagation** — Derivative · Partial derivative & gradient · Chain rule  ·  🔧 `$gradient-check`
+4. **Lecture 4 — Probability & Statistics: The Language of Uncertainty** — Random variable, distribution, expectation · Conditional probability & Bayes · MLE → loss · Variance & noise  ·  🔧 `$uncertainty-reader`
+5. **Lecture 5 — The Learning Problem: Loss, Empirical Risk & Gradient Descent From Scratch** — Empirical risk · Gradient descent · Mini-batch / SGD  ·  🔧 `$training-diagnostics`
+6. **Lecture 6 — First Models I: Linear & Logistic Regression (Now With, Then Without, scikit-learn)** — Linear regression · Logistic regression · Cross-entropy loss · Regularization (L1/L2)  ·  🔧 `$baseline-builder`
+7. **Lecture 7 — First Models II: Trees, Ensembles & Strong Baselines** — Decision tree · Bagging / Random Forest · Boosting (gradient boosting / XGBoost-style) · Feature importance  ·  🔧 `$tabular-model-review`
+8. **Lecture 8 — Evaluation, Error Analysis & Experiment Design** — Metric–decision fit · Threshold sweep · Slices · Calibration  ·  🔧 `$evaluation-review`
+9. **Lecture 9 — Bias, Variance, Regularization & Generalization (Learning-Theory Intuition)** — Empirical vs population risk · Bias–variance · Capacity / VC intuition · Regularization & early stopping  ·  🔧 `$generalization-translator`
+10. **Lecture 10 — Capstone: A From-Scratch ML Project With an Evidence Packet**  ·  🔧 `$project-evidence-packet`
+
+---
+
+## Week 1 — Why Math Is the Operating Language of ML (and Python/NumPy From Scratch)
+
+**Altitude:** Learner · **Format:** 2h lecture + 3h lab
+**Anchor case:** load the raw delivery-time CSV and compute a "predict the mean" baseline by hand.
+
+### Learning goals
+- Explain why ML is a set of *loops* (train→evaluate→inspect→revise) rather than a one-shot calculation.
+- Implement matrix–vector multiplication in pure Python with no libraries, then in NumPy, and explain the speedup.
+- Set up a reproducible repo (`venv`/`uv`, pinned deps, seeded RNG, `data/`, `src/`, `evidence/`).
+- State the difference between a *prompt*, a *workflow*, a *skill*, and a *harness* (the book's ladder).
+
+### Concept map
+- **ML as iterative improvement.** Plain English: a model is a guess machine you correct with data.
+  Where it matters: it reframes "learning" as optimization. Common mistake: expecting a closed-form answer.
+- **The data matrix `X` and target `y`.** *Formula:* `X ∈ ℝ^{n×d}`, `y ∈ ℝ^{n}`. *Symbols:* `n`=rows/examples,
+  `d`=features/columns. *Shapes:* one order = one row of `d` numbers. *Plain English:* a spreadsheet where
+  rows are orders and columns are measurements. *Tiny example:* 3 orders × 3 features. *Code mapping:*
+  `X = np.array([[3.1,2,1],[1.2,1,0],...])`. *Common mistake:* transposing `X` and silently training on garbage.
+- **Matrix multiplication.** Why it matters: every model prediction is `X @ w`. The from-scratch lab makes the
+  triple-loop cost visceral before NumPy hides it.
+- **Reproducibility as a precondition for learning anything.** A result you can't re-run is not evidence.
+
+### Hands-on build (the lab)
+- `matmul.py`: implement `matmul(A, B)` with nested Python loops; unit-test it against `np.dot`; benchmark
+  both on 200×200 matrices and record the ratio in `evidence/week01-bench.md`.
+- `baseline.py`: load `delivery.csv`, predict the training mean for every row, compute mean absolute error (MAE).
+- Initialize the repo with a seeded RNG and a `README` describing the anchor case.
+- **Deliverable:** repo that runs `python baseline.py` and prints a baseline MAE.
+  **Acceptance:** matmul matches NumPy to 1e-9; baseline MAE reported with units (minutes).
+
+### Harness / reusable skill — `$study-harness`
+- **Purpose:** turn any new concept into a reusable 7-step study loop.
+- **Inputs:** one topic (e.g., "matrix multiplication"). **Required outputs:** simple explanation, formal
+  statement, one counterexample, your own restatement, a tiny built artifact, one recorded mistake, one open question.
+- **Minimal workflow:** explain → formalize → counterexample → rebuild in code → log. **Evidence artifact:**
+  `evidence/study-log.md` with three columns: prediction / result / revision.
+
+### Common failure modes
+- **Library-first blindness** → you call `np.dot` and never learn what it does. *Fix:* implement once by hand.
+- **Unseeded randomness** → results change every run, so nothing is comparable. *Fix:* seed everything, commit the seed.
+- **No baseline** → you can't tell whether later models help. *Fix:* always ship the "predict the mean" number first.
+
+### Evidence artifact
+`evidence/week01-bench.md` (matmul correctness + timing) and the baseline MAE line committed to git.
+
+### Skill sink-in
+Before benchmarking, **predict** how much slower pure-Python matmul is than NumPy. Run it. Record the **result**
+and what **changed** in your mental model of "why NumPy exists."
+
+### Readings & sources (2025–2026)
+- Source book, Ch. 1 (harness engineering) and Ch. 2 (math as operational language).
+- Vizuara, *ML & DL Research Bootcamp* — "matrix multiplication without libraries."
+- 3Blue1Brown, *Essence of Linear Algebra* (Ch. 1–3) for intuition.
+
+---
+
+## Week 2 — Linear Algebra as Shapes You Can Reason About
+
+**Altitude:** Learner · **Anchor case:** batch-predict delivery times for all orders at once with one matrix op.
+
+### Learning goals
+- Read any ML equation as **shapes flowing through operations** and predict output dimensions before running.
+- Explain dot product, matrix–vector, and matrix–matrix products geometrically and in code.
+- Use broadcasting deliberately (and catch the bugs it hides).
+
+### Concept map
+- **Vector as one structured example.** *Formula:* `x ∈ ℝ^d`. *Plain English:* one order's measurements.
+  *Common mistake:* treating a feature vector as a bag of unrelated numbers.
+- **Linear prediction.** *Formula:* `ŷ = x·w + b`. *Symbols:* `w∈ℝ^d` weights, `b` bias. *Shapes:* `(d)·(d)→scalar`.
+  *Code mapping:* `yhat = X @ w + b`. *Common mistake:* shape mismatch between `(n,d)` and `(d,)`.
+- **Norms and distance.** Why it matters: nearest-neighbors and scaling are *geometry*; `‖a−b‖` is similarity.
+- **Broadcasting.** Where it matters: subtracting a per-feature mean. Common mistake: accidental `(n,n)` blow-ups.
+
+### Hands-on build
+- Extend the math library: `dot`, `matvec`, `l2_norm`, `standardize(X)` — all from scratch, all unit-tested vs NumPy.
+- Re-express Week 1's loop-based baseline as a single vectorized expression; confirm identical output.
+- **Deliverable:** `linalg.py` + tests. **Acceptance:** vectorized delivery prediction equals the looped version.
+
+### Harness / reusable skill — `$shape-checker`
+- **Purpose:** annotate every line of model code with the shape of its result.
+- **Inputs:** a code snippet. **Outputs:** the same snippet with `# (n, d)` shape comments and one predicted failure.
+- **Evidence artifact:** a shape-annotated version of `linalg.py`.
+
+### Common failure modes
+- **Shape blindness** → silent broadcasting produces wrong-but-runnable results. *Fix:* annotate shapes, assert them.
+- **Geometry amnesia** → distances computed on unscaled features. *Fix:* standardize first, justify why.
+- **Transpose roulette** → guessing `.T` until it runs. *Fix:* derive the shape on paper first.
+
+### Evidence artifact
+Shape-annotated `linalg.py` and a one-paragraph note: "three bugs broadcasting could have hidden here."
+
+### Skill sink-in
+Predict the output shape of `X @ w` for `X:(100,3)`, `w:(3,)`. Run. Then break it on purpose and record the error.
+
+### Readings & sources
+- Source book Ch. 2 (vectors/matrices/shape literacy). Cornell CS4782 (linear-algebra refresher).
+- Vizuara linear-algebra module; Gilbert Strang, *Linear Algebra* lectures (selected).
+
+---
+
+## Week 3 — Derivatives, Gradients & the Seed of Backpropagation
+
+**Altitude:** Learner · **Anchor case:** measure how delivery-MAE changes as you nudge one weight.
+
+### Learning goals
+- Explain a derivative as "sensitivity of output to a small input change," numerically and symbolically.
+- Compute a gradient by hand for a 2-feature linear model and verify it with finite differences.
+- Explain why the gradient points uphill and why we step against it.
+
+### Concept map
+- **Derivative.** *Formula:* `f'(x)=lim_{h→0}(f(x+h)−f(x))/h`. *Plain English:* slope right here.
+  *Tiny example:* `f(x)=x²`, `f'(3)=6`. *Code mapping:* finite-difference check. *Common mistake:* confusing
+  the value `f(x)` with its rate of change `f'(x)`.
+- **Partial derivative & gradient.** *Formula:* `∇f = [∂f/∂w₁, …, ∂f/∂w_d]`. *Shapes:* gradient has the same
+  shape as the parameter. *Common mistake:* a gradient with the wrong shape silently breaks updates.
+- **Chain rule.** Why it matters: it *is* backpropagation. Plain English: multiply local slopes along the path.
+
+### Hands-on build
+- `grads.py`: analytic gradient of squared-error loss for linear regression; `numerical_grad()` finite-difference
+  checker; assert they agree to 1e-6 — this "gradient check" is the single most useful debugging habit in the course.
+- **Deliverable:** passing gradient check on the delivery model. **Acceptance:** max abs diff < 1e-6.
+
+### Harness / reusable skill — `$gradient-check`
+- **Purpose:** never trust a hand-derived gradient without a numerical check.
+- **Inputs:** a loss function + analytic gradient. **Outputs:** pass/fail + the worst-offending parameter.
+- **Evidence artifact:** `evidence/week03-gradcheck.md`.
+
+### Common failure modes
+- **Sign errors** → model diverges. *Fix:* gradient-check before training.
+- **Optimization mysticism** → treating gradient descent as magic. *Fix:* watch the loss decrease step by step.
+- **Shape-mismatched gradients** → broadcasting "fixes" them into nonsense. *Fix:* assert `grad.shape == param.shape`.
+
+### Evidence artifact
+`evidence/week03-gradcheck.md` with the analytic-vs-numerical table.
+
+### Skill sink-in
+Predict whether increasing the distance-weight raises or lowers predicted delivery time, then verify via the gradient sign.
+
+### Readings & sources
+- Source book Ch. 2 (derivatives/gradients/optimization). Vizuara "backprop by hand" (chain rule).
+- Stanford CS231n notes on gradients/backprop (still the clearest treatment).
+
+---
+
+## Week 4 — Probability & Statistics: The Language of Uncertainty
+
+**Altitude:** Learner · **Anchor case:** ticket-urgency as a *probability*, not a hard label.
+
+### Learning goals
+- Use distributions, expectation, and variance to describe data and predictions.
+- Explain maximum likelihood estimation (MLE) and connect it to loss functions.
+- Read a probabilistic claim ("the model is 80% confident") and say what it does and does not mean.
+
+### Concept map
+- **Random variable, distribution, expectation.** Plain English: a number that varies + how often each value
+  appears + its long-run average. Common mistake: confusing a probability with a frequency in small samples.
+- **Conditional probability & Bayes.** *Formula:* `P(y|x)=P(x|y)P(y)/P(x)`. Where it matters: classification is
+  estimating `P(y|x)`. Common mistake: ignoring base rates (the fraud/medical-test fallacy).
+- **MLE → loss.** Why it matters: minimizing cross-entropy *is* maximizing likelihood; squared error *is* a
+  Gaussian-noise assumption. This single bridge demystifies "where loss functions come from."
+- **Variance & noise.** Plain English: not all error is the model's fault; some is irreducible.
+
+### Hands-on build
+- `stats.py`: sample from distributions, estimate mean/variance, build a histogram from scratch.
+- Derive on paper that minimizing squared error = MLE under Gaussian noise; reproduce numerically.
+- **Deliverable:** a short `evidence/week04-mle.md` showing the squared-error↔Gaussian equivalence.
+
+### Harness / reusable skill — `$uncertainty-reader`
+- **Purpose:** translate any probabilistic output into plain-English meaning + one base-rate caution.
+- **Inputs:** a predicted probability + context. **Outputs:** interpretation, what it ignores, one failure case.
+
+### Common failure modes
+- **Deterministic thinking** → treating 0.51 and 0.99 as the same "positive." *Fix:* keep probabilities, set thresholds deliberately.
+- **Base-rate neglect** → high accuracy on rare events that's actually useless. *Fix:* always report the positive rate.
+- **Confusing confidence with correctness.** *Fix:* calibration, introduced in Week 8.
+
+### Evidence artifact
+`evidence/week04-mle.md` (loss-from-likelihood derivation + numeric check).
+
+### Skill sink-in
+Predict whether a 90%-accurate ticket classifier is "good" when only 5% of tickets are urgent. Compute. Revise.
+
+### Readings & sources
+- Source book Ch. 2 (probability) and Ch. 17 (likelihood/GLM lineage). Vizuara probability/stats module.
+- MIT 6.7960 / CS229 probability review notes.
+
+---
+
+## Week 5 — The Learning Problem: Loss, Empirical Risk & Gradient Descent From Scratch
+
+**Altitude:** Learner→Builder · **Anchor case:** train the delivery model by gradient descent, watching the loss curve.
+
+### Learning goals
+- State empirical risk minimization and why it's a *proxy* for the real objective.
+- Implement full-batch and mini-batch gradient descent from scratch.
+- Diagnose learning-rate problems from the loss curve alone.
+
+### Concept map
+- **Empirical risk.** *Formula:* `R̂(w)=(1/n)Σ L(ŷᵢ,yᵢ)`. Plain English: average wrongness on your data.
+  Common mistake: forgetting it's only a sample of the world (Week 9's generalization gap).
+- **Gradient descent.** *Formula:* `w ← w − η∇R̂(w)`. *Symbols:* `η`=learning rate. *Plain English:* step downhill.
+  *Common mistake:* `η` too large (diverge) or too small (crawl).
+- **Mini-batch / SGD.** Why it matters: noise helps and scales. The bridge to deep learning in Subject 02.
+
+### Hands-on build
+- `gd.py`: train linear regression on delivery data with your own GD loop; log loss per epoch; plot the curve.
+- Sweep three learning rates; save a *stable* run log and a *diverging* run log side by side.
+- **Deliverable:** loss-curve plot + two run logs. **Acceptance:** stable run beats the Week 1 baseline MAE.
+
+### Harness / reusable skill — `$training-diagnostics`
+- **Purpose:** read a loss curve and rank the likely causes of bad training.
+- **Inputs:** a loss log. **Outputs:** diagnosis (LR too high/low, bug, data issue) + the cheapest next experiment.
+- **Evidence artifact:** annotated stable-vs-unstable logs.
+
+### Common failure modes
+- **Learning-rate guessing** → blame the model for an optimizer problem. *Fix:* sweep LR, read the curve.
+- **No loss logging** → flying blind. *Fix:* log every epoch, plot it.
+- **Beating no baseline** → "it trained" but is worse than the mean. *Fix:* compare to Week 1 always.
+
+### Evidence artifact
+`evidence/week05-training/` with loss plot + stable/unstable logs + a 5-line diagnosis note.
+
+### Skill sink-in
+Predict which of three learning rates will diverge before running the sweep. Record outcome and revision.
+
+### Readings & sources
+- Source book Ch. 2 (optimization) and Ch. 7 (training dynamics). Vizuara optimizers (GD/RMSProp/Adam) preview.
+
+---
+
+## Week 6 — First Models I: Linear & Logistic Regression (Now With, Then Without, scikit-learn)
+
+**Altitude:** Builder · **Anchor case:** delivery time (regression) and ticket urgency (classification).
+
+### Learning goals
+- Implement and interpret linear and logistic regression; read coefficients responsibly.
+- Explain the sigmoid and cross-entropy loss, and why logistic regression outputs calibrated-ish probabilities.
+- Use `scikit-learn` *after* matching it with your from-scratch version.
+
+### Concept map
+- **Linear regression** — already built; now interpret weights as "minutes per km," with the caveat that
+  correlation ≠ effect. Common mistake: causal language for a predictive coefficient.
+- **Logistic regression.** *Formula:* `p=σ(x·w+b)`, `σ(z)=1/(1+e^{−z})`. *Plain English:* squash a score into a
+  probability. *Code mapping:* `p = 1/(1+np.exp(-(X@w+b)))`. *Common mistake:* thresholding at 0.5 by default.
+- **Cross-entropy loss.** Why it matters: the right loss for probabilities (from Week 4's MLE bridge).
+- **Regularization (L1/L2).** Plain English: prefer simpler explanations. Where it matters: prevents overfitting (Week 9).
+
+### Hands-on build
+- `logreg.py` from scratch (sigmoid + cross-entropy + GD), gradient-checked; then reproduce with `sklearn` and
+  confirm coefficients match within tolerance.
+- **Deliverable:** both implementations + a coefficient-comparison table. **Acceptance:** agreement within 1e-2.
+
+### Harness / reusable skill — `$baseline-builder`
+- **Purpose:** for any new dataset, propose the simplest reasonable baseline + evaluation plan before any complex model.
+- **Inputs:** dataset + target. **Outputs:** naive baseline, first interpretable model, metric, critical slices,
+  one reason a complex model is *not yet* justified. **Evidence artifact:** a baseline memo.
+
+### Common failure modes
+- **Skipping the baseline** → no yardstick. **Interpretability-as-weakness** → discarding a strong simple model.
+  **Default-threshold reflex** → 0.5 when costs are asymmetric. **Causal overclaim** from coefficients.
+  *Fixes:* baseline first; earn complexity; choose thresholds by cost; say "associated with," not "causes."
+
+### Evidence artifact
+`evidence/week06-baseline-memo.md` for both cases.
+
+### Skill sink-in
+Predict which feature gets the largest logistic weight for ticket urgency; fit; compare; explain the surprise.
+
+### Readings & sources
+- Source book Ch. 4 (first models). CS229 (GLMs/logistic). Vizuara regression module (sigmoid/cross-entropy/regularization).
+
+---
+
+## Week 7 — First Models II: Trees, Ensembles & Strong Baselines
+
+**Altitude:** Builder · **Anchor case:** fraud screening — where a "flashy" model is *not* the lesson.
+
+### Learning goals
+- Explain decision trees (splits, impurity, depth) and why they suit tabular data.
+- Compare majority / logistic / single-tree / random-forest / gradient-boosted on one task with one metric.
+- Read feature importance without overclaiming, and spot leakage.
+
+### Concept map
+- **Decision tree.** Plain English: a flowchart of yes/no questions. *Split criterion:* Gini/entropy.
+  Common mistake: deep trees memorize. **Pruning / max-depth** as the fix.
+- **Bagging / Random Forest.** Why it matters: averaging many decorrelated trees reduces variance.
+- **Boosting (gradient boosting / XGBoost-style).** Plain English: each tree fixes the previous one's mistakes.
+- **Feature importance.** Helpful but narrow and easy to abuse. **Leakage** — the shortcut that lies.
+
+### Hands-on build
+- Implement a small decision tree from scratch (Gini, max-depth); then use `sklearn`/`xgboost` for forest & boosting.
+- One comparison table: majority, logistic, tree, forest, boosted — with the same metric and split.
+- **Deliverable:** comparison table + a slice analysis showing where tree models win (e.g., new-device cross-border).
+  **Acceptance:** a justified recommendation, not just "boosting won."
+
+### Harness / reusable skill — `$tabular-model-review`
+- **Purpose:** honest structured-data model comparison. **Inputs:** dataset + candidate models.
+  **Outputs:** split strategy, slice comparison, leakage notes, calibration concern, justified pick.
+
+### Common failure modes
+- **Deep-model prestige** · **single-metric triumph** · **feature-importance overclaim** · **hidden-leakage success** ·
+  **baseline shame**. *Fixes:* compare honestly; report several metrics; treat importance as a hint; audit for leakage;
+  never be embarrassed to ship a simple winner.
+
+### Evidence artifact
+`evidence/week07-model-comparison.md` (table + slice table + recommendation).
+
+### Skill sink-in
+Predict which model wins the rare fraud slice before running; compare; record what changed your mind.
+
+### Readings & sources
+- Source book Ch. 5 (trees/ensembles). CS181/CS229 (boosting/ensembles). Vizuara decision-trees module.
+
+---
+
+## Week 8 — Evaluation, Error Analysis & Experiment Design
+
+**Altitude:** Builder→Engineer · **Anchor case:** is the new fraud model *actually* better?
+
+### Learning goals
+- Choose metrics that match the decision (MAE vs F1 vs precision/recall vs AUC) and explain what each hides.
+- Run a threshold sweep and a slice analysis; reason about calibration.
+- Design an honest experiment (train/val/test, no leakage, one variable at a time).
+
+### Concept map
+- **Metric–decision fit.** Plain English: the metric must reward the behavior you actually want.
+  Common mistake: optimizing AUC when the deployed threshold is what matters.
+- **Threshold sweep.** Why it matters: one model is many classifiers depending on the cutoff.
+- **Slices.** Where it matters: averages hide the failures that get you fired (new merchants, rare classes).
+- **Calibration.** Plain English: when it says 0.8, is it right 80% of the time?
+
+### Hands-on build
+- `eval.py`: confusion matrix, precision/recall/F1, ROC/PR, a threshold sweep CSV, and a per-slice error table.
+- Write a one-page evaluation review note deciding whether the experiment supports "the new model is better."
+- **Deliverable:** threshold-sweep CSV + slice table + review note. **Acceptance:** the note names at least one
+  thing the headline metric hides.
+
+### Harness / reusable skill — `$evaluation-review`
+- **Purpose:** review any result for what the main metric hides, threshold/calibration issues, critical slices,
+  and whether the evidence supports the claim. **Evidence artifact:** the review note.
+
+### Common failure modes
+- **Benchmark vanity** (a metric with no comparison/limitation) · **leakage by convenient split** · **slice blindness** ·
+  **metric worship before framing**. *Fixes:* metric+comparison+limitation together; time-aware splits; always slice.
+
+### Evidence artifact
+`evidence/week08-eval/` (sweep CSV, slice table, review note).
+
+### Skill sink-in
+Predict the precision at the recall you need *before* sweeping the threshold; sweep; revise the deployment recommendation.
+
+### Readings & sources
+- Source book Ch. 6 (evaluation/error analysis). CMU 11-711 "Evaluation Techniques." Krish Naik (LLM-as-judge preview).
+
+---
+
+## Week 9 — Bias, Variance, Regularization & Generalization (Learning-Theory Intuition)
+
+**Altitude:** Builder→Engineer · **Anchor case:** a model with great training error and a useless test error.
+
+### Learning goals
+- Explain the train/val/test split and why low training error is not the ending.
+- Diagnose under- vs over-fitting from learning curves; apply regularization and early stopping.
+- State capacity / VC-style intuition in plain language (no theorems required).
+
+### Concept map
+- **Empirical vs population risk.** Plain English: your data is a sample; the world is the test.
+- **Bias–variance.** Plain English: too simple (misses signal) vs too flexible (memorizes noise).
+- **Capacity / VC intuition.** Where it matters: more capacity needs more data or more regularization.
+  Common mistake: treating a benchmark number as truth without asking about the split.
+- **Regularization & early stopping** as capacity control.
+
+### Hands-on build
+- `generalization_lab.py`: fit polynomials of increasing degree to the delivery data; plot train vs val error;
+  find the overfitting point; add L2 and watch the gap close.
+- **Deliverable:** a train-vs-validation curve + a short theory note. **Acceptance:** you can point to the exact
+  capacity where validation error turns up.
+
+### Harness / reusable skill — `$generalization-translator`
+- **Purpose:** translate learning-theory language (capacity, uniform convergence, VC) into a practical lesson +
+  one misuse to avoid. **Evidence artifact:** the theory note.
+
+### Common failure modes
+- **Training-error celebration** · **capacity denial** · **theory misuse** (quoting VC bounds as if practical).
+  *Fixes:* judge on held-out data; match capacity to data; use theory for intuition, not false precision.
+
+### Evidence artifact
+`evidence/week09-generalization/` (curve + note).
+
+### Skill sink-in
+Predict the polynomial degree where validation error bottoms out; run the sweep; record the gap.
+
+### Readings & sources
+- Source book Ch. 18–19 (inductive bias, generalization/VC). CS229 learning-theory notes. Cornell CS4782 (regularization).
+
+---
+
+## Week 10 — Capstone: A From-Scratch ML Project With an Evidence Packet
+
+**Altitude:** Builder (graduating to Subject 02) · **Anchor case:** your choice of a small real tabular dataset.
+
+### Learning goals
+- Run the full loop on a new dataset: frame → baseline → model → evaluate → critique → rebuild.
+- Produce an **evidence packet** that proves judgment, not just a final score.
+- Reuse the five skills built this course as a coherent personal harness.
+
+### Concept map (review as a checklist)
+- Problem framing (what decision? what's the prediction moment? what would leakage look like?).
+- Baseline discipline → model comparison → honest evaluation → generalization check.
+
+### Hands-on build
+- Pick a dataset (e.g., California Housing or a Fashion-MNIST subset, per Vizuara's capstones, or your own).
+- Ship: framing memo, baseline, ≥3 models compared, threshold/slice evaluation, generalization curve, and a
+  written "what I would do next and why." **Deliverable:** `capstone/` folder + 2-page report.
+  **Acceptance:** every claim in the report points to a file in the evidence packet.
+
+### Harness / reusable skill — `$project-evidence-packet`
+- **Purpose:** assemble framing memo + baseline + comparison + eval note + generalization note into one
+  reviewable bundle. **Evidence artifact:** the packet itself (this *is* the deliverable).
+
+### Common failure modes
+- **Score-only reporting** (no evidence trail) · **skipping framing** · **no next-step reasoning**.
+  *Fixes:* link every claim to a file; frame before modeling; end with a defended next experiment.
+
+### Evidence artifact
+`capstone/` with all artifacts + the 2-page report.
+
+### Skill sink-in
+Before the final run, write down the test metric you expect. Compare. The gap between expectation and result is the
+real lesson — record it.
+
+### Readings & sources
+- Source book Ch. 16 (turning projects into evidence) and Appendix A (capstone blueprints).
+- Vizuara capstones (Fashion MNIST, California Housing). Krish Naik end-to-end project structure (for the deployment preview into Subject 09).
+
+---
+
+## Course-level outcomes
+
+By the end you can: reason about ML in shapes and gradients; implement the core math, optimization, and first
+models from scratch; evaluate honestly; explain generalization; and — most importantly — you have a **reusable
+harness** (`$study-harness`, `$shape-checker`, `$gradient-check`, `$training-diagnostics`, `$baseline-builder`,
+`$tabular-model-review`, `$evaluation-review`, `$generalization-translator`, `$project-evidence-packet`) plus an
+evidence log you carry into Subject 02.
+
+## Skills produced (reused program-wide)
+`$study-harness` · `$shape-checker` · `$gradient-check` · `$training-diagnostics` · `$baseline-builder` ·
+`$tabular-model-review` · `$evaluation-review` · `$generalization-translator` · `$project-evidence-packet`
+
+---
+
+## Assessment & grading
+
+| Component | Weight | Notes |
+|---|---|---|
+| Weekly labs (W1–W9 deliverables) | 45% | 5% each × 9 weeks |
+| Two quizzes (concepts, after W4 and W9) | 15% | math/probability + generalization |
+| Capstone (W10 evidence packet + report) | 30% | every claim must link to an artifact |
+| Evidence log & skill reuse (judged W10) | 10% | prediction/result/revision discipline |
+| **Total** | **100%** | |
+
+## Tooling & environment (June 2026)
+
+- **Python 3.12**, **NumPy 2.x**, **scikit-learn 1.5+** (only from W6), **matplotlib**, **pandas**.
+- **PyTorch 2.x** previewed in W10 as the bridge to Subject 02. **pytest** for unit tests; **uv** for envs; **git** for evidence.
+- A single repo `ml-foundations/` with `data/ src/ tests/ evidence/ capstone/`. Seeded RNG (`np.random.default_rng(0)`).
+
+## Per-week depth pack (datasets · code stubs · grading rubrics · weights · papers)
+
+> The 10 weeks above carry the full pedagogical narrative. This pack adds, per week, the five depth items required
+> program-wide: named dataset, a runnable-shaped code stub, a graded rubric table, the assessment weight, and named papers.
+
+### W1 — matmul & baseline · weight 5%
+- **Dataset:** `delivery.csv` (synthetic, provided; ~500 rows: `distance_km, item_count, is_raining, minutes`; CC0).
+```python
+import numpy as np
+def matmul(A, B):                      # A:(m,k) B:(k,n) -> (m,n)
+    m, k = A.shape; k2, n = B.shape
+    assert k == k2, (A.shape, B.shape)
+    C = np.zeros((m, n))
+    for i in range(m):
+        for j in range(n):
+            C[i, j] = sum(A[i, t] * B[t, j] for t in range(k))
+    return C
+assert np.allclose(matmul(np.random.rand(8,5), np.random.rand(5,3)),
+                   np.random.rand(8,5) @ np.random.rand(5,3)) is False  # use SAME arrays in your test
+```
+| Criterion | Excellent | Failing |
+|---|---|---|
+| Correctness | matches `np.dot` to 1e-9 | wrong shapes / mismatch |
+| Evidence | timing ratio recorded w/ units | no benchmark file |
+| Reproducibility | seeded, one-command run | non-deterministic |
+- **Papers/refs:** Goodfellow, Bengio, Courville, *Deep Learning* (2016) ch.2; Harris et al., "Array programming with NumPy," *Nature* (2020).
+
+### W2 — linear algebra / shapes · weight 5%
+- **Dataset:** same `delivery.csv` (batched).
+```python
+def standardize(X):                    # X:(n,d) -> (n,d), plus mean/std for reuse
+    mu = X.mean(axis=0); sd = X.std(axis=0) + 1e-8
+    return (X - mu) / sd, mu, sd       # broadcasting (n,d)-(d,) -> (n,d)
+```
+| Criterion | Excellent | Failing |
+|---|---|---|
+| Shape reasoning | every line annotated, asserts pass | guesses `.T` until it runs |
+| Vectorization | looped == vectorized output | mismatched results |
+- **Papers/refs:** Strang, *Introduction to Linear Algebra* (6e, 2023); 3Blue1Brown *Essence of Linear Algebra*.
+
+### W3 — gradients & gradient-check · weight 5%
+- **Dataset:** `delivery.csv`.
+```python
+def numerical_grad(f, w, eps=1e-5):    # central differences
+    g = np.zeros_like(w)
+    for i in range(w.size):
+        e = np.zeros_like(w); e[i] = eps
+        g[i] = (f(w + e) - f(w - e)) / (2 * eps)
+    return g
+# assert np.max(np.abs(numerical_grad(loss, w) - analytic_grad(w))) < 1e-6
+```
+| Criterion | Excellent | Failing |
+|---|---|---|
+| Gradient check | max abs diff < 1e-6 | no check / fails |
+| Reasoning | explains sign of each partial | cannot interpret |
+- **Papers/refs:** Rumelhart, Hinton & Williams, "Learning representations by back-propagating errors," *Nature* (1986); CS231n backprop notes.
+
+### W4 — probability & MLE · weight 5%
+- **Dataset:** `tickets.csv` (synthetic; `text_len, n_links, urgent∈{0,1}`; CC0).
+```python
+# squared error == Gaussian-noise MLE; cross-entropy == Bernoulli MLE
+nll_gauss = lambda y, yhat: 0.5*np.mean((y-yhat)**2)            # up to constant
+nll_bern  = lambda y, p: -np.mean(y*np.log(p)+(1-y)*np.log(1-p))
+```
+| Criterion | Excellent | Failing |
+|---|---|---|
+| Derivation | loss-from-likelihood shown + numeric match | asserts without showing |
+| Base rates | reports positive rate, interprets | ignores imbalance |
+- **Papers/refs:** Bishop, *Pattern Recognition and Machine Learning* (2006) ch.1–2; Nelder & Wedderburn, "Generalized Linear Models," *JRSS-A* (1972).
+
+### W5 — gradient descent from scratch · weight 5%
+- **Dataset:** `delivery.csv`.
+```python
+def gd(X, y, lr=0.01, epochs=200, seed=0):
+    rng = np.random.default_rng(seed); w = rng.normal(size=X.shape[1]); b = 0.0
+    hist = []
+    for _ in range(epochs):
+        yhat = X@w + b; err = yhat - y
+        w -= lr*(X.T@err)/len(y); b -= lr*err.mean()
+        hist.append(np.mean(err**2))
+    return w, b, hist                  # plot hist; save stable & diverging runs
+```
+| Criterion | Excellent | Failing |
+|---|---|---|
+| Convergence | beats W1 baseline MAE | worse than mean |
+| Diagnostics | LR sweep + read curve | no logging |
+- **Papers/refs:** Bottou, "Large-Scale ML with SGD," *COMPSTAT* (2010); Kingma & Ba, "Adam," *ICLR* (2015).
+
+### W6 — linear & logistic regression · weight 5%
+- **Dataset:** `delivery.csv` (reg) + `tickets.csv` (clf); compare to `sklearn`.
+```python
+def logreg_fit(X, y, lr=0.1, epochs=500):
+    w = np.zeros(X.shape[1]); b = 0.0
+    for _ in range(epochs):
+        p = 1/(1+np.exp(-(X@w+b)))     # (n,)
+        w -= lr*(X.T@(p-y))/len(y); b -= lr*(p-y).mean()
+    return w, b
+```
+| Criterion | Excellent | Failing |
+|---|---|---|
+| Parity | coeffs match sklearn within 1e-2 | large divergence |
+| Threshold | chosen by cost, not 0.5 default | blind 0.5 |
+- **Papers/refs:** Hastie, Tibshirani & Friedman, *Elements of Statistical Learning* (2e, 2009) ch.4; Pedregosa et al., "scikit-learn," *JMLR* (2011).
+
+### W7 — trees & ensembles · weight 5%
+- **Dataset:** IEEE-CIS Fraud subset (kaggle.com/c/ieee-fraud-detection) or provided `fraud_small.csv`.
+```python
+from sklearn.ensemble import RandomForestClassifier
+from xgboost import XGBClassifier
+models = {"majority": None, "logreg": ..., "tree": ..., "forest": RandomForestClassifier(),
+          "xgb": XGBClassifier(n_estimators=300, max_depth=4)}  # one metric, one split, slice table
+```
+| Criterion | Excellent | Failing |
+|---|---|---|
+| Honest compare | same split/metric, slice table | cherry-picked metric |
+| Leakage | audited & noted | hidden leakage win |
+- **Papers/refs:** Breiman, "Random Forests," *ML* (2001); Chen & Guestrin, "XGBoost," *KDD* (2016); Friedman, "Greedy Function Approximation," *Annals of Statistics* (2001).
+
+### W8 — evaluation & error analysis · weight 5%
+- **Dataset:** fraud subset (held-out, time-aware split).
+```python
+def threshold_sweep(y, scores, ts=np.linspace(0.05,0.95,19)):
+    rows=[]
+    for t in ts:
+        pred=(scores>=t).astype(int)
+        tp=((pred==1)&(y==1)).sum(); fp=((pred==1)&(y==0)).sum(); fn=((pred==0)&(y==1)).sum()
+        prec=tp/(tp+fp+1e-9); rec=tp/(tp+fn+1e-9)
+        rows.append((t,prec,rec,2*prec*rec/(prec+rec+1e-9)))
+    return rows                        # -> CSV; also per-slice error table
+```
+| Criterion | Excellent | Failing |
+|---|---|---|
+| Metric fit | metric matches the decision | AUC-only when threshold matters |
+| Slices | critical slices reported | average-only |
+- **Papers/refs:** Davis & Goadrich, "The Relationship Between PR and ROC," *ICML* (2006); Saito & Rehmsmeier, "Precision-Recall Plot," *PLoS ONE* (2015).
+
+### W9 — generalization & regularization · weight 5%
+- **Dataset:** `delivery.csv` with engineered polynomial features.
+```python
+for degree in range(1, 12):
+    Xp = poly_features(X, degree)
+    tr, va = fit_and_eval(Xp, y)       # plot train vs val; add L2; watch gap close
+```
+| Criterion | Excellent | Failing |
+|---|---|---|
+| Diagnosis | identifies overfit point | reads only train error |
+| Capacity control | L2/early-stop closes gap | no remedy |
+- **Papers/refs:** Zhang et al., "Understanding deep learning requires rethinking generalization," *ICLR* (2017); Belkin et al., "Reconciling modern ML and the bias-variance trade-off," *PNAS* (2019); Vapnik, *The Nature of Statistical Learning Theory* (1995).
+
+### W10 — capstone · weight 30% (course-level)
+- **Dataset:** California Housing (`sklearn.datasets.fetch_california_housing`, 20 640 rows) or Fashion-MNIST (Xiao et al. 2017, MIT, 70k) or your own.
+```text
+capstone/
+  framing-memo.md   baseline.py   models/   eval/ (sweep.csv, slices.md)   generalization.md   report.md
+# acceptance: every claim in report.md links to a file in capstone/
+```
+| Criterion | Excellent | Failing |
+|---|---|---|
+| Loop completeness | frame→baseline→compare→eval→generalize all present | skips stages |
+| Evidence trail | every claim → an artifact | score-only report |
+| Next-step reasoning | defended next experiment | none |
+- **Papers/refs:** Ng, *Machine Learning Yearning* (2018); source book ch.16 + Appendix A (capstone blueprints).
