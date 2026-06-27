@@ -1,0 +1,20 @@
+[book]
+title = "Modern AI Mastery — June 2026"
+authors = ["dlmastery"]
+description = "A 17-subject graduate AI program with detailed, time-boxed syllabi. Each subject = one academic quarter at 3 lecture-hours/week."
+src = "src"
+language = "en"
+
+[output.html]
+default-theme = "rust"
+preferred-dark-theme = "navy"
+git-repository-url = "https://github.com/dlmastery/aicourse_syllabus"
+edit-url-template = "https://github.com/dlmastery/aicourse_syllabus/edit/master/{path}"
+
+[output.html.fold]
+enable = true
+level = 1
+
+[output.html.search]
+enable = true
+limit-results = 30
