@@ -828,14 +828,6 @@ def ndcg_at_k(ranked_items, relevant, k=10):
 - [`krishnaik06/Movie-Recommender-in-python`](https://github.com/krishnaik06/Movie-Recommender-in-python)
 - [Hu et al., 2021 - LoRA](https://arxiv.org/abs/2106.09685)
 
-**More detail:** Two-tower retrieval + a ranker remains the backbone; 2026 adds generative retrieval / semantic IDs (TIGER) and LLM-augmented rankers, and the discipline is counterfactual / off-policy evaluation because offline NDCG ≠ online lift.
-
-**References & links:**
-- [Deep Neural Networks for YouTube Recommendations (Covington et al., 2016)](https://dl.acm.org/doi/10.1145/2959100.2959190)
-- [BPR: Bayesian Personalized Ranking (Rendle et al., 2009)](https://arxiv.org/abs/1205.2618)
-- [Recommendations as Treatments (Schnabel et al., 2016)](https://arxiv.org/abs/1602.05352)
-- [Recommender Systems with Generative Retrieval / TIGER (Rajput et al., 2023)](https://arxiv.org/abs/2305.05065)
-- [`pytorch/torchrec`](https://github.com/pytorch/torchrec) — production recsys
 <!-- sota:11L07 -->
 
 ## Week 8 — Retail & E-commerce II: Demand Forecasting & Inventory Decisions
@@ -931,14 +923,6 @@ fc = sf.predict(h=28, level=[80])
 - [`krishnaik06/Stock-MArket-Forecasting`](https://github.com/krishnaik06/Stock-MArket-Forecasting)
 - [Hong et al., 2024 - ORPO](https://arxiv.org/abs/2403.07691)
 
-**More detail:** Time-series foundation models (TimesFM, Chronos, Moirai) give strong zero-shot baselines but global gradient-boosted models remain the workhorse; the right metric is a quantile/pinball loss at the service-level newsvendor quantile, not point RMSE.
-
-**References & links:**
-- [`Nixtla/statsforecast`](https://github.com/Nixtla/statsforecast)
-- [TimesFM (Das et al., 2024)](https://arxiv.org/abs/2310.10688)
-- [Chronos (Ansari et al., 2024)](https://arxiv.org/abs/2403.07815)
-- [The M5 Accuracy competition (Makridakis et al., 2022)](https://doi.org/10.1016/j.ijforecast.2021.11.013)
-- [Forecasting: Principles and Practice, 3e (Hyndman & Athanasopoulos)](https://otexts.com/fpp3/)
 <!-- sota:11L08 -->
 
 ## Week 9 — Manufacturing & Industry 4.0: Predictive Maintenance & Vision QC
@@ -1032,14 +1016,6 @@ def phm_score(rul_true, rul_pred):
 - [`krishnaik06/Tomato-Leaf-Disease-Prediction`](https://github.com/krishnaik06/Tomato-Leaf-Disease-Prediction)
 - [Radford et al., 2021 - CLIP](https://arxiv.org/abs/2103.00020)
 
-**More detail:** Visual QC trains on good parts only (PatchCore/EfficientAD on DINOv2/v3 features) so it catches *novel* defects; zero/few-shot variants (WinCLIP, AnomalyCLIP) extend this, and RUL uses asymmetric PHM scoring (late warnings cost more).
-
-**References & links:**
-- [`openvinotoolkit/anomalib`](https://github.com/openvinotoolkit/anomalib)
-- [MVTec AD (Bergmann et al., 2019)](https://www.mvtec.com/company/research/datasets/mvtec-ad)
-- [PatchCore (Roth et al., 2022)](https://arxiv.org/abs/2106.08265)
-- [WinCLIP zero-shot anomaly (Jeong et al., 2023)](https://arxiv.org/abs/2303.14814)
-- [DINOv2 (Oquab et al., 2023)](https://arxiv.org/abs/2304.07193) — backbone features
 <!-- sota:11L09 -->
 
 ## Week 10 — Education: Tutoring Agents & Learning Science (FERPA, Pedagogical Safety)
@@ -1136,14 +1112,6 @@ def next_hint(state): return HINT_LADDER[min(state["attempts"], len(HINT_LADDER)
 - [EU AI Act timeline](https://artificialintelligenceact.eu/implementation-timeline/)
 - [LangGraph](https://github.com/langchain-ai/langgraph)
 
-**More detail:** A good tutor scaffolds (hints, not answers) and resists answer-extraction; every worked step is CAS/code-verified, the eval scores pedagogy (not just final accuracy), and FERPA/COPPA + the EU AI Act's education-as-high-risk framing govern logging and deployment.
-
-**References & links:**
-- [Training Verifiers to Solve Math Word Problems / GSM8K (Cobbe et al., 2021)](https://arxiv.org/abs/2110.14168)
-- [MathDial (Macina et al., 2023)](https://arxiv.org/abs/2305.14536)
-- [Knowledge Tracing (Corbett & Anderson, 1995)](https://link.springer.com/article/10.1007/BF01099821)
-- [`anthropics/claude-agent-sdk-python`](https://github.com/anthropics/claude-agent-sdk-python) — tool-using tutoring agents
-- [US Dept. of Education — FERPA](https://studentprivacy.ed.gov/ferpa)
 <!-- sota:11L10 -->
 
 ## Week 11 — AI for Science: Surrogates, Property Prediction & Inverse Design
@@ -1239,14 +1207,6 @@ def scaffold_split(smiles, frac_train=0.8):
 - [Abramson et al., 2024 - AlphaFold3](https://www.nature.com/articles/s41586-024-07487-w)
 - [Raissi et al., 2019 - PINNs](https://arxiv.org/abs/1711.10561)
 
-**More detail:** Property models must use scaffold/structure splits (random splits leak near-duplicates) and report uncertainty/applicability domain; 2026 foundation models (AlphaFold 3, MatterGen, MACE) and neural operators (FNO) anchor structure, materials, and PDE-surrogate work.
-
-**References & links:**
-- [MoleculeNet (Wu et al., 2018)](https://arxiv.org/abs/1703.00564)
-- [Chemprop (Yang et al., 2019)](https://arxiv.org/abs/1904.01561)
-- [Fourier Neural Operator (Li et al., 2021)](https://arxiv.org/abs/2010.08895)
-- [AlphaFold 3 (Abramson et al., 2024)](https://www.nature.com/articles/s41586-024-07487-w)
-- [`microsoft/mattergen`](https://github.com/microsoft/mattergen) — generative materials design
 <!-- sota:11L11 -->
 
 ## Week 12 — Capstone Build & Deployment-Risk Dossier
@@ -1332,14 +1292,6 @@ assert not drift, "Distribution shift detected — trigger review before serving
 - [`krishnaik06/mlproject`](https://github.com/krishnaik06/mlproject)
 - [EU AI Act timeline](https://artificialintelligenceact.eu/implementation-timeline/)
 
-**More detail:** A shipped solution couples a tailored model/agent, a cost-matched eval with at least one critical slice, and a deployment-risk dossier (drift monitor, failure catalog, human-in-the-loop, audit trail) mapped to NIST AI RMF + the governing sector regulation.
-
-**References & links:**
-- [`evidentlyai/evidently`](https://github.com/evidentlyai/evidently) — drift monitoring
-- [Hidden Technical Debt in ML Systems (Sculley et al., 2015)](https://papers.nips.cc/paper/2015/hash/86df7dcfd896fcaf2674f757a2463eba-Abstract.html)
-- [Challenges in Deploying ML: A Survey of Case Studies (Paleyes et al., 2022)](https://arxiv.org/abs/2011.09926)
-- [Model Cards (Mitchell et al., 2019)](https://arxiv.org/abs/1810.03993)
-- [NIST AI RMF](https://www.nist.gov/itl/ai-risk-management-framework)
 <!-- sota:11L12 -->
 
 ## Week 13 — Ship Review: Stakeholder + Regulator Panel & Cross-Vertical Synthesis
@@ -1423,14 +1375,6 @@ def ship_gate(dossier: dict) -> dict:
 - [`krishnaik06/Data-Science-Projects-For-Resumes`](https://github.com/krishnaik06/Data-Science-Projects-For-Resumes)
 - [Schulman et al., 2017 - PPO](https://arxiv.org/abs/1707.06347)
 
-**More detail:** The bar is a decision tool with bounded risk, defended to a stakeholder+regulator panel on leakage, fairness (adverse-impact), drift, and accountability; the portable artifacts are model cards, datasheets, and an AI RMF profile, with the six-lens method as the reusable gate.
-
-**References & links:**
-- [Closing the AI Accountability Gap (Raji et al., 2020)](https://arxiv.org/abs/2001.00973)
-- [Counterfactual Explanations without Opening the Black Box (Wachter et al., 2018)](https://arxiv.org/abs/1711.00399)
-- [Datasheets for Datasets (Gebru et al., 2021)](https://arxiv.org/abs/1803.09010)
-- [NIST AI RMF Playbook](https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook)
-- [On the Opportunities and Risks of Foundation Models (Bommasani et al., 2021)](https://arxiv.org/abs/2108.07258)
 <!-- sota:11L13 -->
 
 ## Course-level outcomes
@@ -1603,14 +1547,6 @@ class PatchEmbed(nn.Module):
 - [Dao et al., 2022 - FlashAttention](https://arxiv.org/abs/2205.14135)
 - [Dosovitskiy et al., 2020 - ViT](https://arxiv.org/abs/2010.11929)
 
-**More detail:** A ViT patchifies an image (a `Conv2d` with stride=patch), adds a class token + positional embeddings, and attends globally; lacking CNN locality bias it needs more data/augmentation (DeiT distillation), and 2026 defaults to DINOv2/v3 + SigLIP-2 pretrained encoders.
-
-**References & links:**
-- [An Image is Worth 16×16 Words / ViT (Dosovitskiy et al., 2021)](https://arxiv.org/abs/2010.11929)
-- [DeiT (Touvron et al., 2021)](https://arxiv.org/abs/2012.12877)
-- [Attention Is All You Need (Vaswani et al., 2017)](https://arxiv.org/abs/1706.03762)
-- [DINOv2 (Oquab et al., 2023)](https://arxiv.org/abs/2304.07193)
-- [`huggingface/pytorch-image-models` (timm)](https://github.com/huggingface/pytorch-image-models)
 <!-- sota:12L01 -->
 
 ## Week 2 — Contrastive Learning & CLIP: Aligning Images and Text
@@ -1701,14 +1637,6 @@ def clip_loss(img_emb, txt_emb, logit_scale):
 - [Faysse et al., 2024 - ColPali](https://arxiv.org/abs/2407.01449)
 - [Radford et al., 2021 - CLIP](https://arxiv.org/abs/2103.00020)
 
-**More detail:** CLIP aligns image and text with a symmetric InfoNCE loss (more in-batch negatives = stronger), enabling zero-shot via text prompts; SigLIP-2 swaps in a sigmoid loss, and 2026 multimodal embeddings (voyage-multimodal-3, Qwen3-VL-Embedding) and ColPali productionize it.
-
-**References & links:**
-- [CLIP (Radford et al., 2021)](https://arxiv.org/abs/2103.00020)
-- [Contrastive Predictive Coding / InfoNCE (van den Oord et al., 2018)](https://arxiv.org/abs/1807.03748)
-- [SigLIP (Zhai et al., 2023)](https://arxiv.org/abs/2303.15343)
-- [`mlfoundations/open_clip`](https://github.com/mlfoundations/open_clip)
-- [`openai/CLIP`](https://github.com/openai/CLIP)
 <!-- sota:12L02 -->
 
 ## Week 3 — Vision-Language Models: LLaVA, Qwen-VL, Llama-Vision & Fine-Tuning
@@ -1807,14 +1735,6 @@ def vqa(image, question):
 - [Hugging Face TRL](https://github.com/huggingface/trl)
 - [Hugging Face PEFT](https://github.com/huggingface/peft)
 
-**More detail:** A VLM = vision encoder + connector/projector + LLM; LLaVA's two-stage recipe (align the projector, then instruction-tune) and AnyRes high-res tiling for documents are standard, and object-hallucination (POPE) evals are mandatory before deploy.
-
-**References & links:**
-- [Visual Instruction Tuning / LLaVA (Liu et al., 2023)](https://arxiv.org/abs/2304.08485)
-- [Qwen-VL (Bai et al., 2023)](https://arxiv.org/abs/2308.12966)
-- [Flamingo (Alayrac et al., 2022)](https://arxiv.org/abs/2204.14198)
-- [Evaluating Object Hallucination / POPE (Li et al., 2023)](https://arxiv.org/abs/2305.10355)
-- [`huggingface/transformers`](https://github.com/huggingface/transformers) — VLM inference + LoRA
 <!-- sota:12L03 -->
 
 ## Week 4 — Diffusion From Scratch I: DDPM (the Forward & Reverse Process)
@@ -1911,14 +1831,6 @@ def loss_fn(model, x0):
 - [Ho et al., 2020 - DDPM](https://arxiv.org/abs/2006.11239)
 - [HF diffusers](https://github.com/huggingface/diffusers)
 
-**More detail:** DDPM adds Gaussian noise on a closed-form forward schedule and trains a time-conditioned network to predict that noise (the simplified ε-objective); honest eval pairs FID with a nearest-neighbor memorization check, and 2026 prefers the DiT backbone over the U-Net.
-
-**References & links:**
-- [DDPM (Ho et al., 2020)](https://arxiv.org/abs/2006.11239)
-- [Improved DDPM (Nichol & Dhariwal, 2021)](https://arxiv.org/abs/2102.09672)
-- [FID / GANs Trained by TTUR (Heusel et al., 2017)](https://arxiv.org/abs/1706.08500)
-- [Scalable Diffusion Models with Transformers / DiT (Peebles & Xie, 2023)](https://arxiv.org/abs/2212.09748)
-- [`huggingface/diffusers`](https://github.com/huggingface/diffusers)
 <!-- sota:12L04 -->
 
 ## Week 5 — Diffusion II: Latent Diffusion, Conditioning & Text-to-Image
@@ -2018,14 +1930,6 @@ clip = CLIPScore(model_name_or_path="openai/clip-vit-base-patch16")
 - [Hugging Face PEFT](https://github.com/huggingface/peft)
 - [HF diffusers](https://github.com/huggingface/diffusers)
 
-**More detail:** Latent diffusion runs the process in an 8× smaller VAE latent so 512px fits one GPU; the prompt steers via cross-attention, classifier-free guidance exaggerates the conditional, and you evaluate realism (FID) *and* alignment (CLIPScore). 2026's open leader is FLUX.1.
-
-**References & links:**
-- [Latent Diffusion / Stable Diffusion (Rombach et al., 2022)](https://arxiv.org/abs/2112.10752)
-- [Classifier-Free Diffusion Guidance (Ho & Salimans, 2022)](https://arxiv.org/abs/2207.12598)
-- [DreamBooth (Ruiz et al., 2023)](https://arxiv.org/abs/2208.12242)
-- [CLIPScore (Hessel et al., 2021)](https://arxiv.org/abs/2104.08718)
-- [`black-forest-labs/flux`](https://github.com/black-forest-labs/flux)
 <!-- sota:12L05 -->
 
 ## Week 6 — Flow Matching & Rectified Flow: The Modern Generative Backbone
@@ -2125,14 +2029,6 @@ def sample(model, shape, steps=8):                 # Euler ODE integration noise
 - [Ho et al., 2020 - DDPM](https://arxiv.org/abs/2006.11239)
 - [Lipman et al., 2022 - Flow Matching](https://arxiv.org/abs/2210.02747)
 
-**More detail:** Flow matching learns a velocity field transporting noise→data along (near-)straight paths via a simple regression; rectified flow's reflow straightens paths for 1–4 step sampling, which is why SD3 and FLUX adopted it. DDIM is the deterministic-diffusion bridge.
-
-**References & links:**
-- [Flow Matching for Generative Modeling (Lipman et al., 2023)](https://arxiv.org/abs/2210.02747)
-- [Rectified Flow (Liu et al., 2023)](https://arxiv.org/abs/2209.03003)
-- [Scaling Rectified Flow Transformers / SD3 (Esser et al., 2024)](https://arxiv.org/abs/2403.03206)
-- [DDIM (Song et al., 2021)](https://arxiv.org/abs/2010.02502)
-- [diffusers schedulers docs](https://huggingface.co/docs/diffusers/api/schedulers/overview)
 <!-- sota:12L06 -->
 
 ## Week 7 — Video Generation: Spatiotemporal Diffusion & World Consistency
@@ -2221,14 +2117,6 @@ def temporal_consistency(frame_feats):             # frame_feats: (T, D) e.g. CL
 - [Radford et al., 2021 - CLIP](https://arxiv.org/abs/2103.00020)
 - [HF diffusers](https://github.com/huggingface/diffusers)
 
-**More detail:** Video isn't independent frames — temporal attention/3D convs prevent flicker, and the scalable backbone is a DiT over spatiotemporal latent patches (Sora/Veo/Kling family); evaluation uses VBench dimensions + FVD + a temporal-consistency proxy.
-
-**References & links:**
-- [Stable Video Diffusion (Blattmann et al., 2023)](https://arxiv.org/abs/2311.15127)
-- [Video Diffusion Models (Ho et al., 2022)](https://arxiv.org/abs/2204.03458)
-- [DiT (Peebles & Xie, 2023)](https://arxiv.org/abs/2212.09748)
-- [VBench (Huang et al., 2024)](https://arxiv.org/abs/2311.17982)
-- [OpenAI Sora](https://openai.com/sora) — native 4K text-to-video
 <!-- sota:12L07 -->
 
 ## Week 8 — Audio & Speech: ASR (Whisper), TTS & Audio Representations

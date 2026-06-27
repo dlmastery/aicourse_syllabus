@@ -4179,14 +4179,6 @@ def scaling_curve(model, problems, Ns=(1,2,4,8,16,32)):
 - [Kaplan et al., 2020 - Scaling Laws](https://arxiv.org/abs/2001.08361)
 - [Wang et al., 2022 - Self-Consistency](https://arxiv.org/abs/2203.11171)
 
-**More detail:** Self-consistency majority-votes N sampled chains; best-of-N picks by a verifier. Accuracy ≈ `a − b·N^−c` (concave with a knee), so report accuracy-per-token and stop at diminishing returns.
-
-**References & links:**
-- [Self-Consistency (Wang et al., 2022)](https://arxiv.org/abs/2203.11171) — majority-vote CoT
-- [Scaling Test-Time Compute (Snell et al., 2024)](https://arxiv.org/abs/2408.03314) — compute-optimal inference
-- [Large Language Monkeys (Brown et al., 2024)](https://arxiv.org/abs/2407.21787) — repeated sampling
-- [Tree of Thoughts (Yao et al., 2023)](https://arxiv.org/abs/2305.10601) — deliberate search
-- [`mlabonne/llm-course`](https://github.com/mlabonne/llm-course) — scaling-curve lab
 <!-- sota:06L02 -->
 
 ## Week 3 — Verifiers & Reward Models: PRMs, ORMs & Process vs Outcome
@@ -4291,14 +4283,6 @@ def prm_score(chain: str, prm) -> float:   # process reward = min/mean step scor
 **References & links:**
 - [`VizuaraAI/RL-in-Production-Bootcamp-Resources`](https://github.com/VizuaraAI/RL-in-Production-Bootcamp-Resources)
 
-**More detail:** ORM scores the final answer; PRM grades each step (PRM800K / Math-Shepherd) and can beat majority vote for best-of-N, but plausible-wrong steps and gameable checkers are the failure surface.
-
-**References & links:**
-- [Let's Verify Step by Step / PRM800K (Lightman et al., 2023)](https://arxiv.org/abs/2305.20050) — process reward models
-- [Math-Shepherd (Wang et al., 2024)](https://arxiv.org/abs/2312.08935) — auto-labeled process supervision
-- [Training Verifiers / GSM8K (Cobbe et al., 2021)](https://arxiv.org/abs/2110.14168) — ORM origin
-- [`huggingface/Math-Verify`](https://github.com/huggingface/Math-Verify) — outcome verifier
-- [`VizuaraAI/RL-in-Production-Bootcamp-Resources`](https://github.com/VizuaraAI/RL-in-Production-Bootcamp-Resources) — verifier/reward lab
 <!-- sota:06L03 -->
 
 ## Week 4 — ReAct, Tool Use & Search: Reasoning That Acts
@@ -4408,15 +4392,6 @@ def react(model, question, tools, max_steps=8, max_cost=0.5):
 - [Schick et al., 2023 - Toolformer](https://arxiv.org/abs/2302.04761)
 - [LangGraph](https://github.com/langchain-ai/langgraph)
 
-**More detail:** ReAct interleaves Thought/Action/Observation so the model offloads exact steps to tools; bound it with step + cost caps. Evaluate on GAIA / τ²-bench (trajectory + safety, pass^k), and expose tools over MCP.
-
-**References & links:**
-- [ReAct (Yao et al., 2022)](https://arxiv.org/abs/2210.03629) — reason + act loop
-- [Toolformer (Schick et al., 2023)](https://arxiv.org/abs/2302.04761) — self-taught tool use
-- [GAIA (Mialon et al., 2023)](https://arxiv.org/abs/2311.12983) — general-assistant benchmark
-- [Model Context Protocol](https://modelcontextprotocol.io/) — standard tool access
-- [LangGraph docs](https://langchain-ai.github.io/langgraph/) — durable agent loops
-- [`krishnaik06/Agentic-LanggraphCrash-course`](https://github.com/krishnaik06/Agentic-LanggraphCrash-course) — ReAct agent lab
 <!-- sota:06L04 -->
 
 ## Week 5 — RLVR & GRPO: The DeepSeek-R1 Recipe From Scratch
@@ -4530,15 +4505,6 @@ trainer.train()
 - [Schulman et al., 2017 - PPO](https://arxiv.org/abs/1707.06347)
 - [Hugging Face TRL](https://github.com/huggingface/trl)
 
-**More detail:** GRPO samples a group per prompt and uses the group mean as the baseline (`Â = (r − mean)/std`), dropping the value network so it fits on far less hardware than PPO; co-plot reward with held-out eval to catch hacking.
-
-**References & links:**
-- [DeepSeek-R1 (DeepSeek-AI, 2025)](https://arxiv.org/abs/2501.12948) — RL-incentivized reasoning
-- [DeepSeekMath / GRPO (Shao et al., 2024)](https://arxiv.org/abs/2402.03300) — the algorithm
-- [Tülu 3 / RLVR (Lambert et al., 2024)](https://arxiv.org/abs/2411.15124) — verifiable-reward RL
-- [TRL GRPOTrainer docs](https://huggingface.co/docs/trl/grpo_trainer) — the loop
-- [`volcengine/verl`](https://github.com/volcengine/verl) — scalable GRPO/PPO
-- [`VizuaraAILabs/OpenClaw-RL-Tutorial`](https://github.com/VizuaraAILabs/OpenClaw-RL-Tutorial) — hands-on GRPO
 <!-- sota:06L05 -->
 
 ## Week 6 — GRPO in Practice: DAPO, Dr.GRPO & Stabilizing the Run
@@ -4647,14 +4613,6 @@ cfg = GRPOConfig(
 - [Hugging Face TRL](https://github.com/huggingface/trl)
 - [veRL](https://github.com/volcengine/verl)
 
-**More detail:** GRPO's normalization can reward length; Dr.GRPO removes the length/difficulty bias, and DAPO adds clip-higher, dynamic sampling, token-level loss, and overlong shaping. Compare eval-per-compute, not raw reward.
-
-**References & links:**
-- [DAPO (Yu et al., 2025)](https://arxiv.org/abs/2503.14476) — open large-scale RL system
-- [Understanding R1-Zero / Dr.GRPO (Liu et al., 2025)](https://arxiv.org/abs/2503.20783) — debiased advantages
-- [`BytedTsinghua-SIA/DAPO`](https://github.com/BytedTsinghua-SIA/DAPO) — DAPO code + DAPO-Math-17k
-- [`sail-sg/understand-r1-zero`](https://github.com/sail-sg/understand-r1-zero) — Dr.GRPO reference
-- [TRL GRPOTrainer docs](https://huggingface.co/docs/trl/grpo_trainer) — `dr_grpo` loss + clip options
 <!-- sota:06L06 -->
 
 ## Week 7 — Long-Horizon Reasoning & Self-Improving Agents
@@ -4761,14 +4719,6 @@ def self_improve(model, prompts, verifier, iters=3, n=8):
 - [Shao et al., 2024 - DeepSeekMath/GRPO](https://arxiv.org/abs/2402.03300)
 - [Jimenez et al., 2023 - SWE-bench](https://arxiv.org/abs/2310.06770)
 
-**More detail:** Self-improvement loops sample, keep verified-correct, SFT, and repeat (STaR / ReST-EM) — but without diversity/decontam they amplify their own tricks. Agentic RL (SWE-RL / DeepSWE) trains the whole act-observe loop; report success-at-budget.
-
-**References & links:**
-- [STaR (Zelikman et al., 2022)](https://arxiv.org/abs/2203.14465) — bootstrapping reasoning
-- [ReST-EM / Beyond Human Data (Singh et al., 2023)](https://arxiv.org/abs/2312.06585) — scaling self-training
-- [SWE-bench (Jimenez et al., 2023)](https://arxiv.org/abs/2310.06770) — real software tasks
-- [`princeton-nlp/SWE-bench`](https://github.com/princeton-nlp/SWE-bench) — the agentic benchmark
-- [`VizuaraAILabs/OpenClaw-RL-Tutorial`](https://github.com/VizuaraAILabs/OpenClaw-RL-Tutorial) — self-improvement lab
 <!-- sota:06L07 -->
 
 ## Week 8 — Reasoning Evaluation: AIME, GPQA, ARC-AGI & Contamination
@@ -4871,15 +4821,6 @@ def perturbation_drop(model, problems, perturb):
 **References & links:**
 - [`mlabonne/llm-course`](https://github.com/mlabonne/llm-course)
 
-**More detail:** AIME is tiny (report bootstrap CIs), GPQA-Diamond resists shallow retrieval (experts ~65%), ARC-AGI resists memorization; perturb problems (GSM-Symbolic rename/renumber) and a large accuracy drop flags memorization, not reasoning.
-
-**References & links:**
-- [GPQA (Rein et al., 2023)](https://arxiv.org/abs/2311.12022) — Google-proof Q&A
-- [GSM-Symbolic (Mirzadeh et al., 2024)](https://arxiv.org/abs/2410.05229) — perturbation robustness
-- [On the Measure of Intelligence / ARC (Chollet, 2019)](https://arxiv.org/abs/1911.01547) — abstraction & reasoning
-- [`fchollet/ARC-AGI`](https://github.com/fchollet/ARC-AGI) — ARC-AGI tasks
-- [ARC Prize](https://arcprize.org/) — ARC-AGI-2 leaderboard
-- [`mlabonne/llm-course`](https://github.com/mlabonne/llm-course) — hard-eval runners
 <!-- sota:06L08 -->
 
 ## Week 9 — Reasoning at Inference: Budgets, Faithfulness & Deployment
@@ -4992,14 +4933,6 @@ def faithfulness(model, q, chain, hint):
 - [Rafailov et al., 2023 - DPO](https://arxiv.org/abs/2305.18290)
 - [Wei et al., 2022 - Chain-of-Thought](https://arxiv.org/abs/2201.11903)
 
-**More detail:** Route thinking-budget by difficulty (don't deliberate over 2+2); the verbalized chain can be post-hoc rationalization, so probe faithfulness by injecting hints / corrupting steps. Serve long outputs with FP8 KV-cache + speculative decoding under budget caps.
-
-**References & links:**
-- [CoT Faithfulness (Turpin et al., 2023)](https://arxiv.org/abs/2305.04388) — unfaithful explanations
-- [Reasoning Models Don't Always Say What They Think (Anthropic, 2025)](https://www.anthropic.com/research/reasoning-models-dont-always-say-what-they-think) — CoT monitoring limits
-- [Speculative Decoding (Leviathan et al., 2023)](https://arxiv.org/abs/2211.17192) — faster inference
-- [Scaling Test-Time Compute (Snell et al., 2024)](https://arxiv.org/abs/2408.03314) — when to spend inference compute
-- [vLLM documentation](https://docs.vllm.ai/) — FP8 KV-cache + speculative decoding
 <!-- sota:06L09 -->
 
 ## Week 10 — Capstone: A Small Reasoning-RL Run That Provably Improves Math
@@ -5114,14 +5047,6 @@ def capstone_gate(base, prompts, verifier, heldout, perturbed):
 - [Hugging Face TRL](https://github.com/huggingface/trl)
 - [veRL](https://github.com/volcengine/verl)
 
-**More detail:** Reproduce a miniature R1 — baseline → verifier → GRPO (+stabilization) → hard-eval audit — proving the gain is real reasoning (small perturbation drop), reward↔eval aligned, with eval-per-compute fairness documented in the packet.
-
-**References & links:**
-- [DeepSeek-R1 (DeepSeek-AI, 2025)](https://arxiv.org/abs/2501.12948) — the recipe in miniature
-- [DAPO (Yu et al., 2025)](https://arxiv.org/abs/2503.14476) — stabilization techniques
-- [Tülu 3 / RLVR (Lambert et al., 2024)](https://arxiv.org/abs/2411.15124) — auditable pipeline
-- [`volcengine/verl`](https://github.com/volcengine/verl) — RL training engine
-- [`VizuaraAI/RL-in-Production-Bootcamp-Resources`](https://github.com/VizuaraAI/RL-in-Production-Bootcamp-Resources) — full pipeline
 <!-- sota:06L10 -->
 
 ## Course-level outcomes
