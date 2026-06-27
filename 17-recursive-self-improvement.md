@@ -67,6 +67,11 @@ _1 academic quarter · 3 lecture-hours/week · 13 lectures (~39 contact hrs). Fu
 
 ## Week 1 — Foundations: The Five Lenses, Taxonomy & Theory of RSI
 
+### State of the Art (June 2026)
+- RSI is the ICLR-2026 workshop frontier (110 papers, five-lens framing); RLVR + self-generated data are the engines.
+- Iterative computation (growing vs looping depth) is the unifying view; self-grading inflation is the cardinal failure.
+- Held-out, independently-verified improvement is the non-negotiable evidence standard.
+
 **Altitude:** Specialist · **Anchor:** scaffold `Agent0-Loop` as an empty improve→verify→distill loop.
 
 ### Learning goals
@@ -86,6 +91,8 @@ _1 academic quarter · 3 lecture-hours/week · 13 lectures (~39 contact hrs). Fu
 - Stand up `Agent0-Loop` skeleton: `generate_tasks → solve(tool-integrated) → verify → select → update`, all as stubs
   with logging. Run it as a no-op and confirm the evidence log records every stage.
 - **Deliverable:** the loop skeleton + a one-page "five-lens classification" of 5 chosen workshop papers.
+
+▶ **Practical project:** `VizuaraAI/paper-to-notebook` — turn a chosen RSI-workshop paper into a runnable notebook and five-lens-classify 5 papers.
 
 ### Harness / reusable skill — `$rsi-classifier`
 - **Purpose:** classify any RSI method by the five lenses + name its collapse risk.
@@ -130,6 +137,11 @@ class RSILoop:
 
 ## Week 2 — Self-Generated Data & Self-Play (and the Collapse Problem)
 
+### State of the Art (June 2026)
+- Language Self-Play / GASP / SAGE (ICLR-2026) manufacture curricula data-free; model collapse (Shumailov) is the escape-via-verification problem.
+- Self-play ≈ adversarial imitation explains stability; proposer/solver collusion is the trap.
+- Synthetic-data verification gates collapse.
+
 **Anchor:** add self-play task generation to `Agent0-Loop`; watch for model collapse.
 
 ### Learning goals
@@ -148,6 +160,8 @@ class RSILoop:
 - Implement a proposer/solver self-play loop on a small reasoning task; add a diversity/verification filter; plot quality
   with vs without the filter to demonstrate collapse.
 - **Deliverable:** two runs (collapse vs verified) + a short note on what stabilized it.
+
+▶ **Practical project:** `VizuaraAI/paper-to-notebook` — reproduce a self-play loop notebook showing collapse with vs without a diversity/verification filter.
 
 ### Harness / reusable skill — `$collapse-monitor`
 - **Purpose:** detect self-training collapse early (diversity, verifier pass-rate, eval drift). **Evidence:** collapse dashboard.
@@ -185,6 +199,11 @@ def self_play_round(proposer, solver, verify, n=256, min_div=0.3):
 
 ## Week 3 — Test-Time Self-Improvement & Inference-Time Scaling
 
+### State of the Art (June 2026)
+- Compute-as-teacher / test-time self-distillation (ICLR-2026 #50/#20) turn inference compute into supervision; RL^V verifiers add ~1.2–1.6×.
+- Reusable test-time computation (reasoning caches) + tunable thinking-effort are 2026 product controls.
+- Verifier-free compute amplifies confident errors — always plot the cost axis.
+
 **Anchor:** make `Agent0-Loop` improve *within a single episode* (no weight updates).
 
 ### Learning goals
@@ -202,6 +221,8 @@ def self_play_round(proposer, solver, verify, n=256, min_div=0.3):
 - Add a test-time loop: sample-many → verify → self-distill the best trace into the model's context/short adapter; measure
   pass@1 lift on held-out items vs compute spent.
 - **Deliverable:** an accuracy-vs-inference-compute curve + the reusable reasoning cache.
+
+▶ **Practical project:** `VizuaraAI/paper-to-notebook` — build a verify-then-self-distill test-time loop and plot held-out pass@1 vs inference compute.
 
 ### Harness / reusable skill — `$test-time-improver`
 - **Purpose:** wrap any model with verify-then-self-distill at inference; report held-out lift per compute unit. **Evidence:** the curve.
@@ -239,6 +260,11 @@ def compute_as_teacher(model, x, k=16, verify=None):
 
 ## Week 4 — Agentic Memory & Lifelong/Continual Learning
 
+### State of the Art (June 2026)
+- Meta-learned agentic memory + agentic context engineering (ICLR-2026 #3/#71) make context an optimizable object; agent memory is the production differentiator.
+- Continual learning without forgetting via orthogonal-gradient projection; unbounded memory growth is the failure.
+- Mem0/LangMem-style stores compress verified skills.
+
 **Anchor:** give `Agent0-Loop` a persistent memory that improves its own retrieval/use over time.
 
 ### Learning goals
@@ -256,6 +282,8 @@ def compute_as_teacher(model, x, k=16, verify=None):
 - Add a memory module that writes verified solution "skills," retrieves them, and periodically self-distills/compresses them;
   measure forward transfer and forgetting across a task sequence.
 - **Deliverable:** transfer/forgetting curves + a memory-growth audit.
+
+▶ **Practical project:** `VizuaraAI/paper-to-notebook` — implement a self-improving skill-memory notebook and measure forward transfer vs forgetting across a task stream.
 
 ### Harness / reusable skill — `$memory-evolver`
 - **Purpose:** manage a self-improving skill memory (write/retrieve/compress/forget) with a forgetting check. **Evidence:** the curves.
@@ -292,6 +320,11 @@ class EvolvingMemory:
 
 ## Week 5 — Verifiers, Rewards & the Reward-Hacking Problem
 
+### State of the Art (June 2026)
+- Verifiers > solvers as the bottleneck (#61); self-evolving interpretable rubrics (#21); reward hacking in self-improving code agents (#58) is the central RSI-safety failure.
+- Verifying-the-verifiers + execution grounding + verifier ensembles are the mitigations.
+- RLVR reward-hacking is a live ICLR-2026 thread.
+
 **Anchor:** replace `Agent0-Loop`'s placeholder verifier with a *trained, audited* one — and try to break it.
 
 ### Learning goals
@@ -309,6 +342,8 @@ class EvolvingMemory:
 - Train a small verifier; run the loop; then *red-team* it — find inputs where the agent inflates its own reward; add a
   cross-check (second verifier / execution grounding) and re-measure held-out gains.
 - **Deliverable:** a reward-hacking incident report + the hardened verifier.
+
+▶ **Practical project:** `VizuaraAI/paper-to-notebook` — train a verifier, red-team it for gaming, and harden it with execution grounding in a notebook.
 
 ### Harness / reusable skill — `$verifier-auditor`
 - **Purpose:** stress-test a reward/judge for gaming; report exploits + the held-out impact. **Evidence:** the incident report.
@@ -344,6 +379,11 @@ def verified_reward(traj, verifiers):                 # require agreement / exec
 
 ## Week 6 — Self-Evolving Coding Agents
 
+### State of the Art (June 2026)
+- ACE adversarial self-generated tests + AUTOHARNESS (#15/#68) ground code self-improvement in execution; ‘Simple Baselines Competitive with Code Evolution’ (#40) is the anti-hype check.
+- SWE-bench Verified is the eval; test-gaming is the failure mode.
+- AGENTS.md repo-context files (#49) and deep agentic reasoning (AlphaApollo #65) are 2026 patterns.
+
 **Anchor:** specialize `Agent0-Loop` into a code agent that writes its own tests and harnesses.
 
 ### Learning goals
@@ -361,6 +401,8 @@ def verified_reward(traj, verifiers):                 # require agreement / exec
 - Code agent loop: generate feature → synthesize tests/harness → self-improve via pass/fail preference → evaluate on
   SWE-bench Verified; compare against a simple ReAct baseline (per #40) to keep yourself honest.
 - **Deliverable:** SWE-bench Verified score curve + baseline comparison + a failure taxonomy.
+
+▶ **Practical project:** `VizuaraAI/paper-to-notebook` — reproduce an ACE/AUTOHARNESS-style code-self-improvement loop on SWE-bench Verified vs a simple ReAct baseline.
 
 ### Harness / reusable skill — `$code-harness-synth`
 - **Purpose:** auto-build a test/eval harness for a coding task so improvement is grounded in execution. **Evidence:** the harness + scores.
@@ -401,6 +443,11 @@ def code_self_improve(agent, task, rounds=3):
 
 ## Week 7 — Automated AI Research & Scientific Discovery ("AI Scientists")
 
+### State of the Art (June 2026)
+- PostTrainBench (#4) asks whether agents can automate post-training; execution-grounded research loops (#7) + LLM evolutionary optimization (OMEGA/LLM-FE) are the methods.
+- Discovery limits: scaling-law discovery (#9) and the discovery→application gap (#16) temper claims.
+- Pre-register metrics, seed/repeat, and test transfer.
+
 **Anchor:** point `Agent0-Loop` at an ML research micro-task (improve a small model's training).
 
 ### Learning goals
@@ -418,6 +465,8 @@ def code_self_improve(agent, task, rounds=3):
 - An agent that proposes + runs small training-config experiments, reads results, and iterates (execution-grounded); report
   whether it found a real improvement vs got lucky, with the discovery→application gap analysis.
 - **Deliverable:** an automated-experiment log + an honest "did it discover?" writeup.
+
+▶ **Practical project:** `VizuaraAI/paper-to-notebook` — build an execution-grounded propose→run→read research-loop notebook and write an honest ‘did it discover?’ verdict.
 
 ### Harness / reusable skill — `$research-loop`
 - **Purpose:** run propose→execute→read→iterate research cycles with logged, reproducible evidence. **Evidence:** the experiment log.
@@ -455,6 +504,11 @@ def research_step(agent, sandbox):
 
 ## Week 8 — Open-Ended Discovery & Evolutionary Self-Improvement
 
+### State of the Art (June 2026)
+- Relative-progress / interestingness-driven open-ended search (#73) and Feedback Descent pairwise text optimization (#88) are the ICLR-2026 directions; FunSearch-style program search is the lineage.
+- Novelty-without-quality and objective collapse are the failures; archive diversity + a quality/novelty Pareto fix them.
+- Gradient-free language-space optimization (TextBO) is emerging.
+
 **Anchor:** add an open-ended novelty driver to `Agent0-Loop` (interestingness-seeking).
 
 ### Learning goals
@@ -472,6 +526,8 @@ def research_step(agent, sandbox):
 - An evolutionary loop over prompts/programs driven by pairwise "which is more interesting/better" feedback; track an
   open-ended novelty metric; show qualitative emergence.
 - **Deliverable:** an evolution trajectory + novelty/quality plots.
+
+▶ **Practical project:** `VizuaraAI/paper-to-notebook` — implement a pairwise-comparison evolutionary loop (prompts/programs) and plot novelty vs quality.
 
 ### Harness / reusable skill — `$open-ended-evolver`
 - **Purpose:** run population-based, novelty-driven optimization in language/program space. **Evidence:** the trajectory.
@@ -513,6 +569,11 @@ def evolve(pop, compare, mutate, gens=20):
 
 ## Week 9 — Self-Improving Reasoning: Curricula at the Edge of Learnability
 
+### State of the Art (June 2026)
+- Edge-of-learnability curricula (#48) + easy-to-hard theory (#76); process rewards & multi-agent scaling (MAPPA #80); GRPO-guided hyperparameter controllers (#100).
+- Frontier-targeted sampling beats random; the loop tuning its own knobs is the 2026 twist.
+- Process reward models complement outcome verifiers.
+
 **Anchor:** add an automatic difficulty-curriculum to `Agent0-Loop`'s self-generated tasks.
 
 ### Learning goals
@@ -530,6 +591,8 @@ def evolve(pop, compare, mutate, gens=20):
 - Add a curriculum scheduler that estimates per-task learnability and samples near the frontier; compare learning speed vs
   random/curriculum-free; add a GRPO controller for one hyperparameter.
 - **Deliverable:** learning-speed curves (frontier vs random) + the controller's chosen schedule.
+
+▶ **Practical project:** `VizuaraAI/paper-to-notebook` — add a learnability-estimating curriculum + a GRPO controller and show frontier-vs-random learning-speed in a notebook.
 
 ### Harness / reusable skill — `$learnability-curriculum`
 - **Purpose:** order self-generated tasks by estimated learnability and adapt online. **Evidence:** the curves.
@@ -567,6 +630,11 @@ def frontier_sample(tasks, model, lo=0.3, hi=0.7):
 
 ## Week 10 — Tiny Recursive Models & Iterative Architectures
 
+### State of the Art (June 2026)
+- Tiny Recursive Models / unrolled policy iteration (#11/#54) and depth-vs-recursion (#105) probe recursion-as-architecture; the ‘curse of depth’ (#63) is the failure.
+- Compute-matched comparison is mandatory to claim recursion wins.
+- Looped blocks reuse depth — cheaper than growing layers on algorithmic tasks.
+
 **Anchor:** swap a tiny recursive model into `Agent0-Loop` to study recursion-as-architecture.
 
 ### Learning goals
@@ -583,6 +651,8 @@ def frontier_sample(tasks, model, lo=0.3, hi=0.7):
 - Train a small looped/recursive model on an algorithmic task (e.g., jigsaw/sorting); compare to a same-parameter deep
   transformer; measure compute-matched accuracy.
 - **Deliverable:** depth-vs-recursion comparison + a compute-matched plot.
+
+▶ **Practical project:** `VizuaraAI/paper-to-notebook` — train a tiny looped/recursive model vs a same-compute deep transformer on an algorithmic task in a notebook.
 
 ### Harness / reusable skill — `$recursion-profiler`
 - **Purpose:** compare looped vs deep models at matched compute/params on reasoning tasks. **Evidence:** the plot.
@@ -621,6 +691,11 @@ class TinyRecursive(nn.Module):
 
 ## Week 11 — Multimodal, World-Model & Embodied Self-Improvement
 
+### State of the Art (June 2026)
+- Self-improving world models (#10) + VLA with residual-RL data generation (#18, VLAW #19) are the embodied-RSI frontier; residual off-policy RL (#81) fine-tunes BC policies.
+- World-model exploitation + the sim-to-real gap are the failures — ground with real rollouts + uncertainty gating.
+- DiT video-diffusion world models double as embodied simulators.
+
 **Anchor:** extend the loop to a vision-language-action (VLA) setting with a self-improving world model.
 
 ### Learning goals
@@ -638,6 +713,8 @@ class TinyRecursive(nn.Module):
 - In a sim environment, run a loop where the policy generates trajectories, a learned world model scores/relabels them, and
   residual RL improves the policy; measure success-rate lift and check for unsafe behaviors.
 - **Deliverable:** success-rate curve + a sim-to-real / safety caveat note.
+
+▶ **Practical project:** `VizuaraAI/paper-to-notebook` — build a policy↔world-model co-improvement loop in sim and track success-rate + a safety caveat note.
 
 ### Harness / reusable skill — `$embodied-self-improver`
 - **Purpose:** run a policy↔world-model co-improvement loop with safety logging. **Evidence:** the curve + caveat note.
@@ -679,6 +756,11 @@ def vla_self_improve(policy, world_model, env, rounds=5):
 
 ## Week 12 — Benchmarks & Evidence: Proving a System Actually Self-Improved
 
+### State of the Art (June 2026)
+- PostTrainBench (#4) + TangramSR (#34) are RSI benchmarks; ESDAE (#56) evaluates synthetic eval data; verifying-the-verifiers (#99) does failure attribution.
+- Genuine improvement = frozen held-out + leakage audit + loop-off ablation; self-graded gains don’t count.
+- Time-separated splits guard against contamination.
+
 **Anchor:** build the held-out evaluation harness that the whole course's claims must pass.
 
 ### Learning goals
@@ -695,6 +777,8 @@ def vla_self_improve(policy, world_model, env, rounds=5):
 - Build an evaluation harness with: a frozen held-out set, a leakage audit, an independent verifier, and a "loop-off"
   ablation; re-score your `Agent0-Loop` and report which earlier weekly gains survive.
 - **Deliverable:** an RSI evidence report (which mechanisms truly helped, which were artifacts).
+
+▶ **Practical project:** `VizuaraAI/paper-to-notebook` — build a frozen-held-out + leakage-audit + loop-off-ablation harness and re-score which weekly gains survive.
 
 ### Harness / reusable skill — `$rsi-evidence-audit`
 - **Purpose:** certify a self-improvement claim against leakage, gaming, and ablation. **Evidence:** the evidence report.
@@ -731,6 +815,11 @@ def rsi_evidence(system, frozen_eval):
 
 ## Week 13 — Safety, Unlearning & Governance of Self-Improving Systems
 
+### State of the Art (June 2026)
+- TamperBench (#108) fine-tuning robustness, SAHOO (#95) safeguarded objectives, and reward hacking (#58) are RSI-safety cores; machine unlearning (#41/#102/#110) is the capability-removal tool.
+- Fail-closed safety gates + kill-switch + verified unlearning (relearning probes) are the mitigations.
+- Governance: EU AI Act (Aug 2 2026 enforcement), NIST RMF, responsible scaling, CoT monitoring.
+
 **Anchor:** wrap `Agent0-Loop` in a safety case before it is allowed to "ship."
 
 ### Learning goals
@@ -748,6 +837,8 @@ def rsi_evidence(system, frozen_eval):
 - Run a safety battery on your system: attempt a tamper/jailbreak (TamperBench-style), attempt reward-hacking, test an
   unlearning request; add mitigations; write a 2-page safety case with residual-risk statement.
 - **Deliverable:** the safety case + a red-team→mitigation log.
+
+▶ **Practical project:** `VizuaraAI/paper-to-notebook` — run a tamper/reward-hack/unlearning safety battery on your loop and write a 2-page safety case.
 
 ### Harness / reusable skill — `$rsi-safety-case`
 - **Purpose:** assemble a safety case for a self-improving system (threats, tests, mitigations, residual risk, kill-switch). **Evidence:** the safety case.
@@ -786,7 +877,14 @@ def safety_gate(update, checks):                        # block the self-update 
 
 ## Capstone — `Agent0-Loop`: A Self-Improving System With a Safety Case (30%)
 
+### State of the Art (June 2026)
+- 2026 RSI capstones must prove held-out, ablated, leakage-free improvement plus a safety case — the workshop’s evidence-of-improvement lens is the bar.
+- Stack: veRL/OpenRLHF + vLLM rollouts + Ray; Inspect AI / DeepEval for held-out evals.
+- Tracks mirror the field: coding (SWE-bench Verified), reasoning (GRPO/MATH), post-training research (PostTrainBench), embodied VLA, open-ended discovery.
+
 Integrate the term into one working self-improving system that **provably** improves on a held-out measure, with a safety case.
+
+▶ **Practical project:** `VizuaraAI/paper-to-notebook` — assemble `Agent0-Loop` as a reproducible notebook+repo where every improvement claim links to held-out evidence.
 
 **Milestones**
 1. **Proposal & lens map** — pick a context (coding / reasoning / research / embodied), state the change target, mechanism,
@@ -820,3 +918,15 @@ Built on the **ICLR 2026 Workshop on AI with Recursive Self-Improvement** (Rio d
 and its five-lens framing, plus prerequisites from Subjects 03/06/07/13/14 of this program.
 - Workshop: https://recursive-workshop.github.io/ · Accepted papers: https://recursive-workshop.github.io/papers.html
 - Summary: https://openreview.net/pdf?id=OsPQ6zTQXV
+
+---
+
+## 🛠 Hands-on repositories & build studios (merged June 2026)
+
+**Clone-and-run repos** (verified June 2026; full catalog in [`PROJECTS.md`](PROJECTS.md)):
+- `VizuaraAI/paper-to-notebook` — turn an RSI-workshop PDF into a runnable notebook (the course's paper-to-code seminar workflow) — *Lectures 1–13 + mid-term reproduction*
+
+**Build studios** (specs in [`PROJECTS.md`](PROJECTS.md)):
+- **Coding-agent self-repair** — self-generated unit tests + hidden tests + a reward-hacking audit — *Lectures 5–6*
+- **Self-evolving rubric lab** — rubric generation, judge agreement, bias / reward-hacking tests on the verifier itself — *Lecture 5*
+- **Automated research mini-agent** — hypothesis → experiment → report → uncertainty statement, execution-grounded — *Lectures 7–8*

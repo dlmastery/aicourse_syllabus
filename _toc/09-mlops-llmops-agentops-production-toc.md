@@ -1,9 +1,9 @@
 # Detailed Table of Contents — Subject 09 — Full-Stack AI: MLOps, LLMOps & AgentOps to Production
 
-_Source: `09-mlops-llmops-agentops-production.md` · **1 academic quarter · 3 lecture-hours/week · 12 weekly lectures (~36 contact hours)**_
+_Source: `09-mlops-llmops-agentops-production.md` · **1 academic quarter · 3 lecture-hours/week · 12 weekly lectures (~36 contact hours)**. Every lecture has a **▶ practical project** (real GitHub repo)._
 
 ### Lecture 1 — The Production Mindset & Containerizing a Model
-_3-hour block · 🔧 reusable skill: `$repro-image`_
+_3-hour block · 🔧 skill: `$repro-image` · ▶ project: [`krishnaik06/mlproject`](https://github.com/krishnaik06/mlproject) — use its containerized end-to-end template as the base for the `fullstack-ai-platform` monorepo and the slim `eta-model` image._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -12,10 +12,10 @@ _3-hour block · 🔧 reusable skill: `$repro-image`_
 | 01:00–01:30 | M3 | Twelve-factor for ML |
 | 01:30–02:00 | M4 | MLOps maturity (Google's levels 0/1/2) |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | Create fullstack-ai-platform/ monorepo: services/eta-model/, services/support-copilot/, libs/, infra |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`krishnaik06/mlproject`](https://github.com/krishnaik06/mlproject) — use its containerized end-to-end template as the base for the `fullstack-ai-platform` monorepo and the slim `eta-model` image. |
 
 ### Lecture 2 — Orchestration: Kubernetes & Serverless GPU
-_3-hour block · 🔧 reusable skill: `$k8s-deploy`_
+_3-hour block · 🔧 skill: `$k8s-deploy` · ▶ project: [`GokuMohandas/Made-With-ML`](https://github.com/GokuMohandas/Made-With-ML) — follow its deploy/scale modules to take the `eta-model` image to a probed, autoscaled Deployment and a serverless-GPU comparison._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -24,10 +24,10 @@ _3-hour block · 🔧 reusable skill: `$k8s-deploy`_
 | 01:00–01:30 | M3 | Requests vs limits |
 | 01:30–02:00 | M4 | Scale-to-zero |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | Helm chart infra/charts/eta-model/ with Deployment, Service, HPA (CPU target 60%), probes, and resou |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`GokuMohandas/Made-With-ML`](https://github.com/GokuMohandas/Made-With-ML) — follow its deploy/scale modules to take the `eta-model` image to a probed, autoscaled Deployment and a serverless-GPU comparison. |
 
 ### Lecture 3 — Data Pipelines & Versioning: Airflow, DVC, Feature Stores
-_3-hour block · 🔧 reusable skill: `$data-contract`_
+_3-hour block · 🔧 skill: `$data-contract` · ▶ project: [`krishnaik06/Kidney-Disease-Classification-Deep-Learning-Project`](https://github.com/krishnaik06/Kidney-Disease-Classification-Deep-Learning-Project) — mirror its DVC pipeline as the data/model-versioning reference for the `delivery-eta` features._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -36,10 +36,10 @@ _3-hour block · 🔧 reusable skill: `$data-contract`_
 | 01:00–01:30 | M3 | Train/serve skew |
 | 01:30–02:00 | M4 | Data contract |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | pipelines/eta_features.py: Airflow DAG with tasks extract → validate (Great Expectations / pandera)  |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`krishnaik06/Kidney-Disease-Classification-Deep-Learning-Project`](https://github.com/krishnaik06/Kidney-Disease-Classification-Deep-Learning-Project) — mirror its DVC pipeline as the data/model-versioning reference for the `delivery-eta` features. |
 
 ### Lecture 4 — Experiment Tracking, Model Registry & Reproducible Training
-_3-hour block · 🔧 reusable skill: `$run-ledger`_
+_3-hour block · 🔧 skill: `$run-ledger` · ▶ project: [`DataTalksClub/mlops-zoomcamp`](https://github.com/DataTalksClub/mlops-zoomcamp) — follow its experiment-tracking module (W&B/MLflow) to log the `delivery-eta` sweep and promote a registry version with lineage._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -48,10 +48,10 @@ _3-hour block · 🔧 reusable skill: `$run-ledger`_
 | 01:00–01:30 | M3 | Lineage |
 | 01:30–02:00 | M4 | Sweep/HPO |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | Add wandb logging to train_eta.py (config, metrics, learning curves, the DVC data hash as a tag) |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`DataTalksClub/mlops-zoomcamp`](https://github.com/DataTalksClub/mlops-zoomcamp) — follow its experiment-tracking module (W&B/MLflow) to log the `delivery-eta` sweep and promote a registry version with lineage. |
 
 ### Lecture 5 — Model Serving I: FastAPI, vLLM & Triton
-_3-hour block · 🔧 reusable skill: `$serve-bench`_
+_3-hour block · 🔧 skill: `$serve-bench` · ▶ project: [`VizuaraAI/infertutor-arena-capstone`](https://github.com/VizuaraAI/infertutor-arena-capstone) — study its Modal + vLLM serving stack to stand up and benchmark the `support-copilot` LLM endpoint._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -60,10 +60,10 @@ _3-hour block · 🔧 reusable skill: `$serve-bench`_
 | 01:00–01:30 | M3 | Throughput vs latency tradeoff |
 | 01:30–02:00 | M4 | Backpressure |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | services/eta-model/main.py: FastAPI with Pydantic request/response, model version header, /metrics,  |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`VizuaraAI/infertutor-arena-capstone`](https://github.com/VizuaraAI/infertutor-arena-capstone) — study its Modal + vLLM serving stack to stand up and benchmark the `support-copilot` LLM endpoint. |
 
 ### Lecture 6 — CI/CD for Models *and* Prompts/Evals (Eval-Gated Deploys)
-_3-hour block · 🔧 reusable skill: `$eval-gate`_
+_3-hour block · 🔧 skill: `$eval-gate` · ▶ project: [`promptfoo/promptfoo`](https://github.com/promptfoo/promptfoo) — build the offline eval suite and wire it as the CI gate that blocks a regressing copilot prompt PR._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -72,10 +72,10 @@ _3-hour block · 🔧 reusable skill: `$eval-gate`_
 | 01:00–01:30 | M3 | Prompt as code |
 | 01:30–02:00 | M4 | Golden/regression set |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | .github/workflows/eta.yml and support-copilot.yml: full pipeline with caching, OIDC cloud auth, and  |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`promptfoo/promptfoo`](https://github.com/promptfoo/promptfoo) — build the offline eval suite and wire it as the CI gate that blocks a regressing copilot prompt PR. |
 
 ### Lecture 7 — LLMOps: Gateways, Prompt Management, Semantic Caching & Cost/Latency Control
-_3-hour block · 🔧 reusable skill: `$llm-gateway`_
+_3-hour block · 🔧 skill: `$llm-gateway` · ▶ project: [`decodingml/llm-twin-course`](https://github.com/decodingml/llm-twin-course) — adapt its production LLMOps patterns (gateway, caching, cost control) to route the copilot through LiteLLM with budgets._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -84,10 +84,10 @@ _3-hour block · 🔧 reusable skill: `$llm-gateway`_
 | 01:00–01:30 | M3 | Model routing / escalation |
 | 01:30–02:00 | M4 | Cost as a first-class SLO |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | Deploy **LiteLLM Proxy**: register Bedrock/Anthropic + the self-hosted vLLM model; set per-key budge |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`decodingml/llm-twin-course`](https://github.com/decodingml/llm-twin-course) — adapt its production LLMOps patterns (gateway, caching, cost control) to route the copilot through LiteLLM with budgets. |
 
 ### Lecture 8 — Observability: Tracing, Metrics & LLM/Agent Telemetry
-_3-hour block · 🔧 reusable skill: `$trace-debug`_
+_3-hour block · 🔧 skill: `$trace-debug` · ▶ project: [`langfuse/langfuse`](https://github.com/langfuse/langfuse) — self-host it and instrument the copilot with OTel spans (retrieve / tools / LLM) carrying token and cost attributes._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -96,22 +96,22 @@ _3-hour block · 🔧 reusable skill: `$trace-debug`_
 | 01:00–01:30 | M3 | RED + LLM metrics |
 | 01:30–02:00 | M4 | Trace-linked eval |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | Add **OpenTelemetry** SDK + Langfuse callback to the copilot; create spans for retrieve / each tool  |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`langfuse/langfuse`](https://github.com/langfuse/langfuse) — self-host it and instrument the copilot with OTel spans (retrieve / tools / LLM) carrying token and cost attributes. |
 
 ### Lecture 9 — Monitoring, Drift Detection & Alerting in Production
-_3-hour block · 🔧 reusable skill: `$drift-watch`_
+_3-hour block · 🔧 skill: `$drift-watch` · ▶ project: [`evidentlyai/evidently`](https://github.com/evidentlyai/evidently) — use its drift detectors and reference datasets to monitor `delivery-eta` feature drift and fire one actionable alert._
 
 | Time | Module | Content |
 |------|--------|---------|
-| 00:00–00:30 | M1 | Data vs concept drift |
-| 00:30–01:00 | M2 | Proxy quality signals for LLMs |
-| 01:00–01:30 | M3 | SLI/SLO/error budget |
-| 01:30–02:00 | M4 | Delayed labels |
+| 00:00–00:30 | M1 | Data vs concept drift; Proxy quality signals for LLMs |
+| 00:30–01:00 | M2 | SLI/SLO/error budget |
+| 01:00–01:30 | M3 | Delayed labels |
+| 01:30–02:00 | M4 | RAG-lifecycle drift |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | Add **Evidently**/NannyML drift monitors to eta-model (feature drift +, once labels arrive, performa |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`evidentlyai/evidently`](https://github.com/evidentlyai/evidently) — use its drift detectors and reference datasets to monitor `delivery-eta` feature drift and fire one actionable alert. |
 
 ### Lecture 10 — Safe Release: Shadow, Canary, Rollback & Human-in-the-Loop Gates
-_3-hour block · 🔧 reusable skill: `$safe-release`_
+_3-hour block · 🔧 skill: `$safe-release` · ▶ project: [`argoproj/argo-rollouts`](https://github.com/argoproj/argo-rollouts) — configure a canary with an AnalysisTemplate so a deliberately-bad version auto-rolls-back on SLO/eval breach._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -120,10 +120,10 @@ _3-hour block · 🔧 reusable skill: `$safe-release`_
 | 01:00–01:30 | M3 | Blue-green vs rolling |
 | 01:30–02:00 | M4 | HITL gate |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | Deploy a new eta-model in **shadow mode**; compare shadow vs prod predictions offline for a day's tr |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`argoproj/argo-rollouts`](https://github.com/argoproj/argo-rollouts) — configure a canary with an AnalysisTemplate so a deliberately-bad version auto-rolls-back on SLO/eval breach. |
 
 ### Lecture 11 — AgentOps: Operating Multi-Step Agent Systems in Production
-_3-hour block · 🔧 reusable skill: `$agent-ops`_
+_3-hour block · 🔧 skill: `$agent-ops` · ▶ project: [`krishnaik06/Agentic-LanggraphCrash-course`](https://github.com/krishnaik06/Agentic-LanggraphCrash-course) — follow it to refactor the copilot into a traced LangGraph agent with budget/loop/injection guardrails._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -132,10 +132,10 @@ _3-hour block · 🔧 reusable skill: `$agent-ops`_
 | 01:00–01:30 | M3 | Prompt injection / tool poisoning |
 | 01:30–02:00 | M4 | Agent memory |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | Refactor the copilot into a **LangGraph** agent (planner → tools → critic) with full per-node tracin |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`krishnaik06/Agentic-LanggraphCrash-course`](https://github.com/krishnaik06/Agentic-LanggraphCrash-course) — follow it to refactor the copilot into a traced LangGraph agent with budget/loop/injection guardrails. |
 
 ### Lecture 12 — Capstone: One Model + One Agent, Notebook → Monitored Production
-_3-hour block · 🔧 reusable skill: `$production-readiness-review`_
+_3-hour block · 🔧 skill: `$production-readiness-review` · ▶ project: [`GokuMohandas/Made-With-ML`](https://github.com/GokuMohandas/Made-With-ML) — use its end-to-end structure as the integration reference for taking your model + agent to monitored production._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -144,5 +144,5 @@ _3-hour block · 🔧 reusable skill: `$production-readiness-review`_
 | 01:00–01:30 | M3 | Guided discussion / Q&A |
 | 01:30–02:00 | M4 | Critique & reflection (what would fail?) |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | Build the weekly artifact + evidence log |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`GokuMohandas/Made-With-ML`](https://github.com/GokuMohandas/Made-With-ML) — use its end-to-end structure as the integration reference for taking your model + agent to monitored production. |
 

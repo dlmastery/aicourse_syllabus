@@ -43,6 +43,11 @@ This is a **portfolio** course. The six milestones below sum to **100%**. Each m
 
 ## Milestone 1 — Proposal & Problem Framing
 
+### State of the Art (June 2026)
+- Evaluation-driven development (Huyen, AI Engineering 2025): set numeric task-success/latency/cost/safety targets before building.
+- Ordering Prompt → RAG → Fine-tune → Distill keeps scope shippable; MCP-first tool design is the 2026 default.
+- 1M-context + tunable thinking-effort change the feasibility frontier for a vertical slice.
+
 **Altitude:** Engineer → Specialist · **Anchor:** the decision your system improves and the user who feels it.
 
 ### Learning goals
@@ -55,6 +60,8 @@ This is a **portfolio** course. The six milestones below sum to **100%**. Each m
 - A **proposal doc**: problem, users, the decision improved, baseline (how it's done today), success metrics + targets, architecture sketch (agents, tools, data sources, MCP servers), data plan, risk register, and a kill-criterion.
 - A 1-page **architecture diagram** and a `metrics.yaml` with target thresholds.
 - A throwaway **feasibility spike**: the single riskiest call working end-to-end (e.g., one tool call through MCP, or one retrieval round-trip).
+
+▶ **Practical project:** `GokuMohandas/Made-With-ML` — use its project-scoping/metrics structure to write the charter + `metrics.yaml` and run the feasibility spike.
 
 ### Harness / reusable skill — `$project-charter`
 - **Purpose:** turn a vague idea into a scoped, measurable agentic-system charter.
@@ -107,6 +114,11 @@ groundedness:        {target: 0.90, measure: "RAG faithfulness judge", gate: M2}
 
 ## Milestone 2 — Data, RAG & Prototype
 
+### State of the Art (June 2026)
+- 2026 RAG = agentic RAG (iterative rewrite + LLM-judge) + GraphRAG for multi-hop; ColPali/ColQwen3 late-interaction for PDF/visual retrieval without OCR.
+- Stack: BM25/dense → reranker (Cohere Rerank 3.5 / Voyage rerank-2.5 / BGE-v2) → synthesis; Ragas for groundedness.
+- Embeddings: voyage-3-large, cohere embed-v4, BGE-M3; vector DBs Qdrant/Pinecone/pgvector.
+
 **Altitude:** Engineer · **Anchor:** the knowledge your agent must ground on, and a first end-to-end vertical slice.
 
 ### Learning goals
@@ -120,6 +132,8 @@ groundedness:        {target: 0.90, measure: "RAG faithfulness judge", gate: M2}
 - A **prototype** wiring retrieval into a single agent that answers real queries.
 - A **data card**: sources, licenses, PII handling, refresh cadence.
 - **Acceptance:** the prototype answers a held-out query set above the M1 groundedness target, and retrieval quality (recall@k / nDCG) is measured, not assumed.
+
+▶ **Practical project:** `decodingml/llm-twin-course` — adapt its end-to-end RAG pipeline (ingestion→hybrid retrieval→rerank) and measure recall@k + Ragas faithfulness.
 
 ### Harness / reusable skill — `$rag-evaluator`
 - **Purpose:** measure and tune a retrieval/RAG layer end-to-end. **Inputs:** corpus, query set with references. **Outputs:** retrieval metrics (recall@k, nDCG), groundedness/faithfulness, hallucination rate, a tuning recommendation (chunking/rerank/hybrid weights).
@@ -173,6 +187,11 @@ def rag_answer(query, retriever, reranker, llm, k=20, top=5):
 
 ## Milestone 3 — Multi-Agent System with MCP + Fine-Tuning
 
+### State of the Art (June 2026)
+- MCP is the de-facto tool standard (Linux Foundation Agentic AI Foundation; 2026-07-28 spec with Tasks/Extensions/auth); A2A handles agent-to-agent delegation.
+- Orchestrator-led multi-agent (LangGraph durable checkpointing, OpenAI Agents SDK handoffs, Claude Agent SDK subagents) replaces monolithic agents.
+- Fine-tune stack: SFT→LoRA/QLoRA/DoRA→DPO (trl/peft/unsloth, 2–5× faster); agent memory is the production differentiator.
+
 **Altitude:** Engineer → Specialist · **Anchor:** the orchestrated agents and tools that do the actual work.
 
 ### Learning goals
@@ -187,6 +206,8 @@ def rag_answer(query, retriever, reranker, llm, k=20, top=5):
 - A justified **fine-tune** *or* a written decision memo proving fine-tuning is *not* yet warranted (with the RAG/prompting alternative that suffices).
 - **Agent memory** (Mem0/LangMem or a vector store) + context-engineering strategy.
 - **Acceptance:** the multi-agent system completes the core task end-to-end via MCP tools, with a documented agent topology and failure-isolation strategy.
+
+▶ **Practical project:** `Shubhamsaboo/awesome-llm-apps` — template a multi-agent app, expose tools via MCP, and add a justified fine-tune-or-not decision record.
 
 ### Harness / reusable skill — `$agent-orchestrator`
 - **Purpose:** a reusable multi-agent orchestration + MCP-tooling scaffold with tracing. **Inputs:** task spec, agent roles, MCP tool servers. **Outputs:** running orchestrated system, per-agent traces, failure-isolation report, a fine-tune decision record.
@@ -246,6 +267,11 @@ async def orchestrate(task, mcp_sessions, agents):
 
 ## Milestone 4 — Evaluation Harness & Safety Review
 
+### State of the Art (June 2026)
+- Execution-based agent evals: SWE-bench Verified/Pro, τ²-bench pass^k reliability, AgentDojo for injection; LLM-judge with documented biases (TrustJudge).
+- Eval-gated CI is standard; red-team / prompt-injection regression lives in the pipeline.
+- UK AISI Inspect AI / DeepEval / LangSmith / Braintrust for harness + tracing.
+
 **Altitude:** Specialist · **Anchor:** the eval and safety evidence that decides whether this system may ship.
 
 ### Learning goals
@@ -260,6 +286,8 @@ async def orchestrate(task, mcp_sessions, agents):
 - A **safety review**: `$jailbreak-suite` + `$injection-redteam` against the system, ≥2 mitigations with quantified safety/utility tradeoffs, and a residual-risk statement.
 - A **system card** documenting capabilities, limits, evals, and known risks.
 - **Acceptance:** evals are reproducible and CI-gated; the system meets M1's task-success and unsafe-action targets (or documents the gap with a remediation plan).
+
+▶ **Practical project:** `GokuMohandas/Made-With-ML` — reuse its testing/CI patterns to make evals a merge gate, then add a HarmBench/AgentDojo red-team + system card.
 
 ### Harness / reusable skill — `$eval-gate`
 - **Purpose:** a reusable, CI-integrated eval + safety gate. **Inputs:** system, test set, judge, safety red-team. **Outputs:** scorecard vs targets, regression diff, red-team ASR + mitigations, ship/no-ship verdict.
@@ -313,6 +341,11 @@ def eval_gate(system, test_set, judge, redteam, targets):
 
 ## Milestone 5 — LLMOps/AgentOps Production Deployment
 
+### State of the Art (June 2026)
+- Cost trio: prompt caching (up to 90% off static prefixes) + model routing + semantic caching + batching; serverless GPU (Modal/RunPod FlashBoot/Baseten) pay-per-second.
+- Serving: vLLM + FP8 KV-cache + FlashAttention-4; speculative decoding for low concurrency.
+- Observability: Langfuse/LangSmith/Arize Phoenix trace retrieval+prompt+latency+cost; LiteLLM/Portkey gateway.
+
 **Altitude:** Engineer → Specialist · **Anchor:** the running, observable, cost-bounded system in front of real (or shadow) traffic.
 
 ### Learning goals
@@ -327,6 +360,8 @@ def eval_gate(system, test_set, judge, redteam, targets):
 - **Observability**: Langfuse/LangSmith/Arize Phoenix tracing; a dashboard with task success, p95 latency, cost/task, error rate, and per-agent breakdown; alerts on threshold breaches.
 - **Safe rollout**: shadow mode against logged traffic, then canary; a documented rollback procedure; human-gate on high-impact actions (from Subject 14).
 - **Acceptance:** the system serves traffic (real or shadow), meets M1 p95-latency and cost-per-task targets under a load test, and a rollback has been rehearsed.
+
+▶ **Practical project:** `GokuMohandas/Made-With-ML` — follow its deploy/CI-CD path to ship the system with an eval-gated pipeline, dashboard, and rehearsed rollback.
 
 ### Harness / reusable skill — `$agentops-deployer`
 - **Purpose:** a reusable deploy + observe + safe-release harness for agentic systems. **Inputs:** system, infra config, SLOs. **Outputs:** deployed service, CI/CD with eval gate, observability dashboard, load-test report, rollback runbook.
@@ -382,6 +417,11 @@ jobs:
 
 ## Milestone 6 — Monitored Production, Final Report & Showcase
 
+### State of the Art (June 2026)
+- Production assets to manage: weights, data, prompts, eval metrics; prompt management as versioned, evaluated artifacts.
+- Drift detection via live LLM-judge sampling; incident postmortems close the loop.
+- Evidence-over-demos: report against M1 targets including the misses.
+
 **Altitude:** All altitudes (integrated) · **Anchor:** proof the system runs in the wild and the story that ties it together.
 
 ### Learning goals
@@ -396,6 +436,8 @@ jobs:
 - A **final report** (8–12 pages): problem → architecture → data/RAG → agents/MCP → fine-tune decision → evals → safety case → ops → results vs M1 targets → limitations → next steps. Every claim cites a file.
 - A **handoff runbook** so someone else can operate it, and a **live demo**.
 - **Acceptance:** the system survived the monitoring window, ≥1 incident has a postmortem, results are reported against M1 targets honestly, and the report is fully artifact-linked.
+
+▶ **Practical project:** `GokuMohandas/Made-With-ML` — use its monitoring/iteration guidance to run a drift-sampling window and ship one closed-loop fix with a postmortem.
 
 ### Harness / reusable skill — `$production-evidence-packet`
 - **Purpose:** assemble charter + RAG eval + agent traces + eval scorecard + safety case + ops dashboard + incident log into one auditable bundle. **Evidence artifact:** the packet + final report (this *is* the deliverable).
@@ -490,3 +532,27 @@ Each track names a concrete problem, a primary dataset/source, and the integrati
 
 ## Skills produced (the program-wide harness, completed)
 `$project-charter` · `$rag-evaluator` · `$agent-orchestrator` · `$eval-gate` · `$agentops-deployer` · `$production-evidence-packet` — composed with every skill from Subjects 01–14 (`$baseline-builder`, `$evaluation-review`, `$preference-tuner`, `$rlvr-trainer`, `$threat-modeler`, `$jailbreak-suite`, `$injection-redteam`, `$safety-case-builder`, …) into one production harness.
+
+---
+
+## 🛠 Hands-on repositories & build studios (merged June 2026)
+
+**Clone-and-run repos** (verified June 2026; full catalog in [`PROJECTS.md`](PROJECTS.md)):
+- `GokuMohandas/Made-With-ML` — develop / deploy / iterate production ML, the lifecycle this capstone enforces — *Milestones 5–6*
+- `decodingml/llm-twin-course` — end-to-end production LLM + RAG system (ingestion → serving → monitoring) — *Milestones 2–5*
+- `Shubhamsaboo/awesome-llm-apps` — 100+ runnable Agent & RAG apps to template a vertical slice from — *Milestones 2–3*
+
+**Build studios** (specs in [`PROJECTS.md`](PROJECTS.md)) — each is a valid **capstone track** that must still pass all six milestones:
+- **Secure MCP agent** — MCP tool server with auth, scopes, audit logs + a consuming agent — *capstone track*
+- **Agentic RAG with abstention** — hybrid + graph + table retrieval, reranking, citations, "no-answer" path — *capstone track*
+- **AI PR reviewer** — static / security / architecture / style reviewers with a human merge gate — *capstone track*
+- **Coding-agent self-repair** — unit-test generation + hidden tests + a reward-hacking audit — *capstone track*
+- **AI SRE incident bot** — RCA draft, telemetry correlation, human-approved rollback — *capstone track*
+- **Domain RAG (regulated)** — medical/legal/finance assistant with citations, abstention, audit trail — *capstone track*
+- **SLM local assistant** — quantized/distilled on-device RAG assistant with latency/cost eval — *capstone track*
+- **Self-evolving rubric lab** — rubric generation, judge agreement, bias / reward-hacking tests — *capstone track*
+- **Synthetic-data audit** — real+synthetic vs real-only; artifact / model-collapse check — *capstone track*
+- **Automated research mini-agent** — hypothesis → experiment → report → uncertainty statement — *capstone track*
+- **VLA / world-model reading lab** — robotics policy / world-model evaluation + safety analysis — *capstone track*
+
+**Public-good / low-resource capstone track:** AI tutor for underserved learners; public-health/agriculture assistant; civic/accessibility assistant — each with human-review UX (evidence, uncertainty, correction, escalation) and an equity/limitations note, graded like any other track.

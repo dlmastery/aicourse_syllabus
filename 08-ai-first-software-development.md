@@ -1,6 +1,6 @@
 # Subject 08 — AI-First Software Development
 
-**Track:** Engineering · **Altitude:** Builder → Engineer · **Length:** 12 weeks (2 lecture hrs + 4 lab hrs/wk)
+**Track:** Engineering · **Altitude:** Builder → Engineer · **Length:** 12 weeks (3 lecture hrs + 4 lab hrs/wk)
 **Prerequisites:** you can build and run a small web service (any language, JS/TS or Python preferred), use git,
 and read a stack trace. No prior experience with AI coding tools required. Subject 07 (AI Agent Engineering)
 helps but is not required — Weeks 3–5 re-derive the agent loop in a coding context.
@@ -92,7 +92,13 @@ roll it back in one command and explain the monitoring you'd watch.
 
 ## Week 1 — How Coding LLMs Actually Work (a usable mental model)
 
-**Altitude:** Builder · **Format:** 2h lecture + 4h lab
+### State of the Art (June 2026)
+- Coding frontier: **GPT-5.5** (~59% SWE-bench, strict-coding lead), **Claude Opus 4.8**, **Gemini 3.1 Pro**; 1M context standard.
+- Open-weight code models **Qwen3-Coder** and **DeepSeek V4** run offline via vLLM/Ollama for vendor-free labs.
+- **"Lost in the middle"** persists despite 1M windows — context curation is still decisive.
+- The capability-vs-grounding gap is mostly a **context** problem, not a model problem.
+
+**Altitude:** Builder · **Format:** 3h lecture + 4h lab
 **Anchor case:** profile a coding model on Quill — where it shines (boilerplate, tests, glue) and where it confidently fails (your codebase's conventions, cross-file logic).
 
 ### Learning goals
@@ -127,6 +133,8 @@ roll it back in one command and explain the monitoring you'd watch.
 - Build a one-page **delegation map**: tasks to hand the agent fully, tasks to pair on, tasks to write yourself.
 - **Deliverable:** the profile table + the delegation map. **Acceptance:** every failure is labeled with a cause
   (not just "wrong"), and the delegation map's claims are backed by your profile results.
+
+▶ **Practical project:** `microsoft/generative-ai-for-beginners` — use its code-generation lessons to profile a model's capability-vs-grounding failure shape on Quill.
 
 ### Harness / reusable skill — `$coding-model-profile`
 - **Purpose:** before trusting a model on a codebase, learn its failure shape *here*.
@@ -187,6 +195,12 @@ def profile(model, repo):
 
 ## Week 2 — Prompt Engineering for Developers: Specs, Context, and PRDs
 
+### State of the Art (June 2026)
+- **Spec-driven / context engineering** is the dominant practice; **PRDs-as-MCP-resources** keep one source of truth.
+- **DSPy**-style compiled prompts and eval-graded specs beat hand-tuned wording.
+- **SWE-bench Verified** issues are the corpus for "what a good vs underspecified issue looks like."
+- **Prompt caching** rewards stable spec prefixes (up to 90% off repeated context).
+
 **Altitude:** Builder · **Anchor case:** turn a vague Quill request ("let people share notes") into a precise spec + curated context the agent can execute without guessing.
 
 ### Learning goals
@@ -217,6 +231,8 @@ def profile(model, repo):
 - A/B test: run the same agent on the **wish prompt** vs the **PRD + curated context**; compare correctness, rework, and tokens.
 - **Deliverable:** the PRD + the A/B result. **Acceptance:** the PRD version produces materially less rework
   (fewer iterations to passing acceptance criteria), measured, not asserted.
+
+▶ **Practical project:** `VizuaraAI/modern-software-developer-bootcamp` — follow its spec→PRD→plan workflow to turn the Quill sharing request into an agent-ready PRD.
 
 ### Harness / reusable skill — `$spec-to-prd`
 - **Purpose:** convert any feature request into an agent-ready PRD + curated context bundle.
@@ -279,6 +295,12 @@ Teams need to share notes read/write or read-only with specific members.
 
 ## Week 3 — Building a Coding Agent From Scratch
 
+### State of the Art (June 2026)
+- **SWE-bench Verified/Pro** is the capability benchmark; **SWE-agent** and **Aider** are the OSS references.
+- **"Agentless"**-style localization remains competitive with complex agent scaffolds.
+- **Claude Agent SDK** (`query()`, subagents, hooks) and **OpenAI Agents SDK** productionize the read→edit→test loop.
+- **Verification-in-the-loop** (run tests, trust the exit code) is the core reliability lever.
+
 **Altitude:** Builder → Engineer · **Anchor case:** build a minimal coding agent (read → edit → run → repeat) and use it to fix a real bug in the *CLI-utility* case, then on Quill.
 
 ### Learning goals
@@ -308,6 +330,8 @@ Teams need to share notes read/write or read-only with specific members.
 - Use it to fix 5 seeded bugs in the CLI case + 2 in Quill; log diffs and test transitions.
 - **Deliverable:** the agent + a fix log (red→green per bug). **Acceptance:** ≥5/7 bugs fixed with the agent's own
   test-run verification (not your manual check), edits are minimal diffs, and the loop always terminates.
+
+▶ **Practical project:** `Aider-AI/aider` — clone it and benchmark your from-scratch `minicoder` against this production agent on the same seeded bugs.
 
 ### Harness / reusable skill — `$coding-agent-loop`
 - **Purpose:** a minimal, debuggable coding-agent loop you understand end-to-end (the thing IDEs hide).
@@ -370,6 +394,12 @@ def fix(task, max_steps=12):
 
 ## Week 4 — The AI IDE: Context, Embeddings, and PRDs as MCP Resources
 
+### State of the Art (June 2026)
+- **MCP resources** (Linux Foundation; new 2026-07-28 spec) expose PRDs/schemas to IDE + agent as live context.
+- **Cursor, Claude Code, Copilot agent-mode** index repos with embeddings + rules files (`CLAUDE.md`, `.cursor/rules`).
+- Repo-grounded evals: **CrossCodeEval, RepoBench** for cross-file completion.
+- Context **curation/ordering** still beats dumping despite 1M-token windows.
+
 **Altitude:** Engineer · **Anchor case:** configure Cursor/Claude Code for Quill so the agent *automatically* has the right context — repo index, types, conventions, and the PRD — without manual pasting.
 
 ### Learning goals
@@ -399,6 +429,8 @@ def fix(task, max_steps=12):
 - A/B: implement a small change **with vs without** the rules file + MCP resources; measure first-pass acceptance and rework.
 - **Deliverable:** the IDE config + MCP resource server + the A/B. **Acceptance:** the configured setup measurably
   raises first-pass correctness / lowers rework, and the agent demonstrably pulls the PRD from the MCP resource.
+
+▶ **Practical project:** `modelcontextprotocol/servers` — follow its resource examples to expose Quill's PRDs and DB schema as `prd://` / `schema://` MCP resources to the IDE.
 
 ### Harness / reusable skill — `$project-context-pack`
 - **Purpose:** make a repo "AI-ready" so agents are grounded by default.
@@ -465,6 +497,12 @@ def schema() -> str:
 
 ## Week 5 — Coding-Agent Autonomy Patterns and Human-in-the-Loop Gates
 
+### State of the Art (June 2026)
+- **Plan-mode + permission gates** are standard in Claude Code / Cursor / Copilot agent mode.
+- **METR** long-horizon autonomy evals track where agents go wrong over many steps.
+- **Small reversible steps + irreversible-action gates** are the production discipline.
+- Orchestrator-led **subagents** (Claude Agent SDK) bound blast radius for multi-file work.
+
 **Altitude:** Engineer · **Anchor case:** decide *how much* to let the agent do unattended on Quill — and where a human must approve — across a spectrum from autocomplete to multi-file autonomous PRs.
 
 ### Learning goals
@@ -493,6 +531,8 @@ def schema() -> str:
 - Apply it to two Quill changes: one low-stakes (UI copy) fully delegated, one high-stakes (schema migration) gated at every step.
 - **Deliverable:** the gated workflow + a decision log per change. **Acceptance:** the high-stakes change is blocked
   at the plan gate at least once (you caught a bad approach), and irreversible actions never run without approval.
+
+▶ **Practical project:** `anthropics/anthropic-cookbook` — adapt its agent/plan-mode patterns to build the plan-gate → diff-gate → irreversible-action-gate workflow.
 
 ### Harness / reusable skill — `$autonomy-gate-designer`
 - **Purpose:** decide and enforce the right autonomy level + gates for a task.
@@ -552,6 +592,12 @@ def run_gated(task):
 
 ## Week 6 — The Modern AI Terminal and Sandboxing
 
+### State of the Art (June 2026)
+- Ephemeral sandboxes: **E2B, Modal, Daytona, Claude Code sandbox** — disposable per-task boxes.
+- **Warp agent-mode** + dev containers for scoped, explained command execution.
+- **AgentDojo** execution/exfiltration scenarios validate containment.
+- Defaults: **least-privilege JIT creds, network-off-by-default, command allow-lists**.
+
 **Altitude:** Engineer · **Anchor case:** run Quill's agent-generated code and commands safely — in a sandbox with scoped permissions — using an AI terminal (Warp) and dev containers.
 
 ### Learning goals
@@ -584,6 +630,8 @@ def run_gated(task):
 - **Deliverable:** the sandbox config + allow-list + Warp workflows + a demo of a blocked dangerous command.
   **Acceptance:** agent-run code has no access to host credentials/network-by-default, and a `curl|sh`/`rm -rf`-style
   command is blocked or requires explicit approval.
+
+▶ **Practical project:** `krishnaik06/Dockers` — use it to build the repo-scoped, no-host-creds, network-off dev container the agent executes inside.
 
 ### Harness / reusable skill — `$agent-sandbox-config`
 - **Purpose:** make it safe for an agent to *execute* code and commands.
@@ -647,6 +695,12 @@ def agent_run(cmd):
 
 ## Week 7 — AI-Generated Tests and Test Quality
 
+### State of the Art (June 2026)
+- **Mutation testing** (mutmut / Stryker) is the real bar over coverage %.
+- **Property-based testing** (Hypothesis) for invariants the model proposes and a human validates.
+- **EvalPlus / HumanEval+** for test-based correctness; **Defects4J / BugsInPy** as real-bug corpora.
+- **Reward-hacking audits** for self-tested coding agents — don't let the agent grade its own bugs.
+
 **Altitude:** Engineer · **Anchor case:** get Quill's new feature to *real* coverage — AI-generated tests that catch bugs, not tests that merely pass.
 
 ### Learning goals
@@ -677,6 +731,8 @@ def agent_run(cmd):
 - Compare AI-only tests vs hardened tests by mutation score and bugs caught (seed 3 bugs).
 - **Deliverable:** the test suite + coverage + mutation report. **Acceptance:** mutation score meets the threshold
   (e.g., ≥70% on changed code), the property test catches a seeded bug examples missed, and weak AI tests are documented + fixed.
+
+▶ **Practical project:** `evalplus/evalplus` — run its augmented test suites to expose weak AI tests, then harden Quill's suite to a mutation-score bar.
 
 ### Harness / reusable skill — `$ai-test-hardener`
 - **Purpose:** turn AI-generated tests into tests that actually constrain behavior.
@@ -737,6 +793,12 @@ def test_viewer_cannot_edit():                           # human-authored constr
 
 ## Week 8 — AI Security and Secure "Vibe Coding"
 
+### State of the Art (June 2026)
+- **Slopsquatting / package hallucination** (USENIX Security 2025) is a named supply-chain risk in agent-suggested deps.
+- The layered gate: **SAST (Semgrep), secrets (gitleaks), deps (Trivy), DAST (OWASP ZAP)**.
+- Checklists: **OWASP LLM Top 10 (2025)** + **OWASP Top 10 (2021)**.
+- Studies still show AI-assisted devs ship **more insecure code while feeling more confident**.
+
 **Altitude:** Engineer · **Anchor case:** AI-generated Quill code introduces a subtle SQL-injection + a leaked secret; catch them with SAST/DAST/secret scanning before they ship.
 
 ### Learning goals
@@ -767,6 +829,8 @@ def test_viewer_cannot_edit():                           # human-authored constr
 - Add an AI-assisted PR **security review** prompt that flags authz/injection/secret risks.
 - **Deliverable:** the CI security gate + a before/after vuln report. **Acceptance:** all 3 planted vulns are caught
   by the gate (not by luck), the build fails on a secret/critical finding, and each fix is verified.
+
+▶ **Practical project:** `juice-shop/juice-shop` — point your SAST/secret/deps/DAST gate at this deliberately-vulnerable app to prove it catches real vulns.
 
 ### Harness / reusable skill — `$secure-code-gate`
 - **Purpose:** stop insecure AI code from shipping.
@@ -828,6 +892,12 @@ jobs:
 
 ## Week 9 — AI Code Review Gates
 
+### State of the Art (June 2026)
+- **Claude Code review, CodeRabbit, Copilot code review** productionize grounded AI review as a gate.
+- The consensus split: **AI for mechanical/local issues, humans for design and intent**.
+- **Signal/noise tuning** is decisive — false positives mute reviewers.
+- **LLM-judge biases** (TrustJudge) inform reviewer calibration and thresholds.
+
 **Altitude:** Engineer · **Anchor case:** every Quill PR passes an **AI reviewer + a human reviewer**, with the AI catching the mechanical issues so the human focuses on design and intent.
 
 ### Learning goals
@@ -858,6 +928,8 @@ jobs:
 - Run it on 5 PRs (3 real, 2 with planted bugs); measure caught/missed and false-positive rate; tune the prompt to cut noise.
 - **Deliverable:** the review gate config + a review-effectiveness report. **Acceptance:** both planted bugs are
   caught, false-positive rate is brought below a stated threshold via tuning, and high-severity findings block merge.
+
+▶ **Practical project:** `openai/openai-cookbook` — adapt its evaluation/review recipes to build the grounded AI PR reviewer wired as a branch-protection gate.
 
 ### Harness / reusable skill — `$ai-review-gate`
 - **Purpose:** a calibrated AI review gate that complements (not replaces) human review.
@@ -917,6 +989,12 @@ jobs:
 
 ## Week 10 — Automated UI and App Building
 
+### State of the Art (June 2026)
+- Prompt-to-UI: **v0, Lovable, Bolt.new**; **shadcn/ui + Tailwind** the reconcile target.
+- Multimodal models (**Gemini 3.1, GPT-5.5**) drive **screenshot→critique→revise** visual loops.
+- **Design2Code**-style benchmarks track front-end automation progress.
+- **Reconciliation** (real API/types/states) is the actual engineering now, not the generation.
+
 **Altitude:** Builder → Engineer · **Anchor case:** build Quill's sharing UI with a generative UI tool (v0/Lovable/Bolt), then reconcile the generated code into the real, tested, convention-following codebase.
 
 ### Learning goals
@@ -948,6 +1026,8 @@ jobs:
   feedback loop to fix two design issues.
 - **Deliverable:** the reconciled UI PR + E2E test + a before/after screenshot. **Acceptance:** the UI uses the real
   API (no mocks), follows conventions, has error/empty states, and the E2E happy+error path passes.
+
+▶ **Practical project:** `shadcn-ui/ui` — reconcile generated Quill UI into its component conventions, wired to the real share API with error/empty states.
 
 ### Harness / reusable skill — `$ui-reconcile`
 - **Purpose:** turn generated UI into production code that fits the codebase.
@@ -1011,6 +1091,12 @@ test("owner shares editor; viewer blocked from editing", async ({ page }) => {
 
 ## Week 11 — Agents Post-Deployment: Monitoring, Incident Response, and SWE-bench-Style Evaluation
 
+### State of the Art (June 2026)
+- **SWE-bench Verified/Pro/Multimodal/Live** are the moving capability benchmarks.
+- **Sentry + OpenTelemetry GenAI semantic conventions** for shipped-feature telemetry.
+- **Feature flags + canary** (OpenFeature/LaunchDarkly) + **one-command rollback** are standard.
+- **AI-assisted incident response** (RCA draft, telemetry correlation) with human-gated prod changes.
+
 **Altitude:** Engineer · **Anchor case:** Quill's feature is live — now operate it: monitor it, catch a regression, run an incident drill, and benchmark your *agentic SWE workflow* on SWE-bench Verified.
 
 ### Learning goals
@@ -1045,6 +1131,8 @@ test("owner shares editor; viewer blocked from editing", async ({ page }) => {
 - **Deliverable:** monitoring + flag/rollback config, an incident postmortem, and a SWE-bench resolve-rate report.
   **Acceptance:** the alert fires on the injected regression, you roll back in one command, the postmortem has a
   root cause + prevention, and the SWE-bench run is reproducible with a reported number.
+
+▶ **Practical project:** `krishnaik06/mlproject` — reuse its CI/deploy template as the monitored-deploy base for the shipped feature and the incident drill.
 
 ### Harness / reusable skill — `$ai-incident-runbook`
 - **Purpose:** operate an AI-built feature in production with a practiced incident loop.
@@ -1105,6 +1193,12 @@ def evaluate(agent):
 
 ## Week 12 — Capstone: Ship a Real Feature End-to-End with a Coding Agent
 
+### State of the Art (June 2026)
+- The 2026 delivery bar: **spec → agent → AI+human review → mutation-tested tests → SAST/DAST → flag/canary/rollback → monitor**.
+- Frontier coding models **GPT-5.5 / Opus 4.8 / Gemini 3.1**, with open-weight **Qwen3-Coder** fallback.
+- **MCP resources + Agent SDKs** are the grounding + runtime substrate.
+- **EU AI Act** (Aug 2, 2026) makes the evidence packet a compliance artifact, not just hygiene.
+
 **Altitude:** Engineer (graduating to Specialist) · **Anchor case:** take one **Quill** feature from spec to production using everything in the course.
 
 ### Learning goals
@@ -1126,6 +1220,8 @@ def evaluate(agent):
 - **Deliverable:** the merged, deployed feature + a `capstone/` evidence packet + a 15-min demo + a 3-page delivery memo.
   **Acceptance:** the feature is live behind a flag; tests/security/review gates are all green; you roll it back in
   one command on demand; and every claim in the memo links to a PR, test, scan, or trace in the packet.
+
+▶ **Practical project:** `krishnaik06/Deployment-flask` — package and deploy the capstone Quill feature behind a real endpoint with flag/canary/rollback.
 
 ### Harness / reusable skill — `$ai-delivery-evidence-packet`
 - **Purpose:** assemble PRD + agent trajectory + test/mutation report + security scan + review record + deploy/rollback
@@ -1197,4 +1293,18 @@ context-as-MCP-resources; choose **autonomy levels and human-in-the-loop gates**
 `$coding-model-profile` · `$spec-to-prd` · `$coding-agent-loop` · `$project-context-pack` · `$autonomy-gate-designer` ·
 `$agent-sandbox-config` · `$ai-test-hardener` · `$secure-code-gate` · `$ai-review-gate` · `$ui-reconcile` ·
 `$ai-incident-runbook` · `$ai-delivery-evidence-packet`
+
+---
+
+## 🛠 Hands-on repositories & build studios (merged June 2026)
+
+**Clone-and-run repos** (verified June 2026; full catalog in [`PROJECTS.md`](PROJECTS.md)):
+- `VizuaraAI/modern-software-developer-bootcamp` — an AI-first software-development bootcamp (specs, agents, review, delivery) that mirrors this subject's arc — Lectures 1–3
+- `anthropics/anthropic-cookbook` — runnable recipes for tool use, agents, structured outputs, and evaluations to ground the coding-agent and test labs — Lectures 2, 3, 7
+- `microsoft/generative-ai-for-beginners` — foundational gen-AI building blocks (prompting, context, app scaffolding) for the mental-model weeks — Lectures 1, 2
+
+**Build studios** (specs in [`PROJECTS.md`](PROJECTS.md)):
+- **AI PR reviewer** — static / security / architecture / style reviewers with a human merge gate — *Lectures 8–9*
+- **Coding-agent self-repair** — unit-test generation + hidden tests + a reward-hacking audit — *Lectures 3, 7*
+- **AI SRE incident bot** — RCA draft, telemetry correlation, and human-approved rollback — *Lecture 11*
 </content>

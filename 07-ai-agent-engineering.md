@@ -1,6 +1,6 @@
 # Subject 07 — AI Agent Engineering (MCP, A2A, Multi-Agent, AgentOps)
 
-**Track:** Engineering · **Altitude:** Engineer · **Length:** 12 weeks (2 lecture hrs + 4 lab hrs/wk)
+**Track:** Engineering · **Altitude:** Engineer · **Length:** 12 weeks (3 lecture hrs + 4 lab hrs/wk)
 **Prerequisites:** comfortable Python; Subject 04 (LLM application building) or equivalent — you can call an
 LLM API, write a prompt, and parse JSON. You do **not** need to have built an agent before. No RL required.
 **Pedagogy:** the program's `concept → code → critique → reflection → rebuild` loop applied to *systems*, not
@@ -89,7 +89,13 @@ gate is green on a held-out task split, every agent action is traced, and a docu
 
 ## Week 1 — Agent Anatomy and the Agent Loop
 
-**Altitude:** Engineer · **Format:** 2h lecture + 4h lab
+### State of the Art (June 2026)
+- Orchestrator-led agents are replacing monolithic loops; **agent memory** is now the production differentiator.
+- Agent SDKs ship the loop as a runtime: **Claude Agent SDK** (`query()`, subagents, hooks), **OpenAI Agents SDK** (Swarm successor), **Google ADK**, **Microsoft Agent Framework 1.0** (GA Apr 2026).
+- Tunable **"thinking effort"** (Claude Opus 4.8 effort controls, Gemini 3.1 Pro Low/Med/High) turns the planner/controller split into a dial.
+- **1M-context, sparse-MoE** models (Opus 4.8, GPT-5.5, Gemini 3.1, DeepSeek V4) are table stakes — state can hold whole transcripts.
+
+**Altitude:** Engineer · **Format:** 3h lecture + 4h lab
 **Anchor case:** stand up "Atlas v0" — a single agent that answers one T&E question by calling one fake tool in a loop.
 
 ### Learning goals
@@ -125,6 +131,8 @@ gate is green on a held-out task split, every agent action is traced, and a docu
 - **Deliverable:** a runnable loop + a one-page "agent vs workflow" decision note for three Atlas tasks (which
   should be a script, which a real agent, and why). **Acceptance:** loop terminates on all 10 questions, never
   exceeds the step cap, and the note correctly classifies at least 2 of 3 tasks with justification.
+
+▶ **Practical project:** `The-Pocket/PocketFlow` — study and extend a ~100-line agent framework to internalize the bare observe→think→act loop before any heavyweight framework.
 
 ### Harness / reusable skill — `$agent-anatomy-map`
 - **Purpose:** before building any agent, force a one-screen design that names each organ and the stopping rule.
@@ -194,6 +202,12 @@ def run(question: str) -> str:
 
 ## Week 2 — Function Calling, Tool Schemas, and Structured Outputs
 
+### State of the Art (June 2026)
+- Function calling + **constrained/structured decoding** (JSON-schema / Pydantic) is reliable across Opus 4.8, GPT-5.5, and Gemini 3.1.
+- **BFCL v4** is the live function-calling leaderboard; "irrelevance / when-not-to-call" detection is a scored axis.
+- **MCP** (Linux Foundation, 10k+ servers) shifts tools from per-app glue to a shared protocol — Week 3.
+- Idempotent single-purpose tools and **errors-as-observations** remain the core reliability levers.
+
 **Altitude:** Engineer · **Anchor case:** give Atlas a real tool belt: `search_flights`, `get_policy`, `file_expense`, with typed schemas the model can't misuse.
 
 ### Learning goals
@@ -225,6 +239,8 @@ def run(question: str) -> str:
 - Build `eval/toolcall.py`: 30 labeled prompts → expected `(tool, args)`; score exact-tool and arg-match accuracy.
 - **Deliverable:** the tool belt + a tool-call accuracy report. **Acceptance:** ≥90% correct tool selection and
   zero JSON parse failures across 30 prompts; every tool returns a model-readable error on bad input.
+
+▶ **Practical project:** `anthropics/anthropic-cookbook` — adapt its tool-use / structured-output recipes to build Atlas's typed, constrained-decoding tool belt.
 
 ### Harness / reusable skill — `$tool-schema-designer`
 - **Purpose:** turn a capability into a safe, model-friendly tool contract.
@@ -294,6 +310,12 @@ TOOL_SPECS = [{"name": "file_expense", "input_schema": FileExpense.model_json_sc
 
 ## Week 3 — MCP: Build a Model Context Protocol Server (original module)
 
+### State of the Art (June 2026)
+- MCP was **donated to the Linux Foundation's Agentic AI Foundation (Dec 2025)**; the new **2026-07-28 spec** adds a stateless core, Extensions, Tasks, MCP Apps, and hardened auth.
+- **10,000+ public MCP servers**; GA in VS Code, Copilot, Claude Desktop, ChatGPT, and AWS Bedrock.
+- **A2A** absorbed ACP and now sits beside MCP — agents↔agents vs agents↔tools (Week 7).
+- Security focus sharpening: tool-poisoning, confused-deputy, and auth hardening drive the new spec (Week 11).
+
 **Altitude:** Engineer · **Anchor case:** wrap Atlas's expense/policy backend in a real **MCP server** so *any* MCP client (Claude Desktop, VS Code, your agent) can use it.
 
 ### Learning goals
@@ -319,6 +341,10 @@ TOOL_SPECS = [{"name": "file_expense", "input_schema": FileExpense.model_json_sc
   and server exchange capabilities. Common mistake: assuming a tool exists without listing capabilities first.
 - **The trust boundary.** Plain English: an MCP server runs code and exposes data to whatever model connects — it
   is a security surface (tool-poisoning, over-broad scopes). Flagged now, defended in Week 11.
+- **Audit logging & tool overreach.** Plain English: log every tool/resource call (caller, args, result) so an
+  over-broad or abused capability is visible *after the fact* — the audit trail is what turns a "trust boundary"
+  from a diagram into something you can actually enforce and review. *Common mistake:* a server that grants broad
+  scopes with no record of what was called, so overreach is invisible until it causes harm.
 
 ### Hands-on build
 - `atlas_mcp/server.py` with **FastMCP**: expose ≥3 tools (`search_flights`, `get_policy`, `file_expense`), ≥2
@@ -328,6 +354,8 @@ TOOL_SPECS = [{"name": "file_expense", "input_schema": FileExpense.model_json_sc
 - **Deliverable:** a running MCP server + a screenshot/log of an external host using it + your agent calling it via
   the client. **Acceptance:** the same server is usable from *two* different hosts with no code change, and your
   agent lists tools dynamically (no hard-coded tool table).
+
+▶ **Practical project:** `modelcontextprotocol/servers` — clone the official example servers (filesystem/git/fetch), mirror their structure, and build your own Atlas MCP server.
 
 ### Harness / reusable skill — `$mcp-server-scaffold`
 - **Purpose:** stand up a correct, documented MCP server for any backend in under an hour.
@@ -401,6 +429,12 @@ if __name__ == "__main__":
 
 ## Week 4 — Reasoning and Planning: ReAct, Plan-and-Execute, Reflexion
 
+### State of the Art (June 2026)
+- **RLVR (RL with Verifiable Rewards)** is the dominant reasoning post-training, displacing pure RLHF for reasoning.
+- Test-time compute = parallel sampling + sequential deliberation + **RL-trained verifier models** (RL^V ≈ 1.2–1.6× gains).
+- **Reward hacking / verifier gaming** is an active ICLR 2026 failure-mode thread — reflect against *external* signals, not self-grade.
+- Tunable extended thinking (Opus 4.8 effort, Gemini 3.1 thinking dial) is the compute-as-a-dial knob.
+
 **Altitude:** Engineer · **Anchor case:** Atlas books a multi-leg trip — a task too long for one shot — using an explicit plan, a reasoning loop, and a self-critique.
 
 ### Learning goals
@@ -433,6 +467,8 @@ if __name__ == "__main__":
 - **Deliverable:** a strategy-comparison table + a recommendation ("use X for short, Y for long, add reflection
   only when a checkable signal exists"). **Acceptance:** reflection's benefit is reported *with its cost*, and the
   recommendation is justified by your numbers, not vibes.
+
+▶ **Practical project:** `NirDiamant/GenAI_Agents` — adapt its ReAct / plan-and-execute / reflection implementations and benchmark them on the Atlas booking tasks.
 
 ### Harness / reusable skill — `$reasoning-strategy-picker`
 - **Purpose:** choose a reasoning/planning strategy for a task by its structure, not by fashion.
@@ -494,6 +530,12 @@ def reflexion(task, max_rounds=2, verify=None):
 
 ## Week 5 — Agent Memory: Short-Term, Long-Term, Mem0 and LangMem
 
+### State of the Art (June 2026)
+- **Agent memory is the production differentiator** in 2026; **Mem0** and **LangMem** are the standard managed layers.
+- 1M-token context reshapes but doesn't kill retrieval — **"lost in the middle"** persists, so retrieve, don't stuff.
+- Embeddings: **voyage-3-large, Cohere embed-v4, BGE-M3**; vector stores Qdrant / Weaviate / pgvector / Pinecone.
+- **Machine unlearning / scoped memory control** is rising for PII handling and retention.
+
 **Altitude:** Engineer · **Anchor case:** Atlas remembers *this* employee's prior trips, preferences, and the running task — across turns and across sessions.
 
 ### Learning goals
@@ -525,6 +567,8 @@ def reflexion(task, max_rounds=2, verify=None):
 - A/B test: run 20 multi-session tasks **with vs without** long-term memory; report success-rate delta and prompt-token delta.
 - **Deliverable:** both memory layers + an A/B report. **Acceptance:** the A/B shows memory's effect on *both*
   success and token cost; the write-gate measurably reduces stored-memory count vs "remember everything."
+
+▶ **Practical project:** `krishnaik06/RAG-Tutorials` — reuse its embed→store→retrieve stack as the raw long-term-memory baseline, then A/B it against Mem0/LangMem.
 
 ### Harness / reusable skill — `$agent-memory-designer`
 - **Purpose:** design a memory layer that helps without bloating.
@@ -587,6 +631,12 @@ def recall(query: str, user_id: str, k=5):
 
 ## Week 6 — Agent Frameworks: LangGraph, OpenAI/Claude Agent SDKs, CrewAI, AutoGen, Pydantic AI, Google ADK
 
+### State of the Art (June 2026)
+- 2026 GA: **LangGraph** (durable checkpointing, crash recovery, time-travel debug), **OpenAI Agents SDK** (handoffs), **Claude Agent SDK** (subagents, hooks, computer-use), **Google ADK** (native A2A), **Microsoft Agent Framework 1.0** (AutoGen + Semantic Kernel, Apr 2026).
+- **Pydantic AI, CrewAI, smolagents** fill the typed / role-based / lightweight niches.
+- **Orchestrator-led multi-agent** is the dominant production topology.
+- All converge on **MCP for tools + A2A for agent-to-agent** — frameworks are conveniences over the same loop.
+
 **Altitude:** Engineer · **Anchor case:** rebuild Atlas's loop in a real framework so it gains durability, streaming, retries, and human-in-the-loop — then justify the framework choice.
 
 ### Learning goals
@@ -617,6 +667,8 @@ def recall(query: str, user_id: str, k=5):
 - `atlas/alt_framework/`: the same agent in **one** other framework; note lines of code, what was free, what fought you.
 - **Deliverable:** two implementations + a framework-selection memo. **Acceptance:** the LangGraph version actually
   *pauses* at the human node and *resumes* correctly; the memo recommends a framework per a stated requirement.
+
+▶ **Practical project:** `krishnaik06/Agentic-LanggraphCrash-course` — follow it to rebuild Atlas as a checkpointed LangGraph graph with a human-approval node.
 
 ### Harness / reusable skill — `$framework-selector`
 - **Purpose:** pick an agent framework from requirements, not hype.
@@ -679,6 +731,12 @@ app = g.compile(checkpointer=MemorySaver(), interrupt_before=["human_approve"])
 
 ## Week 7 — Multi-Agent Systems and A2A: Orchestrator, Specialists, Debate
 
+### State of the Art (June 2026)
+- **A2A** (Agent Cards, discovery/delegation) is under the Linux Foundation; **ACP merged into A2A**.
+- **Orchestrator + specialists** is replacing monolithic agents in production.
+- **τ²-bench** (Sierra, dual-control) with **pass^k** measures multi-agent reliability, not just one lucky run.
+- A2A and MCP **compose**: agents call agents (A2A), agents call tools (MCP) — they don't compete.
+
 **Altitude:** Engineer · **Anchor case:** split Atlas into an **orchestrator** + **specialists** (FlightAgent, PolicyAgent, ExpenseAgent) that communicate over an **A2A**-style contract; add a debate step for a contested policy call.
 
 ### Learning goals
@@ -711,6 +769,8 @@ app = g.compile(checkpointer=MemorySaver(), interrupt_before=["human_approve"])
 - **Deliverable:** the multi-agent system + an A2A interop log + a single-vs-multi comparison. **Acceptance:**
   specialists are discovered via agent cards (not hard-wired), and the comparison states whether multi-agent was
   *worth it* on your tasks (it may not be — say so honestly).
+
+▶ **Practical project:** `microsoft/ai-agents-for-beginners` — use its multi-agent / orchestration lessons as the pattern base for the Atlas orchestrator + A2A specialists.
 
 ### Harness / reusable skill — `$multi-agent-architect`
 - **Purpose:** decide the agent topology and hand-off contracts before coding.
@@ -774,6 +834,12 @@ def handle(task: str) -> str:
 
 ## Week 8 — Computer-Use and Browser Agents
 
+### State of the Art (June 2026)
+- Production CUA systems: **Claude Computer Use, OpenAI Operator/CUA, Gemini computer use**.
+- **Set-of-marks + DOM/accessibility grounding** is standard; multimodal VLMs read the screen directly.
+- **WebArena / WebVoyager / Mind2Web** remain the eval substrate — reliability is still the gap.
+- **API/MCP is preferred over GUI** whenever a tool exists; browser agents are the last resort.
+
 **Altitude:** Engineer · **Anchor case:** a browser agent that books a flight on a real (sandboxed) airline site when no API exists — Atlas's fallback when there is no tool, only a UI.
 
 ### Learning goals
@@ -803,6 +869,8 @@ def handle(task: str) -> str:
 - Run 10 booking flows; record success, mean actions, and recovery-after-failure rate.
 - **Deliverable:** the browser agent + a run log. **Acceptance:** ≥70% task success on the sandbox, every action
   verified, and a written note on which steps you'd replace with an MCP tool if one existed.
+
+▶ **Practical project:** `web-arena-x/webarena` — self-host its realistic sites and run your Playwright browser agent against a task subset.
 
 ### Harness / reusable skill — `$browser-agent-debugger`
 - **Purpose:** diagnose why a GUI agent step failed (stale view, wrong grounding, missing wait, bad verification).
@@ -863,6 +931,12 @@ def step(page, goal):
 
 ## Week 9 — Agent Evaluation: tau-bench, Long-Horizon, and pass^k
 
+### State of the Art (June 2026)
+- Execution-based agent evals dominate: **τ-bench / τ²-bench** (dual-control, **pass^k** reliability), **SWE-bench Verified/Pro**, **ARC-AGI-2/3**.
+- **LLM-as-judge** is the default — with documented biases (**TrustJudge**).
+- Eval/observability frameworks: **LangSmith, Braintrust, Arize Phoenix, DeepEval, UK AISI Inspect AI**.
+- **Red-teaming / prompt-injection regression** is now a standard part of an agent eval suite (Week 11).
+
 **Altitude:** Engineer · **Anchor case:** answer "is Atlas good enough to ship?" with a real, reproducible eval suite — not a demo that worked once.
 
 ### Learning goals
@@ -894,6 +968,8 @@ def step(page, goal):
 - Add a GitHub Actions job: fail the build if pass^5 on the held-out split drops below threshold.
 - **Deliverable:** the eval suite + a results report + the CI gate. **Acceptance:** pass^k reported (not just
   pass@1), failures categorized, and the CI gate actually blocks a deliberately-broken agent.
+
+▶ **Practical project:** `sierra-research/tau-bench` — run the official τ-bench/τ²-bench harness on `airline`, then mirror its structure for the ≥40-task Atlas pass^k suite.
 
 ### Harness / reusable skill — `$agent-eval-suite`
 - **Purpose:** turn "seems to work" into a reproducible, gating eval.
@@ -957,6 +1033,12 @@ def report(tasks, k=5):
 
 ## Week 10 — AgentOps: Observability, Cost, Guardrails, Human-in-the-Loop
 
+### State of the Art (June 2026)
+- Observability stacks (**Langfuse, LangSmith, Arize Phoenix**) capture full **trajectories** with token/cost spans.
+- The cost trio: **prompt caching** (up to 90% off static prefixes) + **semantic caching** + **model routing**.
+- **Runtime guardrails** (input/output validators, prompt-injection focus) are standard.
+- Operate four assets explicitly: **weights, data, prompts, eval metrics**.
+
 **Altitude:** Engineer · **Anchor case:** run Atlas like a production service — every run traced, every dollar counted, risky actions gated, regressions caught.
 
 ### Learning goals
@@ -988,6 +1070,8 @@ def report(tasks, k=5):
 - Build a Langfuse dashboard: cost/run, p95 latency, success rate, top failure categories (from Week 9).
 - **Deliverable:** an instrumented Atlas + a dashboard screenshot + a one-page "AgentOps runbook." **Acceptance:**
   every action is traceable end-to-end, a run that exceeds budget is aborted, and a >$500 action triggers the human gate.
+
+▶ **Practical project:** `langfuse/langfuse` — self-host it and instrument Atlas so every LLM/tool/sub-agent call is a span with cost and latency.
 
 ### Harness / reusable skill — `$agentops-instrumenter`
 - **Purpose:** make any agent observable, budgeted, and gated.
@@ -1049,6 +1133,12 @@ def resolve(ticket):
 
 ## Week 11 — Agent Security: Prompt Injection, Tool Abuse, and the OWASP LLM Top 10
 
+### State of the Art (June 2026)
+- **OWASP LLM Top 10 (2025)** + **AgentDojo / InjecAgent** are the injection benchmarks.
+- The **"lethal trifecta"** (untrusted content + tools + exfiltration) framing drives **dual-LLM/quarantine + least-privilege** defenses.
+- **MCP auth hardening** lands in the 2026-07-28 spec; **tool-poisoning** and **confused-deputy** are named threats.
+- **EU AI Act** GPAI obligations apply **Aug 2, 2026** — deployed agent systems are in scope.
+
 **Altitude:** Engineer · **Anchor case:** red-team Atlas — a malicious expense receipt with hidden instructions tries to make it email data or approve fraud — then harden it.
 
 ### Learning goals
@@ -1083,6 +1173,8 @@ def resolve(ticket):
 - Add `eval/injection_regression.py` to CI: the build fails if any known attack succeeds.
 - **Deliverable:** the attack set + a before/after defense report + the CI injection gate. **Acceptance:** every
   documented attack that succeeded pre-hardening is blocked post-hardening, and the regression test gates CI.
+
+▶ **Practical project:** `ethz-spylab/agentdojo` — run its prompt-injection attack/defense harness against hardened Atlas and report attack-success-rate before vs after.
 
 ### Harness / reusable skill — `$agent-red-team`
 - **Purpose:** systematically attack an agent and verify defenses before shipping.
@@ -1142,6 +1234,12 @@ def handle_untrusted(content, task):
 
 ## Week 12 — Capstone: Deploy a Multi-Agent System with an MCP Server
 
+### State of the Art (June 2026)
+- The 2026 production bar: **MCP tools + A2A orchestration + agent memory + pass^k eval gate + trajectory tracing + injection regression**.
+- Frontier models **Claude Opus 4.8 / GPT-5.5 / Gemini 3.1 Pro** (1M context, tunable thinking) — provider-swappable.
+- **EU AI Act** enforcement (Aug 2026) makes the evidence packet / audit trail a compliance asset.
+- Open-weight fallbacks (**DeepSeek V4, Qwen 3.5, Llama 4**) keep the system vendor-neutral.
+
 **Altitude:** Engineer (graduating to Specialist) · **Anchor case:** ship **Atlas** for real — the full T&E operations agent, deployed, evaluated, secured, and operated.
 
 ### Learning goals
@@ -1161,6 +1259,8 @@ def handle_untrusted(content, task):
 - **Deliverable:** the deployed system + a `capstone/` evidence packet + a 15-minute demo + a 3-page design memo.
   **Acceptance:** the eval gate is green on held-out tasks; every agent action is traced with cost; a documented
   injection attack is blocked; and every claim in the memo links to a file/trace in the packet.
+
+▶ **Practical project:** `langchain-ai/langchain` — ship the capstone Atlas on production LangGraph (durable checkpointing, streaming, HITL) wired to your MCP server and pass^k gate.
 
 ### Harness / reusable skill — `$agent-system-evidence-packet`
 - **Purpose:** assemble architecture diagram + eval report (pass^k) + trace samples + cost analysis + security
@@ -1229,5 +1329,21 @@ exists; **evaluate** agents with tau-bench-style pass^k gates; run them as a pro
 `$agent-anatomy-map` · `$tool-schema-designer` · `$mcp-server-scaffold` · `$reasoning-strategy-picker` ·
 `$agent-memory-designer` · `$framework-selector` · `$multi-agent-architect` · `$browser-agent-debugger` ·
 `$agent-eval-suite` · `$agentops-instrumenter` · `$agent-red-team` · `$agent-system-evidence-packet`
+
+---
+
+## 🛠 Hands-on repositories & build studios (merged June 2026)
+
+**Clone-and-run repos** (verified June 2026; full catalog in [`PROJECTS.md`](PROJECTS.md)):
+- `microsoft/ai-agents-for-beginners` — a structured tour of agent patterns (planning, tool use, multi-agent) to anchor the anatomy/loop framing — Lectures 1, 6, 7
+- `huggingface/agents-course` — hands-on agent builds across frameworks (smolagents, LangGraph, tool calling) — Lectures 2, 6
+- `NirDiamant/GenAI_Agents` — a large, runnable catalog of agent implementations (memory, RAG, orchestration, debate) to mine for patterns — Lectures 5, 7
+- `The-Pocket/PocketFlow` — a minimalist from-scratch agent framework that makes the bare loop legible before the heavyweight frameworks — Lectures 1, 4
+- `krishnaik06/Agentic-LanggraphCrash-course` — a LangGraph crash course (stateful graphs, checkpointing, human-in-the-loop) — Lecture 6
+- `langchain-ai/langchain` — the LangGraph reference framework you rebuild Atlas in (durability, streaming, HITL) — Lecture 6
+
+**Build studios** (specs in [`PROJECTS.md`](PROJECTS.md)):
+- **Secure MCP agent** — an MCP tool server with auth, scopes, and audit logs plus an agent that consumes it safely — *Lectures 3, 11*
+- **Self-evolving rubric lab** — rubric generation with judge-agreement and bias / reward-hacking tests — *Lectures 9–10*
 </content>
 </invoke>

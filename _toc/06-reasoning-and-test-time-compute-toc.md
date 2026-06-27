@@ -1,9 +1,9 @@
 # Detailed Table of Contents — Subject 06 — Reasoning Models & Test-Time Compute
 
-_Source: `06-reasoning-and-test-time-compute.md` · **1 academic quarter · 3 lecture-hours/week · 10 weekly lectures (~30 contact hours)**_
+_Source: `06-reasoning-and-test-time-compute.md` · **1 academic quarter · 3 lecture-hours/week · 10 weekly lectures (~30 contact hours)**. Every lecture has a **▶ practical project** (real GitHub repo)._
 
 ### Lecture 1 — What Reasoning Buys You: CoT, and Spending Compute at Inference
-_3-hour block · 🔧 reusable skill: `$reasoning-eval`_
+_3-hour block · 🔧 skill: `$reasoning-eval` · ▶ project: [`mlabonne/llm-course`](https://github.com/mlabonne/llm-course) — use its evaluation notebooks to build the GSM8K/MATH direct-vs-CoT baseline with token cost and a contamination note._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -12,10 +12,10 @@ _3-hour block · 🔧 reusable skill: `$reasoning-eval`_
 | 01:00–01:30 | M3 | Verifiable eval |
 | 01:30–02:00 | M4 | Contamination |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | eval_math.py: GSM8K + a 500-problem MATH subset; direct-answer vs CoT prompting; robust answer extra |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`mlabonne/llm-course`](https://github.com/mlabonne/llm-course) — use its evaluation notebooks to build the GSM8K/MATH direct-vs-CoT baseline with token cost and a contamination note. |
 
 ### Lecture 2 — Self-Consistency, Best-of-N & the Test-Time Scaling Curve
-_3-hour block · 🔧 reusable skill: `$test-time-scaler`_
+_3-hour block · 🔧 skill: `$test-time-scaler` · ▶ project: [`mlabonne/llm-course`](https://github.com/mlabonne/llm-course) — extend the eval loop with self-consistency + best-of-N and plot the test-time scaling curve (accuracy vs N and tokens)._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -24,10 +24,10 @@ _3-hour block · 🔧 reusable skill: `$test-time-scaler`_
 | 01:00–01:30 | M3 | Test-time scaling curve |
 | 01:30–02:00 | M4 | Parallel vs sequential compute |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | self_consistency.py: sample N∈{1,2,4,8,16,32} chains, majority-vote; best_of_n.py: score with a simp |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`mlabonne/llm-course`](https://github.com/mlabonne/llm-course) — extend the eval loop with self-consistency + best-of-N and plot the test-time scaling curve (accuracy vs N and tokens). |
 
 ### Lecture 3 — Verifiers & Reward Models: PRMs, ORMs & Process vs Outcome
-_3-hour block · 🔧 reusable skill: `$verifier-suite`_
+_3-hour block · 🔧 skill: `$verifier-suite` · ▶ project: [`VizuaraAI/RL-in-Production-Bootcamp-Resources`](https://github.com/VizuaraAI/RL-in-Production-Bootcamp-Resources) — build an outcome verifier + PRM and compare majority-vote / ORM / PRM selection on MATH._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -36,10 +36,10 @@ _3-hour block · 🔧 reusable skill: `$verifier-suite`_
 | 01:00–01:30 | M3 | Verifier-guided selection |
 | 01:30–02:00 | M4 | Verifiable vs learned reward |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | verifier.py: a robust math outcome verifier; prm.py: use an off-the-shelf PRM (e.g., a Math-Shepherd |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`VizuaraAI/RL-in-Production-Bootcamp-Resources`](https://github.com/VizuaraAI/RL-in-Production-Bootcamp-Resources) — build an outcome verifier + PRM and compare majority-vote / ORM / PRM selection on MATH. |
 
 ### Lecture 4 — ReAct, Tool Use & Search: Reasoning That Acts
-_3-hour block · 🔧 reusable skill: `$reasoning-agent`_
+_3-hour block · 🔧 skill: `$reasoning-agent` · ▶ project: [`krishnaik06/Agentic-LanggraphCrash-course`](https://github.com/krishnaik06/Agentic-LanggraphCrash-course) — build a bounded ReAct + code/search agent and beat CoT-only on computation-heavy and fresh-facts questions._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -48,10 +48,10 @@ _3-hour block · 🔧 reusable skill: `$reasoning-agent`_
 | 01:00–01:30 | M3 | Deep research |
 | 01:30–02:00 | M4 | Reasoning + retrieval boundary |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | react_agent.py (LangGraph/Agents SDK): Thought/Action/Observation loop with a code tool and a search |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`krishnaik06/Agentic-LanggraphCrash-course`](https://github.com/krishnaik06/Agentic-LanggraphCrash-course) — build a bounded ReAct + code/search agent and beat CoT-only on computation-heavy and fresh-facts questions. |
 
 ### Lecture 5 — RLVR & GRPO: The DeepSeek-R1 Recipe From Scratch
-_3-hour block · 🔧 reusable skill: `$grpo-trainer`_
+_3-hour block · 🔧 skill: `$grpo-trainer` · ▶ project: [`VizuaraAILabs/OpenClaw-RL-Tutorial`](https://github.com/VizuaraAILabs/OpenClaw-RL-Tutorial) — run its hands-on GRPO loop with a verifiable reward and co-plot reward vs held-out GSM8K/MATH accuracy._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -60,10 +60,10 @@ _3-hour block · 🔧 reusable skill: `$grpo-trainer`_
 | 01:00–01:30 | M3 | Why no critic |
 | 01:30–02:00 | M4 | R1-Zero vs R1 |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | train_grpo.py: GRPO on an 8B base/SFT checkpoint with outcome_reward (+ a light format reward); vLLM |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`VizuaraAILabs/OpenClaw-RL-Tutorial`](https://github.com/VizuaraAILabs/OpenClaw-RL-Tutorial) — run its hands-on GRPO loop with a verifiable reward and co-plot reward vs held-out GSM8K/MATH accuracy. |
 
 ### Lecture 6 — GRPO in Practice: DAPO, Dr.GRPO & Stabilizing the Run
-_3-hour block · 🔧 reusable skill: `$grpo-stabilizer`_
+_3-hour block · 🔧 skill: `$grpo-stabilizer` · ▶ project: [`VizuaraAI/RL-in-Production-Bootcamp-Resources`](https://github.com/VizuaraAI/RL-in-Production-Bootcamp-Resources) — add DAPO / Dr.GRPO options to your loop and ablate against vanilla GRPO on eval-per-compute._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -72,10 +72,10 @@ _3-hour block · 🔧 reusable skill: `$grpo-stabilizer`_
 | 01:00–01:30 | M3 | DAPO |
 | 01:30–02:00 | M4 | Dr.GRPO |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | train_grpo_v2.py: add DAPO/Dr.GRPO options to the Week-5 loop; run an ablation (vanilla GRPO vs +Dr. |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`VizuaraAI/RL-in-Production-Bootcamp-Resources`](https://github.com/VizuaraAI/RL-in-Production-Bootcamp-Resources) — add DAPO / Dr.GRPO options to your loop and ablate against vanilla GRPO on eval-per-compute. |
 
 ### Lecture 7 — Long-Horizon Reasoning & Self-Improving Agents
-_3-hour block · 🔧 reusable skill: `$self-improve-loop`_
+_3-hour block · 🔧 skill: `$self-improve-loop` · ▶ project: [`VizuaraAILabs/OpenClaw-RL-Tutorial`](https://github.com/VizuaraAILabs/OpenClaw-RL-Tutorial) — implement a verify→filter→SFT self-improvement loop and track per-iteration held-out gains with a diversity check._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -84,10 +84,10 @@ _3-hour block · 🔧 reusable skill: `$self-improve-loop`_
 | 01:00–01:30 | M3 | Agentic RL |
 | 01:30–02:00 | M4 | Honest long-horizon eval |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | self_improve.py: rejection-sampling / STaR loop on MATH (sample → verify → SFT on correct) for ≥2 it |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`VizuaraAILabs/OpenClaw-RL-Tutorial`](https://github.com/VizuaraAILabs/OpenClaw-RL-Tutorial) — implement a verify→filter→SFT self-improvement loop and track per-iteration held-out gains with a diversity check. |
 
 ### Lecture 8 — Reasoning Evaluation: AIME, GPQA, ARC-AGI & Contamination
-_3-hour block · 🔧 reusable skill: `$reasoning-audit`_
+_3-hour block · 🔧 skill: `$reasoning-audit` · ▶ project: [`mlabonne/llm-course`](https://github.com/mlabonne/llm-course) — assemble AIME / GPQA / ARC-AGI-style runners with bootstrap error bars and a GSM-Symbolic perturbation audit._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -96,22 +96,22 @@ _3-hour block · 🔧 reusable skill: `$reasoning-audit`_
 | 01:00–01:30 | M3 | ARC-AGI |
 | 01:30–02:00 | M4 | Contamination & faithfulness |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | eval_hard.py: runners for AIME (with bootstrap error bars), a GPQA-Diamond subset, and an ARC-AGI-st |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`mlabonne/llm-course`](https://github.com/mlabonne/llm-course) — assemble AIME / GPQA / ARC-AGI-style runners with bootstrap error bars and a GSM-Symbolic perturbation audit. |
 
 ### Lecture 9 — Reasoning at Inference: Budgets, Faithfulness & Deployment
-_3-hour block · 🔧 reusable skill: `$reasoning-deploy`_
+_3-hour block · 🔧 skill: `$reasoning-deploy` · ▶ project: [`VizuaraAI/kv-cache-token-reduction-walkthrough`](https://github.com/VizuaraAI/kv-cache-token-reduction-walkthrough) — serve reasoning with budget caps + KV-cache tricks and measure adaptive-vs-flat accuracy-per-token._
 
 | Time | Module | Content |
 |------|--------|---------|
-| 00:00–00:30 | M1 | Adaptive test-time compute |
-| 00:30–01:00 | M2 | CoT faithfulness |
-| 01:00–01:30 | M3 | Reasoning-model serving |
-| 01:30–02:00 | M4 | Effort/budget controls |
+| 00:00–00:30 | M1 | Adaptive test-time compute; CoT faithfulness |
+| 00:30–01:00 | M2 | Reasoning-model serving |
+| 01:00–01:30 | M3 | Effort/budget controls |
+| 01:30–02:00 | M4 | Contextual drag |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | adaptive_compute.py: a difficulty router that sets thinking budget / sample count per query; compare |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`VizuaraAI/kv-cache-token-reduction-walkthrough`](https://github.com/VizuaraAI/kv-cache-token-reduction-walkthrough) — serve reasoning with budget caps + KV-cache tricks and measure adaptive-vs-flat accuracy-per-token. |
 
 ### Lecture 10 — Capstone: A Small Reasoning-RL Run That Provably Improves Math
-_3-hour block · 🔧 reusable skill: `$reasoning-evidence-packet`_
+_3-hour block · 🔧 skill: `$reasoning-evidence-packet` · ▶ project: [`VizuaraAI/RL-in-Production-Bootcamp-Resources`](https://github.com/VizuaraAI/RL-in-Production-Bootcamp-Resources) — run the full baseline → verifier → GRPO → hard-eval pipeline as your reproduction-audit capstone._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -120,5 +120,5 @@ _3-hour block · 🔧 reusable skill: `$reasoning-evidence-packet`_
 | 01:00–01:30 | M3 | Guided discussion / Q&A |
 | 01:30–02:00 | M4 | Critique & reflection (what would fail?) |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | Pick the task: math (GSM8K/MATH, recommended) or another verifiable-reward domain (code with unit te |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`VizuaraAI/RL-in-Production-Bootcamp-Resources`](https://github.com/VizuaraAI/RL-in-Production-Bootcamp-Resources) — run the full baseline → verifier → GRPO → hard-eval pipeline as your reproduction-audit capstone. |
 

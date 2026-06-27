@@ -1,9 +1,9 @@
 # Detailed Table of Contents — Subject 07 — AI Agent Engineering (MCP, A2A, Multi-Agent, AgentOps)
 
-_Source: `07-ai-agent-engineering.md` · **1 academic quarter · 3 lecture-hours/week · 12 weekly lectures (~36 contact hours)**_
+_Source: `07-ai-agent-engineering.md` · **1 academic quarter · 3 lecture-hours/week · 12 weekly lectures (~36 contact hours)**. Every lecture has a **▶ practical project** (real GitHub repo)._
 
 ### Lecture 1 — Agent Anatomy and the Agent Loop
-_3-hour block · 🔧 reusable skill: `$agent-anatomy-map`_
+_3-hour block · 🔧 skill: `$agent-anatomy-map` · ▶ project: [`The-Pocket/PocketFlow`](https://github.com/The-Pocket/PocketFlow) — study and extend a ~100-line agent framework to internalize the bare observe→think→act loop before any heavyweight framework._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -12,10 +12,10 @@ _3-hour block · 🔧 reusable skill: `$agent-anatomy-map`_
 | 01:00–01:30 | M3 | Workflow vs agent (the autonomy dial) |
 | 01:30–02:00 | M4 | Tools as the action space |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | atlas/loop.py: a from-scratch agent loop (no LangGraph yet). One model call per turn; parse a JSON t |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`The-Pocket/PocketFlow`](https://github.com/The-Pocket/PocketFlow) — study and extend a ~100-line agent framework to internalize the bare observe→think→act loop before any heavyweight framework. |
 
 ### Lecture 2 — Function Calling, Tool Schemas, and Structured Outputs
-_3-hour block · 🔧 reusable skill: `$tool-schema-designer`_
+_3-hour block · 🔧 skill: `$tool-schema-designer` · ▶ project: [`anthropics/anthropic-cookbook`](https://github.com/anthropics/anthropic-cookbook) — adapt its tool-use / structured-output recipes to build Atlas's typed, constrained-decoding tool belt._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -24,22 +24,22 @@ _3-hour block · 🔧 reusable skill: `$tool-schema-designer`_
 | 01:00–01:30 | M3 | Tool granularity & idempotency |
 | 01:30–02:00 | M4 | Errors as observations |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | atlas/tools.py: define 5 tools as Pydantic models with enums, ranges, and model-facing error message |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`anthropics/anthropic-cookbook`](https://github.com/anthropics/anthropic-cookbook) — adapt its tool-use / structured-output recipes to build Atlas's typed, constrained-decoding tool belt. |
 
 ### Lecture 3 — MCP: Build a Model Context Protocol Server (original module)
-_3-hour block · 🔧 reusable skill: `$mcp-server-scaffold`_
+_3-hour block · 🔧 skill: `$mcp-server-scaffold` · ▶ project: [`modelcontextprotocol/servers`](https://github.com/modelcontextprotocol/servers) — clone the official example servers (filesystem/git/fetch), mirror their structure, and build your own Atlas MCP server._
 
 | Time | Module | Content |
 |------|--------|---------|
 | 00:00–00:30 | M1 | Why MCP (the "USB-C for tools" framing); Three primitives |
-| 00:30–01:00 | M2 | Client–server–host |
-| 01:00–01:30 | M3 | Transport & capability negotiation |
-| 01:30–02:00 | M4 | The trust boundary |
+| 00:30–01:00 | M2 | Client–server–host; Transport & capability negotiation |
+| 01:00–01:30 | M3 | The trust boundary |
+| 01:30–02:00 | M4 | Audit logging & tool overreach |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | atlas_mcp/server.py with **FastMCP**: expose ≥3 tools (search_flights, get_policy, file_expense), ≥2 |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`modelcontextprotocol/servers`](https://github.com/modelcontextprotocol/servers) — clone the official example servers (filesystem/git/fetch), mirror their structure, and build your own Atlas MCP server. |
 
 ### Lecture 4 — Reasoning and Planning: ReAct, Plan-and-Execute, Reflexion
-_3-hour block · 🔧 reusable skill: `$reasoning-strategy-picker`_
+_3-hour block · 🔧 skill: `$reasoning-strategy-picker` · ▶ project: [`NirDiamant/GenAI_Agents`](https://github.com/NirDiamant/GenAI_Agents) — adapt its ReAct / plan-and-execute / reflection implementations and benchmark them on the Atlas booking tasks._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -48,10 +48,10 @@ _3-hour block · 🔧 reusable skill: `$reasoning-strategy-picker`_
 | 01:00–01:30 | M3 | Test-time compute as a dial |
 | 01:30–02:00 | M4 | Verifier vs generator |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | atlas/planners.py: implement three strategies — react, plan_execute, reflexion — behind one interfac |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`NirDiamant/GenAI_Agents`](https://github.com/NirDiamant/GenAI_Agents) — adapt its ReAct / plan-and-execute / reflection implementations and benchmark them on the Atlas booking tasks. |
 
 ### Lecture 5 — Agent Memory: Short-Term, Long-Term, Mem0 and LangMem
-_3-hour block · 🔧 reusable skill: `$agent-memory-designer`_
+_3-hour block · 🔧 skill: `$agent-memory-designer` · ▶ project: [`krishnaik06/RAG-Tutorials`](https://github.com/krishnaik06/RAG-Tutorials) — reuse its embed→store→retrieve stack as the raw long-term-memory baseline, then A/B it against Mem0/LangMem._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -60,10 +60,10 @@ _3-hour block · 🔧 reusable skill: `$agent-memory-designer`_
 | 01:00–01:30 | M3 | Retrieval policy |
 | 01:30–02:00 | M4 | Forgetting / decay & conflict |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | atlas/memory_raw.py: from-scratch long-term memory (embed with a small model, store in pgvector/Chro |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`krishnaik06/RAG-Tutorials`](https://github.com/krishnaik06/RAG-Tutorials) — reuse its embed→store→retrieve stack as the raw long-term-memory baseline, then A/B it against Mem0/LangMem. |
 
 ### Lecture 6 — Agent Frameworks: LangGraph, OpenAI/Claude Agent SDKs, CrewAI, AutoGen, Pydantic AI, Google ADK
-_3-hour block · 🔧 reusable skill: `$framework-selector`_
+_3-hour block · 🔧 skill: `$framework-selector` · ▶ project: [`krishnaik06/Agentic-LanggraphCrash-course`](https://github.com/krishnaik06/Agentic-LanggraphCrash-course) — follow it to rebuild Atlas as a checkpointed LangGraph graph with a human-approval node._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -72,10 +72,10 @@ _3-hour block · 🔧 reusable skill: `$framework-selector`_
 | 01:00–01:30 | M3 | Typed agents (Pydantic AI) & Google ADK |
 | 01:30–02:00 | M4 | The meta-point: |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | atlas/graph.py in **LangGraph**: nodes for plan → act → (human-approve if amount>$500) → file; check |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`krishnaik06/Agentic-LanggraphCrash-course`](https://github.com/krishnaik06/Agentic-LanggraphCrash-course) — follow it to rebuild Atlas as a checkpointed LangGraph graph with a human-approval node. |
 
 ### Lecture 7 — Multi-Agent Systems and A2A: Orchestrator, Specialists, Debate
-_3-hour block · 🔧 reusable skill: `$multi-agent-architect`_
+_3-hour block · 🔧 skill: `$multi-agent-architect` · ▶ project: [`microsoft/ai-agents-for-beginners`](https://github.com/microsoft/ai-agents-for-beginners) — use its multi-agent / orchestration lessons as the pattern base for the Atlas orchestrator + A2A specialists._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -84,10 +84,10 @@ _3-hour block · 🔧 reusable skill: `$multi-agent-architect`_
 | 01:00–01:30 | M3 | Multi-agent debate / critic |
 | 01:30–02:00 | M4 | Cost/latency multiplication |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | atlas/multi/: an orchestrator + 3 specialists; specialists expose **A2A agent cards**; orchestrator  |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`microsoft/ai-agents-for-beginners`](https://github.com/microsoft/ai-agents-for-beginners) — use its multi-agent / orchestration lessons as the pattern base for the Atlas orchestrator + A2A specialists. |
 
 ### Lecture 8 — Computer-Use and Browser Agents
-_3-hour block · 🔧 reusable skill: `$browser-agent-debugger`_
+_3-hour block · 🔧 skill: `$browser-agent-debugger` · ▶ project: [`web-arena-x/webarena`](https://github.com/web-arena-x/webarena) — self-host its realistic sites and run your Playwright browser agent against a task subset._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -96,10 +96,10 @@ _3-hour block · 🔧 reusable skill: `$browser-agent-debugger`_
 | 01:00–01:30 | M3 | Verification after action |
 | 01:30–02:00 | M4 | API > GUI when possible |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | atlas/browser/agent.py with **Playwright**: a perceive→act→verify loop over a *sandboxed* mock airli |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`web-arena-x/webarena`](https://github.com/web-arena-x/webarena) — self-host its realistic sites and run your Playwright browser agent against a task subset. |
 
 ### Lecture 9 — Agent Evaluation: tau-bench, Long-Horizon, and pass^k
-_3-hour block · 🔧 reusable skill: `$agent-eval-suite`_
+_3-hour block · 🔧 skill: `$agent-eval-suite` · ▶ project: [`sierra-research/tau-bench`](https://github.com/sierra-research/tau-bench) — run the official τ-bench/τ²-bench harness on `airline`, then mirror its structure for the ≥40-task Atlas pass^k suite._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -108,10 +108,10 @@ _3-hour block · 🔧 reusable skill: `$agent-eval-suite`_
 | 01:00–01:30 | M3 | Failure taxonomy |
 | 01:30–02:00 | M4 | Eval-gated deploys |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | eval/atlas_bench.py: ≥40 T&E tasks with simulated users + DB state checks; run each k=5 times; repor |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`sierra-research/tau-bench`](https://github.com/sierra-research/tau-bench) — run the official τ-bench/τ²-bench harness on `airline`, then mirror its structure for the ≥40-task Atlas pass^k suite. |
 
 ### Lecture 10 — AgentOps: Observability, Cost, Guardrails, Human-in-the-Loop
-_3-hour block · 🔧 reusable skill: `$agentops-instrumenter`_
+_3-hour block · 🔧 skill: `$agentops-instrumenter` · ▶ project: [`langfuse/langfuse`](https://github.com/langfuse/langfuse) — self-host it and instrument Atlas so every LLM/tool/sub-agent call is a span with cost and latency._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -120,10 +120,10 @@ _3-hour block · 🔧 reusable skill: `$agentops-instrumenter`_
 | 01:00–01:30 | M3 | Human-in-the-loop gates |
 | 01:30–02:00 | M4 | AgentOps lifecycle |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | Wire **Langfuse** into Atlas: every LLM/tool/sub-agent call is a span; tag runs with cost, latency,  |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`langfuse/langfuse`](https://github.com/langfuse/langfuse) — self-host it and instrument Atlas so every LLM/tool/sub-agent call is a span with cost and latency. |
 
 ### Lecture 11 — Agent Security: Prompt Injection, Tool Abuse, and the OWASP LLM Top 10
-_3-hour block · 🔧 reusable skill: `$agent-red-team`_
+_3-hour block · 🔧 skill: `$agent-red-team` · ▶ project: [`ethz-spylab/agentdojo`](https://github.com/ethz-spylab/agentdojo) — run its prompt-injection attack/defense harness against hardened Atlas and report attack-success-rate before vs after._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -132,10 +132,10 @@ _3-hour block · 🔧 reusable skill: `$agent-red-team`_
 | 01:00–01:30 | M3 | Tool/MCP poisoning & confused deputy |
 | 01:30–02:00 | M4 | Defense in depth |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | Build an **attack set**: 15 indirect-injection payloads embedded in receipts/web content/emails Atla |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`ethz-spylab/agentdojo`](https://github.com/ethz-spylab/agentdojo) — run its prompt-injection attack/defense harness against hardened Atlas and report attack-success-rate before vs after. |
 
 ### Lecture 12 — Capstone: Deploy a Multi-Agent System with an MCP Server
-_3-hour block · 🔧 reusable skill: `$agent-system-evidence-packet`_
+_3-hour block · 🔧 skill: `$agent-system-evidence-packet` · ▶ project: [`langchain-ai/langchain`](https://github.com/langchain-ai/langchain) — ship the capstone Atlas on production LangGraph (durable checkpointing, streaming, HITL) wired to your MCP server and pass^k gate._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -144,5 +144,5 @@ _3-hour block · 🔧 reusable skill: `$agent-system-evidence-packet`_
 | 01:00–01:30 | M3 | Guided discussion / Q&A |
 | 01:30–02:00 | M4 | Critique & reflection (what would fail?) |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | Ship **Atlas** end-to-end with: (a) a custom **MCP server** for the expense/policy backend; (b) an * |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`langchain-ai/langchain`](https://github.com/langchain-ai/langchain) — ship the capstone Atlas on production LangGraph (durable checkpointing, streaming, HITL) wired to your MCP server and pass^k gate. |
 

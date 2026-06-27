@@ -1,6 +1,6 @@
 # Subject 10 — Efficient AI: Quantization, Serving & Systems
 
-**Track:** Systems & Efficiency · **Altitude:** Engineer → Specialist · **Length:** 12 weeks (2 lecture hrs + 4 lab hrs/wk)
+**Track:** Systems & Efficiency · **Altitude:** Engineer → Specialist · **Length:** 12 weeks (3 lecture hrs + 4 lab hrs/wk)
 **Prerequisites:** Subjects 01–02 (math + DL from scratch, backprop, attention), Subject 09 (you can already containerize and serve a model), comfort with PyTorch and the shell, and access to at least one NVIDIA GPU (a single 24 GB consumer card — RTX 4090/L4 — is enough; A100/H100 via Modal/RunPod for the big labs).
 **Pedagogy:** the *build-and-measure* spine of **MIT 6.5940 (TinyML & Efficient DL)**, **CMU 11-868 (LLM Systems)**, and **Stanford CS336 (LM from Scratch: Triton kernels, parallelism)**, run through the source book's `concept → code → critique → reflection → rebuild` loop. The non-negotiable discipline here is **measure-before-you-claim**: every optimization must be justified by a profile and a benchmark, with a quality check, not by reputation.
 
@@ -57,7 +57,12 @@ Per-week weights below are the share of the 58% lab bucket, expressed as **% of 
 
 ## Week 1 — The GPU Execution & Memory Model (and How to Profile It)
 
-**Altitude:** Engineer · **Format:** 2h lecture + 4h lab
+### State of the Art (June 2026)
+- Roofline reasoning is now standard tooling: **NVIDIA Nsight Compute 2026** + the PyTorch 2.6 profiler with `torch.cuda` memory snapshots; **Blackwell B200/GB200** (HBM3e ~8 TB/s) shifts the FLOP:bandwidth ratio so even more ops are memory-bound than on Hopper.
+- **1M-token context is table stakes** (Claude Opus 4.8, Gemini 3.1 Pro, DeepSeek V4) → the KV-cache, not the weights, dominates the memory budget you profile.
+- Sparse **MoE** is the dominant frontier architecture (DeepSeek V4 1.6T/49B-active, Qwen 3.5 397B/17B-active), so "active vs total params" is now a first-order accounting question.
+
+**Altitude:** Engineer · **Format:** 3h lecture + 4h lab
 **Anchor case:** profile a single forward pass of `shrink-an-8B` (FP16) and find out where the time and memory actually go.
 
 ### Learning goals
@@ -77,6 +82,8 @@ Per-week weights below are the share of the 58% lab bucket, expressed as **% of 
 - Compute a back-of-envelope **memory budget** (weights/activations/KV) and compare to `nvidia-smi` reality.
 - Build a tiny **roofline** plot for `matmul` vs `softmax` vs `layernorm` at a few sizes; label each compute- or memory-bound.
 - **Deliverable:** a profiling report + roofline plot. **Acceptance:** you correctly classify each of three ops as compute- or memory-bound *and* your predicted memory budget is within 15% of measured.
+
+▶ **Practical project:** `VizuaraAI/llm-inference-tutorial` — instrument and profile a served model's forward pass to classify the memory- vs compute-bound bottleneck.
 
 ### Harness / reusable skill — `$gpu-profile`
 - **Purpose:** turn any model/op into a profile that names the bottleneck (compute vs memory) and the top time-sinks.
@@ -135,6 +142,11 @@ print("alloc GB:", torch.cuda.max_memory_allocated()/1e9)   # compare to your bu
 
 ## Week 2 — Numerics: Mixed Precision, FP8 & Why Bits Matter
 
+### State of the Art (June 2026)
+- **FP8 inference is the default on Hopper/Blackwell**; **Blackwell adds FP4/MXFP4** microscaling formats (vLLM v0.20+ kernels) — sub-8-bit floats now ship in production.
+- **FP8 KV-cache** (`--kv-cache-dtype fp8`) ~halves KV memory and ~2×'s the decode-latency slope — the highest-leverage numeric lever of 2026.
+- NVIDIA **Transformer Engine** + `torchao` MXFP8/MXFP4 recipes are the reference; per-block microscaling replaces single global scales.
+
 **Altitude:** Engineer · **Anchor case:** run `shrink-an-8B` in FP16, BF16, and FP8 and measure the speed/memory/quality tradeoffs of each.
 
 ### Learning goals
@@ -153,6 +165,8 @@ print("alloc GB:", torch.cuda.max_memory_allocated()/1e9)   # compare to your bu
 - `precision_sweep.py`: run the same generation in FP16/BF16/FP8 (via `torchao`/Transformer Engine); record latency, peak memory, and MMLU/GSM8K delta.
 - Reproduce an FP16 overflow→NaN and fix it with BF16 or loss scaling; explain via the format's max value.
 - **Deliverable:** a precision-tradeoff table (speed/mem/quality) + a one-paragraph "when to use which." **Acceptance:** FP8 shows a real memory/throughput win with quality drop quantified on a fixed eval (not "looks fine").
+
+▶ **Practical project:** `VizuaraAILabs/nano-gpt-oss` — run BF16/FP16 mixed-precision training and reproduce (then fix) an FP16-overflow→NaN.
 
 ### Harness / reusable skill — `$precision-sweep`
 - **Purpose:** for any model, compare precisions on speed/memory/quality with a fixed eval, and recommend one.
@@ -210,6 +224,11 @@ print(results)        # -> tradeoff-table.md
 
 ## Week 3 — Post-Training Quantization: GPTQ, AWQ, SmoothQuant
 
+### State of the Art (June 2026)
+- **llm-compressor** (Neural Magic / Red Hat) is the de-facto PTQ toolkit feeding vLLM (GPTQ + AWQ + SmoothQuant + FP8 in one flow).
+- **INT4 (AWQ/GPTQ) is the production default** for weight-only; **FP8 W8A8** dominates server-side where Blackwell kernels exist.
+- Frontier open weights (DeepSeek V4, Qwen 3.5, Llama 4) ship with first-party quantized checkpoints — calibration recipes (NeMo / llm-compressor) are now standardized.
+
 **Altitude:** Engineer · **Anchor case:** quantize `shrink-an-8B` to INT4 (AWQ and GPTQ) and W8A8 (SmoothQuant), and find which keeps quality at the best speed/memory.
 
 ### Learning goals
@@ -230,6 +249,8 @@ print(results)        # -> tradeoff-table.md
 - Evaluate each on the fixed MMLU/GSM8K subset; measure tokens/s and memory served on vLLM.
 - **Deliverable:** a quantization comparison table (method × {quality, tokens/s, GB}) + a recommendation. **Acceptance:** at least one INT4 variant holds ≥98% of FP16 quality on the eval while cutting memory ≥3×, demonstrated with numbers.
 - **Design review #1 (8%-component):** an ADR recommending a quantization recipe for the capstone.
+
+▶ **Practical project:** `mlabonne/llm-course` — use its quantization notebooks (GPTQ/AWQ/GGUF) to quantize the 8B and re-eval quality.
 
 ### Harness / reusable skill — `$quantize-and-verify`
 - **Purpose:** quantize any model with a chosen method + verify quality on a fixed eval before it ships.
@@ -284,6 +305,11 @@ model.save_quantized("Qwen3-8B-awq-int4")
 
 ## Week 4 — QAT, Low-Bit Frontiers & Serving Quantized Models
 
+### State of the Art (June 2026)
+- **QLoRA/DoRA on NF4** remains the one-GPU fine-tune default; **unsloth** gives 2–5× faster QLoRA, and `trl` + `peft` are the standard stack.
+- **Marlin / Machete** low-bit GPU kernels make INT4/FP8 actually fast to *serve* in vLLM — the format must match an accelerated kernel or there is no served win.
+- Sub-4-bit (2–3 bit) is still research-grade; the production quality floor sits at ~INT4/FP8.
+
 **Altitude:** Engineer · **Anchor case:** push `shrink-an-8B` further — QLoRA-style NF4, FP8 serving on vLLM, and a peek at sub-4-bit — then serve the best variant and re-measure end to end.
 
 ### Learning goals
@@ -297,11 +323,14 @@ model.save_quantized("Qwen3-8B-awq-int4")
 - **NF4 + QLoRA.** Plain English: store frozen weights in 4-bit NormalFloat, train small LoRA adapters in BF16; double-quantize the quant constants to save more. Common mistake: thinking QLoRA quantizes the *adapters* (it doesn't).
 - **Served vs offline speedup.** Plain English: a smaller model isn't automatically faster to serve — kernels must support the format. Common mistake: quantizing to a format your serving stack lacks fast kernels for.
 - **Low-bit cliff.** Plain English: quality degrades gracefully to ~4-bit, then often sharply below. Common mistake: chasing 2-bit without a quality budget.
+- **On-device / private SLM deployment.** Plain English: a low-bit small model can run *locally* (llama.cpp/GGUF, MLX, ExecuTorch) so data never leaves the device — the efficiency win is also a privacy and offline-availability win. Where it matters: regulated/edge settings where a server round-trip is a non-starter. Common mistake: picking a quant format the on-device runtime has no fast kernel for (links to the `tiny-on-edge` mini-anchor and the "SLM local assistant" studio).
 
 ### Hands-on build
 - QLoRA-fine-tune the 8B (NF4) on a small instruction set; merge/serve; compare quality to the base.
 - Produce an **FP8** checkpoint (llm-compressor) and serve on vLLM; benchmark served tokens/s vs the INT4 and FP16 baselines.
 - **Deliverable:** an updated efficiency table with QLoRA + FP8 rows + a "served speedup vs offline" note. **Acceptance:** the served FP8/INT4 variant shows a real end-to-end throughput gain on vLLM (measured with `benchmark_serving.py`), with quality within budget.
+
+▶ **Practical project:** `krishnaik06/Finetuning-LLM` — QLoRA-fine-tune a 4-bit base on one GPU, then merge and serve the result.
 
 ### Harness / reusable skill — `$lowbit-serve`
 - **Purpose:** select a low-bit format your serving stack accelerates, fine-tune if needed (QLoRA), and verify the *served* gain.
@@ -354,6 +383,11 @@ m = get_peft_model(m, LoraConfig(r=16, lora_alpha=32, target_modules=["q_proj","
 
 ## Week 5 — Pruning, Sparsity, Distillation & NAS
 
+### State of the Art (June 2026)
+- **2:4 semi-structured sparsity** on Hopper/Blackwell sparse tensor cores is the only pruning that reliably yields a wall-clock speedup (`torchao`, SparseGPT/Wanda one-shot).
+- Distillation is now **synthetic-data + on-policy** (teacher = a frontier model such as Opus 4.8 / DeepSeek V4); distilled SLMs (Gemma 4, Qwen 3.5 small, Llama 4 Scout) power edge deployment.
+- **KV-cache compression (EvicPress, QuantSpec)** is the 2026 sparsity frontier for inference, more than weight pruning.
+
 **Altitude:** Engineer · **Anchor case:** `tiny-on-edge` — compress a small model with structured pruning + distillation; on the server, try 2:4 sparsity on the 8B.
 
 ### Learning goals
@@ -373,6 +407,8 @@ m = get_peft_model(m, LoraConfig(r=16, lora_alpha=32, target_modules=["q_proj","
 - Distill `tiny-on-edge` from a larger teacher; report the accuracy gap vs a same-size from-scratch model.
 - Apply **2:4 sparsity** (SparseGPT/`torchao`) to the 8B; measure served speedup on a sparsity-aware kernel + quality delta.
 - **Deliverable:** a compression report (pruning + distillation rows, real speedup vs theoretical). **Acceptance:** 2:4 sparsity shows a measured wall-clock speedup (not just a parameter-count reduction) and the distilled student beats its from-scratch twin.
+
+▶ **Practical project:** `VizuaraAILabs/Tiny-Stories-Regional` — train a small distilled-scale LM and compare it against a from-scratch same-size twin.
 
 ### Harness / reusable skill — `$compress-verify`
 - **Purpose:** compress a model (prune/distill) and verify both a *hardware-real* speedup and an in-budget quality delta.
@@ -427,6 +463,11 @@ print("dense vs 2:4:", bench(dense), bench(m), "  MMLU delta:", eval_mmlu(m)-bas
 
 ## Week 6 — Attention at Scale: FlashAttention-3, KV-Cache & PagedAttention
 
+### State of the Art (June 2026)
+- **FlashAttention-4** is the Blackwell default (vLLM v0.20+); **FA-3** remains the Hopper path — both exact and IO-aware.
+- **PagedAttention** is universal; **prefix caching / RadixAttention** (SGLang) + **FP8 KV-cache** are standard at long context.
+- KV-cache eviction/compression (**StreamingLLM sinks, H2O, KVQuant, EvicPress**) is how 1M-context serving stays in memory.
+
 **Altitude:** Engineer → Specialist · **Anchor case:** make `shrink-an-8B` cheaper at long context — quantify FlashAttention-3 and KV-cache management on memory and throughput.
 
 ### Learning goals
@@ -445,6 +486,8 @@ print("dense vs 2:4:", bench(dense), bench(m), "  MMLU delta:", eval_mmlu(m)-bas
 - Benchmark generation with eager attention vs **FlashAttention-3** (or FA-2 if HW-limited) at 1k/8k/32k context; record latency, memory, tokens/s.
 - Compute the KV-cache memory formula and verify against measured memory as context grows; then show how vLLM **PagedAttention** lets you raise concurrent sequences at the same memory.
 - **Deliverable:** an attention-scaling report (latency/memory vs context, FA on/off, paged vs naive). **Acceptance:** FA-3 shows a measured memory + throughput win at long context, and your KV-cache prediction matches measurement within 15%.
+
+▶ **Practical project:** `VizuaraAI/kv-cache-token-reduction-walkthrough` — measure KV-cache growth and the FlashAttention/paged-KV win across 1k/8k/32k context.
 
 ### Harness / reusable skill — `$attention-bench`
 - **Purpose:** quantify attention/KV-cache cost across context lengths and prove the win from FlashAttention + paged KV.
@@ -500,6 +543,11 @@ for attn in ["eager", "flash_attention_3"]:
 
 ## Week 7 — Inference Serving Engines: vLLM, SGLang & TensorRT-LLM
 
+### State of the Art (June 2026)
+- **vLLM is the reference engine** (FA-4, FP8 KV, chunked prefill, speculative); **SGLang** (RadixAttention) and **TensorRT-LLM** are the production alternatives.
+- **Disaggregated prefill/decode serving** (separate pools — vLLM/Dynamo, Mooncake) is the 2026 throughput frontier.
+- Benchmarking standardized on **GuideLLM** + vLLM `benchmark_serving` (TTFT/ITL/throughput swept over concurrency); **serverless GPU** (Modal, Baseten, RunPod FlashBoot) is the default deploy substrate.
+
 **Altitude:** Engineer → Specialist · **Anchor case:** serve the quantized 8B on vLLM, SGLang, and TensorRT-LLM; benchmark continuous batching and pick a stack on evidence.
 
 ### Learning goals
@@ -518,6 +566,8 @@ for attn in ["eager", "flash_attention_3"]:
 - Serve the same quantized checkpoint on **vLLM**, **SGLang**, and **TensorRT-LLM**; run `benchmark_serving.py`/GuideLLM at concurrency 1/8/32/64.
 - Produce a serving-engine comparison: TTFT, ITL, throughput, max concurrency, and a feature/ops-cost note; demonstrate SGLang prefix caching on a shared-system-prompt workload.
 - **Deliverable:** an engine comparison table + a recommendation for the capstone. **Acceptance:** continuous batching shown to beat static batching by a measured margin, and prefix caching gives a measured TTFT win on shared prefixes.
+
+▶ **Practical project:** `VizuaraAI/infertutor-arena-capstone` — serve on Modal + vLLM and benchmark continuous batching / TTFT / ITL across concurrency.
 
 ### Harness / reusable skill — `$serving-engine-bench`
 - **Purpose:** benchmark and choose an inference engine for a given workload (chat vs batch vs RAG) on real metrics.
@@ -570,6 +620,11 @@ python -m vllm.entrypoints.benchmark_serving \
 
 ## Week 8 — Speculative & Parallel Decoding
 
+### State of the Art (June 2026)
+- **EAGLE-3** is the leading speculative method (feature-level drafting); **Medusa** (extra heads) and n-gram/lookahead remain in vLLM.
+- Speculation gives **2–5× at low concurrency** and shrinks under heavy batching — and **conflicts with some KV-quant** configs (a teachable 2026 gotcha).
+- **RL-trained / verifier-style drafts** and built-in self-speculation are emerging in frontier serving stacks.
+
 **Altitude:** Specialist · **Anchor case:** cut `shrink-an-8B` decode latency with speculative decoding (draft model, EAGLE-3, Medusa) without changing outputs.
 
 ### Learning goals
@@ -588,6 +643,8 @@ python -m vllm.entrypoints.benchmark_serving \
 - Configure vLLM speculative decoding with (a) a 1B draft model and (b) **EAGLE-3** or **n-gram**; benchmark decode latency + acceptance rate vs the baseline.
 - Show outputs are unchanged (greedy match) and measure how speedup varies with batch size.
 - **Deliverable:** a speculative-decoding report (speedup vs acceptance vs batch) + a recommendation. **Acceptance:** a measured decode-latency reduction at batch 1 with *identical greedy outputs*, and an explanation of why the gain shrinks at high batch.
+
+▶ **Practical project:** `VizuaraAI/llm-inference-tutorial` — configure speculative decoding (draft / EAGLE) and measure acceptance rate + decode-latency win.
 
 ### Harness / reusable skill — `$spec-decode`
 - **Purpose:** add speculative decoding to a served model and verify a real, output-preserving latency win.
@@ -640,6 +697,11 @@ out = llm.generate(prompts, sp)
 
 ## Week 9 — Mixture-of-Experts: Sparse Models at Scale
 
+### State of the Art (June 2026)
+- **MoE is the dominant frontier architecture**: DeepSeek V4 (1.6T total / 49B active), Qwen 3.5 (397B/17B), Llama 4 Scout/Maverick, the Mixtral lineage.
+- Serving is a **memory-capacity + expert-parallel all-to-all communication** problem; **DeepEP** expert-parallel kernels and **fine-grained + shared-expert** routing (DeepSeekMoE) are standard.
+- The teachable tension: cheap per-token FLOPs, but all experts must reside in VRAM.
+
 **Altitude:** Specialist · **Anchor case:** run and serve an MoE model (e.g., Qwen3-MoE / Mixtral-style) and measure the active-vs-total parameter tradeoff and its serving implications.
 
 ### Learning goals
@@ -658,6 +720,8 @@ out = llm.generate(prompts, sp)
 - Serve an MoE model on vLLM/SGLang; measure tokens/s and memory; compare *active* vs *total* params and the throughput vs a dense model of similar quality.
 - Inspect router behavior on a batch: per-expert token counts (load balance) and the effect of top-k.
 - **Deliverable:** an MoE analysis (active/total params, throughput, memory, routing-balance plot). **Acceptance:** you can explain, with measured numbers, why the MoE needs more memory but less compute per token than a dense peer, and show its expert load distribution.
+
+▶ **Practical project:** `VizuaraAILabs/DeepSeek-From-Scratch` — inspect MLA/MoE routing and per-expert load on a from-scratch MoE.
 
 ### Harness / reusable skill — `$moe-analyze`
 - **Purpose:** profile an MoE model's active/total params, serving cost, and routing balance to inform a deploy decision.
@@ -716,6 +780,11 @@ print("expert load (should be roughly flat):", counts)
 
 ## Week 10 — Long-Context Efficiency
 
+### State of the Art (June 2026)
+- **1M-token context is table stakes** (Opus 4.8, Gemini 3.1 Pro, DeepSeek V4; Llama 4 Scout ~10M) — KV-cache memory, not compute, is the binding constraint.
+- Standard levers: **FP8/INT4 KV-cache, StreamingLLM sinks, H2O/EvicPress eviction, YaRN scaling**, sliding-window/sparse attention.
+- **Long-context vs Agentic RAG** is an explicit cost decision; RAG (with ColPali/late-interaction retrieval) usually wins on $/accuracy below the context limit.
+
 **Altitude:** Specialist · **Anchor case:** make `shrink-an-8B` viable at 128k context — KV-cache quantization, sliding-window/sparse attention, and the long-context-vs-RAG decision.
 
 ### Learning goals
@@ -735,6 +804,8 @@ print("expert load (should be roughly flat):", counts)
 - Serve the 8B with **quantized KV-cache** (FP8) and **StreamingLLM/sliding-window**; measure max context per GB and throughput vs full-precision KV.
 - Run a **lost-in-the-middle** probe and a long-context-vs-RAG cost/accuracy comparison on a long-doc QA task.
 - **Deliverable:** a long-context efficiency report (max context/GB, quality vs KV-precision, LC-vs-RAG tradeoff). **Acceptance:** KV-cache quantization shown to raise max context per GB with a quantified quality delta, and a defended LC-vs-RAG recommendation backed by cost+accuracy numbers.
+
+▶ **Practical project:** `VizuaraAI/kv-cache-token-reduction-walkthrough` — push toward 128k with FP8 KV + eviction and run a long-context-vs-RAG cost comparison.
 
 ### Harness / reusable skill — `$longctx-budget`
 - **Purpose:** find the cheapest way to hit a target context length under a quality floor (KV-quant/eviction/window/RAG).
@@ -790,6 +861,11 @@ for seq in [16384, 65536, 131072]:
 
 ## Week 11 — Distributed Training & Inference: FSDP, ZeRO, Tensor/Pipeline Parallelism
 
+### State of the Art (June 2026)
+- **PyTorch FSDP2** + **DeepSpeed ZeRO-3** are the sharding defaults; **5D parallelism** (data/tensor/pipeline/context/expert) is the frontier vocabulary (HF *Ultra-Scale Playbook*).
+- **Context parallelism** (Ring-style) is now required for 1M-context training; **expert parallelism** (DeepEP) for MoE.
+- Serving large models uses **TP within an NVLink node, PP/DP across nodes**; **disaggregated serving + GB200 NVL72** scale-up changes the interconnect calculus.
+
 **Altitude:** Specialist · **Anchor case:** scale `shrink-an-8B` beyond a single GPU — shard it with FSDP/ZeRO for training and split it with tensor/pipeline parallelism for serving a bigger model.
 
 ### Learning goals
@@ -809,6 +885,8 @@ for seq in [16384, 65536, 131072]:
 - Train/fine-tune the 8B with **FSDP2** (or DeepSpeed ZeRO-3) across 2+ GPUs; record peak memory per GPU and throughput vs single-GPU (where it even fits).
 - Serve a larger model (e.g., 70B quantized) with **tensor parallelism** on vLLM (`--tensor-parallel-size`); measure latency vs TP degree and explain the comms cost.
 - **Deliverable:** a parallelism report (memory/throughput vs strategy) + a "which plan for which model+hardware" decision table. **Acceptance:** you demonstrate fitting a model that does *not* fit on one GPU via sharding, and show how serving latency changes with TP degree, explaining the interconnect role.
+
+▶ **Practical project:** `VizuaraAI/vizuara-5d-parallelism-workshop` — run DP/TP/PP/CP/EP sharding on multi-GPU and read the memory/comms tradeoff.
 
 ### Harness / reusable skill — `$parallel-plan`
 - **Purpose:** choose and validate a parallelism strategy (DP/FSDP-ZeRO/TP/PP) for a target model + hardware + latency goal.
@@ -863,6 +941,11 @@ for batch in dl:
 
 ## Week 12 — Capstone: FP16 → Quantized, Served, Benchmarked Endpoint
 
+### State of the Art (June 2026)
+- The 2026 reference pipeline: **INT4/FP8 quantize (llm-compressor) → vLLM serve with FA-4 + FP8 KV + prefix caching → EAGLE-3 speculative → GuideLLM benchmark → serverless-GPU deploy**.
+- Cost is reported as **$/1M tokens** with **prompt caching** (up to ~90% off static prefixes) and **model routing** as first-class levers.
+- Pareto framing (quality vs latency vs cost) on disclosed Blackwell/Hopper hardware is the deliverable standard.
+
 **Altitude:** Specialist · **Anchor case:** your own model, taken the full efficiency distance, with a defended deployment recommendation.
 
 ### Learning goals
@@ -893,6 +976,8 @@ Take one open model from a vanilla **FP16** checkpoint to a **quantized, optimiz
 - [ ] Speculative decoding output equivalence is **proven** (greedy match), with the acceptance rate reported.
 - [ ] The **Pareto chart** makes the chosen operating point obviously defensible.
 - [ ] A **$/1M-tokens** figure is computed for the recommended deployment.
+
+▶ **Practical project:** `VizuaraAI/infertutor-arena-capstone` — take a model FP16 → quantized → served → benchmarked end-to-end as the capstone reference.
 
 ### Harness / reusable skill — `$efficiency-report`
 - **Purpose:** assemble all nine skills into one reproducible Pareto-frontier efficiency report + deployment recommendation.
@@ -939,3 +1024,18 @@ By the end you can take a model from an FP16 checkpoint to a **quantized, kernel
 `$gpu-profile` · `$precision-sweep` · `$quantize-and-verify` · `$lowbit-serve` · `$compress-verify` · `$attention-bench` · `$serving-engine-bench` · `$spec-decode` · `$moe-analyze` · `$longctx-budget` · `$parallel-plan` · `$efficiency-report`
 
 These compose directly with Subject 09's production harness: the endpoints you containerized, gated, and monitored there are now the ones you quantize, batch, and benchmark here — efficiency and operations as two halves of shipping real AI systems.
+
+---
+
+## 🛠 Hands-on repositories & build studios (merged June 2026)
+
+**Clone-and-run repos** (verified June 2026; full catalog in [`PROJECTS.md`](PROJECTS.md)):
+- `VizuaraAI/vizuara-5d-parallelism-workshop` (+ `-assignments`) — DP/TP/PP/CP/EP parallelism on 8 GPUs; the hands-on spine for distributed training/inference — Lecture 11.
+- `VizuaraAI/llm-inference-tutorial` — inference internals (prefill/decode, batching) to instrument and benchmark — Lectures 7, 10.
+- `VizuaraAI/kv-cache-token-reduction-walkthrough` — KV-cache sizing, quantization, and token-reduction walkthrough — Lectures 6, 10.
+- `VizuaraAILabs/DeepSeek-From-Scratch` — MLA / MoE / MTP from scratch; the MoE router + expert mechanics you analyze — Lecture 9.
+- `VizuaraAI/Mixture_of_Experts` — a minimal MoE built from scratch for routing/load-balance inspection — Lecture 9.
+- `VizuaraAI/infertutor-arena-capstone` — Modal + vLLM + Qwen-VL served endpoint; a worked end-to-end serving capstone reference — Lecture 12.
+
+**Build studios** (specs in [`PROJECTS.md`](PROJECTS.md)):
+- **SLM local assistant** — a quantized/distilled **on-device** RAG assistant shipped with a latency/cost eval — *Lectures 4–5*.

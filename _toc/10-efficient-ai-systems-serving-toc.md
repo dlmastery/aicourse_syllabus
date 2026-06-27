@@ -1,9 +1,9 @@
 # Detailed Table of Contents — Subject 10 — Efficient AI: Quantization, Serving & Systems
 
-_Source: `10-efficient-ai-systems-serving.md` · **1 academic quarter · 3 lecture-hours/week · 12 weekly lectures (~36 contact hours)**_
+_Source: `10-efficient-ai-systems-serving.md` · **1 academic quarter · 3 lecture-hours/week · 12 weekly lectures (~36 contact hours)**. Every lecture has a **▶ practical project** (real GitHub repo)._
 
 ### Lecture 1 — The GPU Execution & Memory Model (and How to Profile It)
-_3-hour block · 🔧 reusable skill: `$gpu-profile`_
+_3-hour block · 🔧 skill: `$gpu-profile` · ▶ project: [`VizuaraAI/llm-inference-tutorial`](https://github.com/VizuaraAI/llm-inference-tutorial) — instrument and profile a served model's forward pass to classify the memory- vs compute-bound bottleneck._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -12,10 +12,10 @@ _3-hour block · 🔧 reusable skill: `$gpu-profile`_
 | 01:00–01:30 | M3 | Roofline model |
 | 01:30–02:00 | M4 | The memory budget of an LLM |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | profile_forward.py: load the 8B in FP16, run a profiled forward pass, export a Chrome trace; identif |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`VizuaraAI/llm-inference-tutorial`](https://github.com/VizuaraAI/llm-inference-tutorial) — instrument and profile a served model's forward pass to classify the memory- vs compute-bound bottleneck. |
 
 ### Lecture 2 — Numerics: Mixed Precision, FP8 & Why Bits Matter
-_3-hour block · 🔧 reusable skill: `$precision-sweep`_
+_3-hour block · 🔧 skill: `$precision-sweep` · ▶ project: [`VizuaraAILabs/nano-gpt-oss`](https://github.com/VizuaraAILabs/nano-gpt-oss) — run BF16/FP16 mixed-precision training and reproduce (then fix) an FP16-overflow→NaN._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -24,10 +24,10 @@ _3-hour block · 🔧 reusable skill: `$precision-sweep`_
 | 01:00–01:30 | M3 | FP8 (E4M3/E5M2) |
 | 01:30–02:00 | M4 | Dynamic range & scaling |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | precision_sweep.py: run the same generation in FP16/BF16/FP8 (via torchao/Transformer Engine); recor |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`VizuaraAILabs/nano-gpt-oss`](https://github.com/VizuaraAILabs/nano-gpt-oss) — run BF16/FP16 mixed-precision training and reproduce (then fix) an FP16-overflow→NaN. |
 
 ### Lecture 3 — Post-Training Quantization: GPTQ, AWQ, SmoothQuant
-_3-hour block · 🔧 reusable skill: `$quantize-and-verify`_
+_3-hour block · 🔧 skill: `$quantize-and-verify` · ▶ project: [`mlabonne/llm-course`](https://github.com/mlabonne/llm-course) — use its quantization notebooks (GPTQ/AWQ/GGUF) to quantize the 8B and re-eval quality._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -36,22 +36,22 @@ _3-hour block · 🔧 reusable skill: `$quantize-and-verify`_
 | 01:00–01:30 | M3 | SmoothQuant |
 | 01:30–02:00 | M4 | Calibration set |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | Quantize the 8B with **AutoAWQ** (INT4, group 128) and **llm-compressor** (GPTQ INT4 and SmoothQuant |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`mlabonne/llm-course`](https://github.com/mlabonne/llm-course) — use its quantization notebooks (GPTQ/AWQ/GGUF) to quantize the 8B and re-eval quality. |
 
 ### Lecture 4 — QAT, Low-Bit Frontiers & Serving Quantized Models
-_3-hour block · 🔧 reusable skill: `$lowbit-serve`_
+_3-hour block · 🔧 skill: `$lowbit-serve` · ▶ project: [`krishnaik06/Finetuning-LLM`](https://github.com/krishnaik06/Finetuning-LLM) — QLoRA-fine-tune a 4-bit base on one GPU, then merge and serve the result._
 
 | Time | Module | Content |
 |------|--------|---------|
-| 00:00–00:30 | M1 | QAT & the straight-through estimator |
-| 00:30–01:00 | M2 | NF4 + QLoRA |
-| 01:00–01:30 | M3 | Served vs offline speedup |
-| 01:30–02:00 | M4 | Low-bit cliff |
+| 00:00–00:30 | M1 | QAT & the straight-through estimator; NF4 + QLoRA |
+| 00:30–01:00 | M2 | Served vs offline speedup |
+| 01:00–01:30 | M3 | Low-bit cliff |
+| 01:30–02:00 | M4 | On-device / private SLM deployment |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | QLoRA-fine-tune the 8B (NF4) on a small instruction set; merge/serve; compare quality to the base |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`krishnaik06/Finetuning-LLM`](https://github.com/krishnaik06/Finetuning-LLM) — QLoRA-fine-tune a 4-bit base on one GPU, then merge and serve the result. |
 
 ### Lecture 5 — Pruning, Sparsity, Distillation & NAS
-_3-hour block · 🔧 reusable skill: `$compress-verify`_
+_3-hour block · 🔧 skill: `$compress-verify` · ▶ project: [`VizuaraAILabs/Tiny-Stories-Regional`](https://github.com/VizuaraAILabs/Tiny-Stories-Regional) — train a small distilled-scale LM and compare it against a from-scratch same-size twin._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -60,10 +60,10 @@ _3-hour block · 🔧 reusable skill: `$compress-verify`_
 | 01:00–01:30 | M3 | SparseGPT / Wanda |
 | 01:30–02:00 | M4 | NAS / once-for-all |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | Distill tiny-on-edge from a larger teacher; report the accuracy gap vs a same-size from-scratch mode |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`VizuaraAILabs/Tiny-Stories-Regional`](https://github.com/VizuaraAILabs/Tiny-Stories-Regional) — train a small distilled-scale LM and compare it against a from-scratch same-size twin. |
 
 ### Lecture 6 — Attention at Scale: FlashAttention-3, KV-Cache & PagedAttention
-_3-hour block · 🔧 reusable skill: `$attention-bench`_
+_3-hour block · 🔧 skill: `$attention-bench` · ▶ project: [`VizuaraAI/kv-cache-token-reduction-walkthrough`](https://github.com/VizuaraAI/kv-cache-token-reduction-walkthrough) — measure KV-cache growth and the FlashAttention/paged-KV win across 1k/8k/32k context._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -72,10 +72,10 @@ _3-hour block · 🔧 reusable skill: `$attention-bench`_
 | 01:00–01:30 | M3 | KV-cache |
 | 01:30–02:00 | M4 | PagedAttention |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | Benchmark generation with eager attention vs **FlashAttention-3** (or FA-2 if HW-limited) at 1k/8k/3 |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`VizuaraAI/kv-cache-token-reduction-walkthrough`](https://github.com/VizuaraAI/kv-cache-token-reduction-walkthrough) — measure KV-cache growth and the FlashAttention/paged-KV win across 1k/8k/32k context. |
 
 ### Lecture 7 — Inference Serving Engines: vLLM, SGLang & TensorRT-LLM
-_3-hour block · 🔧 reusable skill: `$serving-engine-bench`_
+_3-hour block · 🔧 skill: `$serving-engine-bench` · ▶ project: [`VizuaraAI/infertutor-arena-capstone`](https://github.com/VizuaraAI/infertutor-arena-capstone) — serve on Modal + vLLM and benchmark continuous batching / TTFT / ITL across concurrency._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -84,10 +84,10 @@ _3-hour block · 🔧 reusable skill: `$serving-engine-bench`_
 | 01:00–01:30 | M3 | TTFT vs ITL vs throughput |
 | 01:30–02:00 | M4 | Prefix caching / RadixAttention |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | Serve the same quantized checkpoint on **vLLM**, **SGLang**, and **TensorRT-LLM**; run benchmark_ser |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`VizuaraAI/infertutor-arena-capstone`](https://github.com/VizuaraAI/infertutor-arena-capstone) — serve on Modal + vLLM and benchmark continuous batching / TTFT / ITL across concurrency. |
 
 ### Lecture 8 — Speculative & Parallel Decoding
-_3-hour block · 🔧 reusable skill: `$spec-decode`_
+_3-hour block · 🔧 skill: `$spec-decode` · ▶ project: [`VizuaraAI/llm-inference-tutorial`](https://github.com/VizuaraAI/llm-inference-tutorial) — configure speculative decoding (draft / EAGLE) and measure acceptance rate + decode-latency win._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -96,10 +96,10 @@ _3-hour block · 🔧 reusable skill: `$spec-decode`_
 | 01:00–01:30 | M3 | Acceptance rate |
 | 01:30–02:00 | M4 | Medusa / EAGLE |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | Configure vLLM speculative decoding with (a) a 1B draft model and (b) **EAGLE-3** or **n-gram**; ben |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`VizuaraAI/llm-inference-tutorial`](https://github.com/VizuaraAI/llm-inference-tutorial) — configure speculative decoding (draft / EAGLE) and measure acceptance rate + decode-latency win. |
 
 ### Lecture 9 — Mixture-of-Experts: Sparse Models at Scale
-_3-hour block · 🔧 reusable skill: `$moe-analyze`_
+_3-hour block · 🔧 skill: `$moe-analyze` · ▶ project: [`VizuaraAILabs/DeepSeek-From-Scratch`](https://github.com/VizuaraAILabs/DeepSeek-From-Scratch) — inspect MLA/MoE routing and per-expert load on a from-scratch MoE._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -108,10 +108,10 @@ _3-hour block · 🔧 reusable skill: `$moe-analyze`_
 | 01:00–01:30 | M3 | Load balancing |
 | 01:30–02:00 | M4 | Expert parallelism |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | Serve an MoE model on vLLM/SGLang; measure tokens/s and memory; compare *active* vs *total* params a |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`VizuaraAILabs/DeepSeek-From-Scratch`](https://github.com/VizuaraAILabs/DeepSeek-From-Scratch) — inspect MLA/MoE routing and per-expert load on a from-scratch MoE. |
 
 ### Lecture 10 — Long-Context Efficiency
-_3-hour block · 🔧 reusable skill: `$longctx-budget`_
+_3-hour block · 🔧 skill: `$longctx-budget` · ▶ project: [`VizuaraAI/kv-cache-token-reduction-walkthrough`](https://github.com/VizuaraAI/kv-cache-token-reduction-walkthrough) — push toward 128k with FP8 KV + eviction and run a long-context-vs-RAG cost comparison._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -120,10 +120,10 @@ _3-hour block · 🔧 reusable skill: `$longctx-budget`_
 | 01:00–01:30 | M3 | RoPE scaling / YaRN |
 | 01:30–02:00 | M4 | Long-context vs RAG |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | Serve the 8B with **quantized KV-cache** (FP8) and **StreamingLLM/sliding-window**; measure max cont |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`VizuaraAI/kv-cache-token-reduction-walkthrough`](https://github.com/VizuaraAI/kv-cache-token-reduction-walkthrough) — push toward 128k with FP8 KV + eviction and run a long-context-vs-RAG cost comparison. |
 
 ### Lecture 11 — Distributed Training & Inference: FSDP, ZeRO, Tensor/Pipeline Parallelism
-_3-hour block · 🔧 reusable skill: `$parallel-plan`_
+_3-hour block · 🔧 skill: `$parallel-plan` · ▶ project: [`VizuaraAI/vizuara-5d-parallelism-workshop`](https://github.com/VizuaraAI/vizuara-5d-parallelism-workshop) — run DP/TP/PP/CP/EP sharding on multi-GPU and read the memory/comms tradeoff._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -132,10 +132,10 @@ _3-hour block · 🔧 reusable skill: `$parallel-plan`_
 | 01:00–01:30 | M3 | Pipeline parallelism |
 | 01:30–02:00 | M4 | Choosing a plan |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | Train/fine-tune the 8B with **FSDP2** (or DeepSpeed ZeRO-3) across 2+ GPUs; record peak memory per G |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`VizuaraAI/vizuara-5d-parallelism-workshop`](https://github.com/VizuaraAI/vizuara-5d-parallelism-workshop) — run DP/TP/PP/CP/EP sharding on multi-GPU and read the memory/comms tradeoff. |
 
 ### Lecture 12 — Capstone: FP16 → Quantized, Served, Benchmarked Endpoint
-_3-hour block · 🔧 reusable skill: `$efficiency-report`_
+_3-hour block · 🔧 skill: `$efficiency-report` · ▶ project: [`VizuaraAI/infertutor-arena-capstone`](https://github.com/VizuaraAI/infertutor-arena-capstone) — take a model FP16 → quantized → served → benchmarked end-to-end as the capstone reference._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -144,5 +144,5 @@ _3-hour block · 🔧 reusable skill: `$efficiency-report`_
 | 01:00–01:30 | M3 | Guided discussion / Q&A |
 | 01:30–02:00 | M4 | Critique & reflection (what would fail?) |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | Build the weekly artifact + evidence log |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`VizuaraAI/infertutor-arena-capstone`](https://github.com/VizuaraAI/infertutor-arena-capstone) — take a model FP16 → quantized → served → benchmarked end-to-end as the capstone reference. |
 

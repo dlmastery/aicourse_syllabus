@@ -1,6 +1,6 @@
 # Subject 09 — Full-Stack AI: MLOps, LLMOps & AgentOps to Production
 
-**Track:** Production Engineering · **Altitude:** Engineer · **Length:** 12 weeks (2 lecture hrs + 4 lab hrs/wk; two-semester feel)
+**Track:** Production Engineering · **Altitude:** Engineer · **Length:** 12 weeks (3 lecture hrs + 4 lab hrs/wk; two-semester feel)
 **Prerequisites:** Subjects 01–02 (ML + DL foundations), comfort with Python, basic Git, one prior model you trained yourself, and one prior LLM/RAG app (Subjects 04–06). You should be able to read a stack trace without panic.
 **Pedagogy:** Harvard **AC215/E115** (MLOps→LLMOps→AIOps, 5-milestone team capstone) fused with **Krish Naik's** "every project ships deployed" doctrine (AWS/GCP/Azure, Docker, K8s, CI/CD, Langfuse/Prometheus/Grafana/ELK) and the source book's `concept → code → critique → reflection → rebuild` loop. The discipline of this course is **evidence-gated delivery**: nothing is "done" until a monitored endpoint, a dashboard, and a rollback button exist.
 
@@ -62,7 +62,13 @@ Per-week weights below are the share of the 60% lab bucket, expressed as **% of 
 
 ## Week 1 — The Production Mindset & Containerizing a Model
 
-**Altitude:** Engineer · **Format:** 2h lecture + 4h lab
+### State of the Art (June 2026)
+- Reproducible artifacts + MLOps maturity unchanged; **uv + multi-stage slim images** are the 2026 default.
+- **Serverless GPU** (Modal, RunPod FlashBoot, Baseten) pay-per-second reshapes "where it runs."
+- **Prompt caching** is the highest-leverage cost lever for the LLM service (up to 90% off static prefixes).
+- Operate four managed assets: **weights, data, prompts, eval metrics**.
+
+**Altitude:** Engineer · **Format:** 3h lecture + 4h lab
 **Anchor case:** wrap `delivery-eta` in a reproducible Docker image that runs identically on your laptop and a teammate's.
 
 ### Learning goals
@@ -82,6 +88,8 @@ Per-week weights below are the share of the 60% lab bucket, expressed as **% of 
 - Write `services/eta-model/Dockerfile` (multi-stage, `python:3.12-slim`, non-root user, pinned `uv` lock) serving the Subject-01 model behind a placeholder `/predict`.
 - `docker build` + `docker run`; verify deterministic predictions; record image size and cold-start time.
 - **Deliverable:** a buildable image + `make up` that boots it. **Acceptance:** image < 400 MB, runs as non-root, `/predict` returns a prediction with the model version in the response header.
+
+▶ **Practical project:** `krishnaik06/mlproject` — use its containerized end-to-end template as the base for the `fullstack-ai-platform` monorepo and the slim `eta-model` image.
 
 ### Harness / reusable skill — `$repro-image`
 - **Purpose:** turn any model into a reproducible, slim, non-root container with a health check.
@@ -142,6 +150,12 @@ CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]
 
 ## Week 2 — Orchestration: Kubernetes & Serverless GPU
 
+### State of the Art (June 2026)
+- **vLLM** is the reference serving engine; **FlashAttention-4** (Blackwell) is the default in vLLM v0.20+.
+- **Serverless GPU** (Modal / RunPod FlashBoot / Baseten) vs self-managed K8s is the live cost/control trade-off.
+- **KEDA** event/queue-depth autoscaling beats raw CPU targets for GPU/IO workloads.
+- **Scale-to-zero + cold-start** is the central cost/latency tension for spiky inference.
+
 **Altitude:** Engineer · **Anchor case:** deploy `delivery-eta` to a local Kubernetes cluster with health/readiness probes and an autoscaler; deploy the same image to a serverless GPU platform and compare.
 
 ### Learning goals
@@ -161,6 +175,8 @@ CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]
 - `kind create cluster`; `helm install`; drive load with `hey`/`k6` and watch pods scale.
 - Deploy the same container to **Modal** (or Baseten); record cold-start + per-request cost.
 - **Deliverable:** running Deployment + HPA + a one-page "self-managed K8s vs serverless GPU" decision note. **Acceptance:** rolling update causes zero failed requests under light load (proven by a k6 report).
+
+▶ **Practical project:** `GokuMohandas/Made-With-ML` — follow its deploy/scale modules to take the `eta-model` image to a probed, autoscaled Deployment and a serverless-GPU comparison.
 
 ### Harness / reusable skill — `$k8s-deploy`
 - **Purpose:** take any container to a probed, autoscaled, zero-downtime Deployment.
@@ -223,6 +239,12 @@ spec:
 
 ## Week 3 — Data Pipelines & Versioning: Airflow, DVC, Feature Stores
 
+### State of the Art (June 2026)
+- **Data contracts** + pandera / Great Expectations gate pipelines; **DVC / LakeFS** for versioning.
+- **Feature stores** (Feast) for offline/online parity — **train/serve skew** is still the #1 silent killer.
+- **RAG-lifecycle drift** (stale index, changed docs) is a newly-monitored data axis (ties to Week 9).
+- **Dagster** is gaining on Airflow for asset-centric pipelines.
+
 **Altitude:** Engineer · **Anchor case:** an Airflow DAG that refreshes `delivery-eta` features daily, with the dataset and model versioned in DVC and features served from Feast.
 
 ### Learning goals
@@ -242,6 +264,8 @@ spec:
 - `dvc init`; track `data/` and `models/`; push to a remote (S3/GCS); show `dvc checkout` reproducing an old dataset.
 - Define a Feast feature view; materialize; read the same feature offline (training) and online (serving).
 - **Deliverable:** a scheduled DAG + DVC remote + Feast feature view. **Acceptance:** a deliberately corrupted input row makes the DAG fail at the validation task (not at serving).
+
+▶ **Practical project:** `krishnaik06/Kidney-Disease-Classification-Deep-Learning-Project` — mirror its DVC pipeline as the data/model-versioning reference for the `delivery-eta` features.
 
 ### Harness / reusable skill — `$data-contract`
 - **Purpose:** wrap any dataset in a schema + distribution contract that gates the pipeline.
@@ -305,6 +329,12 @@ eta_features()
 
 ## Week 4 — Experiment Tracking, Model Registry & Reproducible Training
 
+### State of the Art (June 2026)
+- **W&B + MLflow 3.x registry** are standard; **lineage** (data hash + git SHA) is the audit anchor.
+- **RLVR / GRPO** post-training runs are tracked like any other sweep.
+- Model + prompt + eval-set versioning unify as the **"four assets."**
+- Reproducibility discipline (seeds, pinned data) is the cross-run comparability bar.
+
 **Altitude:** Engineer · **Anchor case:** retrain `delivery-eta` with every run logged to W&B, the winning model promoted in the MLflow registry, and a one-command path from "experiment" to "registered, stage=Staging."
 
 ### Learning goals
@@ -324,6 +354,8 @@ eta_features()
 - Run a small W&B Sweep over 2–3 hyperparameters; pick the best by validation MAE.
 - Log the model to **MLflow Model Registry**; promote to `Staging`; write a `promote.py` that the CI will call next week.
 - **Deliverable:** a tracked sweep + a registered model with lineage. **Acceptance:** from the registered model you can click/trace back to its data version and git SHA.
+
+▶ **Practical project:** `DataTalksClub/mlops-zoomcamp` — follow its experiment-tracking module (W&B/MLflow) to log the `delivery-eta` sweep and promote a registry version with lineage.
 
 ### Harness / reusable skill — `$run-ledger`
 - **Purpose:** ensure every training run is reproducible and registry-promotable.
@@ -380,6 +412,12 @@ with mlflow.start_run():
 
 ## Week 5 — Model Serving I: FastAPI, vLLM & Triton
 
+### State of the Art (June 2026)
+- **vLLM continuous batching + FP8 KV-cache** (`--kv-cache-dtype fp8`, ~half KV memory, ~2× decode slope).
+- **Speculative decoding** gives 2–5× at low concurrency (incompatible with some KV-quant — a teachable gotcha).
+- **FlashAttention-3** (Hopper) / **FlashAttention-4** (Blackwell) are the attention defaults.
+- p50/p95/p99 + tokens/sec are the honest metrics; **Triton vs vLLM** is chosen by workload.
+
 **Altitude:** Engineer · **Anchor case:** serve `delivery-eta` behind a FastAPI service *and* stand up the `support-copilot` LLM on a self-hosted **vLLM** OpenAI-compatible endpoint; compare to a Triton-served path.
 
 ### Learning goals
@@ -400,6 +438,8 @@ with mlflow.start_run():
 - Load-test all paths with `k6`/`locust`; produce a latency+throughput table (FastAPI vs vLLM vs Triton).
 - **Deliverable:** two live endpoints + a serving-comparison table. **Acceptance:** vLLM continuous-batching throughput beats a naive one-request-at-a-time loop by ≥3× at equal p95, shown with numbers.
 - **Design review #1 (10%-component):** an ADR choosing the serving topology for both anchor cases.
+
+▶ **Practical project:** `VizuaraAI/infertutor-arena-capstone` — study its Modal + vLLM serving stack to stand up and benchmark the `support-copilot` LLM endpoint.
 
 ### Harness / reusable skill — `$serve-bench`
 - **Purpose:** benchmark any serving stack for latency/throughput/cost and recommend a topology.
@@ -463,6 +503,12 @@ def predict(r: Req, resp: Response):
 
 ## Week 6 — CI/CD for Models *and* Prompts/Evals (Eval-Gated Deploys)
 
+### State of the Art (June 2026)
+- **promptfoo + DeepEval** are the eval-gate tooling; **prompts are versioned, evaluated artifacts.**
+- **CI/CD/CT** (continuous training) + **eval-gated deploys** are the LLMOps maturity bar.
+- Golden/regression sets kept out of few-shot to avoid leakage.
+- LLM-judge gates need a **fixed judge + seed + tolerance band** (TrustJudge biases).
+
 **Altitude:** Engineer · **Anchor case:** a GitHub Actions pipeline that builds, tests, **evaluates**, and (only if the eval passes) deploys both `eta-model` and `support-copilot`. A prompt change to the copilot must clear an offline eval gate before it can ship.
 
 ### Learning goals
@@ -482,6 +528,8 @@ def predict(r: Req, resp: Response):
 - Add a **`promptfoo`** eval suite (`evals/copilot/`) with ≥20 cases + assertions (contains/llm-rubric/latency/cost); fail CI if pass-rate < 0.9 or cost regresses.
 - Wire **eval-gated deploy**: deploy job `needs: eval` and only runs on `main` after green eval.
 - **Deliverable:** two green pipelines, one of which blocks a deliberately-bad prompt PR. **Acceptance:** a PR that worsens the copilot's eval pass-rate is *automatically blocked* by CI (screenshot the red gate).
+
+▶ **Practical project:** `promptfoo/promptfoo` — build the offline eval suite and wire it as the CI gate that blocks a regressing copilot prompt PR.
 
 ### Harness / reusable skill — `$eval-gate`
 - **Purpose:** turn any eval suite into a CI gate that blocks regressions in quality, latency, or cost.
@@ -540,6 +588,12 @@ jobs:
 
 ## Week 7 — LLMOps: Gateways, Prompt Management, Semantic Caching & Cost/Latency Control
 
+### State of the Art (June 2026)
+- The cost trio: **prompt caching** (up to 90%) + **semantic caching** + **model routing/escalation**.
+- Gateways: **LiteLLM, Portkey, Cloudflare AI Gateway** for keys/fallback/budgets.
+- **Model routing** across Opus 4.8 / GPT-5.5 / open-weight tiers by request difficulty.
+- **Cost-as-an-SLO** with spend kill-switches; prompt management as versioned artifacts.
+
 **Altitude:** Engineer · **Anchor case:** route every `support-copilot` LLM call through an **LLM gateway** (LiteLLM) with centralized keys, fallback, **semantic caching**, per-tenant budgets, and a live cost/latency dashboard.
 
 ### Learning goals
@@ -559,6 +613,8 @@ jobs:
 - Add a **semantic cache** (GPTCache/Redis): measure hit-rate, cost saved, and run a small audit for wrong-cache-hits.
 - Move copilot prompts into a versioned registry (Langfuse prompts or a `prompts/` dir with hashes); select variant by env.
 - **Deliverable:** gateway + cache + cost dashboard. **Acceptance:** a documented configuration that cuts cost/request ≥30% on a replayed traffic sample *without* dropping the Week-6 eval pass-rate below threshold.
+
+▶ **Practical project:** `decodingml/llm-twin-course` — adapt its production LLMOps patterns (gateway, caching, cost control) to route the copilot through LiteLLM with budgets.
 
 ### Harness / reusable skill — `$llm-gateway`
 - **Purpose:** front any LLM app with routing, fallback, budgets, and caching, with cost/latency metered.
@@ -616,6 +672,12 @@ litellm_settings:
 
 ## Week 8 — Observability: Tracing, Metrics & LLM/Agent Telemetry
 
+### State of the Art (June 2026)
+- **OpenTelemetry GenAI semantic conventions** are standard; **Langfuse / Arize Phoenix / LangSmith** for LLM traces.
+- **Trace-linked evals** score real production traces, not synthetic copies.
+- **RED + LLM metrics** (tokens, $/req, cache-hit, eval score) on one dashboard.
+- High-cardinality data (prompts, doc-ids) lives in **traces, not metric labels**.
+
 **Altitude:** Engineer · **Anchor case:** full **OpenTelemetry** tracing of a `support-copilot` request (gateway → retrieval → tool calls → LLM), exported to **Langfuse** (LLM traces) and **Prometheus/Grafana** (RED metrics), with **Arize Phoenix** for retrieval/LLM evals on traces.
 
 ### Learning goals
@@ -635,6 +697,8 @@ litellm_settings:
 - Export metrics to **Prometheus**; build a **Grafana** dashboard (RED + tokens + cost + cache-hit + eval score).
 - Run **Phoenix** over a batch of traces to flag low-relevance retrievals and hallucination-prone answers.
 - **Deliverable:** an end-to-end trace + a Grafana dashboard + a Phoenix eval over real traces. **Acceptance:** given a planted bad answer, you can open *its* trace and name the failing step (bad retrieval vs bad tool result vs model error) in under 2 minutes.
+
+▶ **Practical project:** `langfuse/langfuse` — self-host it and instrument the copilot with OTel spans (retrieve / tools / LLM) carrying token and cost attributes.
 
 ### Harness / reusable skill — `$trace-debug`
 - **Purpose:** make any LLM/agent request fully traceable and explainable from a single span tree.
@@ -694,6 +758,12 @@ def answer(query: str) -> str:
 
 ## Week 9 — Monitoring, Drift Detection & Alerting in Production
 
+### State of the Art (June 2026)
+- **Evidently / NannyML** for data + performance drift; NannyML **estimates performance without labels**.
+- LLM proxy signals: **eval-on-sample, refusal rate, retrieval relevance, user feedback**.
+- **RAG-lifecycle drift** (index staleness) is now a first-class monitored axis.
+- **SLO / error-budget + for-duration** alerts to beat pager fatigue.
+
 **Altitude:** Engineer · **Anchor case:** detect when `delivery-eta` accuracy decays (new neighborhoods, holiday traffic) and when `support-copilot` quality drifts (new product line), with alerts that page only on real problems.
 
 ### Learning goals
@@ -707,6 +777,7 @@ def answer(query: str) -> str:
 - **Proxy quality signals for LLMs.** Plain English: without ground truth, watch refusal rate, eval-on-sample, retrieval relevance, user feedback. Common mistake: assuming "no errors logged" = "good answers."
 - **SLI/SLO/error budget.** Plain English: pick a measurable indicator, a target, and how much failure you'll tolerate before halting changes. Common mistake: alerting on raw metrics with no budget → pager fatigue.
 - **Delayed labels.** Common mistake: computing "live accuracy" before the true delivery time even exists.
+- **RAG-lifecycle drift.** Plain English: a RAG app can decay even when the model is frozen — the index goes stale, source documents change, or query patterns drift away from what was embedded; monitor *retrieval relevance and index freshness*, not just the final answer. Common mistake: watching only output quality while a stale index silently erodes grounding (the copilot's real failure mode here).
 
 ### Hands-on build
 - Add **Evidently**/NannyML drift monitors to `eta-model` (feature drift +, once labels arrive, performance); schedule as an Airflow report.
@@ -714,6 +785,8 @@ def answer(query: str) -> str:
 - Define SLOs (eta p95 latency, copilot eval pass-rate ≥ 0.88) and Prometheus **Alertmanager** rules with sane thresholds + for-durations.
 - **Deliverable:** drift dashboard + alert rules + a closed-loop runbook. **Acceptance:** an injected distribution shift fires exactly one actionable alert (not ten), linked to a runbook step.
 - **Design review #2 (10%-component):** an ADR for the release + rollback strategy you'll implement in Week 10.
+
+▶ **Practical project:** `evidentlyai/evidently` — use its drift detectors and reference datasets to monitor `delivery-eta` feature drift and fire one actionable alert.
 
 ### Harness / reusable skill — `$drift-watch`
 - **Purpose:** monitor a model or LLM app for drift/quality decay with low-noise, actionable alerts.
@@ -767,6 +840,12 @@ if share > 0.3:                 # tune from history, not gut feel
 
 ## Week 10 — Safe Release: Shadow, Canary, Rollback & Human-in-the-Loop Gates
 
+### State of the Art (June 2026)
+- **Argo Rollouts** canary + **AnalysisTemplate** for metric-driven auto-rollback.
+- **Shadow mode** (side-effects stubbed) → canary → blue-green/rolling is the progression.
+- **HITL gates** on irreversible agent actions with audit trails.
+- **A/B / interleaving** to decide promotion on a real metric, not a hunch.
+
 **Altitude:** Engineer · **Anchor case:** ship a new `eta-model` version and a new `support-copilot` prompt/model via **shadow mode → canary → rolling release**, with automated rollback on SLO breach and an HITL approval gate for high-risk agent actions.
 
 ### Learning goals
@@ -786,6 +865,8 @@ if share > 0.3:                 # tune from history, not gut feel
 - Configure **Argo Rollouts** canary with an analysis template (auto-rollback if p95 latency or error-rate breaches).
 - For the copilot, gate a "process refund" tool behind an HITL approval step (queue + approve/deny + audit log).
 - **Deliverable:** a recorded shadow→canary→rollback cycle + an HITL-gated agent action. **Acceptance:** a deliberately-bad new version is **auto-rolled-back** by the analysis gate (no human intervention), and the refund tool cannot fire without logged approval.
+
+▶ **Practical project:** `argoproj/argo-rollouts` — configure a canary with an AnalysisTemplate so a deliberately-bad version auto-rolls-back on SLO/eval breach.
 
 ### Harness / reusable skill — `$safe-release`
 - **Purpose:** release any model/prompt/agent change via shadow→canary with metric-driven auto-rollback + HITL gates for risky actions.
@@ -842,6 +923,12 @@ strategy:
 
 ## Week 11 — AgentOps: Operating Multi-Step Agent Systems in Production
 
+### State of the Art (June 2026)
+- Agent SDKs (**LangGraph** durable checkpointing, **Claude Agent SDK**, **Google ADK** native A2A) are the runtimes.
+- **Trajectory-level evals** (τ²-bench dual-control, **pass^k**) over final-answer scoring.
+- Guardrails: **step/cost/time budgets, loop detection, tool allow-lists, injection filters**.
+- **Agent memory** (Mem0/LangMem) + retention/PII policy is the production differentiator.
+
 **Altitude:** Engineer→Specialist · **Anchor case:** promote `support-copilot` from a single LLM call to a **tool-using, multi-step agent** (LangGraph) and operate it: per-step tracing, loop/cost guards, agent-specific evals (tau-bench-style), memory, and security against prompt injection.
 
 ### Learning goals
@@ -863,6 +950,8 @@ strategy:
 - Build a **trajectory eval** (tau-bench-style task set): score task success *and* "no unsafe step taken."
 - Wire short-term scratchpad + long-term memory (Mem0) with a retention/PII policy.
 - **Deliverable:** an operated agent with trajectory evals + guardrails + a red-team report. **Acceptance:** the agent (a) passes a budget/loop stress test without runaway, and (b) refuses ≥90% of a held-out prompt-injection set while keeping task success above the Week-6 bar.
+
+▶ **Practical project:** `krishnaik06/Agentic-LanggraphCrash-course` — follow it to refactor the copilot into a traced LangGraph agent with budget/loop/injection guardrails.
 
 ### Harness / reusable skill — `$agent-ops`
 - **Purpose:** make any agent observable, budgeted, safety-gated, and trajectory-evaluated before production.
@@ -920,6 +1009,12 @@ agent = g.compile()
 
 ## Week 12 — Capstone: One Model + One Agent, Notebook → Monitored Production
 
+### State of the Art (June 2026)
+- The 2026 production bar: **containerized + eval-gated CI/CD + gateway cost control + OTel traces + drift alerts + auto-rollback + AgentOps**.
+- Serving: **vLLM + FP8 KV-cache + FlashAttention-4**, with serverless GPU for spiky load.
+- **EU AI Act** GPAI obligations (**Aug 2, 2026**) make audit trails / evidence a compliance asset.
+- Frontier models swappable (**Opus 4.8 / GPT-5.5 / Gemini 3.1**) with open-weight fallback (**DeepSeek V4, Qwen 3.5**).
+
 **Altitude:** Engineer (graduating to Specialist) · **Anchor case:** your own model + your own agent, taken the full distance.
 
 ### Learning goals
@@ -952,6 +1047,8 @@ Take **one classical ML model** and **one LLM/agent** from a notebook to a monit
 - [ ] The agent **refuses** a held-out prompt-injection set while holding task success.
 - [ ] An **irreversible action cannot fire** without a logged human approval.
 - [ ] A **runbook** exists that a new on-call could follow to diagnose and roll back.
+
+▶ **Practical project:** `GokuMohandas/Made-With-ML` — use its end-to-end structure as the integration reference for taking your model + agent to monitored production.
 
 ### Harness / reusable skill — `$production-readiness-review`
 - **Purpose:** assemble all eight skills into a single go/no-go production review.
@@ -998,3 +1095,19 @@ By the end you can take **both** a deterministic model and a non-deterministic a
 `$repro-image` · `$k8s-deploy` · `$data-contract` · `$run-ledger` · `$serve-bench` · `$eval-gate` · `$llm-gateway` · `$trace-debug` · `$drift-watch` · `$safe-release` · `$agent-ops` · `$production-readiness-review`
 
 These carry directly into Subject 10 (Efficient AI: Serving & Systems), where the serving layer you built here gets quantized, batched, and benchmarked for real throughput and cost.
+
+---
+
+## 🛠 Hands-on repositories & build studios (merged June 2026)
+
+**Clone-and-run repos** (verified June 2026; full catalog in [`PROJECTS.md`](PROJECTS.md)):
+- `GokuMohandas/Made-With-ML` — an end-to-end MLOps course (design → develop → deploy → iterate) that parallels the classical-MLOps spine — Lectures 1, 4, 6
+- `DataTalksClub/mlops-zoomcamp` — a full MLOps zoomcamp (containers, pipelines, tracking, deployment, monitoring) to reinforce each rung — Lectures 1–6
+- `decodingml/llm-twin-course` — a production LLMOps build (RAG, gateways, deployment, eval) mapping to the LLMOps/AgentOps spine — Lectures 7, 8
+- `krishnaik06/mlproject` — an end-to-end ML project wired for CI/CD deployment, the "every project ships" template — Lectures 1, 6
+- `krishnaik06/Kidney-Disease-Classification-Deep-Learning-Project` — DVC + MLflow + pipeline + deployment, a concrete data/experiment-versioning reference — Lectures 3, 4
+
+**Build studios** (specs in [`PROJECTS.md`](PROJECTS.md)):
+- **AI SRE incident bot** — RCA draft, telemetry correlation, and human-approved rollback — *Lectures 8–11*
+
+**Human-review UX:** interfaces that surface evidence, uncertainty, correction, and escalation are graded engineering, not an afterthought — every deployed model/agent ships one.

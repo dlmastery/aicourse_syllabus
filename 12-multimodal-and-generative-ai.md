@@ -1,6 +1,6 @@
 # Subject 12 — Multimodal & Generative AI
 
-**Track:** Multimodal / Generative · **Altitude:** Builder → Engineer · **Length:** 12 weeks (2 lecture hrs + 3 lab hrs/wk)
+**Track:** Multimodal / Generative · **Altitude:** Builder → Engineer · **Length:** 12 weeks (3 lecture hrs + 3 lab hrs/wk)
 **Prerequisites:** Subjects 01–03 (math/ML from scratch, deep learning, transformers/attention). You can write a training loop, implement attention, and read a loss curve. We assume PyTorch fluency and one GPU (24 GB or Colab/Modal).
 **Pedagogy:** Vizuara-style *build-the-component-from-scratch* meets the book's *concept → code → critique → reflection → rebuild* loop. You implement a Vision Transformer, a CLIP-style contrastive loss, and a DDPM **from scratch** before touching pretrained giants — then you fine-tune and assemble the giants into a real app.
 
@@ -66,7 +66,12 @@ Ship **two coupled artifacts**:
 
 ## Week 1 — Vision Transformers From Scratch: Images as Sequences of Patches
 
-**Altitude:** Builder · **Format:** 2h lecture + 3h lab
+### State of the Art (June 2026)
+- ViTs remain the multimodal backbone; **DINOv2 / DINOv3** self-supervised features and **SigLIP 2** encoders are the 2026 pretrained defaults feeding VLMs.
+- **Register tokens** and the **FlashAttention-3/4 SDPA backend** are standard ViT training practice; patchification is still a `Conv2d`.
+- Data-efficiency tricks (DeiT distillation, strong augmentation) still decide small-data ViT training.
+
+**Altitude:** Builder · **Format:** 3h lecture + 3h lab
 **Anchor case:** classify CIFAR-10 with a ViT you write yourself — patchify, embed, attend, pool, predict.
 
 ### Learning goals
@@ -84,6 +89,8 @@ Ship **two coupled artifacts**:
 - Implement `PatchEmbed`, multi-head attention, a transformer block, and a ViT classifier in pure PyTorch (no `timm` model); train on CIFAR-10 with augmentation; report top-1 accuracy.
 - Compare against a `timm` ViT and a small ResNet baseline; visualize attention rollout for 5 images.
 - **Deliverable:** `builds/vit/` with your ViT, accuracy vs baselines, and attention visualizations. **Acceptance:** from-scratch ViT trains and beats a linear baseline; attention maps rendered.
+
+▶ **Practical project:** `VizuaraAI/Transformers-for-vision-BOOK` — implement the ViT (patch-embed → attention → class head) from scratch and verify it against a reference.
 
 ### Harness / reusable skill — `$from-scratch-verifier`
 - **Purpose:** prove a from-scratch module matches a reference implementation.
@@ -137,6 +144,11 @@ class PatchEmbed(nn.Module):
 
 ## Week 2 — Contrastive Learning & CLIP: Aligning Images and Text
 
+### State of the Art (June 2026)
+- **SigLIP 2** (sigmoid loss) is the 2026 contrastive default; **ColPali / ColQwen3** extend late-interaction contrastive retrieval to document images.
+- Multimodal embeddings (**voyage-multimodal-3, Qwen3-VL-Embedding, Cohere embed-v4**) productionize CLIP-style retrieval.
+- The modality-gap and batch-size-as-negatives lessons still hold; large-batch / sigmoid loss mitigate them.
+
 **Altitude:** Builder · **Anchor case:** train a small CLIP on a image–caption subset so "a photo of a dog" retrieves dog images.
 
 ### Learning goals
@@ -154,6 +166,8 @@ class PatchEmbed(nn.Module):
 - Implement CLIP's symmetric loss; train a small dual-encoder (ViT image tower + a small text encoder) on a **Flickr30k / COCO captions** subset; report image↔text Recall@1/5/10.
 - Run **zero-shot CIFAR-10** with `open_clip` pretrained weights and compare prompt templates.
 - **Deliverable:** `builds/clip/` with the loss, retrieval metrics, and a zero-shot comparison. **Acceptance:** symmetric loss verified; retrieval Recall@k reported both directions.
+
+▶ **Practical project:** `VizuaraAI/Transformers-for-vision-BOOK` — train a dual-encoder with the symmetric InfoNCE loss and measure both-direction retrieval.
 
 ### Harness / reusable skill — `$contrastive-eval`
 - **Purpose:** evaluate any image–text model on retrieval and zero-shot, both directions.
@@ -202,6 +216,11 @@ def clip_loss(img_emb, txt_emb, logit_scale):
 
 ## Week 3 — Vision-Language Models: LLaVA, Qwen-VL, Llama-Vision & Fine-Tuning
 
+### State of the Art (June 2026)
+- 2026 open VLM leaders: **Qwen3-VL, Llama 4 (native-multimodal), InternVL 3, Molmo, Gemma 3 vision**; closed frontier: **Gemini 3.1 Pro, GPT-5.5, Claude Opus 4.8**.
+- **AnyRes / high-res tiling** for documents; **LoRA/QLoRA + trl** fine-tuning; **object-hallucination evals (POPE / HALault)** are mandatory.
+- Connector design (MLP vs resampler) plus the visual-token budget remain the core trade-offs.
+
 **Altitude:** Builder → Engineer · **Anchor case:** stand up a VLM that answers questions about an image, then LoRA-fine-tune it on a target task.
 
 ### Learning goals
@@ -219,6 +238,8 @@ def clip_loss(img_emb, txt_emb, logit_scale):
 - Run zero-shot VQA/captioning with an open VLM on **VQAv2 / TextVQA / DocVQA** samples; measure accuracy and inspect failures.
 - **LoRA-fine-tune** the VLM on a small target instruction set; report before/after on a held-out slice.
 - **Deliverable:** `builds/vlm/` with inference results, a LoRA fine-tune, and a before/after table. **Acceptance:** measurable lift on the target slice; ≥3 hallucination examples documented.
+
+▶ **Practical project:** `VizuaraAI/infertutor-arena-capstone` — run/serve a Qwen-VL VLM for VQA and LoRA-fine-tune it on a target slice.
 
 ### Harness / reusable skill — `$vlm-probe`
 - **Purpose:** characterize a VLM's strengths/failures before deploying it.
@@ -272,6 +293,11 @@ def vqa(image, question):
 
 ## Week 4 — Diffusion From Scratch I: DDPM (the Forward & Reverse Process)
 
+### State of the Art (June 2026)
+- **DiT (Diffusion Transformer)** has displaced the U-Net as the scalable backbone; **ε/v-prediction + cosine/EDM schedules** are standard.
+- **FID + a memorization / nearest-neighbor check** is the honest eval; **EDM2** training recipes are the reference.
+- Foundations are still taught on CIFAR/CelebA at 32–64px on one GPU.
+
 **Altitude:** Builder · **Anchor case:** train a denoising diffusion model on CIFAR-10/CelebA and sample images you generated yourself.
 
 ### Learning goals
@@ -289,6 +315,8 @@ def vqa(image, question):
 - Implement the DDPM schedule, a small time-conditioned U-Net, the ε-loss, and an ancestral sampler; train on CIFAR-10 (or 32×32 CelebA); generate a sample grid.
 - Compute **FID** vs the training set; compare two noise schedules (linear vs cosine).
 - **Deliverable:** `builds/ddpm/` with training code, sample grids, and FID. **Acceptance:** recognizable samples; FID reported; cosine vs linear compared.
+
+▶ **Practical project:** `VizuaraAILabs/Principles-of-Diffusion-Models` — implement the DDPM forward/reverse + time-conditioned U-Net and report FID.
 
 ### Harness / reusable skill — `$generative-eval`
 - **Purpose:** evaluate a generator beyond eyeballing.
@@ -342,6 +370,11 @@ def loss_fn(model, x0):
 
 ## Week 5 — Diffusion II: Latent Diffusion, Conditioning & Text-to-Image
 
+### State of the Art (June 2026)
+- **Rectified-flow latent transformers** (SD3.5, **FLUX.1** — the open-weights leader) replaced classic LDM; closed leaders: **Nano Banana Pro, GPT Image, Midjourney v7**.
+- **LoRA / DreamBooth** is still the fine-tune path; eval = **CLIPScore (alignment) + FID/realism** with a CFG sweep.
+- Text rendering and instruction-following are the 2026 quality frontier.
+
 **Altitude:** Builder → Engineer · **Anchor case:** fine-tune Stable-Diffusion-style latent diffusion to generate from text prompts. **(Midterm DDPM report due.)**
 
 ### Learning goals
@@ -360,6 +393,8 @@ def loss_fn(model, x0):
 - **LoRA / DreamBooth fine-tune** on a small concept set (10–20 images); evaluate with CLIPScore on held-out prompts + a sample grid.
 - Submit the **W4 DDPM report** as the midterm.
 - **Deliverable:** `builds/latent-diffusion/` + `midterm/ddpm-report.md`. **Acceptance:** fine-tune produces the target concept; CFG sweep documented; CLIPScore reported.
+
+▶ **Practical project:** `VizuaraAILabs/Principles-of-Diffusion-Models` — extend to latent diffusion + CFG and LoRA/DreamBooth fine-tune with a CLIPScore eval.
 
 ### Harness / reusable skill — `$t2i-eval`
 - **Purpose:** evaluate a text-to-image model on realism *and* alignment.
@@ -412,6 +447,11 @@ clip = CLIPScore(model_name_or_path="openai/clip-vit-base-patch16")
 
 ## Week 6 — Flow Matching & Rectified Flow: The Modern Generative Backbone
 
+### State of the Art (June 2026)
+- **Flow matching / rectified flow is the modern backbone** (SD3, FLUX, and most video models); **reflow + few-step distillation** give 1–4 step sampling.
+- **Consistency models / distilled samplers** (LCM, consistency-FM) push toward real-time generation.
+- The ODE-velocity-regression view (vs the diffusion SDE) is now the standard pedagogy.
+
 **Altitude:** Engineer · **Anchor case:** retrain your small generator with a flow-matching objective and compare sample quality and steps against DDPM.
 
 ### Learning goals
@@ -428,6 +468,8 @@ clip = CLIPScore(model_name_or_path="openai/clip-vit-base-patch16")
 ### Hands-on build (the lab)
 - Implement conditional flow matching on the same CIFAR/CelebA setup; sample with a fixed-step ODE solver (Euler/Heun); compare FID at 4 / 10 / 50 steps vs your DDPM and DDIM.
 - **Deliverable:** `builds/flow-matching/` with the loss, a steps-vs-FID curve across methods, and a short writeup. **Acceptance:** flow matching matches/beats DDPM at far fewer steps, or the gap is explained.
+
+▶ **Practical project:** `VizuaraAILabs/Principles-of-Diffusion-Models` — retrain with a conditional flow-matching objective and plot FID-vs-NFE against DDPM/DDIM.
 
 ### Harness / reusable skill — `$sampler-benchmark`
 - **Purpose:** compare generative samplers on the quality–compute frontier.
@@ -484,6 +526,11 @@ def sample(model, shape, steps=8):                 # Euler ODE integration noise
 
 ## Week 7 — Video Generation: Spatiotemporal Diffusion & World Consistency
 
+### State of the Art (June 2026)
+- 2026 video models: **Sora 2, Veo 3.1, Kling 3.0, Seedance 2.0, Runway Gen-4.5, Wan 2.6** — native 4K, synchronized audio, multi-shot.
+- The architecture to teach: **DiT over spatiotemporal latent patches**; eval = **VBench dimensions + FVD + temporal consistency**.
+- Controllability (camera/motion, image-to-video) and physical consistency are the open problems.
+
 **Altitude:** Engineer · **Anchor case:** generate short clips and reason about temporal consistency — why video is not "many independent images."
 
 ### Learning goals
@@ -500,6 +547,8 @@ def sample(model, shape, steps=8):                 # Euler ODE integration noise
 ### Hands-on build (the lab)
 - Run an open model (**Stable Video Diffusion / CogVideoX**) for image- and text-to-video on a handful of prompts; measure a temporal-consistency proxy (frame-to-frame CLIP/feature similarity) and inspect flicker.
 - **Deliverable:** `builds/video/` with generated clips, a consistency analysis, and a compute/limits note. **Acceptance:** consistency metric reported; ≥2 failure modes (flicker, morphing, physics violation) documented.
+
+▶ **Practical project:** `VizuaraAI/vla-driving-simulation` — generate action-conditioned frames and measure a temporal-consistency proxy + flicker catalog.
 
 ### Harness / reusable skill — `$video-consistency-eval`
 - **Purpose:** evaluate generated video for temporal coherence, not just single-frame quality.
@@ -547,6 +596,11 @@ def temporal_consistency(frame_feats):             # frame_feats: (T, D) e.g. CL
 
 ## Week 8 — Audio & Speech: ASR (Whisper), TTS & Audio Representations
 
+### State of the Art (June 2026)
+- **Whisper-v3 / large** remain WER baselines; **neural codecs (EnCodec, DAC, Mimi/Moshi)** tokenize audio for audio-LLMs.
+- 2026 TTS/voice: **ElevenLabs Eleven v3, XTTS-v2, Parler, Kokoro**; full-duplex speech models (Moshi-style) are the frontier.
+- Robustness slices (accent/noise/code-switch) + identical text normalization on both sides are the eval discipline.
+
 **Altitude:** Builder → Engineer · **Anchor case:** a speech pipeline that transcribes audio (Whisper) and speaks responses (TTS) — the voice layer of a multimodal assistant.
 
 ### Learning goals
@@ -564,6 +618,8 @@ def temporal_consistency(frame_feats):             # frame_feats: (T, D) e.g. CL
 - Transcribe a **LibriSpeech** subset with Whisper; compute WER overall and on a noisy/accented slice; compare model sizes.
 - Run a modern **TTS** (XTTS-v2/Parler/Kokoro) on generated text; do a small MOS-style listening rubric.
 - **Deliverable:** `builds/audio/` with WER tables (incl. a hard slice), TTS samples, and a robustness note. **Acceptance:** WER reported with a slice; TTS intelligibility rated.
+
+▶ **Practical project:** `VizuaraAI/audio-llm` — build the Whisper ASR→WER + TTS pipeline and evaluate a noisy/accented slice.
 
 ### Harness / reusable skill — `$asr-robustness-eval`
 - **Purpose:** evaluate a speech system beyond clean-set WER.
@@ -613,6 +669,11 @@ def transcribe_wer(audio_path, reference):
 
 ## Week 9 — Any-to-Any & Unified Multimodal Models
 
+### State of the Art (June 2026)
+- **Natively-multimodal frontier models** (Gemini 3.1 Pro, GPT-5.5, Qwen3-Omni) do any-to-any in one model; **early-fusion (Chameleon-style)** is the architecture lens.
+- The 2026 question is **native generalist vs specialist pipeline** orchestrated by an agent SDK / **MCP** tools.
+- Interleaved text+image generation and unified token spaces are the standard framing.
+
 **Altitude:** Engineer · **Anchor case:** assemble (and probe) a model/system that takes mixed image+text+audio in and produces mixed outputs — the architecture behind native multimodal frontier models.
 
 ### Learning goals
@@ -630,6 +691,8 @@ def transcribe_wer(audio_path, reference):
 - Build an any-to-any **system** (not necessarily one model): speech-in (Whisper) → VLM reasoning over an image → text + optional image/speech out, orchestrated with the Claude Agent SDK / a router.
 - Compare it against a single native multimodal model on the same tasks; document where each wins.
 - **Deliverable:** `builds/any2any/` with the system, a head-to-head comparison, and a fusion-strategy note. **Acceptance:** working multimodal round-trip; pipeline-vs-native comparison with a recommendation.
+
+▶ **Practical project:** `Shubhamsaboo/awesome-llm-apps` — assemble a speech→VLM→speech any-to-any pipeline and compare it head-to-head with a native multimodal model.
 
 ### Harness / reusable skill — `$modality-router-eval`
 - **Purpose:** evaluate a multimodal system's routing/fusion choices.
@@ -679,6 +742,11 @@ def multimodal_turn(audio_path, image):
 
 ## Week 10 — World Models: Learning Simulators (IRIS, Genie-style)
 
+### State of the Art (June 2026)
+- 2026 world models: **Genie 3** (real-time playable interactive worlds), **DreamerV3**, **IRIS/tokenized**, and **video-diffusion-as-world-model** (the dominant framing).
+- Action-conditioned generation + **compounding-error / rollout-horizon** evaluation is the core discipline; ties to robotics/VLA (S13).
+- "Neural game engines" and model-based RL inside learned simulators are the frontier.
+
 **Altitude:** Engineer → Specialist · **Anchor case:** train/run a world model that predicts future frames/observations given actions — a learned simulator an agent can plan or train inside.
 
 ### Learning goals
@@ -695,6 +763,8 @@ def multimodal_turn(audio_path, image):
 ### Hands-on build (the lab)
 - Run a tokenized world model (IRIS or a DreamerV3 latent model) on an Atari/`gym` environment, or train a small action-conditioned next-frame predictor; measure rollout prediction error vs horizon.
 - **Deliverable:** `builds/world-model/` with rollout predictions, an error-vs-horizon curve, and a planning/imagination demo. **Acceptance:** rollouts shown; compounding-error curve plotted; one use (planning or data-augmentation) demonstrated.
+
+▶ **Practical project:** `VizuaraAI/vla-driving-simulation` — train/run an action-conditioned world model and plot rollout error vs horizon.
 
 ### Harness / reusable skill — `$rollout-eval`
 - **Purpose:** evaluate a world model's predictive fidelity over time.
@@ -751,6 +821,11 @@ def horizon_error(world, traj):                    # compounding error vs ground
 
 ## Week 11 — Multimodal RAG & Agents: Grounded, Tool-Using Multimodal Systems
 
+### State of the Art (June 2026)
+- **ColPali / ColQwen3 page-image retrieval** (no OCR) + **agentic RAG** (zoom/OCR/search tools via the Claude Agent SDK / MCP) is the 2026 stack.
+- Rerankers (**Cohere Rerank 3.5, voyage-multimodal-3**) + grounded answering with **region/page citations**; abstention ("can't see it") is required.
+- Multimodal hallucination evals (POPE-style / LLM-judge) gate deployment.
+
 **Altitude:** Engineer · **Anchor case:** a visual document assistant that retrieves over images+text and answers with grounded, hallucination-checked responses — and can call tools (OCR, zoom, search).
 
 ### Learning goals
@@ -768,6 +843,8 @@ def horizon_error(world, traj):                    # compounding error vs ground
 - Build a multimodal-RAG assistant over a document image set (**DocVQA / InfographicVQA**) with image-page retrieval + grounded answering; add an agentic zoom/OCR tool and an abstention guardrail.
 - Evaluate with answer accuracy + a grounding/hallucination check (judge or POPE-style) and report the abstention behavior.
 - **Deliverable:** `builds/mm-rag/` with the agent, a grounding eval, and a hallucination/abstention report. **Acceptance:** grounded citations to image regions/pages; hallucination rate measured; abstention works on out-of-document queries.
+
+▶ **Practical project:** `NirDiamant/RAG_Techniques` — build multimodal/agentic RAG with ColPali-style retrieval + a grounding/abstention guardrail.
 
 ### Harness / reusable skill — `$mm-grounding-eval`
 - **Purpose:** verify multimodal answers are grounded in retrieved visual evidence.
@@ -818,6 +895,11 @@ def mm_rag_answer(query, page_images, retriever, vlm, threshold=0.25):
 
 ## Week 12 — Capstone: A Multimodal App + a Small Diffusion Model
 
+### State of the Art (June 2026)
+- A coupled deliverable: a **from-scratch DiT / flow-matching generator (FID + memorization check)** + a **VLM assistant with grounding/hallucination eval and abstention**.
+- Frontier reference points: **FLUX.1** (open image), **Qwen3-VL** (open VLM), **Gemini 3.1 Pro** (multimodal frontier).
+- Every metric is reported against a baseline; an honest failure-mode catalog is the bar.
+
 **Altitude:** Engineer · **Anchor case:** your two coupled artifacts, shipped and honestly evaluated.
 
 ### Learning goals
@@ -832,6 +914,8 @@ def mm_rag_answer(query, page_images, retriever, vlm, threshold=0.25):
 - Finish **M3** (multimodal-RAG/agent hardening) and **M4** (demo + report) coupling (A) the diffusion model and (B) the assistant.
 - Build a single Gradio demo and a report where every number cites an artifact.
 - **Deliverable:** `capstone/` with both artifacts, evals, demo, and report. **Acceptance:** the capstone checklist (top of file) is fully satisfied.
+
+▶ **Practical project:** `VizuaraAI/infertutor-arena-capstone` — ship the coupled diffusion-model + served VLM app with honest evals as the capstone.
 
 ### Harness / reusable skill — `$multimodal-capstone-packet`
 - **Purpose:** assemble generation + understanding evidence into one reviewable bundle.
@@ -884,4 +968,18 @@ By the end you can: implement a Vision Transformer, a CLIP contrastive loss, a D
 
 ## Skills produced (reused program-wide)
 `$from-scratch-verifier` · `$contrastive-eval` · `$vlm-probe` · `$generative-eval` · `$t2i-eval` · `$sampler-benchmark` · `$video-consistency-eval` · `$asr-robustness-eval` · `$modality-router-eval` · `$rollout-eval` · `$mm-grounding-eval` · `$multimodal-capstone-packet`
+
+---
+
+## 🛠 Hands-on repositories & build studios (merged June 2026)
+
+**Clone-and-run repos** (verified June 2026; full catalog in [`PROJECTS.md`](PROJECTS.md)):
+- `VizuaraAI/Transformers-for-vision-BOOK` — vision-transformer internals from the ground up; the reference for your from-scratch ViT — Lecture 1.
+- `VizuaraAILabs/Principles-of-Diffusion-Models` — diffusion from first principles; the DDPM/forward-reverse derivations you implement — Lectures 4–5.
+- `VizuaraAI/audio-llm` — an audio-LLM walkthrough (codec tokens → speech modeling) for the ASR/TTS and any-to-any weeks — Lectures 8–9.
+- `VizuaraAI/infertutor-arena-capstone` — Modal + vLLM + Qwen-VL served VLM; a worked multimodal serving reference — Lectures 3, 12.
+- `VizuaraAI/vla-driving-simulation` — an action-conditioned VLA/world-model build to ground rollout/world-model evaluation — Lecture 10.
+
+**Build studios** (specs in [`PROJECTS.md`](PROJECTS.md)):
+- **VLA / world-model reading lab** — robotics-policy / world-model evaluation with a safety analysis — *Lectures 10–11*.
 </content>

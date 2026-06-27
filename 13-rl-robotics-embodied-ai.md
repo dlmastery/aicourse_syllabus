@@ -1,6 +1,6 @@
 # Subject 13 — Reinforcement Learning, Robotics & Embodied AI
 
-**Track:** Decision-Making & Embodiment · **Altitude:** Engineer → Specialist · **Length:** 14 weeks (2 lecture hrs + 4 lab hrs/wk)
+**Track:** Decision-Making & Embodiment · **Altitude:** Engineer → Specialist · **Length:** 14 weeks (3 lecture hrs + 4 lab hrs/wk)
 **Prerequisites:** Subject 01 (math/ML from scratch), Subject 02 (deep learning), and comfort with PyTorch, autograd, and training loops. Subject 11/12 (LLM fine-tuning, agents) recommended before the RLHF/GRPO/agentic-RL block (Weeks 8–10).
 **Pedagogy:** Vizuara *"Reinforcement Learning in Production"* DQN→PPO→GRPO/DPO lineage, built component-by-component, fused with Stanford CS234 (theory) and MIT 6.S890 (multi-agent), under the source book's `concept → code → critique → reflection → rebuild` loop and the `prompt → workflow → skill → harness` ladder. You implement every algorithm once in NumPy/PyTorch on a tiny environment before reaching for a library.
 
@@ -36,7 +36,12 @@ _1 academic quarter · 3 lecture-hours/week · 14 lectures (~42 contact hrs). Fu
 
 ## Week 1 — MDPs, Bellman Equations & Dynamic Programming From Scratch
 
-**Altitude:** Engineer · **Format:** 2h lecture + 4h lab
+### State of the Art (June 2026)
+- RLVR (RL with Verifiable Rewards) made the Bellman/advantage machinery the substrate under every 2026 reasoning model (DeepSeek-R1, GPT-5.5 thinking) — same value estimation, LLM-scale.
+- Gymnasium 1.x (Farama) is the maintained API standard (`terminated`/`truncated`); MuJoCo is fully open-source (Apache-2.0).
+- Tunable thinking-effort in Claude Opus 4.8 / Gemini 3.1 Pro is literally test-time planning depth — the MDP horizon as a product dial.
+
+**Altitude:** Engineer · **Format:** 3h lecture + 4h lab
 **Anchor case:** a 4×4 `FrozenLake`-style gridworld where you can read every value by hand and check the math.
 
 ### Learning goals
@@ -57,6 +62,8 @@ _1 academic quarter · 3 lecture-hours/week · 14 lectures (~42 contact hrs). Fu
 - `dp.py`: implement `policy_evaluation`, `policy_iteration`, `value_iteration`; assert the two converge to the same `V*` within `1e-8`.
 - Plot the value function as a heatmap over the grid; verify the greedy policy "flows" to the goal.
 - **Deliverable:** `python value_iteration.py` prints `V*` and the optimal policy; **Acceptance:** policy iteration and value iteration agree; greedy policy reaches goal with prob 1 on the deterministic grid.
+
+▶ **Practical project:** `VizuaraAILabs/OpenClaw-RL-Tutorial` — implement value & policy iteration on the tutorial gridworld and assert both converge to the same V*.
 
 ### Harness / reusable skill — `$mdp-modeler`
 - **Purpose:** turn any informal control problem into an explicit MDP spec before coding.
@@ -115,6 +122,11 @@ def value_iteration(P, R, gamma=0.99, tol=1e-8):
 
 ## Week 2 — Model-Free Prediction & Control: Monte Carlo, TD, Q-Learning, SARSA
 
+### State of the Art (June 2026)
+- TD/Q-learning targets are unchanged, but 2026 RLVR trainers (veRL, OpenRLHF) reuse the same advantage estimators at token level.
+- The on/off-policy distinction now frames agentic-RL: stale-rollout drift in distributed trainers is the modern ‘cliff’.
+- Gymnasium 1.x vectorized envs + seeded, multi-seed reporting are the de-facto reproducibility standard.
+
 **Altitude:** Engineer · **Anchor case:** `FrozenLake` and `CliffWalking` where the model is now *hidden* — you only get samples.
 
 ### Learning goals
@@ -135,6 +147,8 @@ def value_iteration(P, R, gamma=0.99, tol=1e-8):
 - Reproduce the classic **cliff-walking divergence**: SARSA takes the safe path, Q-learning the risky optimal path.
 - Log episode return curves (mean over 10 seeds) for both.
 - **Deliverable:** return-curve plot + the cliff trajectory difference; **Acceptance:** Q-learning reaches optimal return, SARSA the safe sub-optimal return, both reproducibly over seeds.
+
+▶ **Practical project:** `VizuaraAILabs/OpenClaw-RL-Tutorial` — code tabular Q-learning vs SARSA on CliffWalking and reproduce the safe-vs-optimal path split over ≥5 seeds.
 
 ### Harness / reusable skill — `$rollout-harness`
 - **Purpose:** a seeded, vectorizable environment-interaction loop reused all course.
@@ -193,6 +207,11 @@ def q_learning(env, episodes=500, alpha=0.5, gamma=0.99, eps=0.1):
 
 ## Week 3 — Deep Q-Networks: DQN → Double → Dueling → Rainbow
 
+### State of the Art (June 2026)
+- Value-based DQN is niche vs policy methods now, but Double-Q/distributional ideas resurface in 2026 verifier/critic models (RL^V, ~1.2–1.6× test-time gains).
+- FlashAttention-4 (Blackwell) + FP8 KV-cache are serving defaults even for RL rollout/eval networks.
+- Atari-100k sample-efficiency remains the canonical deep-RL smoke test.
+
 **Altitude:** Engineer · **Anchor case:** `LunarLander-v3` and one Atari game (`Breakout`) — where tabular dies and function approximation is mandatory.
 
 ### Learning goals
@@ -212,6 +231,8 @@ def q_learning(env, episodes=500, alpha=0.5, gamma=0.99, eps=0.1):
 - `dqn.py`: replay buffer, target net, ε-greedy, Huber loss on `LunarLander`.
 - Ablation: vanilla → +Double → +Dueling → +PER; one return curve per variant (3 seeds).
 - **Deliverable:** ablation plot + a table attributing sample-efficiency gain to each component; **Acceptance:** DQN solves `LunarLander` (>200 mean return) and each ablation is reproducible.
+
+▶ **Practical project:** `VizuaraAILabs/OpenClaw-RL-Tutorial` — build DQN→Double→Dueling→PER on LunarLander and attribute each ablation’s sample-efficiency gain.
 
 ### Harness / reusable skill — `$value-debugger`
 - **Purpose:** diagnose value-based divergence. **Inputs:** Q-value logs, loss, return. **Outputs:** which deadly-triad symptom is firing (exploding Q, overestimation, replay staleness) + cheapest fix.
@@ -268,6 +289,11 @@ def dqn_loss(batch, q_net, target_net, gamma=0.99, double=True):
 
 ## Week 4 — Policy Gradients & Actor-Critic: REINFORCE, Baselines, A2C
 
+### State of the Art (June 2026)
+- Policy-gradient is the backbone of all 2026 LLM post-training: GRPO/DAPO are PG with group-relative advantages and no critic.
+- Advantage normalization + entropy control are standard ‘healthy training’ signals across TRL/veRL.
+- Continuous-control PG (MetaDrive, MuJoCo) is the bridge to robotics VLA fine-tuning.
+
 **Altitude:** Engineer · **Anchor case:** `CartPole` (discrete) then `MetaDrive` (continuous) — where we need policies that *output actions directly*.
 
 ### Learning goals
@@ -286,6 +312,8 @@ def dqn_loss(batch, q_net, target_net, gamma=0.99, double=True):
 - `pg.py`: REINFORCE on `CartPole`; add a learned-value baseline; plot variance of the gradient estimate.
 - `a2c.py`: synchronous advantage actor-critic on `MetaDrive` discrete-action mode.
 - **Deliverable:** variance-reduction plot (REINFORCE vs +baseline) + A2C return curve; **Acceptance:** baseline measurably reduces gradient variance; A2C beats a random policy on `MetaDrive`.
+
+▶ **Practical project:** `VizuaraAI/RL-in-Production-Bootcamp-Resources` — implement REINFORCE + value baseline + A2C and quantify the baseline’s gradient-variance reduction.
 
 ### Harness / reusable skill — `$gradient-variance-meter`
 - **Purpose:** quantify policy-gradient variance and the effect of variance-reduction tricks. **Inputs:** logp, returns/advantages. **Outputs:** gradient-norm variance over a batch + a recommended next reduction (baseline → GAE → normalization).
@@ -341,6 +369,11 @@ def reinforce_step(logps, rewards, gamma=0.99, baseline=None):
 
 ## Week 5 — Trust Regions & PPO: TRPO, GAE, and the Workhorse of Modern RL
 
+### State of the Art (June 2026)
+- PPO-clip is still the workhorse — GPT-5.5 / Claude-class RLHF and most RLVR recipes wrap a PPO core.
+- GAE λ and clip-fraction/approx-KL are the canonical health signals tracked in W&B/LangSmith RL dashboards.
+- veRL (HybridFlow) + Ray + vLLM is the 2026 reference stack for scaled PPO/GRPO.
+
 **Altitude:** Engineer → Specialist · **Anchor case:** `MetaDrive` continuous control and `MuJoCo HalfCheetah` — the locomotion warm-up for robotics.
 
 ### Learning goals
@@ -359,6 +392,8 @@ def reinforce_step(logps, rewards, gamma=0.99, baseline=None):
 - `ppo.py`: full PPO-clip + GAE + value-clipping + entropy bonus on `MuJoCo HalfCheetah` and `MetaDrive`.
 - Sweep `λ ∈ {0.9, 0.95, 0.99}` and `clip ε ∈ {0.1, 0.2, 0.3}`; report sensitivity.
 - **Deliverable:** PPO learning curves + a hyperparameter-sensitivity table; **Acceptance:** PPO reaches a documented MuJoCo HalfCheetah return threshold (>4000) reproducibly.
+
+▶ **Practical project:** `VizuaraAI/RL-in-Production-Bootcamp-Resources` — train PPO+GAE on MuJoCo HalfCheetah/MetaDrive and sweep λ and clip ε with a KL health trace.
 
 ### Harness / reusable skill — `$ppo-trainer`
 - **Purpose:** a reusable, instrumented PPO trainer (the backbone for Weeks 8–10 RLHF/GRPO).
@@ -412,6 +447,11 @@ def ppo_clip_loss(logp, logp_old, adv, eps=0.2):
 
 ## Week 6 — Offline RL & Imitation Learning
 
+### State of the Art (June 2026)
+- Offline RL + imitation underpin 2026 robot-learning data engines (LeRobot datasets, action chunking); BC→DAgger→IQL is still the ladder.
+- Decision-Transformer ‘RL-as-sequence’ converged with VLA models that tokenize actions.
+- Minari (Farama) is the maintained D4RL successor for trajectory datasets.
+
 **Altitude:** Specialist · **Anchor case:** `D4RL`/`Minari` driving + locomotion logs — learning a policy *without* environment interaction.
 
 ### Learning goals
@@ -431,6 +471,8 @@ def ppo_clip_loss(logp, logp_old, adv, eps=0.2):
 - `bc.py` + `dagger.py` on a MuJoCo expert; show DAgger fixes compounding error.
 - `iql.py` (or CQL) on a `Minari` D4RL dataset; compare to BC.
 - **Deliverable:** BC-vs-DAgger drift plot + offline-RL-vs-BC return table; **Acceptance:** offline RL beats BC on a sub-optimal-data dataset; DAgger beats BC on long horizons.
+
+▶ **Practical project:** `VizuaraAI/RL-in-Production-Bootcamp-Resources` — train IQL vs BC on a Minari dataset and show DAgger fixes compounding error.
 
 ### Harness / reusable skill — `$offline-data-auditor`
 - **Purpose:** assess whether a logged dataset can support offline RL. **Inputs:** trajectory dataset. **Outputs:** state/action coverage, return distribution, behavior-policy entropy, and an imitation-vs-offline-RL recommendation.
@@ -483,6 +525,11 @@ def iql_value_loss(q_net, v_net, s, a, expectile=0.7):
 
 ## Week 7 — Model-Based RL, MCTS & World Models (IRIS)
 
+### State of the Art (June 2026)
+- World models went mainstream via video-diffusion framing (Genie-style interactive environments); DiT over spatiotemporal latents is the architecture to know.
+- DreamerV3 and IRIS remain the open references; model-exploitation + trust-horizon are the live failure modes.
+- MCTS/AlphaZero search resurfaces as test-time deliberation in reasoning models.
+
 **Altitude:** Specialist · **Anchor case:** Atari from pixels with a *learned* world model; a board game with MCTS.
 
 ### Learning goals
@@ -501,6 +548,8 @@ def iql_value_loss(q_net, v_net, s, a, expectile=0.7):
 - `mcts.py`: UCT on a small game (Connect-Four); plug a value net for AlphaZero-lite self-play.
 - `world_model_lab.py`: train a tiny IRIS-style tokenizer + Transformer dynamics on an Atari env; roll out imagined trajectories and inspect reconstruction.
 - **Deliverable:** MCTS strength curve vs simulations + imagined-vs-real rollout comparison; **Acceptance:** MCTS beats a random opponent decisively; world-model reconstructions are visually faithful for ≥10 steps.
+
+▶ **Practical project:** `VizuaraAI/RL-in-Production-Bootcamp-Resources` — build UCT MCTS on Connect-Four + a tiny IRIS-style world model and measure the safe imagination horizon.
 
 ### Harness / reusable skill — `$model-trust-auditor`
 - **Purpose:** measure how far into the future a learned model can be trusted. **Inputs:** model, real rollouts. **Outputs:** per-horizon reconstruction/return error and a "max safe imagination horizon."
@@ -553,6 +602,11 @@ def uct_select(node, c=1.41):
 
 ## Week 8 — RLHF & Preference Optimization: PPO-RLHF, DPO, SimPO, KTO, ORPO
 
+### State of the Art (June 2026)
+- DPO/ORPO/KTO are the default preference-optimization stack (HF trl); SimPO reference-free length control is standard.
+- Length-controlled win-rate (AlpacaEval-LC) + cross-family LLM-judge are the honest-eval norm; TrustJudge documents judge biases.
+- RLHF is now mostly a thin PPO/DPO layer atop SFT; RLVR displaces it for verifiable tasks.
+
 **Altitude:** Specialist · **Anchor case:** post-train a small instruct model (`Qwen3-0.6B`/`Llama-3.2-1B`) on a preference dataset.
 
 ### Learning goals
@@ -571,6 +625,8 @@ def uct_select(node, c=1.41):
 - `dpo_train.py` with TRL: SFT → DPO on `UltraFeedback`; then swap in SimPO/KTO/ORPO configs.
 - Compare against a PPO-RLHF run (TRL `PPOTrainer` + reward model) on the same data.
 - **Deliverable:** win-rate table (LLM-as-judge) across methods + KL/length-bias audit; **Acceptance:** DPO improves judge win-rate over SFT without length-hacking it (length-controlled win-rate also up).
+
+▶ **Practical project:** `VizuaraAI/RL-in-Production-Bootcamp-Resources` — SFT→DPO on UltraFeedback with TRL, then swap SimPO/KTO/ORPO and compare length-controlled win-rate.
 
 ### Harness / reusable skill — `$preference-tuner`
 - **Purpose:** a reusable preference-optimization harness across DPO/SimPO/KTO/ORPO. **Inputs:** SFT model, preference data, method. **Outputs:** tuned model, win-rate vs reference, KL/length/reward-hacking report.
@@ -622,6 +678,11 @@ def dpo_loss(pi_lw, pi_ll, ref_lw, ref_ll, beta=0.1):
 
 ## Week 9 — RLVR & the GRPO Lineage: GRPO (DeepSeek-R1), DAPO, Dr.GRPO
 
+### State of the Art (June 2026)
+- GRPO (DeepSeek-R1) → DAPO → Dr.GRPO is the 2026 reasoning-RL lineage; group-relative advantage removes the value net.
+- RLVR (verifiable rewards) is now dominant for reasoning post-training, displacing pure RLHF.
+- Reward/verifier hacking (length inflation, leaky checkers) is an active ICLR-2026 thread; Dr.GRPO fixes the normalization bias.
+
 **Altitude:** Specialist · **Anchor case:** train a small model to *reason* on math (`GSM8K`/`MATH`) with verifiable rewards.
 
 ### Learning goals
@@ -640,6 +701,8 @@ def dpo_loss(pi_lw, pi_ll, ref_lw, ref_ll, beta=0.1):
 - `grpo_train.py` with **veRL** (or TRL `GRPOTrainer`): train `Qwen3-1.7B` on `GSM8K` with an exact-match verifier.
 - Ablate GRPO → Dr.GRPO (remove length/std norm) → add DAPO dynamic sampling; track pass@1 and mean response length.
 - **Deliverable:** pass@1 curve + response-length curve across variants + a "length-hacking" check; **Acceptance:** GRPO improves GSM8K pass@1 over the SFT base; Dr.GRPO reduces length inflation without losing accuracy.
+
+▶ **Practical project:** `VizuaraAILabs/DeepSeek-From-Scratch` — train GRPO on GSM8K with an exact-match verifier and ablate GRPO→Dr.GRPO→DAPO on pass@1 and response length.
 
 ### Harness / reusable skill — `$rlvr-trainer`
 - **Purpose:** a verifiable-reward RL harness (verifier + group sampler + GRPO/DAPO objective). **Inputs:** base model, prompt set, verifier fn, variant. **Outputs:** trained model, pass@k, length/format metrics, verifier-gaming report.
@@ -694,6 +757,11 @@ def grpo_advantages(rewards, group_size, drgrpo=False):
 
 ## Week 10 — Agentic RL: SWE-RL, DeepSWE & Distributed RL Infrastructure
 
+### State of the Art (June 2026)
+- DeepSWE/SWE-RL pushed open RL coding agents to strong SWE-bench-Verified numbers; the environment = repo + test suite.
+- Distributed RLVR stack: veRL/OpenRLHF + Ray + vLLM rollouts; stale-policy drift is the headline infra bug.
+- Execution-based agent evals (SWE-bench Pro/Verified, τ²-bench pass^k) are the 2026 standard.
+
 **Altitude:** Specialist · **Anchor case:** the `SWE-RL` coding-agent case — environment = a repo + test suite; reward = tests pass.
 
 ### Learning goals
@@ -712,6 +780,8 @@ def grpo_advantages(rewards, group_size, drgrpo=False):
 - `swe_rl_env.py`: wrap a small Python repo + pytest into a Gymnasium-style env (apply patch → run tests → reward).
 - `agentic_grpo.py` with **veRL + Ray + vLLM**: train a small model to fix seeded bugs; measure resolved-rate.
 - **Deliverable:** resolved-rate curve on held-out bugs + an infra throughput report (rollout/sec, GPU util); **Acceptance:** trained agent resolves more held-out bugs than the SFT base; infra report identifies the bottleneck stage.
+
+▶ **Practical project:** `VizuaraAI/RL-in-Production-Bootcamp-Resources` — wrap a repo+pytest as a Gymnasium env and train an agent with veRL+Ray+vLLM; report resolved-rate + the infra bottleneck.
 
 ### Harness / reusable skill — `$agentic-rl-env`
 - **Purpose:** a reusable verifiable agentic environment (tool sandbox + reward + trajectory logger). **Inputs:** task spec, tools, verifier. **Outputs:** Gymnasium-compatible env, trajectory logs, reward-sparsity stats.
@@ -768,6 +838,11 @@ class SWEEnv:
 
 ## Week 11 — Robotics & Embodied AI: VLA Models (SmolVLA), Sim-to-Real
 
+### State of the Art (June 2026)
+- VLA models (SmolVLA, π0-class, OpenVLA successors) with action chunking are the 2026 robot-learning default.
+- LeRobot (HF) is the de-facto open robot-learning hub; ManiSkill/Isaac Lab for massively parallel sim.
+- Residual RL on top of behavior-cloned policies is the standard sim-to-real fine-tune.
+
 **Altitude:** Specialist · **Anchor case:** a manipulation task in simulation, fine-tuned from a vision-language-action model.
 
 ### Learning goals
@@ -786,6 +861,8 @@ class SWEEnv:
 - `vla_finetune.py` with **LeRobot**: fine-tune **SmolVLA** on a `LeRobot` teleop dataset for a pick-place task.
 - Evaluate closed-loop in sim; apply domain randomization and measure success-rate robustness.
 - **Deliverable:** closed-loop success-rate (with/without domain randomization) + action-chunk-length ablation; **Acceptance:** fine-tuned SmolVLA exceeds a BC baseline; domain randomization improves robustness to perturbations.
+
+▶ **Practical project:** `VizuaraAILabs/ACT-Maniskill` — fine-tune an action-chunking (ACT) policy on ManiSkill and evaluate sim success-rate with an embodied-eval harness.
 
 ### Harness / reusable skill — `$embodied-eval`
 - **Purpose:** standardized closed-loop evaluation for embodied policies. **Inputs:** policy, sim env, perturbation suite. **Outputs:** success-rate, robustness curve under randomization, failure-mode taxonomy.
@@ -841,6 +918,11 @@ def rollout(env, instruction, horizon=200, chunk=10):
 
 ## Week 12 — Humanoid Locomotion & Multi-Agent RL
 
+### State of the Art (June 2026)
+- Massively parallel sim (Isaac Lab / MJX, 4096+ envs on one GPU) is how 2026 humanoid locomotion is trained.
+- CTDE (centralized-training, decentralized-execution) remains the MARL workhorse; PettingZoo/Safety-Gymnasium for benchmarks.
+- Sim-to-real locomotion transfers via domain randomization + residual RL.
+
 **Altitude:** Specialist · **Anchor case:** train a `Humanoid` to walk via massively parallel sim; then a multi-agent game.
 
 ### Learning goals
@@ -859,6 +941,8 @@ def rollout(env, instruction, horizon=200, chunk=10):
 - `humanoid_ppo.py` in **Isaac Lab** (or MuJoCo MJX): train a humanoid to track velocity commands with thousands of parallel envs.
 - `mappo.py` on a multi-agent benchmark (PettingZoo MPE / SMACv2); compare cooperative vs competitive.
 - **Deliverable:** locomotion gait video + reward-term ablation; multi-agent win-rate vs a baseline; **Acceptance:** humanoid achieves stable forward locomotion; MAPPO beats independent learners on a cooperative task.
+
+▶ **Practical project:** `VizuaraAILabs/Modern-Robot-Learning` — train a massively-parallel locomotion policy and a 2-agent CTDE task; audit the locomotion reward for shaping exploits.
 
 ### Harness / reusable skill — `$reward-shaping-auditor`
 - **Purpose:** detect reward-shaping exploits in continuous control. **Inputs:** reward components, trajectory rollouts. **Outputs:** per-term contribution, exploit flags (e.g., reward high but task failed), and a shaping fix.
@@ -911,6 +995,11 @@ ppo_update(policy, buffer, adv, ret)                 # reuse $ppo-trainer
 
 ## Week 13 — RL Safety: Reward Hacking, Specification Gaming & Safe RL
 
+### State of the Art (June 2026)
+- Reward hacking / specification gaming is the central 2026 RL-safety failure — same root as LLM verifier-gaming (ICLR-2026 RSI thread).
+- Constrained MDPs + safe-RL (Safety-Gymnasium) and runtime guardrails are the mitigation stack.
+- Reward-model over-optimization (Goodhart) is measured with held-out judges + KL control.
+
 **Altitude:** Specialist · **Anchor case:** deliberately break each prior week's agent by exploiting its reward, then defend it.
 
 ### Learning goals
@@ -929,6 +1018,8 @@ ppo_update(policy, buffer, adv, ret)                 # reuse $ppo-trainer
 - `reward_hacking_lab.py`: reproduce a specification-gaming exploit (e.g., a shaped-reward CartPole/driving exploit, or a verifier-gaming LLM from Week 9).
 - `safe_ppo.py`: Lagrangian-constrained PPO on a `Safety-Gymnasium` task; trade reward against a cost budget.
 - **Deliverable:** a red-team report (exploit found) + mitigation + before/after true-objective metric; **Acceptance:** you exhibit one genuine reward hack and a mitigation that restores the true objective.
+
+▶ **Practical project:** `VizuaraAI/RL-in-Production-Bootcamp-Resources` — red-team a trained policy’s reward for hacking and demonstrate a constrained-MDP/penalty mitigation.
 
 ### Harness / reusable skill — `$reward-hacking-redteam`
 - **Purpose:** systematically probe an RL agent/reward for exploits. **Inputs:** agent, reward fn, true-objective metric. **Outputs:** ranked exploit hypotheses, a demonstrated hack, a mitigation, and a re-eval.
@@ -979,6 +1070,11 @@ def constrained_objective(reward_adv, cost_adv, lam, budget_violation):
 
 ## Week 14 — Capstone: An Agentic-RL System With a Safety Audit
 
+### State of the Art (June 2026)
+- 2026 agentic-RL capstones ship on the veRL/OpenRLHF + Ray + vLLM stack with execution-based evals and a reward-hacking audit.
+- Evidence-over-demos: held-out resolved-rate, ≥3 seeds, and a documented safety audit are the bar.
+- Tracks mirror the field: SWE-RL coding, MetaDrive driving, LeRobot/ManiSkill embodied.
+
 **Altitude:** Specialist (graduating to Subjects 14/16) · **Anchor case:** your choice — extend the SWE-RL coding agent, a MetaDrive driving agent, or an embodied VLA task.
 
 ### Learning goals
@@ -993,6 +1089,8 @@ def constrained_objective(reward_adv, cost_adv, lam, budget_violation):
 - Pick one track: (a) agentic SWE-RL agent (GRPO + `$agentic-rl-env`), (b) MetaDrive PPO driving agent with sim-to-real robustness, or (c) SmolVLA embodied task with RL fine-tuning.
 - Ship: training curves, held-out eval, an ablation, a reward-hacking red-team report, and a 3-page write-up where every claim links to an artifact.
 - **Deliverable:** `capstone/` repo + 3-page report + demo (video or notebook); **Acceptance:** the agent beats a named baseline on held-out tasks *and* passes its own reward-hacking audit.
+
+▶ **Practical project:** `VizuaraAI/RL-in-Production-Bootcamp-Resources` — ship one agentic-RL system end-to-end (train → held-out eval → reward-hacking audit → evidence packet).
 
 ### Harness / reusable skill — `$rl-evidence-packet`
 - **Purpose:** assemble MDP spec + training logs + eval + ablation + safety audit into one reviewable bundle. **Evidence artifact:** the packet itself (this *is* the deliverable).
@@ -1071,3 +1169,17 @@ save_packet(env, agent, report, audit)   # $rl-evidence-packet
 
 ## Skills produced (reused program-wide)
 `$mdp-modeler` · `$rollout-harness` · `$value-debugger` · `$gradient-variance-meter` · `$ppo-trainer` · `$offline-data-auditor` · `$model-trust-auditor` · `$preference-tuner` · `$rlvr-trainer` · `$agentic-rl-env` · `$embodied-eval` · `$reward-shaping-auditor` · `$reward-hacking-redteam` · `$rl-evidence-packet`
+
+---
+
+## 🛠 Hands-on repositories & build studios (merged June 2026)
+
+**Clone-and-run repos** (verified June 2026; full catalog in [`PROJECTS.md`](PROJECTS.md)):
+- `VizuaraAILabs/OpenClaw-RL-Tutorial` — component-by-component RL tutorial that mirrors the DQN→PPO build path — *Lectures 1–5*
+- `VizuaraAI/RL-in-Production-Bootcamp-Resources` — the course's "RL in Production" pedagogy anchor (PPO→GRPO/DPO lineage, infra) — *Lectures 5–10*
+- `VizuaraAILabs/Modern-Robot-Learning` — modern robot-learning recipes (imitation + RL fine-tuning) — *Lectures 11–12*
+- `VizuaraAILabs/ACT-Maniskill` — Action-Chunking Transformer on ManiSkill (action chunking, sim manipulation) — *Lecture 11 + capstone embodied track*
+- `VizuaraAI/vla-driving-simulation` — vision-language-action driving in sim (grounds the MetaDrive anchor) — *Lectures 11, 14*
+
+**Build studios** (specs in [`PROJECTS.md`](PROJECTS.md)):
+- **VLA / world-model reading lab** — evaluate a robotics policy / world model and write its safety analysis — *Lectures 11–14*

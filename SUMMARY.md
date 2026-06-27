@@ -8,6 +8,8 @@
 - [Master Table of Contents](TABLE-OF-CONTENTS.md)
 - [Changelog — Why This Is Current (June 2026)](CHANGELOG.md)
 - [Project Catalog & Build Studios](PROJECTS.md)
+- [Every Chapter → Its Practical Project](CHAPTER-PROJECT-MAP.md)
+- [Krish Naik Projects → Chapter Map](KRISHNAIK-PROJECTS-MAP.md)
 
 # Subjects — each = one academic quarter, 3 lecture-hrs/week
 

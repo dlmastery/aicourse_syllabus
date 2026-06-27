@@ -1,6 +1,6 @@
 # Subject 15 — Emerging Topics & AI for Science
 
-**Track:** Frontier / Research · **Altitude:** Specialist · **Length:** 13 weeks (seminar: 2h seminar + 3h research-lab/wk)
+**Track:** Frontier / Research · **Altitude:** Specialist · **Length:** 13 weeks (seminar: 3h seminar + 3h research-lab/wk)
 **Format:** a **graduate research seminar**, not a lecture course. Each week pairs an instructor frame with **student-led paper presentations**, a live experiment or reproduction, and a critique. The deliverable spine is a term-long **research-reproduction or novel mini-project** plus a polished seminar presentation.
 **Prerequisites:** Subjects 01–12 (foundations → LLMs → agents → multimodal/generative). You can read a 2025 ML paper, reproduce a result, run an eval, and write a critique. This course assumes you can *learn from primary sources*, not tutorials.
 **Pedagogy:** the book's *concept → code → critique → reflection → rebuild* loop applied to **frontier papers** — the unit of work is "read the claim → reproduce or stress-test it → say what's real and what's hype." Evidence over vibes is doubly enforced because frontier work is the most over-claimed.
@@ -67,7 +67,12 @@ Produce **either** a faithful reproduction (with an ablation that goes beyond th
 
 ## Week 1 — Operating at the Frontier: Reading Papers, Choosing a Thread, Signal vs Hype
 
-**Altitude:** Specialist · **Format:** 2h seminar + 3h lab
+### State of the Art (June 2026)
+- Reproducibility crisis + benchmark contamination are first-order concerns; the AI Index 2025 gives landscape context.
+- Papers With Code + released checkpoints define reproducibility tiers; the 1M-context/MoE frontier inflates ‘SOTA’ churn.
+- LLM-as-judge leaderboards need contamination + bias scrutiny (TrustJudge).
+
+**Altitude:** Specialist · **Format:** 3h seminar + 3h lab
 **Anchor case:** take one over-hyped 2025–2026 result and a sober follow-up that tempered it; learn to hold both.
 
 ### Learning goals
@@ -86,6 +91,8 @@ Produce **either** a faithful reproduction (with an ablation that goes beyond th
 - Run the `$paper-triage` skill on 3 candidate papers in your thread; pick one to reproduce; get its baseline running (or its checkpoint loading) end-to-end.
 - Write a one-page literature map: claim, evidence, gap, and what you'd test.
 - **Deliverable:** `frontier/week01-thread.md` (thread + literature map + a running baseline). **Acceptance:** baseline runs/loads; the map names a falsifiable thing to test.
+
+▶ **Practical project:** `VizuaraAI/paper-to-notebook` — triage 3 thread papers and turn the chosen one into a running baseline notebook.
 
 ### Harness / reusable skill — `$paper-triage`
 - **Purpose:** rapidly assess a frontier paper's claim, evidence, reproducibility, and the one experiment that would confirm/refute it.
@@ -137,6 +144,11 @@ def triage_complete(t): return all(v for v in t.values())   # gate before presen
 
 ## Week 2 — Autonomous Research Agents: The "AI Scientist"
 
+### State of the Art (June 2026)
+- AI-Scientist (Sakana), Coscientist, and FunSearch are the references; the verification bottleneck (not ideation) is the limit.
+- Novelty-vs-recombination and automated-reviewer bias are active critiques (Si et al. human study).
+- Execution-grounded research loops (Claude Agent SDK + MCP tools) are the 2026 build pattern.
+
 **Altitude:** Specialist · **Anchor case:** an agent that proposes hypotheses, runs experiments, and writes them up — and the question of whether its "discoveries" are real.
 
 ### Learning goals
@@ -153,6 +165,8 @@ def triage_complete(t): return all(v for v in t.values())   # gate before presen
 ### Hands-on build (the lab)
 - Run an AI-Scientist-style agent (or build a scoped one with the Claude Agent SDK) on a small ML task (e.g., propose+test a regularizer on a tiny benchmark); **audit** every claimed result against your own re-run.
 - **Deliverable:** `frontier/ai-scientist/` with the agent transcript, your independent verification, and a validity verdict. **Acceptance:** ≥1 agent claim independently checked; at least one over-claim or error found and documented.
+
+▶ **Practical project:** `VizuaraAI/paper-to-notebook` — reproduce an AI-Scientist-style claim into a notebook and independently re-run it to find an over-claim.
 
 ### Harness / reusable skill — `$research-claim-audit`
 - **Purpose:** independently verify a claim produced by an autonomous (or human) research process.
@@ -203,6 +217,11 @@ def audit_claim(claim: dict, rerun_fn, n_seeds=5):
 
 ## Week 3 — AI for Science I: Structure Prediction (AlphaFold-style) & Geometric DL
 
+### State of the Art (June 2026)
+- AlphaFold3 (biomolecular complexes) + ESMFold (MSA-free LM) are the references; pLDDT/PAE confidence calibration is the honesty check.
+- e3nn / SE(3)-equivariance is the geometric-DL standard; failure regimes are dynamics and novel folds.
+- PDB/CASP remain ground truth.
+
 **Altitude:** Specialist · **Anchor case:** protein structure prediction as the field's proof that ML can solve a 50-year scientific problem — and what generalizes from it. **(Reproduction milestone M1 due.)**
 
 ### Learning goals
@@ -220,6 +239,8 @@ def audit_claim(claim: dict, rerun_fn, n_seeds=5):
 - Run **ESMFold** (or OpenFold) on a handful of sequences; compare predicted structures to PDB ground truth (TM-score/RMSD); analyze pLDDT vs actual error.
 - Get your thread's reproducible baseline running (**M1**).
 - **Deliverable:** `frontier/structure/` with predictions, accuracy vs PDB, a confidence-vs-error analysis, and `frontier/M1-litmap.md`. **Acceptance:** structures predicted; confidence correlates (or not) with error, reported honestly; M1 baseline runs.
+
+▶ **Practical project:** `VizuaraAI/paper-to-notebook` — build an ESMFold inference notebook, compare to PDB (TM-score/RMSD), and analyze pLDDT-vs-error calibration.
 
 ### Harness / reusable skill — `$scientific-repro`
 - **Purpose:** reproduce a scientific-ML result with full provenance and an honest delta.
@@ -272,6 +293,11 @@ def fold(seq):
 
 ## Week 4 — AI for Science II: Molecules, Materials & Generative Design
 
+### State of the Art (June 2026)
+- GNoME + MatterGen (Nature 2023/2025) are the generative-discovery references; the proposed-vs-validated gap is the headline critique (Cheetham/Seshadri).
+- Validity funnels (RDKit / formation-energy) + applicability-domain/uncertainty gate OOD overconfidence.
+- Materials Project API + QM9 are the open datasets.
+
 **Altitude:** Specialist · **Anchor case:** generative design of molecules/materials (GNoME, MatterGen-style) and the gap between *proposed* and *validated* candidates.
 
 ### Learning goals
@@ -288,6 +314,8 @@ def fold(seq):
 ### Hands-on build (the lab)
 - Run a property/stability screen on **Materials Project** (or a molecular generator like a junction-tree/diffusion model on **QM9**); report validity, novelty, and an uncertainty/applicability-domain check.
 - **Deliverable:** `frontier/materials/` with generated/screened candidates, validity+novelty stats, and a "proposed vs validated" honesty note. **Acceptance:** validity & novelty reported; the proposal-vs-discovery distinction made explicit.
+
+▶ **Practical project:** `VizuaraAI/paper-to-notebook` — reproduce a generator/screen on QM9 / Materials Project as a validity-funnel notebook (generated→valid→novel→synthesizable).
 
 ### Harness / reusable skill — `$discovery-validity-check`
 - **Purpose:** separate plausible proposals from validated discoveries.
@@ -337,6 +365,11 @@ def validity_funnel(smiles_list, train_set):
 
 ## Week 5 — Physics-Informed ML: PINNs, Neural Operators & Scientific Surrogates
 
+### State of the Art (June 2026)
+- PINNs vs Fourier Neural Operators (FNO) is the core contrast; neural operators win for families/surrogates.
+- Training pathologies (spectral bias, loss imbalance) need Fourier features / curriculum / gradient weighting.
+- DeepXDE + neuraloperator are the tooling; always validate against a numerical solver.
+
 **Altitude:** Specialist · **Anchor case:** solving/【learning】a PDE with a physics-informed network vs a neural operator — and when each is the right tool.
 
 ### Learning goals
@@ -353,6 +386,8 @@ def validity_funnel(smiles_list, train_set):
 ### Hands-on build (the lab)
 - Implement a PINN for a 1D Burgers'/heat equation in PyTorch/`deepxde`; compare to a numerical solver; then train an **FNO** on a family of instances and compare accuracy + speed.
 - **Deliverable:** `frontier/pinn/` with the PINN solution, solver comparison, the FNO surrogate, and a loss-balancing note. **Acceptance:** PINN matches the solver within tolerance (or the pathology is diagnosed); FNO generalizes across instances.
+
+▶ **Practical project:** `VizuaraAI/paper-to-notebook` — build a Burgers PINN + an FNO in one notebook, validate vs a solver, and compare generalization across instances.
 
 ### Harness / reusable skill — `$physics-validity`
 - **Purpose:** validate a learned PDE solution against physics and a numerical reference.
@@ -407,6 +442,11 @@ def loss(net, x_d, t_d, u_d, x_c, t_c, lam=1.0):
 
 ## Week 6 — Emergence, Scaling & In-Context Learning
 
+### State of the Art (June 2026)
+- Emergence-as-metric-artifact (Schaeffer 2023) vs Wei 2022 is the live debate; grokking is the clean small-scale lab.
+- Chinchilla compute-optimal scaling still frames training; power-law over-extrapolation is the warning.
+- Pythia suite + BIG-Bench enable cross-scale reproduction.
+
 **Altitude:** Specialist · **Anchor case:** the "emergent abilities" debate — real phase transitions vs artifacts of discontinuous metrics. **(Reproduction milestone M2 due.)**
 
 ### Learning goals
@@ -424,6 +464,8 @@ def loss(net, x_d, t_d, u_d, x_c, t_c, lam=1.0):
 - Reproduce **grokking** on modular arithmetic (small transformer) *or* an emergence curve where you compare an exact-match vs a continuous metric on the same task; show whether "emergence" persists.
 - Submit **M2** (core thread result reproduced).
 - **Deliverable:** `frontier/emergence/` with the curve(s), the metric-sensitivity analysis, and `frontier/M2-repro.md`. **Acceptance:** the metric-artifact effect demonstrated or refuted on your task; M2 reproduced with seeds/hardware.
+
+▶ **Practical project:** `VizuaraAI/paper-to-notebook` — reproduce grokking on modular arithmetic and test whether ‘emergence’ survives a continuous metric.
 
 ### Harness / reusable skill — `$emergence-probe`
 - **Purpose:** test whether a claimed emergent jump is real or a metric artifact.
@@ -476,6 +518,11 @@ def token_edit_sim(pred, gold):                     # continuous: smooth credit
 
 ## Week 7 — Mechanistic Interpretability: Circuits, SAEs & CoT Monitoring
 
+### State of the Art (June 2026)
+- SAEs for monosemantic features (Scaling Monosemanticity, Gemma Scope) + activation patching for causal circuits; a MIT 2026 mech-interp breakthrough accelerated the field.
+- Induction heads remain the canonical circuit; causal patching beats correlational stories.
+- TransformerLens + SAELens/Neuronpedia tooling.
+
 **Altitude:** Specialist · **Anchor case:** reverse-engineering a small circuit and extracting interpretable features with a sparse autoencoder.
 
 ### Learning goals
@@ -492,6 +539,8 @@ def token_edit_sim(pred, gold):                     # continuous: smooth credit
 ### Hands-on build (the lab)
 - Use `transformer-lens` to find an induction head / a small circuit in a small model via activation patching; then train (or load via `sae-lens`) an SAE on a layer and interpret 5 features.
 - **Deliverable:** `frontier/interp/` with the circuit (patching evidence), SAE feature interpretations, and a faithfulness note. **Acceptance:** ≥1 causal patching result; ≥5 interpreted features with evidence (max-activating examples).
+
+▶ **Practical project:** `VizuaraAI/paper-to-notebook` — reproduce an induction-head activation-patching result and interpret ≥5 SAE features in one notebook.
 
 ### Harness / reusable skill — `$interp-evidence`
 - **Purpose:** hold interpretability claims to a causal standard.
@@ -544,6 +593,11 @@ def patch_and_measure(clean, corrupt, layer, pos):
 
 ## Week 8 — Neuro-Symbolic Methods: Combining Learning and Reasoning
 
+### State of the Art (June 2026)
+- LLM-as-program-generator + solver (PAL-style) with generate→execute→verify→repair is the reliable 2026 pattern; ARC-AGI-2 is the systematic-reasoning bar.
+- Verifiability is the payoff — symbolic answers are checkable; differentiable logic (DeepProbLog) stays brittle/niche.
+- Execution grounding beats ‘the LLM looked right’.
+
 **Altitude:** Specialist · **Anchor case:** a task where pure neural nets fail at systematic reasoning and a neuro-symbolic hybrid succeeds (e.g., program synthesis / constraint solving / abstract reasoning).
 
 ### Learning goals
@@ -560,6 +614,8 @@ def patch_and_measure(clean, corrupt, layer, pos):
 ### Hands-on build (the lab)
 - Build an LLM+solver hybrid for a reasoning task (e.g., **ARC-AGI** subset via program search, or word problems via LLM→Python→verify) with a generate-execute-repair loop; compare to a pure-LLM baseline.
 - **Deliverable:** `frontier/neurosymbolic/` with the hybrid, accuracy vs the pure-LLM baseline, and a generalization slice. **Acceptance:** hybrid beats the pure-neural baseline on a systematic-generalization slice, or the failure is analyzed.
+
+▶ **Practical project:** `VizuaraAI/paper-to-notebook` — build an LLM+solver generate-execute-repair loop on ARC/GSM8K and beat a pure-LLM baseline on a generalization slice.
 
 ### Harness / reusable skill — `$neurosymbolic-loop`
 - **Purpose:** wrap any reasoning task in a generate→execute→verify→repair loop.
@@ -610,6 +666,11 @@ def neurosymbolic_solve(problem, llm, max_repairs=3):
 
 ## Week 9 — World Models & Simulation for Reasoning and Control
 
+### State of the Art (June 2026)
+- DreamerV3 + IRIS remain references; Genie-style interactive environments and video-diffusion world models are the 2026 shift (DiT over spatiotemporal latents).
+- Model exploitation + compounding error bound the trustworthy horizon; report the imagined-vs-real gap.
+- World models double as embodied training simulators.
+
 **Altitude:** Specialist · **Anchor case:** using a learned world model/simulator for planning or as a training environment — and the limits of imagined experience. **(Experiment milestone M3 due.)**
 
 ### Learning goals
@@ -627,6 +688,8 @@ def neurosymbolic_solve(problem, llm, max_repairs=3):
 - Run a Dreamer-style or tokenized world model on a control/Atari task; compare planning-in-imagination performance and sample efficiency to a model-free baseline; probe model exploitation.
 - Submit **M3** (novel ablation/extension on your thread).
 - **Deliverable:** `frontier/world-sim/` with the comparison, an exploitation probe, an error-vs-horizon curve, and `frontier/M3-ablation.md`. **Acceptance:** sample-efficiency comparison reported; model-exploitation behavior characterized; M3 ablation has a result table.
+
+▶ **Practical project:** `VizuaraAI/paper-to-notebook` — run a Dreamer/IRIS-style world model and quantify the imagined-vs-real exploitation gap in a notebook.
 
 ### Harness / reusable skill — `$sim-fidelity-eval`
 - **Purpose:** assess whether a learned simulator is good enough to plan/train inside.
@@ -675,6 +738,11 @@ def exploitation_gap(world, policy, real_env, n=20):
 
 ## Week 10 — Synthetic Data, Self-Improvement & the Efficiency/SSM Frontier
 
+### State of the Art (June 2026)
+- STaR-style verifier-filtered self-improvement is standard; model collapse (Shumailov, Nature 2024) bounds it.
+- Mamba/SSMs + Transformer-SSM hybrids (Jamba) are the linear-time frontier; recall gaps vs attention are the tradeoff.
+- Synthetic data is the default scaling fuel — verification gates error amplification.
+
 **Altitude:** Specialist · **Anchor case:** training on model-generated data (self-improvement) and the architectures (Mamba/SSMs) that change the cost frontier.
 
 ### Learning goals
@@ -691,6 +759,8 @@ def exploitation_gap(world, policy, real_env, n=20):
 ### Hands-on build (the lab)
 - **Either** run a small **self-improvement** loop (generate→verify→filter→fine-tune) on a reasoning task and measure gain + a diversity/collapse check, **or** benchmark a small **Mamba** vs a Transformer on a long-context task (throughput + accuracy).
 - **Deliverable:** `frontier/efficiency/` with the loop or benchmark, a collapse/diversity or quality-vs-length analysis, and a frontier note. **Acceptance:** a measured trade-off curve; the failure mode (collapse or recall) addressed.
+
+▶ **Practical project:** `VizuaraAILabs/DeepSeek-From-Scratch` — reproduce an SSM/efficiency comparison (or a verified self-improvement loop) as a trade-off-curve notebook.
 
 ### Harness / reusable skill — `$frontier-tradeoff`
 - **Purpose:** characterize a quality–cost (or quality–diversity) trade-off rigorously.
@@ -742,6 +812,11 @@ def self_improve_round(model, problems, verify):
 
 ## Week 11 — Theorem Proving, Autoformalization & the Societal-Impact Panel
 
+### State of the Art (June 2026)
+- AlphaProof (LLM + Lean + RL) is the reference for verifiable reasoning; a formal proof is a ground-truth reward (RLVR’s purest form).
+- Autoformalization + LeanDojo/mathlib are the tooling; Lean 4 is standard.
+- Verifiable reasoning ties directly to the governance panel on frontier stakes.
+
 **Altitude:** Specialist · **Anchor case:** AlphaProof-style automated theorem proving (LLM + Lean + RL) — verifiable reasoning — paired with a panel on the societal stakes of frontier AI.
 
 ### Learning goals
@@ -759,6 +834,8 @@ def self_improve_round(model, problems, verify):
 - Run an LLM-driven proof search on a small Lean benchmark (**MiniF2F** via LeanDojo); report solve-rate and inspect verified vs failed proofs.
 - Prepare and run the **societal-impact panel**: each student argues one position (capability optimism, safety caution, governance, access/equity) grounded in primary sources.
 - **Deliverable:** `frontier/proving/` with proof-search results + the panel position memo. **Acceptance:** verified proofs reported (with solve-rate); a defensible, source-grounded panel position.
+
+▶ **Practical project:** `VizuaraAI/paper-to-notebook` — build a Lean 4 + LeanDojo proof-search notebook on a small theorem set and report verified-rate.
 
 ### Harness / reusable skill — `$verifiable-reasoning-eval`
 - **Purpose:** evaluate a reasoning system where correctness is formally checkable.
@@ -812,6 +889,11 @@ def attempt_proof(theorem: Theorem, llm, max_steps=50):
 
 ## Week 12 — In-Class Hackathon: Build at the Frontier Under Pressure
 
+### State of the Art (June 2026)
+- Frontier sprints lean on released checkpoints + serverless GPU (Modal/RunPod, pay-per-second) and prompt caching for cost.
+- Reproduce-the-trend (a scaled-down ablation) beats hero runs under time pressure.
+- Inspect AI / DeepEval give fast, honest evals.
+
 **Altitude:** Specialist · **Anchor case:** a one-day sprint extending your thread or combining two frontier ideas.
 
 ### Learning goals
@@ -825,6 +907,8 @@ def attempt_proof(theorem: Theorem, llm, max_steps=50):
 ### Hands-on build (the lab)
 - A timed hackathon: ship a working frontier mini-build (e.g., an SAE feature steering demo, a flow-matching speedup, an AI-scientist sub-loop, a PINN for a new PDE) with one measured result and a baseline.
 - **Deliverable:** `frontier/hackathon/` with the build, one result table, and a 1-page writeup. **Acceptance:** runs end-to-end; one honest result vs a baseline; limitations stated.
+
+▶ **Practical project:** `VizuaraAI/paper-to-notebook` — under time pressure, convert one frontier result into a runnable, ablated notebook with seeds pinned.
 
 ### Harness / reusable skill — `$frontier-sprint`
 - **Purpose:** execute a time-boxed frontier build without dropping evidence discipline.
@@ -872,6 +956,11 @@ def sprint_ready(s): return s["result"] is not None and s["baseline"] and s["lim
 
 ## Week 13 — Final Talks: Conference-Style Presentations & Defense
 
+### State of the Art (June 2026)
+- Conference-grade reproduction = primary-source map + reproduced number with delta + your own ablation + honest limitations.
+- Pinned environments (uv) and one-command repro are the reproducibility bar.
+- The real-vs-hype claim is the deliverable, not the headline number.
+
 **Altitude:** Specialist · **Anchor case:** present and defend your term project as a conference talk to a panel of peers + instructors.
 
 ### Learning goals
@@ -886,6 +975,8 @@ def sprint_ready(s): return s["result"] is not None and s["baseline"] and s["lim
 - **M4:** 12-minute conference talk + 8-minute defense; submit the short paper.
 - Peer-review two classmates' papers using the `$paper-triage` standard.
 - **Deliverable:** `frontier/final/` with the short paper, talk slides, and two peer reviews. **Acceptance:** the final mini-project checklist (top of file) is fully satisfied; the paper has an honest limitations section and a real ablation.
+
+▶ **Practical project:** `VizuaraAI/paper-to-notebook` — package your reproduction as a clean, one-command notebook to accompany the short paper + talk.
 
 ### Harness / reusable skill — `$research-defense`
 - **Purpose:** stress-test a research claim before (and during) presentation.
@@ -935,4 +1026,16 @@ By the end you can: read frontier AI papers for the claim–evidence gap; reprod
 
 ## Skills produced (reused program-wide)
 `$paper-triage` · `$research-claim-audit` · `$scientific-repro` · `$discovery-validity-check` · `$physics-validity` · `$emergence-probe` · `$interp-evidence` · `$neurosymbolic-loop` · `$sim-fidelity-eval` · `$frontier-tradeoff` · `$verifiable-reasoning-eval` · `$frontier-sprint` · `$research-defense`
+
+---
+
+## 🛠 Hands-on repositories & build studios (merged June 2026)
+
+**Clone-and-run repos** (verified June 2026; full catalog in [`PROJECTS.md`](PROJECTS.md)):
+- `VizuaraAI/paper-to-notebook` — turn a PDF paper into a runnable notebook (the seminar's reproduce-from-primary-source workflow) — *Lectures 1–3*
+- `VizuaraAILabs/DeepSeek-From-Scratch` — MLA / MoE / MTP built from scratch (grounds the efficiency / SSM-vs-Transformer frontier) — *Lecture 10*
+
+**Build studios** (specs in [`PROJECTS.md`](PROJECTS.md)):
+- **Automated research mini-agent** — hypothesis → experiment → report → uncertainty statement, audited against your own re-run — *Lectures 2, 12–13*
+- **Synthetic-data audit** — real+synthetic vs real-only; artifact / model-collapse check across rounds — *Lecture 10*
 </content>

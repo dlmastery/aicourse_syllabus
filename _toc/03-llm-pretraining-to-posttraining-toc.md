@@ -1,9 +1,9 @@
 # Detailed Table of Contents — Subject 03 — Large Language Models: Pretraining → Post-Training
 
-_Source: `03-llm-pretraining-to-posttraining.md` · **1 academic quarter · 3 lecture-hours/week · 13 weekly lectures (~39 contact hours)**_
+_Source: `03-llm-pretraining-to-posttraining.md` · **1 academic quarter · 3 lecture-hours/week · 13 weekly lectures (~39 contact hours)**. Every lecture has a **▶ practical project** (real GitHub repo)._
 
 ### Lecture 1 — The LLM Lifecycle, End to End (and a Reproducible Tiny Pretraining Run)
-_3-hour block · 🔧 reusable skill: `$lifecycle-map`_
+_3-hour block · 🔧 skill: `$lifecycle-map` · ▶ project: [`VizuaraAILabs/nano-gpt-oss`](https://github.com/VizuaraAILabs/nano-gpt-oss) — stand up a tiny gpt-oss pretraining run and annotate where each later week plugs into the lifecycle._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -12,10 +12,10 @@ _3-hour block · 🔧 reusable skill: `$lifecycle-map`_
 | 01:00–01:30 | M3 | Compute/throughput accounting |
 | 01:30–02:00 | M4 | Reproducibility at scale |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | Initialize llm-lifecycle/ with configs/, data/, src/, evidence/, an accelerate config, and a seed he |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`VizuaraAILabs/nano-gpt-oss`](https://github.com/VizuaraAILabs/nano-gpt-oss) — stand up a tiny gpt-oss pretraining run and annotate where each later week plugs into the lifecycle. |
 
 ### Lecture 2 — Data Curation I: Common Crawl, Extraction, Filtering, Language ID
-_3-hour block · 🔧 reusable skill: `$data-funnel`_
+_3-hour block · 🔧 skill: `$data-funnel` · ▶ project: [`VizuaraAILabs/truly-open-gpt-oss`](https://github.com/VizuaraAILabs/truly-open-gpt-oss) — run its data-prep stage (extraction/filtering) and emit a retention funnel with sampled drops._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -24,10 +24,10 @@ _3-hour block · 🔧 reusable skill: `$data-funnel`_
 | 01:00–01:30 | M3 | Language identification |
 | 01:30–02:00 | M4 | Provenance & licensing |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | curate.py using datatrove: read a small Common Crawl / FineWeb WARC sample → trafilatura extraction  |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`VizuaraAILabs/truly-open-gpt-oss`](https://github.com/VizuaraAILabs/truly-open-gpt-oss) — run its data-prep stage (extraction/filtering) and emit a retention funnel with sampled drops. |
 
 ### Lecture 3 — Data Curation II: Deduplication, Decontamination, and Tokenizer Training
-_3-hour block · 🔧 reusable skill: `$dedup-decontam`_
+_3-hour block · 🔧 skill: `$dedup-decontam` · ▶ project: [`VizuaraAILabs/truly-open-gpt-oss`](https://github.com/VizuaraAILabs/truly-open-gpt-oss) — run its tokenizer-training stage, then layer in MinHash dedup + n-gram decontamination and measure the duplicate rate._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -36,10 +36,10 @@ _3-hour block · 🔧 reusable skill: `$dedup-decontam`_
 | 01:00–01:30 | M3 | Decontamination |
 | 01:30–02:00 | M4 | Tokenizer quality |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | dedup.py: exact hash dedup + datasketch MinHashLSH near-dup removal; report duplicate rate and size  |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`VizuaraAILabs/truly-open-gpt-oss`](https://github.com/VizuaraAILabs/truly-open-gpt-oss) — run its tokenizer-training stage, then layer in MinHash dedup + n-gram decontamination and measure the duplicate rate. |
 
 ### Lecture 4 — Architecture, Hyperparameters, and Scaling Laws
-_3-hour block · 🔧 reusable skill: `$scaling-fit`_
+_3-hour block · 🔧 skill: `$scaling-fit` · ▶ project: [`VizuaraAILabs/DeepSeek-From-Scratch`](https://github.com/VizuaraAILabs/DeepSeek-From-Scratch) — build the modern decoder (RoPE/RMSNorm/SwiGLU/MoE) and fit a small scaling law across sizes._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -48,10 +48,10 @@ _3-hour block · 🔧 reusable skill: `$scaling-fit`_
 | 01:00–01:30 | M3 | GQA (grouped-query attention) |
 | 01:30–02:00 | M4 | Scaling laws / Chinchilla |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | arch.py: a configurable modern decoder (RoPE + RMSNorm + SwiGLU + GQA); verify a forward pass + KV-c |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`VizuaraAILabs/DeepSeek-From-Scratch`](https://github.com/VizuaraAILabs/DeepSeek-From-Scratch) — build the modern decoder (RoPE/RMSNorm/SwiGLU/MoE) and fit a small scaling law across sizes. |
 
 ### Lecture 5 — Distributed Pretraining: Data/Tensor/Pipeline Parallel, FSDP & ZeRO
-_3-hour block · 🔧 reusable skill: `$distributed-profiler`_
+_3-hour block · 🔧 skill: `$distributed-profiler` · ▶ project: [`VizuaraAI/vizuara-5d-parallelism-workshop`](https://github.com/VizuaraAI/vizuara-5d-parallelism-workshop) — run DP/TP/PP/FSDP across GPUs and measure scaling efficiency + MFU._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -60,10 +60,10 @@ _3-hour block · 🔧 reusable skill: `$distributed-profiler`_
 | 01:00–01:30 | M3 | Tensor & pipeline parallel |
 | 01:30–02:00 | M4 | MFU & scaling efficiency |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | train_fsdp.py: wrap the Week-4 model in FSDP2 (or DeepSpeed ZeRO-3) + activation checkpointing + bf1 |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`VizuaraAI/vizuara-5d-parallelism-workshop`](https://github.com/VizuaraAI/vizuara-5d-parallelism-workshop) — run DP/TP/PP/FSDP across GPUs and measure scaling efficiency + MFU. |
 
 ### Lecture 6 — Mixture-of-Experts and Long-Context Pretraining
-_3-hour block · 🔧 reusable skill: `$moe-router-monitor`_
+_3-hour block · 🔧 skill: `$moe-router-monitor` · ▶ project: [`VizuaraAI/Mixture_of_Experts`](https://github.com/VizuaraAI/Mixture_of_Experts) — implement a top-k MoE FFN + load-balancing loss and track expert utilization._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -72,10 +72,10 @@ _3-hour block · 🔧 reusable skill: `$moe-router-monitor`_
 | 01:00–01:30 | M3 | Capacity factor |
 | 01:30–02:00 | M4 | Long context |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | moe.py: replace a dense MLP with a top-2 MoE (8 experts) + a load-balancing aux loss; verify routing |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`VizuaraAI/Mixture_of_Experts`](https://github.com/VizuaraAI/Mixture_of_Experts) — implement a top-k MoE FFN + load-balancing loss and track expert utilization. |
 
 ### Lecture 7 — Pretraining Evaluation & a Paper-Reproduction Checkpoint
-_3-hour block · 🔧 reusable skill: `$benchmark-runner`_
+_3-hour block · 🔧 skill: `$benchmark-runner` · ▶ project: [`mlabonne/llm-course`](https://github.com/mlabonne/llm-course) — run its evaluation notebooks (lm-eval-harness) on your base model and reproduce a published number with CIs._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -84,10 +84,10 @@ _3-hour block · 🔧 reusable skill: `$benchmark-runner`_
 | 01:00–01:30 | M3 | Contamination & emergence |
 | 01:30–02:00 | M4 | Reproduction discipline |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | eval_base.py: run lm-eval-harness on HellaSwag, ARC-easy, MMLU (subset), and GSM8K for your base + y |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`mlabonne/llm-course`](https://github.com/mlabonne/llm-course) — run its evaluation notebooks (lm-eval-harness) on your base model and reproduce a published number with CIs. |
 
 ### Lecture 8 — Supervised Fine-Tuning & Instruction Tuning
-_3-hour block · 🔧 reusable skill: `$sft-recipe`_
+_3-hour block · 🔧 skill: `$sft-recipe` · ▶ project: [`krishnaik06/Finetuning-LLM`](https://github.com/krishnaik06/Finetuning-LLM) — run SFT + LoRA/QLoRA on an instruction set with proper chat templating and loss masking._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -96,10 +96,10 @@ _3-hour block · 🔧 reusable skill: `$sft-recipe`_
 | 01:00–01:30 | M3 | LoRA / QLoRA |
 | 01:30–02:00 | M4 | Data quality > quantity |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | sft.py using TRL SFTTrainer: chat-template a dataset, mask prompt tokens, pack sequences; run full-F |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`krishnaik06/Finetuning-LLM`](https://github.com/krishnaik06/Finetuning-LLM) — run SFT + LoRA/QLoRA on an instruction set with proper chat templating and loss masking. |
 
 ### Lecture 9 — Reward Modeling & RLHF (PPO)
-_3-hour block · 🔧 reusable skill: `$rlhf-monitor`_
+_3-hour block · 🔧 skill: `$rlhf-monitor` · ▶ project: [`mlabonne/llm-course`](https://github.com/mlabonne/llm-course) — train a Bradley-Terry reward model and run PPO RLHF from its post-training notebooks, watching reward/KL._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -108,10 +108,10 @@ _3-hour block · 🔧 reusable skill: `$rlhf-monitor`_
 | 01:00–01:30 | M3 | Value function / advantage |
 | 01:30–02:00 | M4 | Reward hacking |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | reward_model.py: train a BT reward model on a preference dataset; report pairwise accuracy on held-o |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`mlabonne/llm-course`](https://github.com/mlabonne/llm-course) — train a Bradley-Terry reward model and run PPO RLHF from its post-training notebooks, watching reward/KL. |
 
 ### Lecture 10 — Direct Preference Optimization: DPO, ORPO, KTO
-_3-hour block · 🔧 reusable skill: `$preference-align-bench`_
+_3-hour block · 🔧 skill: `$preference-align-bench` · ▶ project: [`mlabonne/llm-course`](https://github.com/mlabonne/llm-course) — align your SFT model with DPO (and contrast ORPO/KTO) using its preference-optimization notebook._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -120,10 +120,10 @@ _3-hour block · 🔧 reusable skill: `$preference-align-bench`_
 | 01:00–01:30 | M3 | KTO |
 | 01:30–02:00 | M4 | DPO vs RLHF |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | dpo.py, orpo.py, kto.py via TRL on the same preferences (KTO uses a binarized variant); train all th |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`mlabonne/llm-course`](https://github.com/mlabonne/llm-course) — align your SFT model with DPO (and contrast ORPO/KTO) using its preference-optimization notebook. |
 
 ### Lecture 11 — RL for Reasoning: GRPO and Verifiable Rewards
-_3-hour block · 🔧 reusable skill: `$verifiable-reward`_
+_3-hour block · 🔧 skill: `$verifiable-reward` · ▶ project: [`VizuaraAILabs/OpenClaw-RL-Tutorial`](https://github.com/VizuaraAILabs/OpenClaw-RL-Tutorial) — implement GRPO with verifiable rewards on a math task, adding format + correctness rewards._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -132,10 +132,10 @@ _3-hour block · 🔧 reusable skill: `$verifiable-reward`_
 | 01:00–01:30 | M3 | Test-time compute |
 | 01:30–02:00 | M4 | Format + correctness rewards |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | grpo.py via TRL GRPOTrainer: a verifiable reward function (parse \boxed{} / final number, compare to |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`VizuaraAILabs/OpenClaw-RL-Tutorial`](https://github.com/VizuaraAILabs/OpenClaw-RL-Tutorial) — implement GRPO with verifiable rewards on a math task, adding format + correctness rewards. |
 
 ### Lecture 12 — Long-Context, Safety Fine-Tuning, and Serving
-_3-hour block · 🔧 reusable skill: `$safety-serving-audit`_
+_3-hour block · 🔧 skill: `$safety-serving-audit` · ▶ project: [`VizuaraAI/llm-inference-tutorial`](https://github.com/VizuaraAI/llm-inference-tutorial) — serve your model with vLLM + KV-cache, measure latency, and add input/output guardrails._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -144,10 +144,10 @@ _3-hour block · 🔧 reusable skill: `$safety-serving-audit`_
 | 01:00–01:30 | M3 | Red-teaming |
 | 01:30–02:00 | M4 | Efficient serving |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | longctx.py: RoPE-scale + briefly continue-train; run a needle-in-a-haystack eval across context leng |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`VizuaraAI/llm-inference-tutorial`](https://github.com/VizuaraAI/llm-inference-tutorial) — serve your model with vLLM + KV-cache, measure latency, and add input/output guardrails. |
 
 ### Lecture 13 — Capstone: A Full Pretrain → Post-Train Pipeline With an Evidence Packet
-_3-hour block · 🔧 reusable skill: `$lifecycle-evidence-packet`_
+_3-hour block · 🔧 skill: `$lifecycle-evidence-packet` · ▶ project: [`VizuaraAI/pharma-slm`](https://github.com/VizuaraAI/pharma-slm) — use its full ~350M domain-SLM pipeline as the capstone template for your pretrain → post-train evidence packet._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -156,5 +156,5 @@ _3-hour block · 🔧 reusable skill: `$lifecycle-evidence-packet`_
 | 01:00–01:30 | M3 | Guided discussion / Q&A |
 | 01:30–02:00 | M4 | Critique & reflection (what would fail?) |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | Pick a domain assistant (support, coding helper, math tutor). Assemble: a curated+decontaminated dat |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`VizuaraAI/pharma-slm`](https://github.com/VizuaraAI/pharma-slm) — use its full ~350M domain-SLM pipeline as the capstone template for your pretrain → post-train evidence packet. |
 

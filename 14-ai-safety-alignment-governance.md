@@ -1,6 +1,6 @@
 # Subject 14 — AI Safety, Alignment & Governance
 
-**Track:** Safety & Society · **Altitude:** Specialist · **Format:** seminar + live lab (2h seminar + 3h lab/wk) · **Length:** 13 weeks
+**Track:** Safety & Society · **Altitude:** Specialist · **Format:** seminar + live lab (3h seminar + 3h lab/wk) · **Length:** 13 weeks
 **Prerequisites:** Subject 11/12 (LLM internals, fine-tuning, agents), Subject 13 (RLHF/RLVR, reward hacking) strongly recommended. Comfort with PyTorch, the Transformers/TRL stack, and running inference against frontier APIs.
 **Pedagogy:** Modeled on **Harvard CS2881R (Boaz Barak, Fall 2025)** — every week pairs a *concept* with a *live experiment*. Fused with Princeton COS597R (alignment/constitutional AI) and Berkeley agent-safety (Dawn Song), under the source book's `concept → code → critique → reflection → rebuild` loop and the `prompt → workflow → skill → harness` ladder. This is a **lab course**: you will run real jailbreaks, train a real sparse autoencoder, monitor real chains-of-thought, and write real governance artifacts — not just read.
 
@@ -37,7 +37,12 @@ _1 academic quarter · 3 lecture-hours/week · 13 lectures (~39 contact hrs). Fu
 
 ## Week 1 — The AI Risk Landscape & How to Reason About It
 
-**Altitude:** Specialist · **Format:** 2h seminar + 3h lab
+### State of the Art (June 2026)
+- The International AI Safety Report (2025/2026) + frontier system cards frame misuse / misalignment / systemic risk; defense-in-depth is the consensus posture.
+- EU AI Act: most rules apply Aug 2 2026; the Digital Omnibus (provisional May 2026) defers Annex-III high-risk to Dec 2 2027 — dated facts matter.
+- Pre-deployment threat-modeling (assets/actors/vectors/impact) is now standard practice.
+
+**Altitude:** Specialist · **Format:** 3h seminar + 3h lab
 **Anchor case:** map the risk surface of the customer-support assistant before touching any model.
 
 ### Learning goals
@@ -56,6 +61,8 @@ _1 academic quarter · 3 lecture-hours/week · 13 lectures (~39 contact hrs). Fu
 - Write `threat_model.yaml` for the support assistant: assets, actors, vectors, impact, current controls.
 - Run a baseline probe: 20 adversarial prompts against the assistant; log refusals vs compliances.
 - **Deliverable:** threat model + baseline harm-rate table; **Acceptance:** every harm category has at least one probe and a measured base rate.
+
+▶ **Practical project:** `anthropics/courses` — work the red-teaming/eval notebooks to build a threat model + baseline harm-rate table for the support assistant.
 
 ### Harness / reusable skill — `$threat-modeler`
 - **Purpose:** turn any AI system into a structured threat model before mitigation.
@@ -110,6 +117,11 @@ def measure_harm_rate(model, behaviors, judge):
 
 ## Week 2 — Where Safety Enters Modern LLM Training (RLHF, RLVR, Safety Fine-Tuning)
 
+### State of the Art (June 2026)
+- Default post-train stack is SFT → DPO/GRPO → safety FT; RLVR handles verifiable behaviors.
+- Alignment tax + over-refusal (XSTest) are measured, not assumed; Qi et al. ‘fine-tuning breaks safety’ is the cautionary result.
+- Safety is injected at multiple stages (data, RLHF, system) — a prompt-layer-only defense is brittle.
+
 **Altitude:** Specialist · **Anchor case:** the small open model — add a safety behavior and measure the alignment tax.
 
 ### Learning goals
@@ -128,6 +140,8 @@ def measure_harm_rate(model, behaviors, judge):
 - `safety_ft.py` with TRL: fine-tune the small model on a refusal dataset; evaluate harm-rate (down) and capability (held-out MMLU/GSM8K slice).
 - Measure over-refusal on benign-but-spicy prompts.
 - **Deliverable:** before/after table (harm-rate ↓, capability Δ, over-refusal rate); **Acceptance:** harm-rate drops meaningfully with a *quantified* alignment tax and over-refusal rate.
+
+▶ **Practical project:** `anthropics/anthropic-cookbook` — adapt a fine-tuning/classification recipe to run a refusal fine-tune and quantify the alignment tax + over-refusal rate.
 
 ### Harness / reusable skill — `$alignment-tax-meter`
 - **Purpose:** quantify the safety/capability tradeoff of any intervention. **Inputs:** model before/after, capability + safety + over-refusal evals. **Outputs:** a tradeoff table and a "ship/no-ship" recommendation.
@@ -177,6 +191,11 @@ def evaluate_intervention(model, harm_set, cap_set, benign_set, judge):
 
 ## Week 3 — Adversarial Robustness I: Jailbreaks
 
+### State of the Art (June 2026)
+- GCG (nanoGCG) and PAIR/TAP remain canonical; HarmBench is the standardized ASR framework with calibrated judges.
+- Jailbreak transferability across open→closed models is a 2026 concern with the MoE/1M-context frontier.
+- Automated red-teaming is now folded into constitutional-AI training loops.
+
 **Altitude:** Specialist · **Anchor case:** break the safety-tuned model from Week 2 with real jailbreak techniques.
 
 ### Learning goals
@@ -195,6 +214,8 @@ def evaluate_intervention(model, harm_set, cap_set, benign_set, judge):
 - `gcg_attack.py` with **nanoGCG**: find a suffix that jailbreaks the local model on a HarmBench behavior.
 - `pair_attack.py`: attacker-LLM loop against the support assistant (black-box).
 - **Deliverable:** ASR table (manual vs GCG vs PAIR) + 3 transferability tests; **Acceptance:** at least one attack family achieves non-trivial ASR with a documented judge.
+
+▶ **Practical project:** `anthropics/anthropic-cookbook` — use the cookbook’s prompting/eval patterns to run manual + automated jailbreaks and report calibrated ASR with transcripts.
 
 ### Harness / reusable skill — `$jailbreak-suite`
 - **Purpose:** a reusable attack battery (manual templates + GCG + PAIR) with a consistent judge. **Inputs:** target model, behavior set. **Outputs:** per-attack ASR, transcripts, transferability matrix.
@@ -245,6 +266,11 @@ def gcg_jailbreak(model, tokenizer, prompt, target="Sure, here is"):
 
 ## Week 4 — Adversarial Robustness II: Prompt Injection, Agent Hijacking & Weight Protection
 
+### State of the Art (June 2026)
+- Indirect prompt injection is the #1 agent threat (OWASP LLM Top-10 2025); MCP’s 2026 auth hardening is a direct response.
+- Defenses: spotlighting, dual-LLM/quarantine, least-privilege tool scoping; AgentDojo/InjecAgent are the benchmarks.
+- Computer-use/browser agents (Claude Computer Use, OpenAI Operator) widen the injection surface.
+
 **Altitude:** Specialist · **Anchor case:** the support assistant gains tools (web, email) — now indirect prompt injection becomes the dominant threat.
 
 ### Learning goals
@@ -263,6 +289,8 @@ def gcg_jailbreak(model, tokenizer, prompt, target="Sure, here is"):
 - `injection_demo.py`: plant an instruction in a RAG doc that makes the assistant exfiltrate a secret; confirm the attack.
 - `injection_defense.py`: add spotlighting + an output filter + a quarantined-LLM pattern; re-measure.
 - **Deliverable:** attack-success before/after defense + a permission-scoping diagram; **Acceptance:** the defense reduces injection success while you document residual risk.
+
+▶ **Practical project:** `anthropics/anthropic-cookbook` — extend a tool-use recipe to demo indirect injection + a spotlighting/quarantine defense, measuring residual ASR.
 
 ### Harness / reusable skill — `$injection-redteam`
 - **Purpose:** systematically test an agent for direct/indirect injection and exfiltration. **Inputs:** agent + tools + data channels. **Outputs:** injection ASR per channel, exfiltration test results, defense recommendations mapped to OWASP LLM Top-10.
@@ -316,6 +344,11 @@ def answer_with_rag(query, retriever, llm, defend=False):
 
 ## Week 5 — Model Specs, Content Policies & Moderation (Llama Guard, NeMo Guardrails)
 
+### State of the Art (June 2026)
+- OpenAI Model Spec + Anthropic’s constitution are the testable-policy templates; Llama Guard 3/4 + NeMo Guardrails are the guard stack.
+- Runtime input/output validators (prompt-injection focus) are the production guardrail norm.
+- Operating-point tuning on PR curves over harmful AND benign traffic is standard.
+
 **Altitude:** Specialist · **Anchor case:** write the support assistant's model spec and enforce it with a guard model + guardrail layer.
 
 ### Learning goals
@@ -334,6 +367,8 @@ def answer_with_rag(query, retriever, llm, defend=False):
 - `model_spec.md`: a testable spec for the assistant (allowed/refused/deferred behaviors + examples).
 - `moderation.py`: Llama Guard as input+output filter; NeMo Guardrails for topic/PII rails; measure precision/recall on a labeled mixed set.
 - **Deliverable:** model spec + moderation PR/PR curve + chosen operating point with justification; **Acceptance:** the moderation layer hits a stated recall on harmful content while keeping over-block rate within budget.
+
+▶ **Practical project:** `anthropics/anthropic-cookbook` — use the moderation/classification recipe to enforce a model spec with a guard model and tune the operating point on a labeled set.
 
 ### Harness / reusable skill — `$policy-enforcer`
 - **Purpose:** compile a model spec into an enforceable, measurable guardrail layer. **Inputs:** model spec, guard model, labeled eval set. **Outputs:** input/output filters, precision/recall, operating point, residual-gap list.
@@ -386,6 +421,11 @@ def moderate(text, role="user"):
 
 ## Week 6 — Scheming, Deception & Situational Awareness
 
+### State of the Art (June 2026)
+- Alignment-faking (Anthropic 2024) and Apollo in-context-scheming evals are the references; SAD measures situational awareness.
+- Eval-gaming/sandbagging means behavioral evals alone are insufficient — pair with interpretability.
+- Matched-pair, cue-controlled probes + pre-registration are the rigor bar.
+
 **Altitude:** Specialist · **Anchor case:** probe the reasoning model for eval-gaming and behavior that changes when it "thinks" it is being watched.
 
 ### Learning goals
@@ -404,6 +444,8 @@ def moderate(text, role="user"):
 - `eval_gaming_probe.py`: present the model the same task with/without explicit "this is a test" framing; measure behavior delta.
 - Reproduce a small "alignment-faking"-style probe: does behavior change when the model believes outputs are training vs deployment?
 - **Deliverable:** observed-vs-unobserved behavior table + a written interpretation of what it does/doesn't prove; **Acceptance:** you measure a behavior delta (or convincingly show none) and reason carefully about its meaning.
+
+▶ **Practical project:** `anthropics/courses` — reproduce an alignment-faking-style matched-pair probe and interpret the observed-vs-unobserved behavior delta honestly.
 
 ### Harness / reusable skill — `$deception-probe`
 - **Purpose:** test for observation-dependent behavior and eval-gaming. **Inputs:** model, task set, observation-cue variants. **Outputs:** behavior-delta table, honeypot results, an evidentiary-caveats note.
@@ -453,6 +495,11 @@ def behavior_delta(model, tasks, judge):
 
 ## Week 7 — Mechanistic Interpretability I: Sparse Autoencoders (SAEs)
 
+### State of the Art (June 2026)
+- SAEs for monosemantic features are the fastest-moving alignment area (Scaling Monosemanticity, Gemma Scope); a MIT 2026 mech-interp breakthrough accelerated it.
+- Activation atlases for deceptive-alignment detection are emerging.
+- SAELens + TransformerLens are the standard tooling.
+
 **Altitude:** Specialist · **Anchor case:** train a tiny SAE on the reasoning model's activations and find interpretable features.
 
 ### Learning goals
@@ -471,6 +518,8 @@ def behavior_delta(model, tasks, judge):
 - `train_sae.py`: hook a layer's residual stream (via `TransformerLens`/`SAELens`), collect activations, train an SAE.
 - Build a feature dashboard: top-activating tokens per feature; ablate a feature and measure output change.
 - **Deliverable:** a feature dictionary (≥10 interpreted features) + one ablation/steering result; **Acceptance:** at least several features are clearly interpretable with an intervention that confirms the interpretation.
+
+▶ **Practical project:** `anthropics/courses` — follow the interpretability material to train a small SAE on a layer and validate ≥10 features with an ablation/steering test.
 
 ### Harness / reusable skill — `$sae-feature-lab`
 - **Purpose:** train + interpret SAE features on any model layer. **Inputs:** model, layer, activation corpus. **Outputs:** trained SAE, feature dictionary with max-activating examples, ablation-validated interpretations.
@@ -526,6 +575,11 @@ def sae_loss(x, x_hat, h, l1=1e-3):
 
 ## Week 8 — Mechanistic Interpretability II: CoT Monitoring & Faithfulness
 
+### State of the Art (June 2026)
+- CoT monitoring is a promising-but-fragile oversight tool (Korbak et al. 2025); optimization pressure erodes monitorability (OpenAI 2025).
+- Faithfulness perturbation tests (hint injection) quantify unfaithful CoT.
+- Don’t RL against the monitor — obfuscation is the documented failure.
+
 **Altitude:** Specialist · **Anchor case:** monitor the reasoning model's chain-of-thought for misbehavior and test whether the CoT is *faithful*.
 
 ### Learning goals
@@ -544,6 +598,8 @@ def sae_loss(x, x_hat, h, l1=1e-3):
 - `cot_monitor.py`: a monitor LLM that scores each reasoning step of an agent for unsafe intent; gate the final action on flags.
 - `faithfulness_test.py`: inject a biasing hint into the CoT and measure whether the model acknowledges it (unfaithfulness rate).
 - **Deliverable:** monitor precision/recall on a labeled reasoning set + a faithfulness measurement; **Acceptance:** the monitor catches a documented fraction of unsafe traces, and you quantify CoT unfaithfulness.
+
+▶ **Practical project:** `anthropics/courses` — build a CoT monitor + faithfulness test and report monitor PR plus the model’s CoT unfaithfulness rate.
 
 ### Harness / reusable skill — `$cot-monitor`
 - **Purpose:** reusable reasoning-trace monitor + faithfulness tester for agents. **Inputs:** agent traces, monitor model, perturbation suite. **Outputs:** flag precision/recall, faithfulness rate, escalation log.
@@ -595,6 +651,11 @@ def monitor_and_gate(agent, monitor, task):
 
 ## Week 9 — Scalable Oversight, Constitutional AI & RLAIF
 
+### State of the Art (June 2026)
+- Constitutional AI with dynamic constitutions + automated red-teaming is a 2026 frontier (Collective CAI principles).
+- RLAIF scales oversight but inherits the labeler-model’s blind spots; weak-to-strong and debate are active directions.
+- AI-feedback preference sets feed DPO/RLAIF in the standard trl stack.
+
 **Altitude:** Specialist · **Anchor case:** align the support assistant using AI feedback against a written constitution instead of per-example human labels.
 
 ### Learning goals
@@ -613,6 +674,8 @@ def monitor_and_gate(agent, monitor, task):
 - `constitutional_ai.py`: a critique→revise pipeline using a written constitution on harmful prompts; build a preference set from AI judgments; run DPO/RLAIF.
 - Compare resulting harm-rate + helpfulness to the Week 2 human-data fine-tune.
 - **Deliverable:** RLAIF-vs-RLHF comparison table + the constitution + sampled critiques; **Acceptance:** RLAIF reduces harm-rate comparably to human data, with the cost/quality tradeoff documented.
+
+▶ **Practical project:** `anthropics/anthropic-cookbook` — implement a critique→revise constitutional loop, build an AI-preference set, and compare RLAIF vs human-data harm-rate.
 
 ### Harness / reusable skill — `$constitutional-aligner`
 - **Purpose:** align a model from a written constitution via critique→revise→RLAIF. **Inputs:** base model, constitution, prompt set. **Outputs:** aligned model, AI-preference set, RLHF-vs-RLAIF tradeoff report.
@@ -662,6 +725,11 @@ def constitutional_revise(model, prompt, constitution):
 
 ## Week 10 — Dangerous Capabilities, Responsible Scaling & Takeoff
 
+### State of the Art (June 2026)
+- Responsible Scaling Policies / OpenAI Preparedness set capability thresholds; UK AISI Inspect AI is the eval harness.
+- Under-elicitation is the core measurement error — best-effort scaffolding/tools/fine-tune required (Cybench/WMDP benign proxies).
+- Machine unlearning (WMDP-style) is the emerging capability-removal safeguard; verify with relearning probes.
+
 **Altitude:** Specialist · **Anchor case:** run a dangerous-capability eval and draft a responsible-scaling decision for the support assistant's next model upgrade.
 
 ### Learning goals
@@ -675,11 +743,14 @@ def constitutional_revise(model, prompt, constitution):
 - **Responsible scaling policy.** *Formula (informal):* `if capability ≥ threshold → required safeguards`. *Plain English:* pre-commit to safeguards triggered by measured capability levels (ASL/preparedness tiers). *Common mistake:* thresholds with no operational eval behind them.
 - **Recursive self-improvement / takeoff.** *Plain English:* models that improve models; whether progress is gradual or discontinuous. *Common mistake:* treating takeoff speed as known rather than uncertain.
 - **Elicitation.** Best-effort capability measurement (scaffolding, fine-tuning, tools) so you don't underestimate. 
+- **Machine unlearning (capability removal).** *Plain English:* surgically remove a dangerous capability or memorized data from a trained model (e.g., WMDP-style unlearning) so a scaling safeguard can *lower* a measured capability, not merely gate it at deployment. *Common mistake:* "unlearning" that suppresses surface outputs while the capability is recoverable by fine-tuning or paraphrase — verify with relearning/extraction probes.
 
 ### Hands-on build
 - `capability_eval.py` with **Inspect AI** (UK AISI): run a dangerous-capability proxy eval with strong elicitation (tools, few-shot) on a frontier API.
 - Draft an RSP-style memo: measured capability, threshold, required safeguards, go/no-go.
 - **Deliverable:** capability eval report (with elicitation details) + a 1-page RSP decision memo; **Acceptance:** the eval uses non-trivial elicitation and the memo ties a measured number to a concrete safeguard decision.
+
+▶ **Practical project:** `anthropics/courses` — run a strongly-elicited dangerous-capability proxy eval with Inspect AI and draft an RSP go/no-go memo tying a number to a safeguard.
 
 ### Harness / reusable skill — `$capability-eval`
 - **Purpose:** run elicitation-strong capability evals and map them to scaling decisions. **Inputs:** model, capability task suite, elicitation methods. **Outputs:** capability score with CI, elicitation log, threshold/safeguard recommendation.
@@ -733,6 +804,11 @@ def capability_task(dataset, tools):
 
 ## Week 11 — Agent Safety: Autonomy, Permissions & Multi-Agent Risk
 
+### State of the Art (June 2026)
+- Agent autonomy risk is governed by least-privilege authz + human-gates; τ-bench/τ²-bench (pass^k reliability) and AgentDojo are the evals.
+- Containment/sandboxing + full audit trails are production requirements; A2A delegation adds multi-agent risk.
+- Agent memory + computer-use widen the blast radius.
+
 **Altitude:** Specialist · **Anchor case:** the support assistant becomes an autonomous agent with real tools — bound its autonomy safely.
 
 ### Learning goals
@@ -751,6 +827,8 @@ def capability_task(dataset, tools):
 - `agent_authz.py`: wrap the assistant's tools with a least-privilege policy + human-gate for irreversible actions (payments, emails).
 - Evaluate on **AgentDojo** / **tau-bench**: measure task success vs unsafe-action rate, with and without the authz layer.
 - **Deliverable:** safety/utility tradeoff table (with vs without gates) + a containment design doc; **Acceptance:** the authz layer cuts unsafe actions with a documented utility cost.
+
+▶ **Practical project:** `anthropics/anthropic-cookbook` — wrap a tool-using agent recipe with an authorization layer + human-gate and measure unsafe-action rate vs utility on AgentDojo/τ-bench.
 
 ### Harness / reusable skill — `$agent-safety-harness`
 - **Purpose:** authorization + sandbox + monitoring wrapper for tool-using agents. **Inputs:** agent, tool set, risk policy. **Outputs:** gated agent, unsafe-action rate, utility delta, audit trail.
@@ -803,6 +881,11 @@ def guarded_execute(action, args, context, human_gate):
 
 ## Week 12 — Governance: EU AI Act, NIST AI RMF, OWASP & Standards
 
+### State of the Art (June 2026)
+- EU AI Act enforcement starts Aug 2 2026; the Digital Omnibus defers Annex-III high-risk to Dec 2 2027; fines up to €35M / 7% turnover.
+- NIST AI RMF + GenAI Profile, OWASP LLM Top-10, ISO/IEC 42001 are the mappable control frameworks.
+- Safety cases (UK AISI, Clymer et al.) are the documentation form.
+
 **Altitude:** Specialist · **Anchor case:** produce a compliance dossier for shipping the support assistant in the EU.
 
 ### Learning goals
@@ -820,6 +903,8 @@ def guarded_execute(action, args, context, human_gate):
 ### Hands-on build
 - `compliance_dossier/`: EU AI Act tier classification + obligations checklist; NIST RMF mapping of the prior weeks' controls; OWASP Top-10 coverage table; a model/system card.
 - **Deliverable:** a compliance dossier tying each prior-week artifact to a regulatory control; **Acceptance:** every applicable EU AI Act / NIST obligation is mapped to a concrete control or an explicit gap.
+
+▶ **Practical project:** `anthropics/courses` — map the support assistant to EU-AI-Act/NIST-RMF obligations and produce an auditable compliance dossier.
 
 ### Harness / reusable skill — `$compliance-mapper`
 - **Purpose:** map a system's technical controls to EU AI Act + NIST RMF + OWASP requirements. **Inputs:** system + control inventory. **Outputs:** tier classification, obligation-to-control matrix, gap list, model/system card.
@@ -873,6 +958,11 @@ gaps = [k for k, v in controls.items() if v["status"] != "met"]
 
 ## Week 13 — Capstone: A Full Red-Team → Mitigation → Eval Cycle
 
+### State of the Art (June 2026)
+- 2026 safety cases bundle threat model → multi-family red-team (calibrated ASR) → quantified mitigations → governance mapping.
+- Evidence-over-demos: before/after ASR, an explicit residual-risk statement, every claim artifact-linked.
+- Inspect AI + HarmBench + AgentDojo + τ-bench compose the capstone harness.
+
 **Altitude:** Specialist (graduating to Subject 16) · **Anchor case:** take one real system (the support assistant, or your own) through the entire safety lifecycle.
 
 ### Learning goals
@@ -886,6 +976,8 @@ gaps = [k for k, v in controls.items() if v["status"] != "met"]
 ### Hands-on build
 - Pick a system. Run: (1) threat model, (2) a multi-family red-team with measured ASR, (3) ≥2 mitigations with quantified safety/utility tradeoffs, (4) a re-eval showing residual risk, (5) a governance/compliance mapping, (6) a deployment recommendation.
 - **Deliverable:** `capstone/` repo + a system safety card + a 4-page report + a live demo of one attack and its defense; **Acceptance:** every claim links to an artifact, mitigations are quantified, residual risk is stated, and the go/no-go is defended.
+
+▶ **Practical project:** `anthropics/anthropic-cookbook` — assemble a full red-team→mitigation→eval safety case for one system with an artifact-linked safety card.
 
 ### Harness / reusable skill — `$safety-case-builder`
 - **Purpose:** assemble threat model + red-team + mitigations + evals + governance into one auditable safety case. **Evidence artifact:** the safety card + report (this *is* the deliverable).
@@ -969,3 +1061,15 @@ assert reeval.residual_risk_documented and card.every_claim_has_evidence
 
 ## Skills produced (reused program-wide)
 `$threat-modeler` · `$alignment-tax-meter` · `$jailbreak-suite` · `$injection-redteam` · `$policy-enforcer` · `$deception-probe` · `$sae-feature-lab` · `$cot-monitor` · `$constitutional-aligner` · `$capability-eval` · `$agent-safety-harness` · `$compliance-mapper` · `$safety-case-builder`
+
+---
+
+## 🛠 Hands-on repositories & build studios (merged June 2026)
+
+**Clone-and-run repos** (verified June 2026; full catalog in [`PROJECTS.md`](PROJECTS.md)):
+- `anthropics/courses` — applied safety/alignment course material (red-teaming, evals, prompt-level defenses) — *Lectures 1–2, 9*
+- `anthropics/anthropic-cookbook` — runnable recipes for moderation, classification, guardrails, and tool-safety — *Lectures 3–5, 11*
+
+**Build studios** (specs in [`PROJECTS.md`](PROJECTS.md)):
+- **Self-evolving rubric lab** — generate rubrics, measure judge agreement, run bias / reward-hacking tests on the judge itself — *Lectures 5, 9*
+- **Synthetic-data audit** — real+synthetic vs real-only safety fine-tunes; artifact / model-collapse check — *Lecture 2*

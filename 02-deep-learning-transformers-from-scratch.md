@@ -1,6 +1,6 @@
 # Subject 02 — Deep Learning & the Transformer, Built by Hand
 
-**Track:** Core · **Altitude:** Learner→Builder · **Length:** 12 weeks (2 lecture hrs + 4 lab hrs/wk)
+**Track:** Core · **Altitude:** Learner→Builder · **Length:** 12 weeks (3 lecture hrs + 4 lab hrs/wk)
 **Prerequisites:** Subject 01 (math/ML from scratch) or equivalent — you can read an ML equation as
 shapes, hand-derive a gradient, gradient-check it, and run a clean experiment with baselines.
 **Pedagogy:** Vizuara-style *build-every-component-without-libraries* (NumPy first), then re-implement
@@ -71,7 +71,12 @@ checkpoint 10% + capstone 20% + labs 60% = 100%.)
 
 ## Week 1 — The Neuron, the Forward Pass, and Scalar Autodiff From Scratch
 
-**Altitude:** Learner · **Format:** 2h lecture + 4h lab
+### State of the Art (June 2026)
+- Your `Value`/micrograd engine is the conceptual core of **PyTorch 2.7 autograd**, the trainer behind every 2026 frontier model; reverse-mode AD has not been displaced.
+- Input normalization scales to **RMSNorm** — the 2026 default norm in **Llama 4 / Qwen 3.5 / DeepSeek V4** — the same "condition the activations" motive you meet on image 1.
+- The compute graph you record is what frameworks lower to fused kernels (**FlashAttention-4**, Blackwell); graph thinking is the bridge from toy to frontier.
+
+**Altitude:** Learner · **Format:** 3h lecture + 4h lab
 **Anchor case:** Fashion-MNIST as a flat 784-vector; build one neuron, then a layer, predicting a single class logit.
 
 ### Learning goals
@@ -101,6 +106,8 @@ checkpoint 10% + capstone 20% + labs 60% = 100%.)
 - `neuron.py`: `Neuron`, `Layer`, `MLP` built on `Value`; do a forward pass on one Fashion-MNIST image.
 - **Deliverable:** `engine.py` + tests that pass a finite-difference gradient check to 1e-6.
   **Acceptance:** `(a*b + a.tanh()).backward()` matches numerical gradients; an `MLP([784,16,10])` produces a 10-vector.
+
+▶ **Practical project:** `VizuaraAI/visual-ai-book` — follow its NN-from-scratch track to build a neuron, a forward pass, and a scalar-autodiff engine.
 
 ### Harness / reusable skill — `$autodiff-tracer`
 - **Purpose:** for any small expression, draw/print the computation graph and verify each local gradient.
@@ -173,7 +180,12 @@ class Value:
 
 ## Week 2 — Backpropagation Through an MLP, By Hand (NumPy)
 
-**Altitude:** Learner · **Format:** 2h lecture + 4h lab
+### State of the Art (June 2026)
+- The `(p − onehot(y))/B` softmax-CE gradient you derive is the exact output-layer gradient of every LLM trained in 2026 — the vocab-sized version of this MLP.
+- Hand-derived backprop + grad-check is still how custom kernels (e.g., a **FlashAttention-4** backward, fused MoE) are validated at the frontier.
+- ReLU's gradient mask generalizes to **SwiGLU/GeGLU** gating used in 2026 transformer MLPs — the same "which units pass gradient" reasoning.
+
+**Altitude:** Learner · **Format:** 3h lecture + 4h lab
 **Anchor case:** a 2-layer MLP classifying Fashion-MNIST (784→128→10) trained with hand-derived backprop.
 
 ### Learning goals
@@ -200,6 +212,8 @@ class Value:
   from Subject 01) before any training.
 - Train on Fashion-MNIST; log loss/accuracy per epoch; reach ≥ 85% test accuracy.
 - **Deliverable:** training run + gradient-check report. **Acceptance:** grad-check max-abs-diff < 1e-5; test acc ≥ 85%.
+
+▶ **Practical project:** `rasbt/LLMs-from-scratch` — use its Appendix-A autograd intro to cross-check your hand-derived NumPy MLP backward pass.
 
 ### Harness / reusable skill — `$layer-backprop-derive`
 - **Purpose:** for any layer, produce the forward formula, the backward formula, the shapes, and a
@@ -264,7 +278,12 @@ def backward(X, Z1, A1, P, Y, W2):     # Y is one-hot (B,10)
 
 ## Week 3 — Optimizers: SGD, Momentum, RMSProp, Adam From Scratch
 
-**Altitude:** Learner→Builder · **Format:** 2h lecture + 4h lab
+### State of the Art (June 2026)
+- **AdamW** (decoupled decay) is still the default for 2026 frontier pretraining; the Adam you build is unchanged at trillion-param scale.
+- Modern twists to preview: **Muon, 8-bit optimizers, and μP hyperparameter transfer** — but bias correction and per-parameter scaling are exactly the accumulators you implement.
+- Optimizer-vs-LR fairness (matched seeds/sweeps) is the same rigor that separates a real training improvement from noise in 2026 ablations.
+
+**Altitude:** Learner→Builder · **Format:** 3h lecture + 4h lab
 **Anchor case:** the same Fashion-MNIST MLP, now trained four ways; compare convergence on one plot.
 
 ### Learning goals
@@ -288,6 +307,8 @@ def backward(X, Z1, A1, P, Y, W2):     # Y is one-hot (B,10)
 - Train the Week-2 MLP with each; overlay the four loss curves; tabulate epochs-to-90%-train-acc.
 - **Deliverable:** four-optimizer comparison plot + table. **Acceptance:** Adam reaches a target loss in
   fewer steps than plain SGD, and you can explain *why* in two sentences referencing the accumulators.
+
+▶ **Practical project:** `rasbt/LLMs-from-scratch` — adapt its training loop to implement and compare SGD / Momentum / RMSProp / Adam on one model.
 
 ### Harness / reusable skill — `$optimizer-bench`
 - **Purpose:** fairly compare optimizers on one model/data with matched seeds and LR sweeps.
@@ -352,7 +373,12 @@ class Adam:
 
 ## Week 4 — From NumPy to PyTorch + Regularization (Dropout, BatchNorm, Weight Decay)
 
-**Altitude:** Builder · **Format:** 2h lecture + 4h lab · **Quiz 1 (mechanics) this week.**
+### State of the Art (June 2026)
+- The NumPy↔PyTorch parity test is the discipline behind every 2026 framework port; **PyTorch 2.7** (CUDA 12.6) + `torch.compile` is the current reference.
+- **Weight decay via AdamW** is the production default; **Dropout** persists, but RMSNorm/LayerNorm + residuals carry most of the stabilization in modern stacks.
+- The same low-rank "regularized update" idea reappears as **LoRA/QLoRA/DoRA** — the dominant 2026 fine-tuning regularizers (Subject 03).
+
+**Altitude:** Builder · **Format:** 3h lecture + 4h lab · **Quiz 1 (mechanics) this week.**
 **Anchor case:** re-implement the Fashion-MNIST MLP in PyTorch, then add regularizers and measure the generalization gap.
 
 ### Learning goals
@@ -379,6 +405,8 @@ class Adam:
   report the train–test gap for each.
 - **Deliverable:** parity assertion + regularization ablation table. **Acceptance:** NumPy/PyTorch parity
   < 1e-4 on logits; ablation shows a measurable gap reduction with at least one regularizer.
+
+▶ **Practical project:** `microsoft/AI-For-Beginners` — port your MLP to its PyTorch neural-network notebooks and ablate dropout / batchnorm / weight decay.
 
 ### Harness / reusable skill — `$regularization-ablation`
 - **Purpose:** quantify each regularizer's effect on the train–test gap with everything else fixed.
@@ -443,7 +471,12 @@ loss_fn = nn.CrossEntropyLoss()
 
 ## Week 5 — Convolutional Networks: Built, Then Trained on Fashion-MNIST
 
-**Altitude:** Builder · **Format:** 2h lecture + 4h lab
+### State of the Art (June 2026)
+- CNNs remain SOTA for many vision tasks, but 2026 multimodal frontier models use **ViT/DiT patch encoders**; your conv/shape reasoning is the bridge to "patchify."
+- **DiT (Diffusion Transformer) over spatiotemporal latent patches** is the standard architecture behind 2026 video models (**Sora 2, Veo 3.1, Seedance 2.0**) — convolutional inductive bias vs attention is a live design axis.
+- Output-shape arithmetic and channel-order discipline are exactly what make **ColPali/ColQwen3** visual-document encoders correct.
+
+**Altitude:** Builder · **Format:** 3h lecture + 4h lab
 **Anchor case:** beat the MLP on Fashion-MNIST with a small CNN, and *see* what the filters learn.
 
 ### Learning goals
@@ -466,6 +499,8 @@ loss_fn = nn.CrossEntropyLoss()
 - Visualize the 8 first-layer filters and a 10×10 confusion matrix; name the two most-confused classes.
 - **Deliverable:** CNN training run + filter grid + confusion matrix. **Acceptance:** test acc ≥ 91% and a
   one-paragraph reading of which classes confuse the model and why (e.g., shirt vs coat vs pullover).
+
+▶ **Practical project:** `krishnaik06/Malaria-Detection` — build and train a small CNN end-to-end on an image dataset, visualize filters, and read the confusion matrix.
 
 ### Harness / reusable skill — `$conv-shape-planner`
 - **Purpose:** given an input size and a stack of conv/pool layers, compute every intermediate shape *before* coding.
@@ -525,7 +560,12 @@ class SmallCNN(nn.Module):
 
 ## Week 6 — Sequence Models: RNNs and LSTMs From Scratch (and the Char-LM)
 
-**Altitude:** Builder · **Format:** 2h lecture + 4h lab · **Mid-course checkpoint (NumPy→PyTorch parity report) due.**
+### State of the Art (June 2026)
+- RNN/LSTM are largely historical for LMs, but the **vanishing-gradient problem they expose** is precisely why attention won — essential motivation for Weeks 7–8.
+- 2026 efficiency research revives recurrence: **state-space / linear-attention hybrids (Mamba-style, and hybrid blocks in several open models)** trade O(T²) attention for O(T) recurrence — the gradient-highway idea you build in the LSTM cell.
+- BPC and single-batch-overfit sanity checks remain the cheapest correctness tests for any sequence model in 2026.
+
+**Altitude:** Builder · **Format:** 3h lecture + 4h lab · **Mid-course checkpoint (NumPy→PyTorch parity report) due.**
 **Anchor case:** introduce the language-model case — predict the next character of TinyShakespeare with an RNN, then an LSTM.
 
 ### Learning goals
@@ -552,6 +592,8 @@ class SmallCNN(nn.Module):
   (Wk5), and RNN (this week) on fixed batches.
 - **Deliverable:** RNN grad-check + LSTM char-LM (BPC + sample) + parity report.
   **Acceptance:** grad-check < 1e-4; LSTM BPC clearly beats a uniform-character baseline; samples are word-shaped.
+
+▶ **Practical project:** `VizuaraAI/visual-ai-book` — follow its sequence-models chapter to build an RNN/LSTM char-LM and report bits-per-character.
 
 ### Harness / reusable skill — `$sequence-sanity`
 - **Purpose:** validate any sequence model with three cheap checks: grad-check on a short sequence,
@@ -613,7 +655,12 @@ class CharLSTM(nn.Module):
 
 ## Week 7 — Attention From Scratch: Why It Replaced Recurrence
 
-**Altitude:** Builder · **Format:** 2h lecture + 4h lab
+### State of the Art (June 2026)
+- The scaled-dot-product attention you build is unchanged in 2026 frontier models; what changed is the **kernel: FlashAttention-3 (Hopper) / FlashAttention-4 (Blackwell)** computes the same `softmax(QKᵀ/√d)V` tiled and IO-aware.
+- **GQA (grouped-query attention)** is the 2026 default (Llama 4, Qwen 3.5) — sharing K/V across heads to shrink the KV-cache; you meet it again in Subject 03.
+- "Attention ≠ explanation" connects directly to 2026 **mechanistic interpretability** — attention maps are computation, not faithful reasons (corroborate with SAEs/ablations).
+
+**Altitude:** Builder · **Format:** 3h lecture + 4h lab
 **Anchor case:** add a single self-attention layer to the char-LM and watch it attend to relevant earlier characters.
 
 ### Learning goals
@@ -640,6 +687,8 @@ class CharLSTM(nn.Module):
 - **Deliverable:** attention implementation + a single-layer attention LM + an annotated attention heatmap.
   **Acceptance:** NumPy↔PyTorch attention parity < 1e-5; the attention LM trains stably and beats the
   vanilla-RNN BPC from Week 6.
+
+▶ **Practical project:** `rasbt/LLMs-from-scratch` — implement scaled-dot-product + causal self-attention (Ch.3) and visualize the attention matrix.
 
 ### Harness / reusable skill — `$attention-inspector`
 - **Purpose:** for any attention layer, dump and visualize the score matrix, verify the causal mask, and
@@ -697,7 +746,12 @@ def causal_self_attention(x, Wq, Wk, Wv):     # x: (B,T,d)
 
 ## Week 8 — The Transformer Block, Built End to End
 
-**Altitude:** Builder · **Format:** 2h lecture + 4h lab
+### State of the Art (June 2026)
+- Your pre-norm block is the 2026 frontier default; current models swap **LayerNorm→RMSNorm**, learned/sinusoidal PE→**RoPE**, and dense MLP→**SwiGLU** (often **MoE**) — same skeleton, modernized parts.
+- **RoPE** is the universal 2026 positional scheme (extends to long context via **NTK/YaRN**); the "inject position" lesson is exactly why.
+- Multi-head reshaping correctness is what makes **GQA/MoE** kernels and **FlashAttention-4** valid — the einops discipline scales straight up.
+
+**Altitude:** Builder · **Format:** 3h lecture + 4h lab
 **Anchor case:** assemble a full decoder block — multi-head attention + positional encodings + LayerNorm + residuals + MLP — for the char-LM.
 
 ### Learning goals
@@ -722,6 +776,8 @@ def causal_self_attention(x, Wq, Wk, Wv):     # x: (B,T,d)
 - Ablate: remove positional encoding, remove residuals — record the damage.
 - **Deliverable:** a working multi-block decoder + an ablation table (no-PE, no-residual, full).
   **Acceptance:** the full block beats Week 7's BPC; removing PE or residuals visibly hurts (documented).
+
+▶ **Practical project:** `rasbt/LLMs-from-scratch` — assemble multi-head attention + the full pre-norm decoder block (Ch.3–4) and overfit a single batch.
 
 ### Harness / reusable skill — `$transformer-block-validator`
 - **Purpose:** verify a Transformer block by shape-checking every sublayer, confirming residual/Norm
@@ -786,7 +842,12 @@ class MultiHeadAttention(nn.Module):
 
 ## Week 9 — Tokenization and Byte-Pair Encoding From Scratch
 
-**Altitude:** Builder · **Format:** 2h lecture + 4h lab · **Quiz 2 (attention/transformer) this week.**
+### State of the Art (June 2026)
+- BPE/byte-level tokenizers remain standard in 2026 (**GPT-5.5, Llama 4, Qwen 3.5**); fertility and round-trip are still the metrics that matter.
+- Tokenization still explains frontier failures — **digit-splitting, code, and multilingual** fertility drive measurable quality and cost gaps; the probe you build is current practice.
+- Visual-document pipelines bypass text tokenization entirely via **ColPali/ColQwen3 late-interaction** over image patches — a 2026 shift worth contrasting with subword BPE.
+
+**Altitude:** Builder · **Format:** 3h lecture + 4h lab · **Quiz 2 (attention/transformer) this week.**
 **Anchor case:** switch the LM from characters to BPE subwords; train your own tokenizer on WikiText-2.
 
 ### Learning goals
@@ -810,6 +871,8 @@ class MultiHeadAttention(nn.Module):
 - Swap the char-LM to BPE tokens; retrain the Week-8 decoder; compare perplexity per token and sequence length.
 - **Deliverable:** working BPE + round-trip test + a tokenization comparison table.
   **Acceptance:** exact round-trip on 10k held-out chars; your BPE's compression is within a sensible range of HF `tokenizers`.
+
+▶ **Practical project:** `rasbt/LLMs-from-scratch` — build/train a BPE tokenizer (Ch.2) and compare round-trip + fertility against tiktoken.
 
 ### Harness / reusable skill — `$tokenizer-probe`
 - **Purpose:** stress-test any tokenizer: round-trip fidelity, compression ratio, and behavior on edge cases
@@ -877,7 +940,12 @@ def train_bpe(words, vocab_size):
 
 ## Week 10 — Training a Small GPT: nanoGPT From Scratch
 
-**Altitude:** Builder→Engineer · **Format:** 2h lecture + 4h lab
+### State of the Art (June 2026)
+- nanoGPT remains the canonical teaching reference; 2026 open-weights training (**DeepSeek V4, Qwen 3.5, Llama 4**) is the same loop with **MoE, RoPE, GQA, FP8** added.
+- LR schedule + perplexity + sampling are unchanged fundamentals; modern runs add **MFU** and **FP8 KV-cache** monitoring.
+- Your from-scratch GPT is the substrate Subject 03 grows into a full pretrain→post-train lifecycle (SFT → DPO/GRPO).
+
+**Altitude:** Builder→Engineer · **Format:** 3h lecture + 4h lab
 **Anchor case:** assemble Weeks 7–9 into a ~10M-parameter GPT and train it end-to-end on TinyShakespeare (then a WikiText-2 BPE run).
 
 ### Learning goals
@@ -903,6 +971,8 @@ def train_bpe(words, vocab_size):
 - **Deliverable:** a trained checkpoint + loss/PPL curves + 5 generated samples at 3 temperatures.
   **Acceptance:** validation loss decreases smoothly to a sensible floor; TinyShakespeare samples are
   clearly English-Shakespeare-shaped; you can explain every hyperparameter you chose.
+
+▶ **Practical project:** `rasbt/LLMs-from-scratch` — pretrain the GPT end-to-end (Ch.5) on TinyShakespeare and track perplexity + sampling.
 
 ### Harness / reusable skill — `$mini-train-loop`
 - **Purpose:** a reusable, instrumented training loop: seedable, checkpointing, eval-every-N, early-stop,
@@ -970,7 +1040,12 @@ def generate(model, idx, n_new, block_size, temp=1.0, top_k=50):
 
 ## Week 11 — Scaling, Efficiency, and Honest Evaluation of Your Small GPT
 
-**Altitude:** Engineer · **Format:** 2h lecture + 4h lab
+### State of the Art (June 2026)
+- 2026 serving reference: **vLLM** with **FP8 KV-cache** (≈half KV memory, ~2× decode-latency-slope), **FlashAttention-4**, and **speculative decoding** (2–5× at low concurrency; note the KV-quant incompatibility gotcha).
+- **Scaling laws + tunable thinking-effort + sparse MoE** are the 2026 default assumptions for reasoning about cost vs quality.
+- Evaluation triangulation now means **execution-based + reliability** benchmarks (**SWE-bench Verified, τ²-bench pass^k**) plus **LLM-as-judge** with documented biases — not a single perplexity number.
+
+**Altitude:** Engineer · **Format:** 3h lecture + 4h lab
 **Anchor case:** make your GPT bigger/faster/better and prove the improvement with metrics, not vibes.
 
 ### Learning goals
@@ -996,6 +1071,8 @@ def generate(model, idx, n_new, block_size, temp=1.0, top_k=50):
 - **Deliverable:** a scaling plot + an efficiency table (tokens/sec, memory) + an evaluation note.
   **Acceptance:** a monotone scaling curve with a fitted exponent; a real measured speedup; an eval note
   naming at least one thing perplexity hides.
+
+▶ **Practical project:** `VizuaraAI/kv-cache-token-reduction-walkthrough` — profile KV-cache + inference efficiency on your small GPT and measure the latency effect.
 
 ### Harness / reusable skill — `$eval-triangulator`
 - **Purpose:** evaluate a generative model along three axes (quantitative metric, qualitative samples,
@@ -1060,6 +1137,11 @@ def fit_scaling(params, losses):                          # L ≈ a*N^-alpha + L
 
 ## Week 12 — Capstone: A Built-From-Scratch GPT With an Evidence Packet
 
+### State of the Art (June 2026)
+- **Model Cards** + one-command reproducibility (pinned seed/config/data hash) are the 2026 industry artifacts your packet mirrors; **EU AI Act** transparency obligations (main rules **Aug 2, 2026**) make them increasingly mandatory.
+- Honest evaluation = triangulated metrics + named failures + next step — exactly the **LLM-as-judge + execution-based** discipline frontier labs publish.
+- The packet is the bridge into Subject 03's full lifecycle and into the agentic / RAG / serving subjects that follow.
+
 **Altitude:** Engineer (graduating to Subject 03) · **Format:** project week (6 lab hrs)
 **Anchor case:** your own small GPT — chosen corpus, your tokenizer, your training loop — defended with evidence.
 
@@ -1077,6 +1159,8 @@ def fit_scaling(params, losses):                          # L ≈ a*N^-alpha + L
 - Pick a corpus (TinyShakespeare, a WikiText subset, TinyStories, or your own ≤ 50 MB clean text — document the license).
 - Ship: a trained checkpoint, a model card (params, data, training config), loss/PPL curves, sample sheets at multiple temperatures, an evaluation note, and a 2-page report where **every claim links to a file**.
 - **Deliverable:** `capstone/` folder + 2-page report. **Acceptance:** reproducible (`seed` + config + one command), samples are coherent for the corpus, and the report names at least one concrete failure mode and a defended next step.
+
+▶ **Practical project:** `VizuaraAILabs/nano-gpt-oss` — use its from-scratch gpt-oss pretraining as the reference to extend your capstone GPT + model card.
 
 ### Harness / reusable skill — `$model-evidence-packet`
 - **Purpose:** assemble model card + training curves + samples + eval note + critique into one reviewable bundle.
@@ -1141,3 +1225,18 @@ evidence. You carry a **reusable harness** into Subject 03.
 `$autodiff-tracer` · `$layer-backprop-derive` · `$optimizer-bench` · `$regularization-ablation` ·
 `$conv-shape-planner` · `$sequence-sanity` · `$attention-inspector` · `$transformer-block-validator` ·
 `$tokenizer-probe` · `$mini-train-loop` · `$eval-triangulator` · `$model-evidence-packet`
+
+---
+
+## 🛠 Hands-on repositories & build studios (merged June 2026)
+
+**Clone-and-run repos** (verified June 2026; re-verify — full catalog in [`PROJECTS.md`](PROJECTS.md)):
+- `rasbt/LLMs-from-scratch` (~98k★) — build a ChatGPT-like LLM in PyTorch step by step; the spine for Lectures 7–10 (attention → Transformer block → nanoGPT).
+- `VizuaraAI/dna-of-a-transformer` — transformer internals walked through component by component; Lectures 7–8 (attention, multi-head, positional encoding).
+- `VizuaraAI/visual-ai-book` — visual guide NN→LLM; reinforces Lectures 1–8 across the whole from-scratch arc.
+- `VizuaraAI/Mixture_of_Experts` — MoE from scratch; a stretch beyond the Lecture 8 dense block and a preview of Subject 03.
+- `VizuaraAILabs/Principles-of-Diffusion-Models` — generative modeling from first principles; optional stretch for learners who want a non-autoregressive contrast after Lecture 12.
+
+**Build studios** (specs in [`PROJECTS.md`](PROJECTS.md)):
+- **SLM local assistant** — quantized/distilled on-device assistant with a latency/cost eval — a downstream home for the small GPT you train; *maps to the Lecture 12 capstone (stretch into Subjects 05/10)*.
+- **Synthetic-data audit** — real+synthetic vs real-only with a model-collapse check — *maps to Lecture 11 (honest evaluation of your small GPT)*.

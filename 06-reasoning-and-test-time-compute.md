@@ -1,6 +1,6 @@
 # Subject 06 — Reasoning Models & Test-Time Compute
 
-**Track:** Specialization · **Altitude:** Engineer → Specialist · **Length:** 10 weeks (2 lecture hrs + 4 lab hrs/wk)
+**Track:** Specialization · **Altitude:** Engineer → Specialist · **Length:** 10 weeks (3 lecture hrs + 4 lab hrs/wk)
 **Prerequisites:** Subject 02 (transformers, training loops), Subject 05 (SFT, LoRA/QLoRA, DPO, and especially the `$verifiable-rft` GRPO bridge and the regression-gate discipline). You can rent a multi-GPU box, read a reward curve, and you treat "the demo looks smart" as a claim to be falsified.
 **Pedagogy:** the book's *concept → code → critique → reflection → rebuild* loop, applied to reasoning. The course spine: **reasoning is compute you spend at inference and skill you instill with verifiable reward — both must be measured against a baseline and audited for cheating (reward hacking, eval gaming, unfaithful chains).** You will exhaust prompting-based test-time compute before training, and you will reproduce a small reasoning-RL run that *moves a real math metric*, not a vibe.
 
@@ -52,7 +52,13 @@ Per-week lab weights (the 55%): W1 5 · W2 6 · W3 6 · W4 7 · W5 7 · W6 7 · 
 
 ## Week 1 — What Reasoning Buys You: CoT, and Spending Compute at Inference
 
-**Altitude:** Engineer · **Format:** 2h lecture + 4h lab
+### State of the Art (June 2026)
+- Tunable **thinking-effort** is now a product control: Claude Opus 4.8 adaptive thinking, GPT-5.5 router to "GPT-5 thinking," Gemini 3.1 Low/Med/High dial.
+- Framing shift: reasoning = **test-time compute you spend**, measured in tokens vs accuracy — not just bigger weights.
+- Verifiable math eval (GSM8K/MATH with `math-verify`) + contamination probes is the honest baseline.
+- Frontier reasoning ceilings for comparison: Gemini 3.1 GPQA-Diamond 94.3%, ARC-AGI-2 77.1% — a target to measure against, not to expect.
+
+**Altitude:** Engineer · **Format:** 3h lecture + 4h lab
 **Anchor case:** measure how much plain chain-of-thought prompting moves MathTutor-R's GSM8K accuracy over direct answering — the first "test-time compute" lever, for free.
 
 ### Learning goals
@@ -71,6 +77,8 @@ Per-week lab weights (the 55%): W1 5 · W2 6 · W3 6 · W4 7 · W5 7 · W6 7 · 
 - `eval_math.py`: GSM8K + a 500-problem MATH subset; direct-answer vs CoT prompting; robust answer extraction + `math-verify`; report accuracy and tokens/problem.
 - Add a contamination probe (n-gram overlap with the model's known training sets where possible; or use a fresh/held-out set).
 - **Deliverable:** `evidence/week01-baseline.md` with direct vs CoT accuracy, tokens spent, and a contamination note. **Acceptance:** baseline accuracies are reproducible from a seed, answer extraction is validated on 20 hand-checked samples, and the CoT-vs-direct lift is reported with token cost.
+
+▶ **Practical project:** `mlabonne/llm-course` — use its evaluation notebooks to build the GSM8K/MATH direct-vs-CoT baseline with token cost and a contamination note.
 
 ### Harness / reusable skill — `$reasoning-eval`
 - **Purpose:** measure reasoning accuracy with objective verification, token cost, and contamination awareness — the baseline everything is judged against.
@@ -136,6 +144,12 @@ def eval_set(model, problems, cot=True) -> dict:
 
 ## Week 2 — Self-Consistency, Best-of-N & the Test-Time Scaling Curve
 
+### State of the Art (June 2026)
+- Test-time scaling = parallel sampling + sequential deliberation; **verifier models** (RL-trained critics) aggregate samples — RL^V reports ~1.2–1.6× lifts.
+- Compute-optimal inference ("Large Language Monkeys," Snell et al.) — find the knee and report accuracy-per-token, not raw N.
+- Long-deliberation models internalize some self-consistency, but external best-of-N still wins with a good verifier.
+- AIME / MATH-500 are the standard hard sets for plotting scaling curves.
+
 **Altitude:** Engineer · **Anchor case:** spend more inference compute on MathTutor-R via sampling many chains and aggregating — and plot accuracy vs samples to see the scaling curve.
 
 ### Learning goals
@@ -154,6 +168,8 @@ def eval_set(model, problems, cot=True) -> dict:
 - `self_consistency.py`: sample N∈{1,2,4,8,16,32} chains, majority-vote; `best_of_n.py`: score with a simple verifier.
 - Plot accuracy vs N (and vs total tokens) for GSM8K/MATH; find the efficient operating point.
 - **Deliverable:** `evidence/week02-scaling/` with the scaling-curve plot + the chosen N with its compute cost. **Acceptance:** the curve shows the expected concave shape; you identify the knee and justify an operating N by accuracy-per-token, beating Week 1 single-CoT at a stated cost.
+
+▶ **Practical project:** `mlabonne/llm-course` — extend the eval loop with self-consistency + best-of-N and plot the test-time scaling curve (accuracy vs N and tokens).
 
 ### Harness / reusable skill — `$test-time-scaler`
 - **Purpose:** find the accuracy-per-compute operating point for parallel sampling vs longer chains.
@@ -214,6 +230,12 @@ def scaling_curve(model, problems, Ns=(1,2,4,8,16,32)):
 
 ## Week 3 — Verifiers & Reward Models: PRMs, ORMs & Process vs Outcome
 
+### State of the Art (June 2026)
+- **Verifier models** are the 2026 lever: RL-trained critics score/aggregate samples; prefer verifiable reward over a learned RM where the answer is checkable.
+- PRM (Math-Shepherd / PRM800K lineage) vs ORM tradeoff; auto-labeled process supervision cuts step-label cost.
+- **Reward-hacking / verifier-gaming** is an active ICLR-2026 thread — probe for mis-scored chains and harden the checker.
+- `math-verify` / `sympy` + sandboxed code-exec (`e2b`) are the workhorse outcome verifiers.
+
 **Altitude:** Engineer → Specialist · **Anchor case:** build the *scorer* that makes best-of-N and (later) RL work — an outcome verifier for math and a process reward model that scores each step.
 
 ### Learning goals
@@ -232,6 +254,8 @@ def scaling_curve(model, problems, Ns=(1,2,4,8,16,32)):
 - `verifier.py`: a robust math outcome verifier; `prm.py`: use an off-the-shelf PRM (e.g., a Math-Shepherd-style model) to score steps.
 - Compare answer selection: majority vote vs ORM-best-of-N vs PRM-weighted on GSM8K/MATH.
 - **Deliverable:** `evidence/week03-verifiers/` with the selection-method comparison + a reward-hacking probe (can you find chains the verifier mis-scores?). **Acceptance:** verifier-guided selection beats plain majority vote, and you report at least one way each scorer can be fooled.
+
+▶ **Practical project:** `VizuaraAI/RL-in-Production-Bootcamp-Resources` — build an outcome verifier + PRM and compare majority-vote / ORM / PRM selection on MATH.
 
 ### Harness / reusable skill — `$verifier-suite`
 - **Purpose:** build and validate the reward signal (outcome and/or process) that RL and best-of-N depend on, including its hacking surface.
@@ -293,6 +317,12 @@ def prm_score(chain: str, prm) -> float:   # process reward = min/mean step scor
 
 ## Week 4 — ReAct, Tool Use & Search: Reasoning That Acts
 
+### State of the Art (June 2026)
+- **MCP** is the de-facto tool/data standard (donated to the Linux Foundation Agentic AI Foundation; new 2026-07-28 spec) — agents call tools over MCP; **A2A** handles agent-to-agent delegation.
+- Agent SDKs: **LangGraph** (durable checkpointing), **OpenAI Agents SDK** (handoffs), **Claude Agent SDK** (subagents, computer-use), **Google ADK** (native A2A).
+- Deep-research agents (plan→search→read→synthesize→cite) with step/cost budgets; computer-use / browser agents are mainstream.
+- Evaluated on **GAIA / τ²-bench** (dual-control, pass^k) — full trajectory + safety, not just the final answer.
+
 **Altitude:** Engineer → Specialist · **Anchor case:** DeepResearch-lite — a ReAct agent that interleaves thinking with tool calls (calculator, code, web search) to answer questions a single chain can't.
 
 ### Learning goals
@@ -312,6 +342,8 @@ def prm_score(chain: str, prm) -> float:   # process reward = min/mean step scor
 - `deep_research.py`: plan→search→read→synthesize with citations on a set of long-horizon questions.
 - Evaluate tool-augmented vs CoT-only on a computation-heavy and a fresh-facts set.
 - **Deliverable:** `evidence/week04-react/` with the tool-vs-CoT comparison + a trace gallery (good + failed loops). **Acceptance:** tool use beats CoT on the computation/fresh-facts tasks, every run respects the step/cost budget, and you show a failure trace and its fix.
+
+▶ **Practical project:** `krishnaik06/Agentic-LanggraphCrash-course` — build a bounded ReAct + code/search agent and beat CoT-only on computation-heavy and fresh-facts questions.
 
 ### Harness / reusable skill — `$reasoning-agent`
 - **Purpose:** build a bounded ReAct/deep-research loop and prove tools beat pure CoT where computation/freshness matters.
@@ -373,6 +405,12 @@ def react(model, question, tools, max_steps=8, max_cost=0.5):
 
 ## Week 5 — RLVR & GRPO: The DeepSeek-R1 Recipe From Scratch
 
+### State of the Art (June 2026)
+- **RLVR** has displaced pure RLHF for reasoning post-training; **GRPO** (critic-free, group-relative advantage) is the reference algorithm.
+- Reproduction stack: TRL `GRPOTrainer`, **veRL**, OpenRLHF; **vLLM** for fast rollouts; Unsloth single-GPU path.
+- R1-Zero vs R1 (pure RL vs SFT cold-start) framing; **DeepSeek V4** (MIT, open) extends the lineage.
+- Co-plot reward with held-out eval — reward-up / eval-flat is the canonical reward-hacking tell.
+
 **Altitude:** Specialist · **Anchor case:** train MathTutor-R with **GRPO** and a verifiable reward — reproduce, at small scale, the core of the DeepSeek-R1 recipe and watch reasoning emerge from RL.
 
 ### Learning goals
@@ -391,6 +429,8 @@ def react(model, question, tools, max_steps=8, max_cost=0.5):
 - `train_grpo.py`: GRPO on an 8B base/SFT checkpoint with `outcome_reward` (+ a light format reward); vLLM for fast rollouts; log reward, KL, response length, and held-out GSM8K/MATH every K steps.
 - Watch for the "aha" behaviors (longer chains, self-correction) and for reward hacking.
 - **Deliverable:** `evidence/week05-grpo/` with reward+eval co-plots, length dynamics, and a sample gallery (before/after). **Acceptance:** held-out accuracy rises with reward (not just reward going up), KL stays bounded, and you show the reward isn't being gamed.
+
+▶ **Practical project:** `VizuaraAILabs/OpenClaw-RL-Tutorial` — run its hands-on GRPO loop with a verifiable reward and co-plot reward vs held-out GSM8K/MATH accuracy.
 
 ### Harness / reusable skill — `$grpo-trainer`
 - **Purpose:** run a verifiable-reward GRPO loop where the reward curve is validated against a held-out eval and audited for hacking.
@@ -454,6 +494,12 @@ trainer.train()
 
 ## Week 6 — GRPO in Practice: DAPO, Dr.GRPO & Stabilizing the Run
 
+### State of the Art (June 2026)
+- 2025–26 stabilizers: **DAPO** (decoupled clip-higher, dynamic sampling, token-level loss, overlong shaping) and **Dr.GRPO** (length/difficulty debias).
+- Length bias + entropy collapse are the named pathologies — monitor entropy and length, and compare eval-per-compute.
+- **DAPO-Math-17k** / **DeepScaleR** are the standard verifiable-RL prompt pools.
+- "Does RL incentivize reasoning beyond the base model?" (Yue et al. 2025) remains an actively-debated open question.
+
 **Altitude:** Specialist · **Anchor case:** your Week-5 GRPO run is unstable / length-explodes / plateaus — apply the 2025 fixes (DAPO, Dr.GRPO) and diagnose what each addresses.
 
 ### Learning goals
@@ -471,6 +517,8 @@ trainer.train()
 ### Hands-on build
 - `train_grpo_v2.py`: add DAPO/Dr.GRPO options to the Week-5 loop; run an ablation (vanilla GRPO vs +Dr.GRPO vs +DAPO) tracking reward, eval, length, and entropy.
 - **Deliverable:** `evidence/week06-grpo-fixes/` with the ablation (eval-per-compute, length, entropy) + a diagnosis of which pathology each fix cured. **Acceptance:** at least one stabilization beats vanilla GRPO on held-out eval at equal/less compute, and length/entropy pathologies are shown fixed (not just claimed).
+
+▶ **Practical project:** `VizuaraAI/RL-in-Production-Bootcamp-Resources` — add DAPO / Dr.GRPO options to your loop and ablate against vanilla GRPO on eval-per-compute.
 
 ### Harness / reusable skill — `$grpo-stabilizer`
 - **Purpose:** diagnose and fix GRPO instabilities (length, entropy, bias) with the right targeted technique.
@@ -531,6 +579,12 @@ cfg = GRPOConfig(
 
 ## Week 7 — Long-Horizon Reasoning & Self-Improving Agents
 
+### State of the Art (June 2026)
+- **Agentic RL** over tool-use trajectories: the **SWE-RL / DeepSWE** lineage drives strong SWE-bench scores from RL.
+- Self-improvement (**STaR / ReST-EM / rejection sampling**): verify→filter→SFT loops; guard against self-amplified narrowness.
+- Long-horizon credit assignment via process rewards / step verifiers; **success-at-budget** is the honest metric.
+- Reproducible, seeded environments are the bottleneck for trainable agentic RL.
+
 **Altitude:** Specialist · **Anchor case:** push DeepResearch-lite to multi-step, long-horizon tasks where credit assignment spans many actions — and let the agent learn from its own trajectories.
 
 ### Learning goals
@@ -549,6 +603,8 @@ cfg = GRPOConfig(
 - `self_improve.py`: rejection-sampling / STaR loop on MATH (sample → verify → SFT on correct) for ≥2 iterations; track eval each round.
 - `agentic_rl_min.py` (optional stretch): GRPO over short tool-use trajectories with a trajectory-level verifiable reward.
 - **Deliverable:** `evidence/week07-longhorizon/` with the self-improvement curve across iterations + a diversity/contamination check. **Acceptance:** at least two self-improvement iterations show held-out gains (or a documented plateau), and you check the model isn't just amplifying memorized solutions.
+
+▶ **Practical project:** `VizuaraAILabs/OpenClaw-RL-Tutorial` — implement a verify→filter→SFT self-improvement loop and track per-iteration held-out gains with a diversity check.
 
 ### Harness / reusable skill — `$self-improve-loop`
 - **Purpose:** run a verify-filter-SFT self-improvement loop and prove (or honestly disprove) iteration gains without collapse.
@@ -610,6 +666,12 @@ def self_improve(model, prompts, verifier, iters=3, n=8):
 
 ## Week 8 — Reasoning Evaluation: AIME, GPQA, ARC-AGI & Contamination
 
+### State of the Art (June 2026)
+- Hard, contamination-resistant suites: **ARC-AGI-2/3, GPQA-Diamond, AIME, Humanity's Last Exam** — report error bars on tiny sets.
+- Contamination control via perturbation (**GSM-Symbolic**) + fresh sets (**LiveBench**); separate reasoning from recall.
+- Report **pass@k vs maj@k vs single-shot** with compute; run a faithfulness audit for right-answer / wrong-chain cases.
+- Frontier ref: Gemini 3.1 ARC-AGI-2 77.1% — still well short of human, a live frontier.
+
 **Altitude:** Specialist · **Anchor case:** prove MathTutor-R's gains are *real reasoning*, not memorization — evaluate on hard, contamination-resistant benchmarks and audit for cheating.
 
 ### Learning goals
@@ -628,6 +690,8 @@ def self_improve(model, prompts, verifier, iters=3, n=8):
 - `eval_hard.py`: runners for AIME (with bootstrap error bars), a GPQA-Diamond subset, and an ARC-AGI-style set; report pass@1, maj@k, pass@k with compute.
 - `contamination_audit.py`: perturb GSM8K/MATH problems (rename variables, change numbers) and measure the accuracy drop; inspect chains for lucky guesses.
 - **Deliverable:** `evidence/week08-hard-eval/` with the multi-benchmark scorecard (with error bars + compute) + the contamination/perturbation audit. **Acceptance:** scores carry uncertainty, the perturbation test is run (a big drop flags memorization), and at least one "right answer, wrong reasoning" case is surfaced.
+
+▶ **Practical project:** `mlabonne/llm-course` — assemble AIME / GPQA / ARC-AGI-style runners with bootstrap error bars and a GSM-Symbolic perturbation audit.
 
 ### Harness / reusable skill — `$reasoning-audit`
 - **Purpose:** evaluate reasoning on hard, contamination-resistant sets with error bars, compute, and a memorization/faithfulness audit.
@@ -687,6 +751,12 @@ def perturbation_drop(model, problems, perturb):
 
 ## Week 9 — Reasoning at Inference: Budgets, Faithfulness & Deployment
 
+### State of the Art (June 2026)
+- Adaptive test-time compute (think-effort dials, difficulty routing) — spend tokens only on hard inputs.
+- Serving: **vLLM** FP8 KV-cache + **FlashAttention-4** + speculative decoding for long reasoning outputs, under budget caps.
+- **CoT faithfulness** is unresolved (Anthropic 2025, "models don't always say what they think") — perturbation probes for monitoring/safety.
+- Effort/budget controls are now exposed by frontier APIs (Opus 4.8, GPT-5.5, Gemini 3.1) — mirror them in your system.
+
 **Altitude:** Specialist · **Anchor case:** ship MathTutor-R / DeepResearch-lite with controllable thinking budgets, faithful chains, and a cost/latency SLA — reasoning you can deploy and trust.
 
 ### Learning goals
@@ -700,12 +770,15 @@ def perturbation_drop(model, problems, perturb):
 - **CoT faithfulness.** *Idea:* the verbalized chain may not be the true cause of the answer (post-hoc rationalization). *Plain English:* a model can give a correct chain it didn't actually use, or hide its real reason. Where it matters: CoT monitoring for safety relies on faithfulness. Common mistake: treating the chain as a trustworthy explanation by default.
 - **Reasoning-model serving.** *Idea:* long outputs stress KV-cache and latency; speculative decoding and budget caps help. *Plain English:* thinking is expensive tokens — manage them. Common mistake: unbounded thinking → latency/cost spikes.
 - **Effort/budget controls.** Where it matters: frontier reasoning APIs expose effort levels; your system should too. Common mistake: max effort everywhere.
+- **Contextual drag.** *Idea:* piling more tokens into the context (retrieved chunks, long chains, prior turns) past a point *lowers* reasoning accuracy — irrelevant or distractor context "drags" the model off the answer. *Plain English:* more context is not more reasoning; noise in the window competes with signal. Where it matters: long reasoning chains and RAG-fed prompts both suffer it (ties to Subject 04's "lost in the middle"). Common mistake: equating a longer prompt or a longer chain with better thinking instead of measuring accuracy-per-token against a trimmed-context baseline.
 
 ### Hands-on build
 - `adaptive_compute.py`: a difficulty router that sets thinking budget / sample count per query; compare flat vs adaptive on accuracy-per-token.
 - `faithfulness_probe.py`: perturb the chain (inject a hint, or corrupt a step) and test whether the answer changes as it should — measure faithfulness.
 - `serve_reasoning.py`: serve with budget caps + speculative decoding; measure p95 latency and cost/query.
 - **Deliverable:** `evidence/week09-deploy/` with the adaptive-vs-flat compute curve, a faithfulness report, and the serving SLA. **Acceptance:** adaptive compute beats flat on accuracy-per-token, the faithfulness probe is run with a result, and the served system meets a stated SLA.
+
+▶ **Practical project:** `VizuaraAI/kv-cache-token-reduction-walkthrough` — serve reasoning with budget caps + KV-cache tricks and measure adaptive-vs-flat accuracy-per-token.
 
 ### Harness / reusable skill — `$reasoning-deploy`
 - **Purpose:** deploy reasoning under a compute budget with adaptive effort, a faithfulness check, and a measured SLA.
@@ -768,6 +841,12 @@ def faithfulness(model, q, chain, hint):
 
 ## Week 10 — Capstone: A Small Reasoning-RL Run That Provably Improves Math
 
+### State of the Art (June 2026)
+- End-to-end miniature DeepSeek-R1: **baseline → verifier → GRPO (+DAPO/Dr.GRPO) → hard-eval audit → bounded serving**.
+- Reproduction-audit discipline: reward↔eval aligned, perturbation drop small, eval-per-compute fair.
+- Tooling: TRL / veRL + vLLM + `math-verify` + Inspect AI; **DAPO-Math-17k / DeepScaleR** prompt pools.
+- Governance: document compute, contamination checks, and the reward-hacking audit in the evidence packet.
+
 **Altitude:** Specialist · **Anchor case:** reproduce, end-to-end, a small reasoning-RL pipeline that takes a base/SFT model to a measurably better math reasoner — with an evidence packet that survives a reproduction audit.
 
 ### Learning goals
@@ -786,6 +865,8 @@ def faithfulness(model, q, chain, hint):
 - Pick the task: math (GSM8K/MATH, recommended) or another verifiable-reward domain (code with unit tests, a verifiable logic task).
 - Ship: the frozen baselines, the verifier suite, the GRPO run (with the Week-6 stabilization), the hard-eval audit (with contamination/perturbation), and a bounded served endpoint. Include an ablation showing the RL step's contribution over SFT/test-time-compute alone.
 - **Deliverable:** `capstone/` repo + a 3-page report. **Acceptance:** the trained model beats the Week-1 baseline on held-out GSM8K/MATH *and* on a contamination-resistant check (perturbation drop small), the reward curve corresponds to real eval gains (not hacking), and every claim links to a file in `evidence/`.
+
+▶ **Practical project:** `VizuaraAI/RL-in-Production-Bootcamp-Resources` — run the full baseline → verifier → GRPO → hard-eval pipeline as your reproduction-audit capstone.
 
 ### Harness / reusable skill — `$reasoning-evidence-packet`
 - **Purpose:** assemble baselines → verifier → GRPO curves → hard-eval audit → SLA into one reviewable bundle that survives a reproduction audit.
@@ -854,3 +935,15 @@ By the end you can: frame reasoning as test-time compute and verifiable-reward t
 
 ## Skills produced (reused program-wide)
 `$reasoning-eval` · `$test-time-scaler` · `$verifier-suite` · `$reasoning-agent` · `$grpo-trainer` · `$grpo-stabilizer` · `$self-improve-loop` · `$reasoning-audit` · `$reasoning-deploy` · `$reasoning-evidence-packet`
+
+---
+
+## 🛠 Hands-on repositories & build studios (merged June 2026)
+
+**Clone-and-run repos** (verified June 2026; full catalog in [`PROJECTS.md`](PROJECTS.md)):
+- `VizuaraAI/RL-in-Production-Bootcamp-Resources` — the RLHF→GRPO lineage with production RL walkthroughs — Lectures 5–6
+- `VizuaraAILabs/OpenClaw-RL-Tutorial` — a hands-on RL training tutorial to ground the GRPO loop — Lecture 5
+- `mlabonne/llm-course` — reasoning/RL roadmap with runnable Colabs (test-time compute → preference/RL) — Lectures 1, 5
+
+**Build studios** (specs in [`PROJECTS.md`](PROJECTS.md)):
+- **Self-evolving rubric lab** — rubric generation, judge-agreement, and bias / reward-hacking tests for verifier design — *Lectures 3, 8*

@@ -1,9 +1,9 @@
 # Detailed Table of Contents — Subject 12 — Multimodal & Generative AI
 
-_Source: `12-multimodal-and-generative-ai.md` · **1 academic quarter · 3 lecture-hours/week · 12 weekly lectures (~36 contact hours)**_
+_Source: `12-multimodal-and-generative-ai.md` · **1 academic quarter · 3 lecture-hours/week · 12 weekly lectures (~36 contact hours)**. Every lecture has a **▶ practical project** (real GitHub repo)._
 
 ### Lecture 1 — Vision Transformers From Scratch: Images as Sequences of Patches
-_3-hour block · 🔧 reusable skill: `$from-scratch-verifier`_
+_3-hour block · 🔧 skill: `$from-scratch-verifier` · ▶ project: [`VizuaraAI/Transformers-for-vision-BOOK`](https://github.com/VizuaraAI/Transformers-for-vision-BOOK) — implement the ViT (patch-embed → attention → class head) from scratch and verify it against a reference._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -12,10 +12,10 @@ _3-hour block · 🔧 reusable skill: `$from-scratch-verifier`_
 | 01:00–01:30 | M3 | Inductive bias trade-off |
 | 01:30–02:00 | M4 | Class token vs mean pooling |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | Implement PatchEmbed, multi-head attention, a transformer block, and a ViT classifier in pure PyTorc |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`VizuaraAI/Transformers-for-vision-BOOK`](https://github.com/VizuaraAI/Transformers-for-vision-BOOK) — implement the ViT (patch-embed → attention → class head) from scratch and verify it against a reference. |
 
 ### Lecture 2 — Contrastive Learning & CLIP: Aligning Images and Text
-_3-hour block · 🔧 reusable skill: `$contrastive-eval`_
+_3-hour block · 🔧 skill: `$contrastive-eval` · ▶ project: [`VizuaraAI/Transformers-for-vision-BOOK`](https://github.com/VizuaraAI/Transformers-for-vision-BOOK) — train a dual-encoder with the symmetric InfoNCE loss and measure both-direction retrieval._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -24,10 +24,10 @@ _3-hour block · 🔧 reusable skill: `$contrastive-eval`_
 | 01:00–01:30 | M3 | Batch size as negatives |
 | 01:30–02:00 | M4 | Modality gap |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | Implement CLIP's symmetric loss; train a small dual-encoder (ViT image tower + a small text encoder) |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`VizuaraAI/Transformers-for-vision-BOOK`](https://github.com/VizuaraAI/Transformers-for-vision-BOOK) — train a dual-encoder with the symmetric InfoNCE loss and measure both-direction retrieval. |
 
 ### Lecture 3 — Vision-Language Models: LLaVA, Qwen-VL, Llama-Vision & Fine-Tuning
-_3-hour block · 🔧 reusable skill: `$vlm-probe`_
+_3-hour block · 🔧 skill: `$vlm-probe` · ▶ project: [`VizuaraAI/infertutor-arena-capstone`](https://github.com/VizuaraAI/infertutor-arena-capstone) — run/serve a Qwen-VL VLM for VQA and LoRA-fine-tune it on a target slice._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -36,10 +36,10 @@ _3-hour block · 🔧 reusable skill: `$vlm-probe`_
 | 01:00–01:30 | M3 | Instruction tuning for VLMs |
 | 01:30–02:00 | M4 | VLM hallucination |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | Run zero-shot VQA/captioning with an open VLM on **VQAv2 / TextVQA / DocVQA** samples; measure accur |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`VizuaraAI/infertutor-arena-capstone`](https://github.com/VizuaraAI/infertutor-arena-capstone) — run/serve a Qwen-VL VLM for VQA and LoRA-fine-tune it on a target slice. |
 
 ### Lecture 4 — Diffusion From Scratch I: DDPM (the Forward & Reverse Process)
-_3-hour block · 🔧 reusable skill: `$generative-eval`_
+_3-hour block · 🔧 skill: `$generative-eval` · ▶ project: [`VizuaraAILabs/Principles-of-Diffusion-Models`](https://github.com/VizuaraAILabs/Principles-of-Diffusion-Models) — implement the DDPM forward/reverse + time-conditioned U-Net and report FID._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -48,10 +48,10 @@ _3-hour block · 🔧 reusable skill: `$generative-eval`_
 | 01:00–01:30 | M3 | Time conditioning |
 | 01:30–02:00 | M4 | Sampling steps |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | Implement the DDPM schedule, a small time-conditioned U-Net, the ε-loss, and an ancestral sampler; t |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`VizuaraAILabs/Principles-of-Diffusion-Models`](https://github.com/VizuaraAILabs/Principles-of-Diffusion-Models) — implement the DDPM forward/reverse + time-conditioned U-Net and report FID. |
 
 ### Lecture 5 — Diffusion II: Latent Diffusion, Conditioning & Text-to-Image
-_3-hour block · 🔧 reusable skill: `$t2i-eval`_
+_3-hour block · 🔧 skill: `$t2i-eval` · ▶ project: [`VizuaraAILabs/Principles-of-Diffusion-Models`](https://github.com/VizuaraAILabs/Principles-of-Diffusion-Models) — extend to latent diffusion + CFG and LoRA/DreamBooth fine-tune with a CLIPScore eval._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -60,10 +60,10 @@ _3-hour block · 🔧 reusable skill: `$t2i-eval`_
 | 01:00–01:30 | M3 | Classifier-free guidance (CFG) |
 | 01:30–02:00 | M4 | CLIPScore vs FID for text-to-image |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | Run diffusers Stable-Diffusion inference; sweep the CFG scale and document the quality/alignment tra |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`VizuaraAILabs/Principles-of-Diffusion-Models`](https://github.com/VizuaraAILabs/Principles-of-Diffusion-Models) — extend to latent diffusion + CFG and LoRA/DreamBooth fine-tune with a CLIPScore eval. |
 
 ### Lecture 6 — Flow Matching & Rectified Flow: The Modern Generative Backbone
-_3-hour block · 🔧 reusable skill: `$sampler-benchmark`_
+_3-hour block · 🔧 skill: `$sampler-benchmark` · ▶ project: [`VizuaraAILabs/Principles-of-Diffusion-Models`](https://github.com/VizuaraAILabs/Principles-of-Diffusion-Models) — retrain with a conditional flow-matching objective and plot FID-vs-NFE against DDPM/DDIM._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -72,10 +72,10 @@ _3-hour block · 🔧 reusable skill: `$sampler-benchmark`_
 | 01:00–01:30 | M3 | Rectified flow |
 | 01:30–02:00 | M4 | DDIM bridge |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | Implement conditional flow matching on the same CIFAR/CelebA setup; sample with a fixed-step ODE sol |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`VizuaraAILabs/Principles-of-Diffusion-Models`](https://github.com/VizuaraAILabs/Principles-of-Diffusion-Models) — retrain with a conditional flow-matching objective and plot FID-vs-NFE against DDPM/DDIM. |
 
 ### Lecture 7 — Video Generation: Spatiotemporal Diffusion & World Consistency
-_3-hour block · 🔧 reusable skill: `$video-consistency-eval`_
+_3-hour block · 🔧 skill: `$video-consistency-eval` · ▶ project: [`VizuaraAI/vla-driving-simulation`](https://github.com/VizuaraAI/vla-driving-simulation) — generate action-conditioned frames and measure a temporal-consistency proxy + flicker catalog._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -84,10 +84,10 @@ _3-hour block · 🔧 reusable skill: `$video-consistency-eval`_
 | 01:00–01:30 | M3 | Conditioning modes |
 | 01:30–02:00 | M4 | Evaluation |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | Run an open model (**Stable Video Diffusion / CogVideoX**) for image- and text-to-video on a handful |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`VizuaraAI/vla-driving-simulation`](https://github.com/VizuaraAI/vla-driving-simulation) — generate action-conditioned frames and measure a temporal-consistency proxy + flicker catalog. |
 
 ### Lecture 8 — Audio & Speech: ASR (Whisper), TTS & Audio Representations
-_3-hour block · 🔧 reusable skill: `$asr-robustness-eval`_
+_3-hour block · 🔧 skill: `$asr-robustness-eval` · ▶ project: [`VizuaraAI/audio-llm`](https://github.com/VizuaraAI/audio-llm) — build the Whisper ASR→WER + TTS pipeline and evaluate a noisy/accented slice._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -96,10 +96,10 @@ _3-hour block · 🔧 reusable skill: `$asr-robustness-eval`_
 | 01:00–01:30 | M3 | Neural audio codecs |
 | 01:30–02:00 | M4 | Robustness slices |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | Transcribe a **LibriSpeech** subset with Whisper; compute WER overall and on a noisy/accented slice; |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`VizuaraAI/audio-llm`](https://github.com/VizuaraAI/audio-llm) — build the Whisper ASR→WER + TTS pipeline and evaluate a noisy/accented slice. |
 
 ### Lecture 9 — Any-to-Any & Unified Multimodal Models
-_3-hour block · 🔧 reusable skill: `$modality-router-eval`_
+_3-hour block · 🔧 skill: `$modality-router-eval` · ▶ project: [`Shubhamsaboo/awesome-llm-apps`](https://github.com/Shubhamsaboo/awesome-llm-apps) — assemble a speech→VLM→speech any-to-any pipeline and compare it head-to-head with a native multimodal model._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -108,10 +108,10 @@ _3-hour block · 🔧 reusable skill: `$modality-router-eval`_
 | 01:00–01:30 | M3 | Interleaved generation |
 | 01:30–02:00 | M4 | The specialist-vs-generalist trade-off |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | Build an any-to-any **system** (not necessarily one model): speech-in (Whisper) → VLM reasoning over |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`Shubhamsaboo/awesome-llm-apps`](https://github.com/Shubhamsaboo/awesome-llm-apps) — assemble a speech→VLM→speech any-to-any pipeline and compare it head-to-head with a native multimodal model. |
 
 ### Lecture 10 — World Models: Learning Simulators (IRIS, Genie-style)
-_3-hour block · 🔧 reusable skill: `$rollout-eval`_
+_3-hour block · 🔧 skill: `$rollout-eval` · ▶ project: [`VizuaraAI/vla-driving-simulation`](https://github.com/VizuaraAI/vla-driving-simulation) — train/run an action-conditioned world model and plot rollout error vs horizon._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -120,10 +120,10 @@ _3-hour block · 🔧 reusable skill: `$rollout-eval`_
 | 01:00–01:30 | M3 | Action-conditioned generation (Genie) |
 | 01:30–02:00 | M4 | Compounding error / rollout horizon |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | Run a tokenized world model (IRIS or a DreamerV3 latent model) on an Atari/gym environment, or train |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`VizuaraAI/vla-driving-simulation`](https://github.com/VizuaraAI/vla-driving-simulation) — train/run an action-conditioned world model and plot rollout error vs horizon. |
 
 ### Lecture 11 — Multimodal RAG & Agents: Grounded, Tool-Using Multimodal Systems
-_3-hour block · 🔧 reusable skill: `$mm-grounding-eval`_
+_3-hour block · 🔧 skill: `$mm-grounding-eval` · ▶ project: [`NirDiamant/RAG_Techniques`](https://github.com/NirDiamant/RAG_Techniques) — build multimodal/agentic RAG with ColPali-style retrieval + a grounding/abstention guardrail._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -132,10 +132,10 @@ _3-hour block · 🔧 reusable skill: `$mm-grounding-eval`_
 | 01:00–01:30 | M3 | Agentic tools for vision |
 | 01:30–02:00 | M4 | Multimodal hallucination guardrail |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | Build a multimodal-RAG assistant over a document image set (**DocVQA / InfographicVQA**) with image- |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`NirDiamant/RAG_Techniques`](https://github.com/NirDiamant/RAG_Techniques) — build multimodal/agentic RAG with ColPali-style retrieval + a grounding/abstention guardrail. |
 
 ### Lecture 12 — Capstone: A Multimodal App + a Small Diffusion Model
-_3-hour block · 🔧 reusable skill: `$multimodal-capstone-packet`_
+_3-hour block · 🔧 skill: `$multimodal-capstone-packet` · ▶ project: [`VizuaraAI/infertutor-arena-capstone`](https://github.com/VizuaraAI/infertutor-arena-capstone) — ship the coupled diffusion-model + served VLM app with honest evals as the capstone._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -144,5 +144,5 @@ _3-hour block · 🔧 reusable skill: `$multimodal-capstone-packet`_
 | 01:00–01:30 | M3 | Guided discussion / Q&A |
 | 01:30–02:00 | M4 | Critique & reflection (what would fail?) |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | Finish **M3** (multimodal-RAG/agent hardening) and **M4** (demo + report) coupling (A) the diffusion |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`VizuaraAI/infertutor-arena-capstone`](https://github.com/VizuaraAI/infertutor-arena-capstone) — ship the coupled diffusion-model + served VLM app with honest evals as the capstone. |
 

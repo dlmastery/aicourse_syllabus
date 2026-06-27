@@ -1,9 +1,9 @@
 # Detailed Table of Contents — Subject 02 — Deep Learning & the Transformer, Built by Hand
 
-_Source: `02-deep-learning-transformers-from-scratch.md` · **1 academic quarter · 3 lecture-hours/week · 12 weekly lectures (~36 contact hours)**_
+_Source: `02-deep-learning-transformers-from-scratch.md` · **1 academic quarter · 3 lecture-hours/week · 12 weekly lectures (~36 contact hours)**. Every lecture has a **▶ practical project** (real GitHub repo)._
 
 ### Lecture 1 — The Neuron, the Forward Pass, and Scalar Autodiff From Scratch
-_3-hour block · 🔧 reusable skill: `$autodiff-tracer`_
+_3-hour block · 🔧 skill: `$autodiff-tracer` · ▶ project: [`VizuaraAI/visual-ai-book`](https://github.com/VizuaraAI/visual-ai-book) — follow its NN-from-scratch track to build a neuron, a forward pass, and a scalar-autodiff engine._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -12,10 +12,10 @@ _3-hour block · 🔧 reusable skill: `$autodiff-tracer`_
 | 01:00–01:30 | M3 | Nonlinearity necessity |
 | 01:30–02:00 | M4 | Input normalization |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | engine.py: a Value class wrapping a float with .data, .grad, _backward, supporting + * tanh |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`VizuaraAI/visual-ai-book`](https://github.com/VizuaraAI/visual-ai-book) — follow its NN-from-scratch track to build a neuron, a forward pass, and a scalar-autodiff engine. |
 
 ### Lecture 2 — Backpropagation Through an MLP, By Hand (NumPy)
-_3-hour block · 🔧 reusable skill: `$layer-backprop-derive`_
+_3-hour block · 🔧 skill: `$layer-backprop-derive` · ▶ project: [`rasbt/LLMs-from-scratch`](https://github.com/rasbt/LLMs-from-scratch) — use its Appendix-A autograd intro to cross-check your hand-derived NumPy MLP backward pass._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -24,10 +24,10 @@ _3-hour block · 🔧 reusable skill: `$layer-backprop-derive`_
 | 01:00–01:30 | M3 | The backward pass |
 | 01:30–02:00 | M4 | Batching |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | mlp_numpy.py: forward(X), backward(...), step(lr) for a 784→128→10 MLP with ReLU + softmax-CE |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`rasbt/LLMs-from-scratch`](https://github.com/rasbt/LLMs-from-scratch) — use its Appendix-A autograd intro to cross-check your hand-derived NumPy MLP backward pass. |
 
 ### Lecture 3 — Optimizers: SGD, Momentum, RMSProp, Adam From Scratch
-_3-hour block · 🔧 reusable skill: `$optimizer-bench`_
+_3-hour block · 🔧 skill: `$optimizer-bench` · ▶ project: [`rasbt/LLMs-from-scratch`](https://github.com/rasbt/LLMs-from-scratch) — adapt its training loop to implement and compare SGD / Momentum / RMSProp / Adam on one model._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -36,10 +36,10 @@ _3-hour block · 🔧 reusable skill: `$optimizer-bench`_
 | 01:00–01:30 | M3 | RMSProp |
 | 01:30–02:00 | M4 | Adam |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | optim.py: SGD, Momentum, RMSProp, Adam as classes with a uniform .step(params, grads) API |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`rasbt/LLMs-from-scratch`](https://github.com/rasbt/LLMs-from-scratch) — adapt its training loop to implement and compare SGD / Momentum / RMSProp / Adam on one model. |
 
 ### Lecture 4 — From NumPy to PyTorch + Regularization (Dropout, BatchNorm, Weight Decay)
-_3-hour block · 🔧 reusable skill: `$regularization-ablation`_
+_3-hour block · 🔧 skill: `$regularization-ablation` · ▶ project: [`microsoft/AI-For-Beginners`](https://github.com/microsoft/AI-For-Beginners) — port your MLP to its PyTorch neural-network notebooks and ablate dropout / batchnorm / weight decay._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -48,10 +48,10 @@ _3-hour block · 🔧 reusable skill: `$regularization-ablation`_
 | 01:00–01:30 | M3 | Batch normalization |
 | 01:30–02:00 | M4 | Weight decay / L2 |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | mlp_torch.py: nn.Module MLP matching mlp_numpy.py; assert outputs agree on a fixed batch to 1e-4 |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`microsoft/AI-For-Beginners`](https://github.com/microsoft/AI-For-Beginners) — port your MLP to its PyTorch neural-network notebooks and ablate dropout / batchnorm / weight decay. |
 
 ### Lecture 5 — Convolutional Networks: Built, Then Trained on Fashion-MNIST
-_3-hour block · 🔧 reusable skill: `$conv-shape-planner`_
+_3-hour block · 🔧 skill: `$conv-shape-planner` · ▶ project: [`krishnaik06/Malaria-Detection`](https://github.com/krishnaik06/Malaria-Detection) — build and train a small CNN end-to-end on an image dataset, visualize filters, and read the confusion matrix._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -60,10 +60,10 @@ _3-hour block · 🔧 reusable skill: `$conv-shape-planner`_
 | 01:00–01:30 | M3 | Pooling |
 | 01:30–02:00 | M4 | Parameter sharing |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | conv_numpy.py: conv2d_forward (im2col allowed) + maxpool2d; check against torch.nn.functional.conv2d |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`krishnaik06/Malaria-Detection`](https://github.com/krishnaik06/Malaria-Detection) — build and train a small CNN end-to-end on an image dataset, visualize filters, and read the confusion matrix. |
 
 ### Lecture 6 — Sequence Models: RNNs and LSTMs From Scratch (and the Char-LM)
-_3-hour block · 🔧 reusable skill: `$sequence-sanity`_
+_3-hour block · 🔧 skill: `$sequence-sanity` · ▶ project: [`VizuaraAI/visual-ai-book`](https://github.com/VizuaraAI/visual-ai-book) — follow its sequence-models chapter to build an RNN/LSTM char-LM and report bits-per-character._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -72,10 +72,10 @@ _3-hour block · 🔧 reusable skill: `$sequence-sanity`_
 | 01:00–01:30 | M3 | Vanishing/exploding gradients |
 | 01:30–02:00 | M4 | LSTM gates |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | rnn_numpy.py: a vanilla RNN cell + BPTT, gradient-checked on a 5-step sequence |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`VizuaraAI/visual-ai-book`](https://github.com/VizuaraAI/visual-ai-book) — follow its sequence-models chapter to build an RNN/LSTM char-LM and report bits-per-character. |
 
 ### Lecture 7 — Attention From Scratch: Why It Replaced Recurrence
-_3-hour block · 🔧 reusable skill: `$attention-inspector`_
+_3-hour block · 🔧 skill: `$attention-inspector` · ▶ project: [`rasbt/LLMs-from-scratch`](https://github.com/rasbt/LLMs-from-scratch) — implement scaled-dot-product + causal self-attention (Ch.3) and visualize the attention matrix._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -84,10 +84,10 @@ _3-hour block · 🔧 reusable skill: `$attention-inspector`_
 | 01:00–01:30 | M3 | Q/K/V projections |
 | 01:30–02:00 | M4 | Attention ≠ explanation |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | attention_numpy.py: scaled_dot_product_attention(Q,K,V,mask) + a causal mask; check vs a PyTorch ref |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`rasbt/LLMs-from-scratch`](https://github.com/rasbt/LLMs-from-scratch) — implement scaled-dot-product + causal self-attention (Ch.3) and visualize the attention matrix. |
 
 ### Lecture 8 — The Transformer Block, Built End to End
-_3-hour block · 🔧 reusable skill: `$transformer-block-validator`_
+_3-hour block · 🔧 skill: `$transformer-block-validator` · ▶ project: [`rasbt/LLMs-from-scratch`](https://github.com/rasbt/LLMs-from-scratch) — assemble multi-head attention + the full pre-norm decoder block (Ch.3–4) and overfit a single batch._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -96,10 +96,10 @@ _3-hour block · 🔧 reusable skill: `$transformer-block-validator`_
 | 01:00–01:30 | M3 | Residual connections |
 | 01:30–02:00 | M4 | LayerNorm + pre-norm |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | transformer_block.py: MultiHeadAttention, PositionalEncoding, TransformerBlock (pre-norm) in PyTorch |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`rasbt/LLMs-from-scratch`](https://github.com/rasbt/LLMs-from-scratch) — assemble multi-head attention + the full pre-norm decoder block (Ch.3–4) and overfit a single batch. |
 
 ### Lecture 9 — Tokenization and Byte-Pair Encoding From Scratch
-_3-hour block · 🔧 reusable skill: `$tokenizer-probe`_
+_3-hour block · 🔧 skill: `$tokenizer-probe` · ▶ project: [`rasbt/LLMs-from-scratch`](https://github.com/rasbt/LLMs-from-scratch) — build/train a BPE tokenizer (Ch.2) and compare round-trip + fertility against tiktoken._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -108,10 +108,10 @@ _3-hour block · 🔧 reusable skill: `$tokenizer-probe`_
 | 01:00–01:30 | M3 | Vocab size trade-off |
 | 01:30–02:00 | M4 | Byte-level fallback |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | bpe.py: train_bpe(corpus, vocab_size), encode(text), decode(ids); assert exact round-trip on held-ou |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`rasbt/LLMs-from-scratch`](https://github.com/rasbt/LLMs-from-scratch) — build/train a BPE tokenizer (Ch.2) and compare round-trip + fertility against tiktoken. |
 
 ### Lecture 10 — Training a Small GPT: nanoGPT From Scratch
-_3-hour block · 🔧 reusable skill: `$mini-train-loop`_
+_3-hour block · 🔧 skill: `$mini-train-loop` · ▶ project: [`rasbt/LLMs-from-scratch`](https://github.com/rasbt/LLMs-from-scratch) — pretrain the GPT end-to-end (Ch.5) on TinyShakespeare and track perplexity + sampling._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -120,10 +120,10 @@ _3-hour block · 🔧 reusable skill: `$mini-train-loop`_
 | 01:00–01:30 | M3 | Sampling |
 | 01:30–02:00 | M4 | Perplexity |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | gpt.py: a configurable GPT (n_layer, n_head, d_model, block_size) reusing your Week-8 block |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`rasbt/LLMs-from-scratch`](https://github.com/rasbt/LLMs-from-scratch) — pretrain the GPT end-to-end (Ch.5) on TinyShakespeare and track perplexity + sampling. |
 
 ### Lecture 11 — Scaling, Efficiency, and Honest Evaluation of Your Small GPT
-_3-hour block · 🔧 reusable skill: `$eval-triangulator`_
+_3-hour block · 🔧 skill: `$eval-triangulator` · ▶ project: [`VizuaraAI/kv-cache-token-reduction-walkthrough`](https://github.com/VizuaraAI/kv-cache-token-reduction-walkthrough) — profile KV-cache + inference efficiency on your small GPT and measure the latency effect._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -132,10 +132,10 @@ _3-hour block · 🔧 reusable skill: `$eval-triangulator`_
 | 01:00–01:30 | M3 | KV-cache |
 | 01:30–02:00 | M4 | Evaluation triangulation |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | scaling_study.py: train 3–4 model sizes (e.g., 1M/3M/10M params) on a fixed token budget; plot loss  |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`VizuaraAI/kv-cache-token-reduction-walkthrough`](https://github.com/VizuaraAI/kv-cache-token-reduction-walkthrough) — profile KV-cache + inference efficiency on your small GPT and measure the latency effect. |
 
 ### Lecture 12 — Capstone: A Built-From-Scratch GPT With an Evidence Packet
-_3-hour block · 🔧 reusable skill: `$model-evidence-packet`_
+_3-hour block · 🔧 skill: `$model-evidence-packet` · ▶ project: [`VizuaraAILabs/nano-gpt-oss`](https://github.com/VizuaraAILabs/nano-gpt-oss) — use its from-scratch gpt-oss pretraining as the reference to extend your capstone GPT + model card._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -144,5 +144,5 @@ _3-hour block · 🔧 reusable skill: `$model-evidence-packet`_
 | 01:00–01:30 | M3 | Guided discussion / Q&A |
 | 01:30–02:00 | M4 | Critique & reflection (what would fail?) |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | Pick a corpus (TinyShakespeare, a WikiText subset, TinyStories, or your own ≤ 50 MB clean text — doc |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`VizuaraAILabs/nano-gpt-oss`](https://github.com/VizuaraAILabs/nano-gpt-oss) — use its from-scratch gpt-oss pretraining as the reference to extend your capstone GPT + model card. |
 

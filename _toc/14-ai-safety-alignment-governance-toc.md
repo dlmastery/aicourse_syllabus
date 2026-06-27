@@ -1,9 +1,9 @@
 # Detailed Table of Contents — Subject 14 — AI Safety, Alignment & Governance
 
-_Source: `14-ai-safety-alignment-governance.md` · **1 academic quarter · 3 lecture-hours/week · 13 weekly lectures (~39 contact hours)**_
+_Source: `14-ai-safety-alignment-governance.md` · **1 academic quarter · 3 lecture-hours/week · 13 weekly lectures (~39 contact hours)**. Every lecture has a **▶ practical project** (real GitHub repo)._
 
 ### Lecture 1 — The AI Risk Landscape & How to Reason About It
-_3-hour block · 🔧 reusable skill: `$threat-modeler`_
+_3-hour block · 🔧 skill: `$threat-modeler` · ▶ project: [`anthropics/courses`](https://github.com/anthropics/courses) — work the red-teaming/eval notebooks to build a threat model + baseline harm-rate table for the support assistant._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -12,10 +12,10 @@ _3-hour block · 🔧 reusable skill: `$threat-modeler`_
 | 01:00–01:30 | M3 | Capability vs propensity |
 | 01:30–02:00 | M4 | Defense in depth |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | Write threat_model.yaml for the support assistant: assets, actors, vectors, impact, current controls |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`anthropics/courses`](https://github.com/anthropics/courses) — work the red-teaming/eval notebooks to build a threat model + baseline harm-rate table for the support assistant. |
 
 ### Lecture 2 — Where Safety Enters Modern LLM Training (RLHF, RLVR, Safety Fine-Tuning)
-_3-hour block · 🔧 reusable skill: `$alignment-tax-meter`_
+_3-hour block · 🔧 skill: `$alignment-tax-meter` · ▶ project: [`anthropics/anthropic-cookbook`](https://github.com/anthropics/anthropic-cookbook) — adapt a fine-tuning/classification recipe to run a refusal fine-tune and quantify the alignment tax + over-refusal rate._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -24,10 +24,10 @@ _3-hour block · 🔧 reusable skill: `$alignment-tax-meter`_
 | 01:00–01:30 | M3 | Alignment tax |
 | 01:30–02:00 | M4 | Over-refusal |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | safety_ft.py with TRL: fine-tune the small model on a refusal dataset; evaluate harm-rate (down) and |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`anthropics/anthropic-cookbook`](https://github.com/anthropics/anthropic-cookbook) — adapt a fine-tuning/classification recipe to run a refusal fine-tune and quantify the alignment tax + over-refusal rate. |
 
 ### Lecture 3 — Adversarial Robustness I: Jailbreaks
-_3-hour block · 🔧 reusable skill: `$jailbreak-suite`_
+_3-hour block · 🔧 skill: `$jailbreak-suite` · ▶ project: [`anthropics/anthropic-cookbook`](https://github.com/anthropics/anthropic-cookbook) — use the cookbook’s prompting/eval patterns to run manual + automated jailbreaks and report calibrated ASR with transcripts._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -36,10 +36,10 @@ _3-hour block · 🔧 reusable skill: `$jailbreak-suite`_
 | 01:00–01:30 | M3 | PAIR / TAP |
 | 01:30–02:00 | M4 | Transferability |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | gcg_attack.py with **nanoGCG**: find a suffix that jailbreaks the local model on a HarmBench behavio |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`anthropics/anthropic-cookbook`](https://github.com/anthropics/anthropic-cookbook) — use the cookbook’s prompting/eval patterns to run manual + automated jailbreaks and report calibrated ASR with transcripts. |
 
 ### Lecture 4 — Adversarial Robustness II: Prompt Injection, Agent Hijacking & Weight Protection
-_3-hour block · 🔧 reusable skill: `$injection-redteam`_
+_3-hour block · 🔧 skill: `$injection-redteam` · ▶ project: [`anthropics/anthropic-cookbook`](https://github.com/anthropics/anthropic-cookbook) — extend a tool-use recipe to demo indirect injection + a spotlighting/quarantine defense, measuring residual ASR._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -48,10 +48,10 @@ _3-hour block · 🔧 reusable skill: `$injection-redteam`_
 | 01:00–01:30 | M3 | Confused deputy / exfiltration |
 | 01:30–02:00 | M4 | Defenses |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | injection_demo.py: plant an instruction in a RAG doc that makes the assistant exfiltrate a secret; c |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`anthropics/anthropic-cookbook`](https://github.com/anthropics/anthropic-cookbook) — extend a tool-use recipe to demo indirect injection + a spotlighting/quarantine defense, measuring residual ASR. |
 
 ### Lecture 5 — Model Specs, Content Policies & Moderation (Llama Guard, NeMo Guardrails)
-_3-hour block · 🔧 reusable skill: `$policy-enforcer`_
+_3-hour block · 🔧 skill: `$policy-enforcer` · ▶ project: [`anthropics/anthropic-cookbook`](https://github.com/anthropics/anthropic-cookbook) — use the moderation/classification recipe to enforce a model spec with a guard model and tune the operating point on a labeled set._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -60,10 +60,10 @@ _3-hour block · 🔧 reusable skill: `$policy-enforcer`_
 | 01:00–01:30 | M3 | Programmable guardrails |
 | 01:30–02:00 | M4 | Operating point |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | model_spec.md: a testable spec for the assistant (allowed/refused/deferred behaviors + examples) |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`anthropics/anthropic-cookbook`](https://github.com/anthropics/anthropic-cookbook) — use the moderation/classification recipe to enforce a model spec with a guard model and tune the operating point on a labeled set. |
 
 ### Lecture 6 — Scheming, Deception & Situational Awareness
-_3-hour block · 🔧 reusable skill: `$deception-probe`_
+_3-hour block · 🔧 skill: `$deception-probe` · ▶ project: [`anthropics/courses`](https://github.com/anthropics/courses) — reproduce an alignment-faking-style matched-pair probe and interpret the observed-vs-unobserved behavior delta honestly._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -72,10 +72,10 @@ _3-hour block · 🔧 reusable skill: `$deception-probe`_
 | 01:00–01:30 | M3 | Sandbagging / eval-gaming |
 | 01:30–02:00 | M4 | Detection |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | eval_gaming_probe.py: present the model the same task with/without explicit "this is a test" framing |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`anthropics/courses`](https://github.com/anthropics/courses) — reproduce an alignment-faking-style matched-pair probe and interpret the observed-vs-unobserved behavior delta honestly. |
 
 ### Lecture 7 — Mechanistic Interpretability I: Sparse Autoencoders (SAEs)
-_3-hour block · 🔧 reusable skill: `$sae-feature-lab`_
+_3-hour block · 🔧 skill: `$sae-feature-lab` · ▶ project: [`anthropics/courses`](https://github.com/anthropics/courses) — follow the interpretability material to train a small SAE on a layer and validate ≥10 features with an ablation/steering test._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -84,10 +84,10 @@ _3-hour block · 🔧 reusable skill: `$sae-feature-lab`_
 | 01:00–01:30 | M3 | Feature validation |
 | 01:30–02:00 | M4 | Limits |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | train_sae.py: hook a layer's residual stream (via TransformerLens/SAELens), collect activations, tra |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`anthropics/courses`](https://github.com/anthropics/courses) — follow the interpretability material to train a small SAE on a layer and validate ≥10 features with an ablation/steering test. |
 
 ### Lecture 8 — Mechanistic Interpretability II: CoT Monitoring & Faithfulness
-_3-hour block · 🔧 reusable skill: `$cot-monitor`_
+_3-hour block · 🔧 skill: `$cot-monitor` · ▶ project: [`anthropics/courses`](https://github.com/anthropics/courses) — build a CoT monitor + faithfulness test and report monitor PR plus the model’s CoT unfaithfulness rate._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -96,10 +96,10 @@ _3-hour block · 🔧 reusable skill: `$cot-monitor`_
 | 01:00–01:30 | M3 | Optimization pressure erodes monitorability |
 | 01:30–02:00 | M4 | Monitor design |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | cot_monitor.py: a monitor LLM that scores each reasoning step of an agent for unsafe intent; gate th |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`anthropics/courses`](https://github.com/anthropics/courses) — build a CoT monitor + faithfulness test and report monitor PR plus the model’s CoT unfaithfulness rate. |
 
 ### Lecture 9 — Scalable Oversight, Constitutional AI & RLAIF
-_3-hour block · 🔧 reusable skill: `$constitutional-aligner`_
+_3-hour block · 🔧 skill: `$constitutional-aligner` · ▶ project: [`anthropics/anthropic-cookbook`](https://github.com/anthropics/anthropic-cookbook) — implement a critique→revise constitutional loop, build an AI-preference set, and compare RLAIF vs human-data harm-rate._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -108,22 +108,22 @@ _3-hour block · 🔧 reusable skill: `$constitutional-aligner`_
 | 01:00–01:30 | M3 | RLAIF vs RLHF |
 | 01:30–02:00 | M4 | Debate / weak-to-strong |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | constitutional_ai.py: a critique→revise pipeline using a written constitution on harmful prompts; bu |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`anthropics/anthropic-cookbook`](https://github.com/anthropics/anthropic-cookbook) — implement a critique→revise constitutional loop, build an AI-preference set, and compare RLAIF vs human-data harm-rate. |
 
 ### Lecture 10 — Dangerous Capabilities, Responsible Scaling & Takeoff
-_3-hour block · 🔧 reusable skill: `$capability-eval`_
+_3-hour block · 🔧 skill: `$capability-eval` · ▶ project: [`anthropics/courses`](https://github.com/anthropics/courses) — run a strongly-elicited dangerous-capability proxy eval with Inspect AI and draft an RSP go/no-go memo tying a number to a safeguard._
 
 | Time | Module | Content |
 |------|--------|---------|
-| 00:00–00:30 | M1 | Dangerous-capability eval |
-| 00:30–01:00 | M2 | Responsible scaling policy |
-| 01:00–01:30 | M3 | Recursive self-improvement / takeoff |
-| 01:30–02:00 | M4 | Elicitation |
+| 00:00–00:30 | M1 | Dangerous-capability eval; Responsible scaling policy |
+| 00:30–01:00 | M2 | Recursive self-improvement / takeoff |
+| 01:00–01:30 | M3 | Elicitation |
+| 01:30–02:00 | M4 | Machine unlearning (capability removal) |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | capability_eval.py with **Inspect AI** (UK AISI): run a dangerous-capability proxy eval with strong  |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`anthropics/courses`](https://github.com/anthropics/courses) — run a strongly-elicited dangerous-capability proxy eval with Inspect AI and draft an RSP go/no-go memo tying a number to a safeguard. |
 
 ### Lecture 11 — Agent Safety: Autonomy, Permissions & Multi-Agent Risk
-_3-hour block · 🔧 reusable skill: `$agent-safety-harness`_
+_3-hour block · 🔧 skill: `$agent-safety-harness` · ▶ project: [`anthropics/anthropic-cookbook`](https://github.com/anthropics/anthropic-cookbook) — wrap a tool-using agent recipe with an authorization layer + human-gate and measure unsafe-action rate vs utility on AgentDojo/τ-bench._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -132,10 +132,10 @@ _3-hour block · 🔧 reusable skill: `$agent-safety-harness`_
 | 01:00–01:30 | M3 | Containment / sandboxing |
 | 01:30–02:00 | M4 | Multi-agent risk |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | agent_authz.py: wrap the assistant's tools with a least-privilege policy + human-gate for irreversib |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`anthropics/anthropic-cookbook`](https://github.com/anthropics/anthropic-cookbook) — wrap a tool-using agent recipe with an authorization layer + human-gate and measure unsafe-action rate vs utility on AgentDojo/τ-bench. |
 
 ### Lecture 12 — Governance: EU AI Act, NIST AI RMF, OWASP & Standards
-_3-hour block · 🔧 reusable skill: `$compliance-mapper`_
+_3-hour block · 🔧 skill: `$compliance-mapper` · ▶ project: [`anthropics/courses`](https://github.com/anthropics/courses) — map the support assistant to EU-AI-Act/NIST-RMF obligations and produce an auditable compliance dossier._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -144,10 +144,10 @@ _3-hour block · 🔧 reusable skill: `$compliance-mapper`_
 | 01:00–01:30 | M3 | OWASP LLM Top-10 / ISO 42001 |
 | 01:30–02:00 | M4 | Documentation artifacts |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | compliance_dossier/: EU AI Act tier classification + obligations checklist; NIST RMF mapping of the  |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`anthropics/courses`](https://github.com/anthropics/courses) — map the support assistant to EU-AI-Act/NIST-RMF obligations and produce an auditable compliance dossier. |
 
 ### Lecture 13 — Capstone: A Full Red-Team → Mitigation → Eval Cycle
-_3-hour block · 🔧 reusable skill: `$safety-case-builder`_
+_3-hour block · 🔧 skill: `$safety-case-builder` · ▶ project: [`anthropics/anthropic-cookbook`](https://github.com/anthropics/anthropic-cookbook) — assemble a full red-team→mitigation→eval safety case for one system with an artifact-linked safety card._
 
 | Time | Module | Content |
 |------|--------|---------|
@@ -156,5 +156,5 @@ _3-hour block · 🔧 reusable skill: `$safety-case-builder`_
 | 01:00–01:30 | M3 | Guided discussion / Q&A |
 | 01:30–02:00 | M4 | Critique & reflection (what would fail?) |
 | 02:00–02:30 | Studio | Guided practice toward the lab; live debugging on the anchor case |
-| 02:30–03:00 | Lab | Pick a system. Run: (1) threat model, (2) a multi-family red-team with measured ASR, (3) ≥2 mitigati |
+| 02:30–03:00 | Lab | ▶ Build the weekly artifact — practical project: [`anthropics/anthropic-cookbook`](https://github.com/anthropics/anthropic-cookbook) — assemble a full red-team→mitigation→eval safety case for one system with an artifact-linked safety card. |
 

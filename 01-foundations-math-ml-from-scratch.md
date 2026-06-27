@@ -1,6 +1,6 @@
 # Subject 01 — Math & ML Foundations From Scratch
 
-**Track:** Foundations · **Altitude:** Learner · **Length:** 10 weeks (2 lecture hrs + 3 lab hrs/wk)
+**Track:** Foundations · **Altitude:** Learner · **Length:** 10 weeks (3 lecture hrs + 3 lab hrs/wk)
 **Prerequisites:** programming in any language; high-school algebra. No prior ML.
 **Pedagogy:** Vizuara-style *build-every-component-without-libraries* + the source book's
 *concept → code → critique → reflection → rebuild* loop. You will not `import sklearn` until Week 6,
@@ -35,7 +35,13 @@ _1 academic quarter · 3 lecture-hours/week · 10 lectures (~30 contact hrs). Fu
 
 ## Week 1 — Why Math Is the Operating Language of ML (and Python/NumPy From Scratch)
 
-**Altitude:** Learner · **Format:** 2h lecture + 3h lab
+### State of the Art (June 2026)
+- **NumPy 2.x / Python 3.12** are still the substrate every framework lowers to; the `X @ w` you hand-code is the same op a 1.6T-param MoE like **DeepSeek V4** runs billions of times — matmul literacy still underpins the frontier.
+- **Tunable "thinking effort"** is now a standard control on **Claude Opus 4.8 / Gemini 3.1 Pro / GPT-5.5** — the modern face of "more compute per query" inside the train→evaluate→revise loop you start here.
+- **Reproducibility at scale** (pinned configs, seeded RNG, config hashes) is a 2026 frontier-lab discipline; the seeded-repo habit in this lab is exactly what makes trillion-token runs auditable.
+- Even **MMLU-Pro / GPQA Diamond** scores are only comparable under a fixed harness + seed — the baseline-and-evidence reflex starts in Week 1.
+
+**Altitude:** Learner · **Format:** 3h lecture + 3h lab
 **Anchor case:** load the raw delivery-time CSV and compute a "predict the mean" baseline by hand.
 
 ### Learning goals
@@ -62,6 +68,8 @@ _1 academic quarter · 3 lecture-hours/week · 10 lectures (~30 contact hrs). Fu
 - Initialize the repo with a seeded RNG and a `README` describing the anchor case.
 - **Deliverable:** repo that runs `python baseline.py` and prints a baseline MAE.
   **Acceptance:** matmul matches NumPy to 1e-9; baseline MAE reported with units (minutes).
+
+▶ **Practical project:** `krishnaik06/mlproject` — clone and run the end-to-end ML template; adopt its modular `src/`, config, and one-command run as the reproducible-repo blueprint for `ml-foundations/`.
 
 ### Harness / reusable skill — `$study-harness`
 - **Purpose:** turn any new concept into a reusable 7-step study loop.
@@ -91,6 +99,11 @@ and what **changed** in your mental model of "why NumPy exists."
 
 ## Week 2 — Linear Algebra as Shapes You Can Reason About
 
+### State of the Art (June 2026)
+- Shape literacy scales straight up: **FlashAttention-4** (Blackwell default in vLLM v0.20+) is a shape- and memory-aware re-tiling of the same `QKᵀ` matmul — dimension-tracking is what makes such kernels correct.
+- **Sparse MoE** models (**DeepSeek V4** 49B-active/1.6T-total, **Qwen 3.5** 17B/397B) route each token through different weight matrices; reasoning about "which matrix multiplies which vector" is now a frontier-architecture skill.
+- Norms/distance underpin modern retrieval: 2026 **embedding models** (Voyage voyage-3-large, Cohere embed-v4, BGE-M3) rank documents by the vector similarity / `‖a−b‖` geometry you build here.
+
 **Altitude:** Learner · **Anchor case:** batch-predict delivery times for all orders at once with one matrix op.
 
 ### Learning goals
@@ -110,6 +123,8 @@ and what **changed** in your mental model of "why NumPy exists."
 - Extend the math library: `dot`, `matvec`, `l2_norm`, `standardize(X)` — all from scratch, all unit-tested vs NumPy.
 - Re-express Week 1's loop-based baseline as a single vectorized expression; confirm identical output.
 - **Deliverable:** `linalg.py` + tests. **Acceptance:** vectorized delivery prediction equals the looped version.
+
+▶ **Practical project:** `microsoft/ML-For-Beginners` — work the regression-module NumPy/pandas notebooks to drill vectorized prediction, broadcasting, and shape reasoning.
 
 ### Harness / reusable skill — `$shape-checker`
 - **Purpose:** annotate every line of model code with the shape of its result.
@@ -135,6 +150,11 @@ Predict the output shape of `X @ w` for `X:(100,3)`, `w:(3,)`. Run. Then break i
 
 ## Week 3 — Derivatives, Gradients & the Seed of Backpropagation
 
+### State of the Art (June 2026)
+- Reverse-mode autodiff (the chain rule you hand-derive) still powers every 2026 trainer — **PyTorch 2.7 autograd**, JAX — at 1M-context, trillion-param scale; nothing about the frontier removes the gradient.
+- **Gradient checking** remains the canonical correctness test for any custom kernel (e.g., a new **FlashAttention-4** backward); the finite-difference habit is a frontier-engineering practice, not a toy.
+- The **test-time-compute** trend (RLVR, verifier models) optimizes *inference*, but the underlying models are still fit by gradient descent on a differentiable loss.
+
 **Altitude:** Learner · **Anchor case:** measure how delivery-MAE changes as you nudge one weight.
 
 ### Learning goals
@@ -154,6 +174,8 @@ Predict the output shape of `X @ w` for `X:(100,3)`, `w:(3,)`. Run. Then break i
 - `grads.py`: analytic gradient of squared-error loss for linear regression; `numerical_grad()` finite-difference
   checker; assert they agree to 1e-6 — this "gradient check" is the single most useful debugging habit in the course.
 - **Deliverable:** passing gradient check on the delivery model. **Acceptance:** max abs diff < 1e-6.
+
+▶ **Practical project:** `ashishpatel26/500-AI-Machine-Learning-Projects-with-code` — take a linear-regression / gradient-descent-from-scratch project and add a finite-difference gradient check.
 
 ### Harness / reusable skill — `$gradient-check`
 - **Purpose:** never trust a hand-derived gradient without a numerical check.
@@ -179,6 +201,11 @@ Predict whether increasing the distance-weight raises or lowers predicted delive
 
 ## Week 4 — Probability & Statistics: The Language of Uncertainty
 
+### State of the Art (June 2026)
+- The pretraining objective of every frontier LLM (**Opus 4.8, GPT-5.5, Gemini 3.1 Pro**) is still **maximum likelihood** / cross-entropy next-token — the MLE↔loss bridge you derive here is literally the loss they minimize.
+- **Calibration** is a live 2026 eval concern, and **LLM-as-judge** scores carry documented biases (TrustJudge); "80% confident" needing careful interpretation is now an industry problem.
+- Reliability metrics like **τ²-bench pass^k** measure whether an agent succeeds k-for-k — treating outcomes as random variables with variance, not point facts.
+
 **Altitude:** Learner · **Anchor case:** ticket-urgency as a *probability*, not a hard label.
 
 ### Learning goals
@@ -199,6 +226,8 @@ Predict whether increasing the distance-weight raises or lowers predicted delive
 - `stats.py`: sample from distributions, estimate mean/variance, build a histogram from scratch.
 - Derive on paper that minimizing squared error = MLE under Gaussian noise; reproduce numerically.
 - **Deliverable:** a short `evidence/week04-mle.md` showing the squared-error↔Gaussian equivalence.
+
+▶ **Practical project:** `microsoft/AI-For-Beginners` — run its probability / Naive-Bayes notebooks and connect the likelihood to the cross-entropy loss you derived.
 
 ### Harness / reusable skill — `$uncertainty-reader`
 - **Purpose:** translate any probabilistic output into plain-English meaning + one base-rate caution.
@@ -223,6 +252,11 @@ Predict whether a 90%-accurate ticket classifier is "good" when only 5% of ticke
 
 ## Week 5 — The Learning Problem: Loss, Empirical Risk & Gradient Descent From Scratch
 
+### State of the Art (June 2026)
+- **AdamW** remains the default optimizer for 2026 frontier pretraining; the SGD→mini-batch loop you build is the same one scaled across thousands of GPUs.
+- Reading a loss curve to diagnose LR problems is now a distributed-training skill — **MFU** and loss-spike monitoring gate trillion-token runs.
+- **RLVR / GRPO** post-training (DeepSeek-R1-style reasoning) is still gradient descent on a (verifiable) reward — empirical-risk minimization with a different objective, which you meet again in Subject 03.
+
 **Altitude:** Learner→Builder · **Anchor case:** train the delivery model by gradient descent, watching the loss curve.
 
 ### Learning goals
@@ -241,6 +275,8 @@ Predict whether a 90%-accurate ticket classifier is "good" when only 5% of ticke
 - `gd.py`: train linear regression on delivery data with your own GD loop; log loss per epoch; plot the curve.
 - Sweep three learning rates; save a *stable* run log and a *diverging* run log side by side.
 - **Deliverable:** loss-curve plot + two run logs. **Acceptance:** stable run beats the Week 1 baseline MAE.
+
+▶ **Practical project:** `krishnaik06/AQI-Project` — train the AQI regression with your own gradient-descent loop, logging loss curves and beating the mean baseline.
 
 ### Harness / reusable skill — `$training-diagnostics`
 - **Purpose:** read a loss curve and rank the likely causes of bad training.
@@ -265,6 +301,11 @@ Predict which of three learning rates will diverge before running the sweep. Rec
 
 ## Week 6 — First Models I: Linear & Logistic Regression (Now With, Then Without, scikit-learn)
 
+### State of the Art (June 2026)
+- Logistic regression is still the **strong, interpretable baseline** practitioners reach for before an LLM; the "earn complexity" discipline is reinforced by 2026 **model routing** (cheap model first, escalate only when needed).
+- The classification head of every transformer is a softmax/logistic layer over the vocabulary — the sigmoid/cross-entropy you build *is* the LLM output layer at `d = vocab`.
+- L1/L2 regularization generalizes to **weight decay** in modern training and to **LoRA/DoRA** low-rank constraints in fine-tuning — the same "prefer simpler explanations" principle.
+
 **Altitude:** Builder · **Anchor case:** delivery time (regression) and ticket urgency (classification).
 
 ### Learning goals
@@ -284,6 +325,8 @@ Predict which of three learning rates will diverge before running the sweep. Rec
 - `logreg.py` from scratch (sigmoid + cross-entropy + GD), gradient-checked; then reproduce with `sklearn` and
   confirm coefficients match within tolerance.
 - **Deliverable:** both implementations + a coefficient-comparison table. **Acceptance:** agreement within 1e-2.
+
+▶ **Practical project:** `microsoft/ML-For-Beginners` — reproduce its logistic-regression lesson, then match coefficients against your from-scratch `logreg.py`.
 
 ### Harness / reusable skill — `$baseline-builder`
 - **Purpose:** for any new dataset, propose the simplest reasonable baseline + evaluation plan before any complex model.
@@ -308,6 +351,11 @@ Predict which feature gets the largest logistic weight for ticket urgency; fit; 
 
 ## Week 7 — First Models II: Trees, Ensembles & Strong Baselines
 
+### State of the Art (June 2026)
+- **Gradient-boosted trees (XGBoost/LightGBM)** remain SOTA on tabular data in 2026 — frontier LLMs still do not reliably beat them on structured prediction; the "flashy model isn't the lesson" point is current.
+- Leakage auditing maps directly to **benchmark decontamination** (a 2026 eval crisis): contaminated test sets produce fake "emergence" — the same shortcut-that-lies you hunt here.
+- Feature-importance humility prefigures **mechanistic interpretability / SAEs** — both warn against over-reading a model's internal "explanations."
+
 **Altitude:** Builder · **Anchor case:** fraud screening — where a "flashy" model is *not* the lesson.
 
 ### Learning goals
@@ -327,6 +375,8 @@ Predict which feature gets the largest logistic weight for ticket urgency; fit; 
 - One comparison table: majority, logistic, tree, forest, boosted — with the same metric and split.
 - **Deliverable:** comparison table + a slice analysis showing where tree models win (e.g., new-device cross-border).
   **Acceptance:** a justified recommendation, not just "boosting won."
+
+▶ **Practical project:** `krishnaik06/Credit-Card-Fraudlent` — compare tree / random-forest / boosted models on the fraud split and audit for leakage.
 
 ### Harness / reusable skill — `$tabular-model-review`
 - **Purpose:** honest structured-data model comparison. **Inputs:** dataset + candidate models.
@@ -350,6 +400,11 @@ Predict which model wins the rare fraud slice before running; compare; record wh
 
 ## Week 8 — Evaluation, Error Analysis & Experiment Design
 
+### State of the Art (June 2026)
+- 2026 evaluation has gone **execution-based and reliability-aware**: **SWE-bench Verified**, **τ²-bench pass^k**, **ARC-AGI-2** — the "metric must match the decision" lesson, now with k-for-k reliability instead of single-shot accuracy.
+- **LLM-as-judge** is the default scaled evaluator but carries documented biases (TrustJudge); slice analysis and calibration are exactly the guards against trusting an averaged judge score.
+- Frameworks **LangSmith, Braintrust, Arize Phoenix, DeepEval, RAGAS, UK AISI Inspect AI** operationalize the threshold-sweep + slice-table discipline you build by hand.
+
 **Altitude:** Builder→Engineer · **Anchor case:** is the new fraud model *actually* better?
 
 ### Learning goals
@@ -369,6 +424,8 @@ Predict which model wins the rare fraud slice before running; compare; record wh
 - Write a one-page evaluation review note deciding whether the experiment supports "the new model is better."
 - **Deliverable:** threshold-sweep CSV + slice table + review note. **Acceptance:** the note names at least one
   thing the headline metric hides.
+
+▶ **Practical project:** `krishnaik06/Credit-Card-Fraudlent` — run a threshold sweep + per-slice error table on the fraud model and write the evaluation-review note.
 
 ### Harness / reusable skill — `$evaluation-review`
 - **Purpose:** review any result for what the main metric hides, threshold/calibration issues, critical slices,
@@ -391,6 +448,11 @@ Predict the precision at the recall you need *before* sweeping the threshold; sw
 
 ## Week 9 — Bias, Variance, Regularization & Generalization (Learning-Theory Intuition)
 
+### State of the Art (June 2026)
+- **Scaling laws (Chinchilla and 2026 successors)** are the modern, quantitative face of the capacity/data trade-off — undertrained large models are the bias-variance lesson at frontier scale.
+- The **double-descent / "benign overfitting"** thread (Belkin et al.) remains an open 2026 research question; your degree-vs-error curve is the entry point.
+- Contamination-driven **fake emergence** (Schaeffer et al.) shows why held-out, decontaminated evaluation — not training error — is the only honest generalization signal in 2026.
+
 **Altitude:** Builder→Engineer · **Anchor case:** a model with great training error and a useless test error.
 
 ### Learning goals
@@ -410,6 +472,8 @@ Predict the precision at the recall you need *before* sweeping the threshold; sw
   find the overfitting point; add L2 and watch the gap close.
 - **Deliverable:** a train-vs-validation curve + a short theory note. **Acceptance:** you can point to the exact
   capacity where validation error turns up.
+
+▶ **Practical project:** `ashishpatel26/500-AI-Machine-Learning-Projects-with-code` — take an overfitting/regularization project; plot train-vs-validation and close the gap with L2.
 
 ### Harness / reusable skill — `$generalization-translator`
 - **Purpose:** translate learning-theory language (capacity, uniform convergence, VC) into a practical lesson +
@@ -432,6 +496,11 @@ Predict the polynomial degree where validation error bottoms out; run the sweep;
 
 ## Week 10 — Capstone: A From-Scratch ML Project With an Evidence Packet
 
+### State of the Art (June 2026)
+- The **evidence-packet** discipline mirrors 2026 governance: **EU AI Act** main obligations apply **Aug 2, 2026** (high-risk Annex III deferred to **Dec 2, 2027** by the Digital Omnibus) — documented data, evaluation, and limitations are now legally relevant.
+- **Model Cards** plus one-command reproducible runs (pinned seed/config/data hash) are the industry-standard artifacts your packet anticipates.
+- Cost-aware framing (cheap baseline → escalate) reflects the 2026 LLMOps cost trio (**semantic caching + model routing + batching**); judgment about *when* a complex model is justified is the transferable capstone skill.
+
 **Altitude:** Builder (graduating to Subject 02) · **Anchor case:** your choice of a small real tabular dataset.
 
 ### Learning goals
@@ -448,6 +517,8 @@ Predict the polynomial degree where validation error bottoms out; run the sweep;
 - Ship: framing memo, baseline, ≥3 models compared, threshold/slice evaluation, generalization curve, and a
   written "what I would do next and why." **Deliverable:** `capstone/` folder + 2-page report.
   **Acceptance:** every claim in the report points to a file in the evidence packet.
+
+▶ **Practical project:** `krishnaik06/Data-Science-Projects-For-Resumes` — pick one end-to-end project and ship it as your capstone evidence packet (framing → baseline → compare → eval).
 
 ### Harness / reusable skill — `$project-evidence-packet`
 - **Purpose:** assemble framing memo + baseline + comparison + eval note + generalization note into one
@@ -662,3 +733,18 @@ capstone/
 | Evidence trail | every claim → an artifact | score-only report |
 | Next-step reasoning | defended next experiment | none |
 - **Papers/refs:** Ng, *Machine Learning Yearning* (2018); source book ch.16 + Appendix A (capstone blueprints).
+
+---
+
+## 🛠 Hands-on repositories & build studios (merged June 2026)
+
+**Clone-and-run repos** (verified June 2026; re-verify — full catalog in [`PROJECTS.md`](PROJECTS.md)):
+- `microsoft/ML-For-Beginners` (~87k★) — 12-week classical-ML curriculum with runnable code; reinforces Lectures 6–7 (linear/logistic regression, trees & ensembles).
+- `microsoft/AI-For-Beginners` (~48k★) — broad ML/AI foundations; supports the framing in Lectures 1–5 (data matrix, probability, the learning problem).
+- `ashishpatel26/500-AI-Machine-Learning-Projects-with-code` (~35k★) — 500-project bank for choosing a real tabular dataset for the Lecture 10 capstone.
+- `krishnaik06/mlproject` — canonical end-to-end ML template (CI, pipelines, deploy); a structure reference for the Lecture 10 evidence packet and the bridge into Subject 09.
+- `rasbt/LLMs-from-scratch` (~98k★) — preview of the build-every-component-without-libraries philosophy you carry into Subject 02; optional Lecture 10 bridge.
+
+**Build studios** (specs in [`PROJECTS.md`](PROJECTS.md)):
+- **Synthetic-data audit** — real+synthetic vs real-only with an artifact / model-collapse check — *maps to Lectures 8–9 (honest evaluation + generalization)*.
+- **AI tutor for underserved learners** (public-good track) — hint-first tutoring with a learning-gain eval and a human-review UX — *maps to Lecture 10 (capstone option)*.

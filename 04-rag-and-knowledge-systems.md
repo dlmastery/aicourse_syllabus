@@ -1,6 +1,6 @@
 # Subject 04 — Retrieval-Augmented Generation & Knowledge Systems
 
-**Track:** Applications · **Altitude:** Builder → Engineer · **Length:** 10 weeks (2 lecture hrs + 4 lab hrs/wk)
+**Track:** Applications · **Altitude:** Builder → Engineer · **Length:** 10 weeks (3 lecture hrs + 4 lab hrs/wk)
 **Prerequisites:** Subject 02 (transformers/embeddings) and Subject 03 (LLM app basics) or equivalent: you can call an LLM API, write Python, and read a PyTorch tensor shape. Subject 01's evidence discipline is assumed.
 **Pedagogy:** the book's *concept → code → critique → reflection → rebuild* loop, applied to retrieval systems. You will build a naive RAG baseline in Week 1 and spend nine weeks earning every piece of added complexity against a measured eval — never adding a reranker, a graph, or an agent until the numbers say the simpler system fails.
 
@@ -54,7 +54,13 @@ Per-week lab weights (the 55%): W1 5 · W2 5 · W3 6 · W4 7 · W5 6 · W6 8 · 
 
 ## Week 1 — Why Retrieval at All: Embeddings, Semantic Search & a Naive RAG Baseline
 
-**Altitude:** Builder · **Format:** 2h lecture + 4h lab
+### State of the Art (June 2026)
+- Embedding frontier: Voyage `voyage-3-large`, Cohere `embed-v4`, OpenAI `text-embedding-3-large`, open `BGE-M3` / `nomic-embed` — choose by retrieval eval, not leaderboard rank.
+- 1M-context models (Claude Opus 4.8, GPT-5.5, Gemini 3.1 Pro) make "just stuff everything" tempting, but cost, latency, and lost-in-the-middle keep retrieval essential.
+- Consensus is **retrieve-then-read**: long context reshapes RAG but doesn't kill it — RAG still owns freshness, citations, and cost control.
+- The durable 2026 lesson is unchanged: instrument the retrieval-miss vs generation-miss split on a frozen baseline *before* adding any machinery.
+
+**Altitude:** Builder · **Format:** 3h lecture + 4h lab
 **Anchor case:** ingest 200 AcmeCorp wiki pages, answer 20 hand-written questions with a "stuff-the-top-3-chunks" pipeline, and measure how often it's right.
 
 ### Learning goals
@@ -75,6 +81,8 @@ Per-week lab weights (the 55%): W1 5 · W2 5 · W3 6 · W4 7 · W5 6 · W6 8 · 
 - `eval_manual.py`: 20 hand-written Q/A pairs; mark each answer correct/incorrect/refused by hand; record accuracy in `evidence/week01-baseline.md`.
 - **Deliverable:** a runnable naive-RAG pipeline + the baseline accuracy number with units.
   **Acceptance:** pipeline answers all 20 questions; baseline accuracy reported with the count of retrieval-misses vs generation-misses separated.
+
+▶ **Practical project:** `krishnaik06/RAG-Tutorials` — clone the intro RAG notebook and rebuild it as your load→chunk→embed→retrieve→generate baseline over the AcmeCorp wiki.
 
 ### Harness / reusable skill — `$rag-baseline`
 - **Purpose:** for any new corpus, stand up the simplest honest RAG pipeline and its eval before any optimization.
@@ -141,6 +149,12 @@ def retrieve(question: str, k: int = 3) -> list[str]:
 
 ## Week 2 — Chunking & Document Processing: The Unsexy Half of Retrieval Quality
 
+### State of the Art (June 2026)
+- **Visual/layout-aware retrieval (ColPali / ColQwen3)** lets you retrieve PDFs and tables without brittle OCR — a major 2026 shift in document processing.
+- Parsing stack: `unstructured`, LlamaParse, `docling` for tables/figures; structure-aware and parent/child chunking are now the default over fixed-size.
+- 1M-context models tolerate larger chunks, but precision still rewards semantic / proposition-level splitting measured on your eval.
+- Agentic chunking (an LLM picks boundaries) is emerging but only cost-justified when it beats a recursive baseline on the frozen set.
+
 **Altitude:** Builder · **Anchor case:** the AcmeCorp PDFs (policy docs with tables, headers, multi-column layout) that Week 1's naive splitter mangled.
 
 ### Learning goals
@@ -159,6 +173,8 @@ def retrieve(question: str, k: int = 3) -> list[str]:
 - `chunkers.py`: implement/compare fixed, recursive, and semantic chunkers; parse PDFs with `unstructured`/`pymupdf`; preserve `source`, `section`, `page` metadata.
 - Re-embed AcmeCorp under each strategy; re-run the Week 1 eval; build `evidence/week02-chunking.md` table: strategy × accuracy × avg chunk size × retrieval-miss rate.
 - **Deliverable:** chunking comparison table + a one-paragraph justified choice. **Acceptance:** the chosen strategy beats Week 1's retrieval-miss rate, and the win is attributed to a mechanism, not luck.
+
+▶ **Practical project:** `krishnaik06/Updated-Langchain` — use its document-loader and text-splitter modules to implement and compare fixed/recursive/semantic chunkers on the PDF policy pack.
 
 ### Harness / reusable skill — `$chunk-strategist`
 - **Purpose:** pick and justify a chunking strategy for a given corpus by measuring, not guessing.
@@ -222,6 +238,12 @@ def semantic_chunks(sentences: list[str], emb, tau: float = 0.55) -> list[str]:
 
 ## Week 3 — Vector Databases: Indexes, ANN, and Choosing Your Store
 
+### State of the Art (June 2026)
+- Production stores: Qdrant, Weaviate, Pinecone (serverless), pgvector — HNSW the default index; native pre-filtering and hybrid search are now table stakes.
+- Vector quantization (binary / scalar / PQ, int8/FP8) cuts memory 4–32× at a controlled recall cost — measure recall@k vs exact, not just QPS.
+- Real selection criteria are metadata pre-filtering, multi-tenancy (namespaces/collections), and ops model — not raw benchmark throughput.
+- MoE + 1M-context models push the bottleneck back onto retrieval quality, so honest recall measurement matters more, not less.
+
 **Altitude:** Builder → Engineer · **Anchor case:** AcmeCorp grows to 1M chunks; brute-force cosine is too slow — you need a real index with metadata filters.
 
 ### Learning goals
@@ -240,6 +262,8 @@ def semantic_chunks(sentences: list[str], emb, tau: float = 0.55) -> list[str]:
 - `vectordb_bench.py`: load 1M chunks (AcmeCorp + synthetic padding) into Chroma, pgvector, and Qdrant; measure index build time, p95 query latency, and recall@10 vs exact NumPy search; sweep `ef_search`.
 - Implement a metadata-filtered query (product + date) in each; show pre-filter vs post-filter recall difference.
 - **Deliverable:** `evidence/week03-vectordb.md` with the recall/latency/cost table and a justified DB choice for the portal. **Acceptance:** you report recall@10 (not just latency) and pick a DB with a stated tradeoff reason.
+
+▶ **Practical project:** `Shubhamsaboo/awesome-llm-apps` — port one of its RAG apps across Chroma/Qdrant/pgvector and benchmark recall@10 vs p95 latency.
 
 ### Harness / reusable skill — `$vectordb-selector`
 - **Purpose:** choose and configure a vector store from measured recall/latency/ops needs, not hype.
@@ -305,6 +329,12 @@ def recall_at_k(qc, E, queries, gt, k=10, ef=64):
 
 ## Week 4 — Hybrid Search & Rerankers: BM25 + Dense, Then Cohere/BGE on Top
 
+### State of the Art (June 2026)
+- Reranker frontier: **Cohere Rerank 3.5, Voyage `rerank-2.5`, `BGE-reranker-v2`** — cross-encoder rescoring of top-50 → top-5 is the standard precision upgrade.
+- BM25 + dense + **RRF** remains the robust default; exact-code/SKU queries keep lexical signal indispensable.
+- HyDE bridges query/doc vocabulary mismatch; reranking is still the highest-ROI single upgrade after a baseline.
+- Reranker latency/cost is now budgeted explicitly (cache + batch) rather than treated as free.
+
 **Altitude:** Engineer · **Anchor case:** AcmeCorp queries with exact codes/SKUs ("error E-4021") where pure dense retrieval whiffs but keyword match nails it.
 
 ### Learning goals
@@ -323,6 +353,8 @@ def recall_at_k(qc, E, queries, gt, k=10, ef=64):
 - `hybrid.py`: BM25 (`rank_bm25` or OpenSearch) + dense, fuse with RRF; `rerank.py`: re-score fused top-50 with Cohere and BGE rerankers, keep top-5.
 - Evaluate on HotpotQA (labeled) and AcmeCorp: report nDCG@10 and recall@50 for dense / hybrid / hybrid+rerank.
 - **Deliverable:** `evidence/week04-hybrid.md` with the three-stage table + a query-level breakdown of which queries each stage rescues. **Acceptance:** hybrid+rerank beats dense on nDCG@10 and you can name *which kind* of query the reranker fixes.
+
+▶ **Practical project:** `NirDiamant/RAG_Techniques` — run its fusion-retrieval and reranking notebooks (BM25+dense+RRF → Cohere/BGE rerank) on your corpus and measure the per-stage lift.
 
 ### Harness / reusable skill — `$retriever-stack`
 - **Purpose:** assemble and measure a dense→hybrid→reranked retriever, adding each stage only if it earns its latency.
@@ -386,6 +418,12 @@ def rerank(query, docs, cohere_client, top=5):
 
 ## Week 5 — Late Interaction & ColBERT: Token-Level Retrieval
 
+### State of the Art (June 2026)
+- Late-interaction lineage: ColBERTv2 → PLAID → **ColPali / ColQwen3** for visual/PDF retrieval without OCR — the 2026 headline shift.
+- Multimodal embeddings (`voyage-multimodal-3`, Qwen3-VL-Embedding) make screenshot/figure/table retrieval first-class.
+- Per-token indexes are still 10–100× larger; PLAID compression and on-disk indexes make them servable at scale.
+- The choice is empirical: a strong cross-encoder reranker often matches late interaction more cheaply — weigh index-size against measured lift.
+
 **Altitude:** Engineer · **Anchor case:** AcmeCorp queries where the answer hinges on one phrase buried in a long chunk that single-vector retrieval averages away.
 
 ### Learning goals
@@ -404,6 +442,8 @@ def rerank(query, docs, cohere_client, top=5):
 - `colbert_lab.py`: index AcmeCorp + a BEIR set with ColBERTv2 via RAGatouille; compare nDCG@10 and index size vs Week 4's dense and hybrid+rerank stacks.
 - Find 5 queries ColBERT rescues that dense+rerank missed; characterize them.
 - **Deliverable:** `evidence/week05-colbert.md` with the quality-vs-index-size table + a "use it / skip it for the portal" recommendation. **Acceptance:** decision is backed by both a quality number and a storage number.
+
+▶ **Practical project:** `NirDiamant/RAG_Techniques` — adapt its late-interaction/ColBERT recipe and compare nDCG@10 and index size to your Week-4 hybrid+rerank stack.
 
 ### Harness / reusable skill — `$late-interaction-eval`
 - **Purpose:** evaluate whether late interaction earns its storage cost on a given corpus.
@@ -464,6 +504,12 @@ def maxsim(Eq, Ed):                       # Eq:(Tq,D)  Ed:(Td,D), normalized
 
 ## Week 6 — RAG Evaluation: Ragas, MAP/nDCG, and Faithfulness
 
+### State of the Art (June 2026)
+- Eval/observability stack: **RAGAS, Arize Phoenix, LangSmith, Braintrust, DeepEval, UK AISI Inspect AI** — trajectory-level traces now standard.
+- **LLM-as-judge** is the default but bias-audited (position/verbosity); validate judge–human agreement (κ) — TrustJudge-style scrutiny.
+- Separate retrieval (nDCG/MAP/recall, context precision/recall) from generation (faithfulness/groundedness); faithfulness gating catches confident fabrication.
+- Frozen, versioned gold sets plus contamination checks are baseline hygiene, not extras.
+
 **Altitude:** Engineer · **Anchor case:** two AcmeCorp retriever stacks look equally good in demos — prove which one is actually better, and catch the one that hallucinates confidently.
 
 ### Learning goals
@@ -482,6 +528,8 @@ def maxsim(Eq, Ed):                       # Eq:(Tq,D)  Ed:(Td,D), normalized
 - `ragas_eval.py`: assemble a 100-question gold set (HotpotQA + 50 AcmeCorp) with reference answers + relevant chunk ids; compute context precision/recall, faithfulness, answer relevance with Ragas; compute MAP/nDCG with `pytrec_eval`.
 - Validate the judge: hand-label 30 answers, report judge–human agreement (Cohen's κ).
 - **Deliverable:** `evidence/week06-eval/` with the metric dashboard + judge-validation note. **Acceptance:** every metric is reproducible from the frozen gold set and the judge's κ vs humans is reported (and >0.6 or flagged).
+
+▶ **Practical project:** `NirDiamant/RAG_Techniques` — wire its evaluation notebooks to RAGAS and compute faithfulness + context precision/recall on the frozen gold set.
 
 ### Harness / reusable skill — `$rag-eval` (the spine of the course)
 - **Purpose:** turn "looks good" into a reproducible scorecard separating retrieval from generation quality.
@@ -546,6 +594,12 @@ print(report)                            # per-metric means
 
 ## Week 7 — Advanced RAG I: HyDE, CRAG & Self-RAG
 
+### State of the Art (June 2026)
+- **Agentic RAG** (iterative query rewriting + retrieval agents + LLM-judge loops) is the 2026 framing — RAG as a control loop, not a fixed pipeline.
+- CRAG / Self-RAG-style self-correction is now wired with **LangGraph durable checkpointing** + retrieval-grading nodes.
+- Adaptive retrieval (retrieve only when needed) cuts noise on easy queries — measured, not assumed.
+- Discipline holds: keep each technique only if it beats the frozen eval; ablate rather than stack on blog hype.
+
 **Altitude:** Engineer · **Anchor case:** AcmeCorp queries where the user's phrasing doesn't match the docs (HyDE), and where retrieval sometimes returns garbage that the model should *reject* (CRAG/Self-RAG).
 
 ### Learning goals
@@ -564,6 +618,8 @@ print(report)                            # per-metric means
 - `hyde.py`, `crag.py`, `self_rag.py` as LangGraph nodes over the Week 6 pipeline; each is an ablation toggled on/off.
 - Run the full Week 6 eval for: baseline / +HyDE / +CRAG / +Self-RAG; build `evidence/week07-advanced.md` with the ablation table and per-technique rescued/regressed queries.
 - **Deliverable:** ablation table + a kept-techniques decision. **Acceptance:** each kept technique shows a measured net win (faithfulness or nDCG) and you name a query type where it *hurts*.
+
+▶ **Practical project:** `krishnaik06/Agentic-LanggraphCrash-course` — build HyDE/CRAG/Self-RAG as LangGraph nodes and ablate each against the Week-6 eval.
 
 ### Harness / reusable skill — `$rag-ablation`
 - **Purpose:** add advanced-RAG techniques as toggles and keep only those that beat the eval, with the regressions named.
@@ -625,6 +681,12 @@ def crag_grade(q: str, docs: list[str], grader_llm) -> str:
 
 ## Week 8 — Advanced RAG II: Agentic RAG, GraphRAG & Text2SQL
 
+### State of the Art (June 2026)
+- **GraphRAG** (Microsoft GraphRAG, `neo4j-graphrag`) handles multi-hop and global-summary queries a flat vector store can't.
+- Agentic loops via **LangGraph / OpenAI Agents SDK / Claude Agent SDK**; **MCP** (Linux Foundation Agentic AI Foundation) standardizes tool/data access across backends.
+- Text2SQL is hardened with schema-grounding + read-only sandboxes; query routing (vector / graph / SQL) is the orchestration layer.
+- Reliability thinking from **τ²-bench (pass^k)** is migrating into agentic-RAG evaluation.
+
 **Altitude:** Engineer → Specialist · **Anchor case:** AcmeCorp questions that single-shot retrieval can't answer: multi-hop ("which products owned by the team that shipped X are affected by policy Y?"), global summary ("what are the themes across all incident reports?"), and structured ("how many P1 tickets last quarter?").
 
 ### Learning goals
@@ -645,6 +707,8 @@ def crag_grade(q: str, docs: list[str], grader_llm) -> str:
 - `text2sql.py`: schema-grounded NL→SQL over `tickets` with a read-only execution sandbox and validation.
 - `router.py`: classify each query and dispatch; run the Week 6 eval over the routed system.
 - **Deliverable:** `evidence/week08-agentic-graph-sql/` with per-backend wins + routed-system eval. **Acceptance:** each backend beats vector-RAG on its target query class, and the router sends queries to the right place ≥85% of the time.
+
+▶ **Practical project:** `run-llama/llama_index` — use its GraphRAG, query-router, and Text2SQL modules to route multi-hop / global / analytical queries to the right backend.
 
 ### Harness / reusable skill — `$knowledge-router`
 - **Purpose:** route a query to vector / graph / SQL retrieval and justify the choice per query class with evidence.
@@ -709,6 +773,13 @@ def route(q: str, clf_llm) -> str:
 
 ## Week 9 — Long-Context vs RAG, Production Serving, Caching & Guardrails
 
+### State of the Art (June 2026)
+- Cost core: **prompt caching** (up to ~90% off static prefixes) + semantic caching + model routing + batching.
+- Serving: **vLLM** with **FP8 KV-cache** and **FlashAttention-4** (Blackwell); serverless GPU (Modal/Baseten) pay-per-second.
+- Guardrails: prompt-injection defense on retrieved content (**OWASP LLM Top-10**), Llama-Guard-class validators, citation enforcement.
+- Long-context (1M) reshapes but doesn't replace RAG — measure the corpus-size crossover; retrieve-then-read wins in production.
+- **EU AI Act:** most GPAI rules apply **Aug 2, 2026** (Digital Omnibus defers Annex-III high-risk to **Dec 2, 2027**) — citations and audit trails matter.
+
 **Altitude:** Engineer · **Anchor case:** AcmeCorp leadership asks "models have 1M-token context now — do we even need RAG?" and the portal must serve real traffic within a latency/cost SLA without leaking or hallucinating.
 
 ### Learning goals
@@ -722,12 +793,15 @@ def route(q: str, clf_llm) -> str:
 - **Semantic caching.** *Idea:* cache by embedding-similarity of queries, not exact string match. *Formula:* serve cached answer if `cos(q, q_cached) > τ`. *Common mistake:* `τ` too low → serving wrong cached answers.
 - **Prompt injection via retrieved content.** Why it matters: a malicious doc in the corpus can hijack the model ("ignore previous instructions"). *Plain English:* retrieved text is untrusted input. *Common mistake:* treating corpus text as safe.
 - **Grounding/citation guardrail.** *Idea:* enforce that every answer cites retrieved chunks and refuse when unsupported. Common mistake: citations that don't actually support the claim (faithfulness gap from Week 6).
+- **RAG lifecycle & retrieval drift.** *Idea:* a corpus is not static — docs are added, edited, and deprecated, so yesterday's gold set and embeddings silently rot. *Plain English:* a RAG system that was accurate at launch decays as the corpus and query distribution drift apart. Where it matters: production monitoring — track retrieval-hit-rate and faithfulness over time, re-index on corpus change, and re-freeze the gold set periodically. Common mistake: treating ingestion as a one-time job and never re-measuring after launch.
 
 ### Hands-on build
 - `serve.py`: FastAPI portal with an LLM gateway, semantic cache, and streaming; measure p95 latency and cost/query.
 - `guardrails.py`: citation enforcement, PII redaction, injection-detection on retrieved chunks (e.g., Llama Guard / heuristics), calibrated refusal.
 - `longctx_vs_rag.py`: on a 50-question set, compare RAG vs full-context-stuffing on accuracy, cost, and latency; find the corpus-size crossover.
 - **Deliverable:** `evidence/week09-production/` with the SLA table, the long-context-vs-RAG crossover plot, and a red-team log of 10 injection attempts. **Acceptance:** portal meets a stated p95 SLA, blocks ≥8/10 injections, and the long-context decision is backed by the crossover data.
+
+▶ **Practical project:** `decodingml/llm-twin-course` — adapt its production RAG service to add semantic caching, injection guardrails, and a measured p95/cost SLA.
 
 ### Harness / reusable skill — `$rag-prod-harness`
 - **Purpose:** make a RAG system production-safe and cost-bounded with measured SLA, caching, and guardrails.
@@ -796,6 +870,12 @@ def injection_guard(chunk: str, guard_llm) -> bool:
 
 ## Week 10 — Capstone: A Production Document-QA / Knowledge Portal
 
+### State of the Art (June 2026)
+- Reference architecture: **agentic + hybrid + rerank + (graph/SQL where measured) + guarded generation + traced serving**.
+- Eval-gated shipping with RAGAS / Inspect AI + a frozen gold set + faithfulness gate + prompt-injection regression.
+- **MCP**-exposed tools and agent memory are increasingly part of "production RAG," not just a chatbot wrapper.
+- Governance: EU AI Act Aug-2026 transparency/audit expectations are baked into the evidence packet.
+
 **Altitude:** Engineer (graduating toward Subject 05) · **Anchor case:** ship the full AcmeCorp Knowledge Portal as a defensible system with an evidence packet.
 
 ### Learning goals
@@ -813,6 +893,8 @@ def injection_guard(chunk: str, guard_llm) -> bool:
 - Pick a real corpus (your own org's docs, a public dataset like a Wikipedia subset, or extend AcmeCorp) of ≥5k chunks.
 - Ship: ingestion pipeline, the routed retriever stack, guarded generation with citations, the eval dashboard, and a served API with an SLA. Include an ablation showing each kept component beats the simpler system on the frozen eval.
 - **Deliverable:** `capstone/` repo + a 3-page report. **Acceptance:** every claim in the report ("hybrid added +X nDCG," "faithfulness 0.9," "p95 < Y ms," "blocks injection") points to a file in `evidence/`; the final system beats the Week 1 baseline on both a retrieval and a generation metric.
+
+▶ **Practical project:** `Shubhamsaboo/awesome-llm-apps` — fork a full RAG app and extend it into your routed, guarded, eval-gated knowledge portal.
 
 ### Harness / reusable skill — `$rag-evidence-packet`
 - **Purpose:** assemble baseline → ablations → eval dashboard → SLA/safety logs into one reviewable bundle.
@@ -877,3 +959,18 @@ By the end you can: build a RAG system that is *measured*, not vibes-based; sepa
 
 ## Skills produced (reused program-wide)
 `$rag-baseline` · `$chunk-strategist` · `$vectordb-selector` · `$retriever-stack` · `$late-interaction-eval` · `$rag-eval` · `$rag-ablation` · `$knowledge-router` · `$rag-prod-harness` · `$rag-evidence-packet`
+
+---
+
+## 🛠 Hands-on repositories & build studios (merged June 2026)
+
+**Clone-and-run repos** (verified June 2026; full catalog in [`PROJECTS.md`](PROJECTS.md)):
+- `NirDiamant/RAG_Techniques` — runnable advanced-RAG recipes (HyDE, CRAG, Self-RAG, fusion, reranking) to ablate against your eval — Lectures 4, 7
+- `Shubhamsaboo/awesome-llm-apps` — 100+ runnable RAG/agent apps to mine for the baseline and agentic-RAG patterns — Lectures 1, 8
+- `run-llama/llama_index` — node parsers, parent/child retrievers, and query engines for chunking and indexing — Lectures 2, 3
+- `krishnaik06/RAG-Tutorials` — enterprise hybrid / HyDE / CRAG / Text2SQL / guardrails in LangChain & LangGraph — Lectures 7–9
+- `decodingml/llm-twin-course` — an end-to-end production RAG system (ingestion → retrieval → serving) — Lectures 9–10
+
+**Build studios** (specs in [`PROJECTS.md`](PROJECTS.md)):
+- **Agentic RAG with abstention** — hybrid + graph + table retrieval, reranking, citations, and a "no-answer" path — *Lectures 7–8*
+- **Domain RAG (regulated)** — a medical/legal/finance assistant with citations, abstention, and an audit trail — *Lecture 10*

@@ -1,6 +1,6 @@
 # Subject 03 — Large Language Models: Pretraining → Post-Training
 
-**Track:** Core · **Altitude:** Builder→Engineer · **Length:** 13 weeks (2 lecture hrs + 5 lab hrs/wk)
+**Track:** Core · **Altitude:** Builder→Engineer · **Length:** 13 weeks (3 lecture hrs + 5 lab hrs/wk)
 **Prerequisites:** Subject 02 (you can build a Transformer block, train a small GPT, train a BPE
 tokenizer, and run an instrumented training loop) or equivalent. Comfortable with PyTorch, Hugging Face
 `datasets`/`transformers`, and reading an experiment's evidence honestly.
@@ -77,7 +77,12 @@ reproduction checkpoint 9% + capstone 25% = 100%.)
 
 ## Week 1 — The LLM Lifecycle, End to End (and a Reproducible Tiny Pretraining Run)
 
-**Altitude:** Builder · **Format:** 2h lecture + 5h lab
+### State of the Art (June 2026)
+- The 2026 lifecycle is standardized: **pretrain → SFT → LoRA/QLoRA → DPO or GRPO/RLVR → (merge) → serve**; you execute each stage on a real open base (Pythia/SmolLM2/Qwen3/Llama).
+- Frontier defaults to assume: **1M context, sparse MoE, tunable thinking-effort** (**Opus 4.8, GPT-5.5 router, Gemini 3.1 Pro, DeepSeek V4**).
+- `FLOPs ≈ 6ND` + **MFU** accounting is the same cost language used to plan trillion-token runs in 2026.
+
+**Altitude:** Builder · **Format:** 3h lecture + 5h lab
 **Anchor case:** stand up the repo and continue-pretrain a SmolLM2-135M-scale model on a tiny corpus for 1k steps to map the whole pipeline before zooming in.
 
 ### Learning goals
@@ -101,6 +106,8 @@ reproduction checkpoint 9% + capstone 25% = 100%.)
 - Continue-pretrain SmolLM2-135M (or Pythia-160M) on a 50–200 MB clean text slice for ~1k steps; log loss, tokens/sec, and MFU.
 - **Deliverable:** a runnable tiny pretraining job + a one-page lifecycle map annotated with "where each later week plugs in."
   **Acceptance:** loss decreases; throughput + MFU reported; the lifecycle map names the objective at each stage.
+
+▶ **Practical project:** `VizuaraAILabs/nano-gpt-oss` — stand up a tiny gpt-oss pretraining run and annotate where each later week plugs into the lifecycle.
 
 ### Harness / reusable skill — `$lifecycle-map`
 - **Purpose:** for any LLM project, lay out the stages, the objective + data + eval at each, and the decision that gates moving on.
@@ -158,7 +165,12 @@ Trainer(model=model, args=args, train_dataset=ds).train()
 
 ## Week 2 — Data Curation I: Common Crawl, Extraction, Filtering, Language ID
 
-**Altitude:** Builder→Engineer · **Format:** 2h lecture + 5h lab
+### State of the Art (June 2026)
+- **FineWeb / FineWeb-Edu** (plus Dolma, Nemotron-CC) are the 2026 reference open pipelines; model-based quality classifiers (FineWeb-Edu style) now beat pure heuristics.
+- **EU AI Act** GPAI data-governance/transparency obligations (in force since Aug 2025; main rules **Aug 2, 2026**) make provenance + licensing a legal requirement, not hygiene.
+- **`datatrove` / `nemo-curator`** are the current curation toolchains; the funnel-with-sampled-drops you build is standard practice.
+
+**Altitude:** Builder→Engineer · **Format:** 3h lecture + 5h lab
 **Anchor case:** build a real (small-scale) web-text curation pipeline from raw Common Crawl WARC to clean training shards.
 
 ### Learning goals
@@ -179,6 +191,8 @@ Trainer(model=model, args=args, train_dataset=ds).train()
 - Report a funnel: documents in → kept at each stage, with 10 examples dropped at each filter (and why).
 - **Deliverable:** a curation pipeline + a filtering funnel report + a before/after sample diff.
   **Acceptance:** the funnel quantifies each stage's drop rate; you can defend each filter with examples and name one bias it could introduce.
+
+▶ **Practical project:** `VizuaraAILabs/truly-open-gpt-oss` — run its data-prep stage (extraction/filtering) and emit a retention funnel with sampled drops.
 
 ### Harness / reusable skill — `$data-funnel`
 - **Purpose:** for any corpus, produce a stage-by-stage retention funnel with sampled drops and a bias note.
@@ -239,7 +253,12 @@ LocalPipelineExecutor(pipeline=pipeline, tasks=4).run()
 
 ## Week 3 — Data Curation II: Deduplication, Decontamination, and Tokenizer Training
 
-**Altitude:** Engineer · **Format:** 2h lecture + 5h lab
+### State of the Art (June 2026)
+- **MinHash/LSH dedup + n-gram decontamination** are 2026 standard (Dolma, FineWeb); contamination is the documented cause of **fake "emergence"** and inflated benchmarks.
+- Tokenizer fertility vs **Llama 4 / Qwen 3.5 / GPT-5.5** tokenizers is the current quality check; domain/code/digit handling drives real cost.
+- Decontamination is now an eval-integrity obligation as much as a quality one — directly feeding Week 7's honest evaluation.
+
+**Altitude:** Engineer · **Format:** 3h lecture + 5h lab
 **Anchor case:** dedup the Week-2 corpus, decontaminate it against eval sets, then train a tokenizer on it.
 
 ### Learning goals
@@ -260,6 +279,8 @@ LocalPipelineExecutor(pipeline=pipeline, tasks=4).run()
 - `train_tokenizer.py`: train a 32k BPE (HF `tokenizers`) on the cleaned corpus; report fertility vs Llama-3 and GPT-2 tokenizers.
 - **Deliverable:** dedup+decontam report + a trained tokenizer + a fertility comparison table.
   **Acceptance:** measurable dup reduction; documented decontamination; tokenizer round-trips and reports fertility.
+
+▶ **Practical project:** `VizuaraAILabs/truly-open-gpt-oss` — run its tokenizer-training stage, then layer in MinHash dedup + n-gram decontamination and measure the duplicate rate.
 
 ### Harness / reusable skill — `$dedup-decontam`
 - **Purpose:** quantify duplication and benchmark contamination in any corpus and emit a clean shard set.
@@ -322,7 +343,12 @@ def dedup(docs, threshold=0.8):
 
 ## Week 4 — Architecture, Hyperparameters, and Scaling Laws
 
-**Altitude:** Engineer · **Format:** 2h lecture + 5h lab · **Quiz 1 (scaling/architecture) this week.**
+### State of the Art (June 2026)
+- The 2026 frontier decoder stack is exactly **RoPE + RMSNorm + SwiGLU + GQA (+ MoE)** — Llama 4, Qwen 3.5, and DeepSeek V4 all share this skeleton.
+- **Chinchilla-style scaling laws** (and successors) + **μP hyperparameter transfer** are the current tools for choosing params-vs-tokens and porting LR across scale.
+- Sparse **MoE** (DeepSeek V4 49B-active/1.6T-total) is now the dominant way to add capacity without proportional FLOPs — the active-vs-total distinction you formalize in Week 6.
+
+**Altitude:** Engineer · **Format:** 3h lecture + 5h lab · **Quiz 1 (scaling/architecture) this week.**
 **Anchor case:** fit your own scaling law across a few small models and use it to choose a compute-optimal config.
 
 ### Learning goals
@@ -345,6 +371,8 @@ def dedup(docs, threshold=0.8):
 - `scaling.py`: train 4–5 sizes on a fixed token budget; fit `L(N)`; predict the loss of a held-out size and check.
 - **Deliverable:** the architecture module + a fitted scaling curve + a compute-optimal config recommendation.
   **Acceptance:** the held-out-size loss prediction is within a stated tolerance; the recommendation cites token/param balance.
+
+▶ **Practical project:** `VizuaraAILabs/DeepSeek-From-Scratch` — build the modern decoder (RoPE/RMSNorm/SwiGLU/MoE) and fit a small scaling law across sizes.
 
 ### Harness / reusable skill — `$scaling-fit`
 - **Purpose:** fit and validate a scaling law from a handful of runs, then recommend a compute-optimal config.
@@ -404,7 +432,12 @@ def fit_scaling(runs):                      # runs: list of (N_params, D_tokens,
 
 ## Week 5 — Distributed Pretraining: Data/Tensor/Pipeline Parallel, FSDP & ZeRO
 
-**Altitude:** Engineer · **Format:** 2h lecture + 5h lab
+### State of the Art (June 2026)
+- **FSDP2** (native PyTorch) and **DeepSpeed ZeRO-3** are the 2026 reference shards; Megatron-style TP/PP for the largest models.
+- **FP8 training** (Blackwell) + **MFU** are the current efficiency metrics; the scaling-efficiency gap-from-linear analysis is exactly what frontier labs report.
+- **5D parallelism (DP/TP/PP/CP/EP)** is the 2026 frontier vocabulary — expert-parallel (EP) added specifically for MoE.
+
+**Altitude:** Engineer · **Format:** 3h lecture + 5h lab
 **Anchor case:** scale your pretraining job across 2–8 GPUs (or simulate the mechanism) and measure scaling efficiency.
 
 ### Learning goals
@@ -427,6 +460,8 @@ def fit_scaling(runs):                      # runs: list of (N_params, D_tokens,
 - Measure throughput and MFU at 1, 2, 4 (and 8 if available) GPUs; plot scaling efficiency; document the communication bottleneck.
 - **Deliverable:** a sharded training run + a scaling-efficiency plot + a memory breakdown.
   **Acceptance:** the model trains under memory that single-GPU full replication can't fit; scaling efficiency + MFU reported with an explanation of the gap from linear.
+
+▶ **Practical project:** `VizuaraAI/vizuara-5d-parallelism-workshop` — run DP/TP/PP/FSDP across GPUs and measure scaling efficiency + MFU.
 
 ### Harness / reusable skill — `$distributed-profiler`
 - **Purpose:** profile a distributed run's throughput, MFU, memory, and communication overhead; recommend the parallelism strategy.
@@ -483,7 +518,12 @@ def setup_fsdp(model):
 
 ## Week 6 — Mixture-of-Experts and Long-Context Pretraining
 
-**Altitude:** Engineer · **Format:** 2h lecture + 5h lab
+### State of the Art (June 2026)
+- **MoE is the dominant 2026 frontier architecture** (DeepSeek V4 1.6T/49B, Qwen 3.5 397B/17B, Llama 4); top-k routing + load-balancing loss + capacity factor are exactly what you implement.
+- Long context is table stakes (**1M+ context; Llama 4 Scout ~10M**); **RoPE scaling / YaRN / NTK** + continued training are the current extension recipes.
+- Router-collapse monitoring and active-vs-total accounting are live production concerns in 2026 MoE serving.
+
+**Altitude:** Engineer · **Format:** 3h lecture + 5h lab
 **Anchor case:** convert your dense model's MLP into a sparse MoE layer and reason about long-context training.
 
 ### Learning goals
@@ -506,6 +546,8 @@ def setup_fsdp(model):
 - Short experiment: extend context from 1k→4k via RoPE scaling on a small model; measure perplexity on long docs.
 - **Deliverable:** a working MoE layer + dense-vs-MoE comparison + an expert-utilization plot.
   **Acceptance:** experts are utilized (no collapse), active-param accounting is correct, and you state when MoE is/ isn't worth it.
+
+▶ **Practical project:** `VizuaraAI/Mixture_of_Experts` — implement a top-k MoE FFN + load-balancing loss and track expert utilization.
 
 ### Harness / reusable skill — `$moe-router-monitor`
 - **Purpose:** monitor MoE routing health (per-expert load, drop rate, balance loss) and flag collapse.
@@ -569,7 +611,12 @@ class MoEFFN(nn.Module):
 
 ## Week 7 — Pretraining Evaluation & a Paper-Reproduction Checkpoint
 
-**Altitude:** Engineer · **Format:** 2h lecture + 5h lab · **Paper-reproduction checkpoint due.**
+### State of the Art (June 2026)
+- 2026 capability benchmarks: **MMLU-Pro, GPQA Diamond, ARC-AGI-2, AIME, HellaSwag/ARC** via **lm-evaluation-harness / LightEval**; report CIs + format notes.
+- **Contamination → fake emergence** (Schaeffer et al.) is the central honesty concern; decontamination (Week 3) is the antidote.
+- Reproduction discipline mirrors **UK AISI Inspect AI / reproducible-eval** practice — re-deriving a published number is the strongest evidence of understanding.
+
+**Altitude:** Engineer · **Format:** 3h lecture + 5h lab · **Paper-reproduction checkpoint due.**
 **Anchor case:** evaluate your base model with a real harness and reproduce one published small-scale result.
 
 ### Learning goals
@@ -590,6 +637,8 @@ class MoEFFN(nn.Module):
 - **Reproduction checkpoint:** pick a small published result (e.g., a Pythia checkpoint's reported HellaSwag, or a SmolLM2 number) and reproduce it within a stated tolerance; document every deviation.
 - **Deliverable:** a benchmark table + a reproduction report (target number, your number, gap, explanation).
   **Acceptance:** scores are reported with CIs and format notes; the reproduction is within tolerance or the discrepancy is diagnosed.
+
+▶ **Practical project:** `mlabonne/llm-course` — run its evaluation notebooks (lm-eval-harness) on your base model and reproduce a published number with CIs.
 
 ### Harness / reusable skill — `$benchmark-runner`
 - **Purpose:** run a standard eval suite reproducibly, with format/contamination caveats and confidence intervals.
@@ -645,7 +694,12 @@ results = lm_eval.simple_evaluate(
 
 ## Week 8 — Supervised Fine-Tuning & Instruction Tuning
 
-**Altitude:** Engineer · **Format:** 2h lecture + 5h lab
+### State of the Art (June 2026)
+- The 2026 default PEFT stack is **LoRA/QLoRA/DoRA** via HF **trl/peft + unsloth/axolotl** (2–5× faster QLoRA; ~$12 to tune 8B on one A100).
+- **Data quality > quantity** (LIMA, Tülu 3) is reinforced; **assistant-only loss masking + chat templates** are non-negotiable correctness checks.
+- Synthetic SFT data (distilled from frontier models) is standard 2026 practice — with model-collapse caveats.
+
+**Altitude:** Engineer · **Format:** 3h lecture + 5h lab
 **Anchor case:** turn your base model into an instruction-follower with SFT (full + LoRA/QLoRA) on a curated instruction set.
 
 ### Learning goals
@@ -666,6 +720,8 @@ results = lm_eval.simple_evaluate(
 - Curate/clean a 5–10k instruction subset; compare SFT on the raw vs cleaned subset.
 - **Deliverable:** an SFT model + a LoRA-vs-full comparison + a data-quality ablation.
   **Acceptance:** the SFT model follows instructions (qualitative + a small held-out instruction eval); loss masking and templating are verified; the data-quality ablation shows the expected effect.
+
+▶ **Practical project:** `krishnaik06/Finetuning-LLM` — run SFT + LoRA/QLoRA on an instruction set with proper chat templating and loss masking.
 
 ### Harness / reusable skill — `$sft-recipe`
 - **Purpose:** a reproducible SFT recipe: template + mask + pack + LoRA config + held-out instruction eval.
@@ -724,7 +780,12 @@ trainer.train()
 
 ## Week 9 — Reward Modeling & RLHF (PPO)
 
-**Altitude:** Engineer · **Format:** 2h lecture + 5h lab · **Quiz 2 (post-training math) this week.**
+### State of the Art (June 2026)
+- **RLVR is displacing pure RLHF** for reasoning, but Bradley-Terry reward models + PPO remain the foundation and the clearest place to see **reward hacking / verifier gaming** (active ICLR 2026 thread).
+- KL-to-reference control and held-out **LLM-as-judge** checks are the current guards against reward-hacked policies.
+- Tooling: **TRL, veRL, OpenRLHF** are the 2026 scalable-RL references.
+
+**Altitude:** Engineer · **Format:** 3h lecture + 5h lab · **Quiz 2 (post-training math) this week.**
 **Anchor case:** train a reward model on human/AI preferences, then improve your SFT model with PPO-based RLHF.
 
 ### Learning goals
@@ -747,6 +808,8 @@ trainer.train()
 - `ppo.py` (TRL `PPOTrainer`): RLHF your SFT model with the RM + a KL penalty to the reference; track reward, KL, and a held-out judge score.
 - **Deliverable:** a reward model (with accuracy) + a PPO run (reward/KL curves) + a reward-hacking probe.
   **Acceptance:** RM beats chance clearly; PPO raises judge-scored quality without KL blow-up; you demonstrate at least one reward-hacking failure and a mitigation.
+
+▶ **Practical project:** `mlabonne/llm-course` — train a Bradley-Terry reward model and run PPO RLHF from its post-training notebooks, watching reward/KL.
 
 ### Harness / reusable skill — `$rlhf-monitor`
 - **Purpose:** monitor an RLHF run for reward/KL trajectories and reward-hacking signatures (length inflation, repetition, sycophancy).
@@ -804,7 +867,12 @@ ppo_cfg = PPOConfig(output_dir="ppo", kl_coef=0.05, batch_size=64)
 
 ## Week 10 — Direct Preference Optimization: DPO, ORPO, KTO
 
-**Altitude:** Engineer · **Format:** 2h lecture + 5h lab
+### State of the Art (June 2026)
+- **DPO (and ORPO/KTO)** are the 2026 default preference-optimization methods — simpler than PPO, no separate reward model; the standard "→ DPO or GRPO" step in the post-training stack.
+- **Tülu 3** and most open post-training recipes use DPO-family losses; you compare them head-to-head.
+- **Model merging** after DPO is an increasingly common final step worth previewing.
+
+**Altitude:** Engineer · **Format:** 3h lecture + 5h lab
 **Anchor case:** align the SFT model *without* a separate reward model or RL loop, and compare DPO/ORPO/KTO head-to-head against Week 9's PPO.
 
 ### Learning goals
@@ -825,6 +893,8 @@ ppo_cfg = PPOConfig(output_dir="ppo", kl_coef=0.05, batch_size=64)
 - Compare DPO/ORPO/KTO/PPO on a held-out judge win-rate + a benchmark (e.g., a small AlpacaEval/MT-Bench-style set), holding data + compute fixed.
 - **Deliverable:** three aligned checkpoints + a method-comparison table (win-rate, KL drift, cost).
   **Acceptance:** all three train stably and improve over SFT; the comparison is fair (same data/compute) and you give a defended recommendation.
+
+▶ **Practical project:** `mlabonne/llm-course` — align your SFT model with DPO (and contrast ORPO/KTO) using its preference-optimization notebook.
 
 ### Harness / reusable skill — `$preference-align-bench`
 - **Purpose:** fairly compare preference-optimization methods on fixed data/compute with a judge + a benchmark.
@@ -880,7 +950,12 @@ dpo.train()
 
 ## Week 11 — RL for Reasoning: GRPO and Verifiable Rewards
 
-**Altitude:** Engineer/Specialist · **Format:** 2h lecture + 5h lab
+### State of the Art (June 2026)
+- **GRPO + RLVR (RL with Verifiable Rewards)** is the dominant 2026 reasoning-post-training method — behind DeepSeek-R1-style models; format + correctness rewards are exactly what you build.
+- **Verifier models** (RL-trained critics) + test-time parallel/sequential scaling give ~1.2–1.6× (RL^V); **reward hacking** is the key failure mode.
+- Variants to know: **DAPO** and other GRPO refinements; **AIME / GPQA** are the standard reasoning benchmarks.
+
+**Altitude:** Engineer/Specialist · **Format:** 3h lecture + 5h lab
 **Anchor case:** push your model's math reasoning with GRPO using a verifiable (answer-checking) reward on GSM8K-style problems.
 
 ### Learning goals
@@ -901,6 +976,8 @@ dpo.train()
 - Track accuracy vs training step and mean reasoning length; show an example whose chain-of-thought improves.
 - **Deliverable:** a GRPO run + an accuracy-vs-steps curve + a reasoning-length plot + before/after solutions.
   **Acceptance:** measurable accuracy improvement on a held-out math set; reward function is verifiable and documented; you discuss the length/accuracy trade-off.
+
+▶ **Practical project:** `VizuaraAILabs/OpenClaw-RL-Tutorial` — implement GRPO with verifiable rewards on a math task, adding format + correctness rewards.
 
 ### Harness / reusable skill — `$verifiable-reward`
 - **Purpose:** build and validate a programmatic reward (answer-checking + format) and audit it for gameability.
@@ -962,7 +1039,12 @@ GRPOTrainer(model="./dpo-ckpt", reward_funcs=[correctness_reward],
 
 ## Week 12 — Long-Context, Safety Fine-Tuning, and Serving
 
-**Altitude:** Engineer/Specialist · **Format:** 2h lecture + 5h lab
+### State of the Art (June 2026)
+- Serving reference: **vLLM / SGLang** with **FP8 KV-cache**, **FlashAttention-4**, **speculative decoding**, and **prompt caching** (up to ~90% off static prefixes) — the 2026 cost core.
+- Safety: **Constitutional AI with dynamic constitutions + automated red-teaming**; **runtime guardrails** (prompt-injection focus) with refusal *and* over-refusal both measured.
+- Governance: **EU AI Act** main obligations apply **Aug 2, 2026** (Annex III high-risk deferred to **Dec 2, 2027** via the Digital Omnibus); long-context extension via **YaRN/NTK**.
+
+**Altitude:** Engineer/Specialist · **Format:** 3h lecture + 5h lab
 **Anchor case:** extend your assistant's context, safety-tune it, red-team it, and serve it efficiently.
 
 ### Learning goals
@@ -986,6 +1068,8 @@ GRPOTrainer(model="./dpo-ckpt", reward_funcs=[correctness_reward],
 - `serve.py`: deploy with vLLM; benchmark tokens/sec + p50/p95 latency at a few concurrency levels; try an FP8/AWQ quantized variant.
 - **Deliverable:** a long-context probe + a safety/red-team report + a serving benchmark.
   **Acceptance:** long-context accuracy reported by position; safety improves without large over-refusal; serving numbers reported with concurrency + a quantization quality note.
+
+▶ **Practical project:** `VizuaraAI/llm-inference-tutorial` — serve your model with vLLM + KV-cache, measure latency, and add input/output guardrails.
 
 ### Harness / reusable skill — `$safety-serving-audit`
 - **Purpose:** audit a deployed model on three axes — long-context fidelity, safety (with over-refusal control), and serving latency/throughput.
@@ -1040,6 +1124,11 @@ out = llm.generate(prompts, SamplingParams(max_tokens=512, temperature=0.7))
 
 ## Week 13 — Capstone: A Full Pretrain → Post-Train Pipeline With an Evidence Packet
 
+### State of the Art (June 2026)
+- The capstone mirrors the 2026 open-model playbook end-to-end (**Tülu 3 / Llama 4 lifecycle**): curate → tokenize → pretrain → SFT → DPO/GRPO → eval → safety → serve.
+- Evidence discipline = **Model Cards + CIs + LLM-as-judge + named failures**, now partly mandated by **EU AI Act** transparency (main rules **Aug 2, 2026**).
+- One-command reproducibility (pinned seeds/config/data hashes) is both the frontier-lab and the emerging regulatory standard your packet targets.
+
 **Altitude:** Engineer/Specialist (graduating toward the agents/RAG/serving subjects) · **Format:** project week (7 lab hrs)
 **Anchor case:** your own small assistant, taken through (a curated slice of) the entire lifecycle and defended with evidence.
 
@@ -1057,6 +1146,8 @@ out = llm.generate(prompts, SamplingParams(max_tokens=512, temperature=0.7))
 - Pick a domain assistant (support, coding helper, math tutor). Assemble: a curated+decontaminated data slice, a trained tokenizer (or justified reuse), an SFT model, at least one preference-alignment method, an eval suite with CIs + a judge, a safety + over-refusal report, and a served endpoint with a latency/throughput benchmark.
 - **Deliverable:** `capstone/` + a model card + a 3–4 page report where **every claim links to a file**.
   **Acceptance:** reproducible (config + seeds + data hashes + one orchestration command), each stage shows its evidence artifact, the evaluation is honest (names ≥ 2 concrete failure modes + defended next steps), and the safety section reports both refusal and over-refusal.
+
+▶ **Practical project:** `VizuaraAI/pharma-slm` — use its full ~350M domain-SLM pipeline as the capstone template for your pretrain → post-train evidence packet.
 
 ### Harness / reusable skill — `$lifecycle-evidence-packet`
 - **Purpose:** assemble data-funnel + tokenizer report + training curves + SFT/alignment comparisons + eval table + safety report + serving benchmark into one reviewable bundle with a model card.
@@ -1128,3 +1219,19 @@ and serving subjects that follow.
 `$lifecycle-map` · `$data-funnel` · `$dedup-decontam` · `$scaling-fit` · `$distributed-profiler` ·
 `$moe-router-monitor` · `$benchmark-runner` · `$sft-recipe` · `$rlhf-monitor` · `$preference-align-bench` ·
 `$verifiable-reward` · `$safety-serving-audit` · `$lifecycle-evidence-packet`
+
+---
+
+## 🛠 Hands-on repositories & build studios (merged June 2026)
+
+**Clone-and-run repos** (verified June 2026; re-verify — full catalog in [`PROJECTS.md`](PROJECTS.md)):
+- `VizuaraAILabs/nano-gpt-oss` + `VizuaraAILabs/truly-open-gpt-oss` — build & pretrain a gpt-oss model from scratch; the spine for Lectures 1, 4–7 (tiny pretraining → architecture → distributed → eval).
+- `rasbt/LLMs-from-scratch` (~98k★) — step-by-step GPT build in PyTorch; reference for the architecture and pretraining-objective work in Lectures 1 and 4.
+- `VizuaraAILabs/DeepSeek-From-Scratch` — MLA / MoE / MTP from scratch; directly supports Lecture 6 (Mixture-of-Experts and long-context).
+- `VizuaraAI/Mixture_of_Experts` — a clean MoE FFN implementation to compare against your own Lecture 6 router.
+- `mlabonne/llm-course` (~80k★) — LLM roadmap + Colabs covering SFT, LoRA/QLoRA, and preference alignment; Lectures 8–11.
+- `krishnaik06/Finetuning-LLM` — focused SFT / LoRA / QLoRA recipes; a comparison reference for Lecture 8.
+
+**Build studios** (specs in [`PROJECTS.md`](PROJECTS.md)):
+- **Self-evolving rubric lab** — rubric generation, judge agreement, and reward-hacking tests — *maps to Lectures 9–11 (reward modeling, RLHF, GRPO with verifiable rewards)*.
+- **Synthetic-data audit** — real+synthetic vs real-only with a model-collapse check — *maps to Lectures 2–3 (data curation) and Lecture 8 (SFT data quality)*.

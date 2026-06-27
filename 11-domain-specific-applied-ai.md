@@ -1,6 +1,6 @@
 # Subject 11 — Domain-Specific Applied AI
 
-**Track:** Applied / Verticals · **Altitude:** Builder → Engineer · **Length:** 13 weeks (2 lecture hrs + 3 lab hrs/wk)
+**Track:** Applied / Verticals · **Altitude:** Builder → Engineer · **Length:** 13 weeks (3 lecture hrs + 3 lab hrs/wk)
 **Prerequisites:** Subjects 02–09 (deep learning, transformers/LLMs, RAG, agents, evaluation, MLOps). You can train a model, build a RAG pipeline, ship an agent, and write an honest eval. This course is where those skills meet a *regulated, consequential* domain.
 **Pedagogy:** one **module per vertical**, each taught through the same six-lens template so a "healthcare model" and a "fraud model" are recognizably the same engineering discipline pointed at different stakes. The book's loop — *concept → code → critique → reflection → rebuild* — runs inside every module.
 
@@ -76,7 +76,12 @@ Ship a **domain solution** for your Week-1 anchor vertical with these milestones
 
 ## Week 1 — What Makes a Domain Hard: The Six-Lens Method & Picking Your Anchor
 
-**Altitude:** Builder · **Format:** 2h lecture + 3h lab
+### State of the Art (June 2026)
+- **The EU AI Act timeline shifted in 2026**: GPAI obligations are live (Aug 2025) and **most high-risk rules apply Aug 2, 2026**, but the **Digital Omnibus (provisional May 7 2026) defers Annex III high-risk obligations to Dec 2, 2027** — old syllabi cite wrong dates. Fines up to €35M / 7% of turnover.
+- **NIST AI RMF** plus sector regulators (FDA SaMD, SR 11-7, FCRA/ECOA, HIPAA, FERPA) remain the operative US frameworks.
+- Frontier models (Claude Opus 4.8, GPT-5.5, Gemini 3.1 Pro) make raw capability cheap; **the moat is domain data, cost-matched eval, and the regulatory dossier** — not the model.
+
+**Altitude:** Builder · **Format:** 3h lecture + 3h lab
 **Anchor case:** the same churn-prediction model, reframed three ways — as a marketing tool, a credit decision (regulated), and a clinical-deterioration alert (life-critical) — to feel how *stakes*, not algorithms, define a domain.
 
 ### Learning goals
@@ -96,6 +101,8 @@ Ship a **domain solution** for your Week-1 anchor vertical with these milestones
 - Take one provided dataset (Telco churn) and write three **decision memos** — the same prediction serving marketing vs. credit vs. clinical contexts — each filling all six lenses and ending in a *different* metric and threshold.
 - Skim the EU AI Act Annex III high-risk list and tag each of the seven course verticals with its risk tier.
 - **Deliverable:** `anchor/week01-framing.md` choosing your anchor vertical with the six lenses sketched. **Acceptance:** the framing names a concrete decision-maker, a wrong-answer cost in real units, and one applicable regulation.
+
+▶ **Practical project:** `krishnaik06/mlproject` — use the canonical end-to-end ML template (CI, pipelines, deploy) to scaffold your anchor-vertical solution.
 
 ### Harness / reusable skill — `$domain-readiness`
 - **Purpose:** turn any vertical problem into a structured six-lens readiness brief before modeling.
@@ -150,6 +157,11 @@ def best_threshold(y_true, p_hat, cost_fp, cost_fn, grid=np.linspace(0.01, 0.99,
 
 ## Week 2 — Healthcare I: Medical Imaging & Explainable Diagnosis (HIPAA, FDA SaMD)
 
+### State of the Art (June 2026)
+- **MONAI 1.4 + medical foundation models** (MedSAM-2, RadDINO, **MedGemma**) are the 2026 baseline — segment-anything-style priors replace much from-scratch training.
+- The **FDA keeps clearing AI/ML SaMD** under the predetermined-change-control (PCCP) pathway; calibration + abstention are now expected, not optional.
+- Shortcut-learning audits (Grad-CAM, and increasingly **sparse-autoencoder feature** inspection) are standard practice after the COVID-radiograph shortcut failures.
+
 **Altitude:** Builder · **Anchor case:** a brain-MRI tumor screen whose output a radiologist must trust or override in seconds.
 
 ### Learning goals
@@ -169,6 +181,8 @@ def best_threshold(y_true, p_hat, cost_fp, cost_fn, grid=np.linspace(0.01, 0.99,
 - Add **Grad-CAM**; manually audit 10 correct and 10 incorrect cases; find at least one shortcut or annotation artifact.
 - Add an **abstention threshold** (predict only above a confidence band) and report coverage vs. accuracy.
 - **Deliverable:** `verticals/healthcare-imaging/` with model, eval, and an XAI audit note. **Acceptance:** patient-level split proven; ≥1 documented shortcut; abstention curve plotted.
+
+▶ **Practical project:** `krishnaik06/Malaria-Detection` — train the medical-image classifier with a patient-level split and a Grad-CAM shortcut audit.
 
 ### Harness / reusable skill — `$xai-audit`
 - **Purpose:** systematically interrogate whether a vision model is right for the right reasons.
@@ -229,6 +243,11 @@ def evaluate(model, loader):
 
 ## Week 3 — Healthcare II: Clinical NLP on Notes (De-identification, RAG, Hallucination Safety)
 
+### State of the Art (June 2026)
+- Medical LLMs (**Med-Gemini / Med-PaLM 2, OpenEvidence**) push grounded clinical QA; **faithfulness via LLM-as-judge** (with documented judge bias) is the eval norm.
+- De-identification uses transformer NER (**scispaCy + clinical de-id models**) over regex alone; **MIMIC-IV** remains the credentialed reference corpus.
+- **Agentic RAG** over the EHR (iterative retrieval + citation grounding) is replacing single-shot summarization for safety.
+
 **Altitude:** Builder → Engineer · **Anchor case:** a discharge-summary assistant that drafts problem lists from free-text notes — useful only if it never invents a diagnosis.
 
 ### Learning goals
@@ -246,6 +265,8 @@ def evaluate(model, loader):
 - On the **MIMIC-III/IV de-identified note subset** (credentialed) or the open **n2c2/i2b2** sample, run a de-id pass, then `scispacy` concept extraction with negation handling; score entity-level F1 against provided spans.
 - Build a small **RAG summarizer**: retrieve the patient's note sections, generate a problem list with Claude Haiku 4.5, and run an **LLM-as-judge faithfulness eval** that flags unsupported claims.
 - **Deliverable:** `verticals/clinical-nlp/` with extraction F1, a faithfulness report, and a de-id audit. **Acceptance:** zero un-grounded medications in a 20-note sample, or each flagged.
+
+▶ **Practical project:** `krishnaik06/Text-Summarization-NLP-Project` — adapt it to clinical-note summarization with a retrieval-grounding + faithfulness check.
 
 ### Harness / reusable skill — `$faithfulness-judge`
 - **Purpose:** decide, claim-by-claim, whether generated text is supported by sources.
@@ -300,6 +321,11 @@ def extract_concepts(note: str):
 
 ## Week 4 — Legal: Contract Analysis & RAG over Case Law (Citation Integrity)
 
+### State of the Art (June 2026)
+- **ColPali / ColQwen3 late-interaction** retrieval over contract *page-images* (no lossy OCR) is the 2026 shift; **GraphRAG** handles precedent multi-hop.
+- Citation hallucination remains sanctionable (post-*Mata v. Avianca*); **retrieval-verified citation gating** is mandatory, and rerankers (**Cohere Rerank 3.5, Voyage rerank-2.5**) are standard.
+- 1M-context frontier models let whole contracts fit, but verification — not context size — is the safety control.
+
 **Altitude:** Builder → Engineer · **Anchor case:** a contract-review assistant that flags risky clauses and a research assistant that answers legal questions *with verifiable citations* — where a fabricated case is a sanctionable event.
 
 ### Learning goals
@@ -312,11 +338,14 @@ def extract_concepts(note: str):
 - **Long-document handling.** Plain English: contracts exceed context windows; chunk by clause/section, not by token count. Common mistake: arbitrary chunking that splits a clause mid-sentence.
 - **Citation grounding & verification.** *Plain English:* the model must cite a real, retrieved case — and you must *verify the citation exists and says what's claimed*. *Common mistake:* trusting a plausible-looking citation string (the canonical legal-AI disaster).
 - **GraphRAG over precedent.** Plain English: cases cite cases; a citation graph (Neo4j) lets retrieval follow authority, not just keyword similarity. Where it matters: "what overruled X?" needs graph hops.
+- **Document & table retrieval (visual / layout-aware).** Plain English: contracts and filings are *scanned PDFs with tables and signatures*, not clean text; layout-aware/visual retrievers (ColPali-style page embeddings, table-structure parsing) retrieve the right region without lossy OCR-to-text flattening. Where it matters: a number in a table or a clause in a stamped exhibit. Common mistake: OCR→plain-text chunking that destroys table structure and citations to a specific page/cell.
 
 ### Hands-on build (the lab)
 - On **CUAD** (Contract Understanding Atticus Dataset), train/prompt a clause classifier for 5 high-risk clause types; report recall@type and a confusion analysis.
 - Build legal QA over an open case corpus (**Caselaw Access Project / Pile-of-Law** subset) with hybrid retrieval + a **citation-verifier** that rejects any answer whose cited case isn't in the retrieved set.
 - **Deliverable:** `verticals/legal/` with clause recall table + a citation-integrity eval (fabrication rate before/after the verifier). **Acceptance:** post-verifier fabricated-citation rate = 0 on the test queries.
+
+▶ **Practical project:** `krishnaik06/RAG-Tutorials` — build citation-grounded RAG over contracts/case-law with a citation-verifier gate that blocks fabricated cites.
 
 ### Harness / reusable skill — `$citation-verifier`
 - **Purpose:** guarantee every cited source in a generated answer actually exists in the retrieved evidence and supports the claim.
@@ -370,6 +399,11 @@ def verify_citations(answer: str, retrieved: list[dict]) -> dict:
 
 ## Week 5 — Finance I: Fraud Detection & Point-in-Time Correctness
 
+### State of the Art (June 2026)
+- **Point-in-time feature stores** (Feast, Tecton) + gradient boosting (**LightGBM/XGBoost**) still beat deep nets on tabular fraud; **graph features (GNNs)** add network signal.
+- Real-time scoring is **streaming** (sub-100 ms); evaluation at a **fixed alerts-per-day budget** plus adversarial/label-delay modeling is the discipline.
+- Frontier LLMs assist **alert triage and explanation**, not the core scorer.
+
 **Altitude:** Engineer · **Anchor case:** a card-fraud scorer that must catch fraud at a fixed false-positive budget — and must never train on information that didn't exist at decision time.
 
 ### Learning goals
@@ -387,6 +421,8 @@ def verify_citations(answer: str, retrieved: list[dict]) -> dict:
 - On **IEEE-CIS Fraud** (or **Sparkov**/credit-card-fraud), engineer entity-level velocity features with **strict PIT discipline**; train LightGBM; evaluate with a temporal split at a fixed alerts-per-day budget.
 - Run a **leakage audit**: deliberately add one leaky feature, show the score jump, then remove it and document the gap.
 - **Deliverable:** `verticals/finance-fraud/` with a PIT feature spec, temporal eval, and leakage-audit note. **Acceptance:** leakage audit demonstrates a detected leak and its fix; metric is reported at a stated operating point.
+
+▶ **Practical project:** `krishnaik06/Credit-Card-Fraudlent` — build the fraud scorer with PIT-correct features and a fixed alerts-per-day operating point.
 
 ### Harness / reusable skill — `$pit-leakage-audit`
 - **Purpose:** prove a tabular/time-series pipeline has no target/temporal leakage.
@@ -441,6 +477,11 @@ print("P@R=0.5:", precision_at_recall(te.isFraud, m.predict_proba(te[feats])[:,1
 
 ## Week 6 — Finance II: Credit Risk, Time-Series & Model Governance (SR 11-7, ECOA/FCRA)
 
+### State of the Art (June 2026)
+- **SR 11-7 model risk + ECOA/FCRA adverse-action** still govern; SHAP reason codes are the required explanation, and **conformal prediction** is the standard for honest intervals.
+- **EU AI Act high-risk credit obligations are now deferred to Dec 2, 2027** (Digital Omnibus) — but fairness / adverse-impact testing is expected now.
+- Calibration (reliability + Brier) over raw ranking remains the pricing/capital discipline.
+
 **Altitude:** Engineer · **Anchor case:** a credit-default model that must be *explainable to a regulator*, fair across protected classes, and validated under SR 11-7 — plus a volatility/demand forecast with honest uncertainty. **(Midterm regulatory & risk memo due.)**
 
 ### Learning goals
@@ -460,6 +501,8 @@ print("P@R=0.5:", precision_at_recall(te.isFraud, m.predict_proba(te[feats])[:,1
 - On a price/volume series (**M5** or an FX/equity series), build a probabilistic forecast with `statsforecast`/conformal intervals; report coverage and pinball loss.
 - Write the **midterm memo**: a one-page SR 11-7-style model card + fairness + reason-code section for your anchor vertical.
 - **Deliverable:** `verticals/finance-risk/` + `anchor/midterm-memo.md`. **Acceptance:** calibrated PD (reliability plot), reason codes for 3 sample denials, adverse-impact ratio reported, forecast interval coverage stated.
+
+▶ **Practical project:** `krishnaik06/ARIMA-And-Seasonal-ARIMA` — build the probabilistic forecast half with calibrated prediction intervals (pair with a PD scorecard + reason codes).
 
 ### Harness / reusable skill — `$model-governance-card`
 - **Purpose:** assemble the regulator-facing dossier for any high-risk model.
@@ -515,6 +558,11 @@ reason_codes = np.argsort(-np.abs(expl.shap_values(Xte[:1])))[0][:3]
 
 ## Week 7 — Retail & E-commerce I: Recommendation Systems at Scale
 
+### State of the Art (June 2026)
+- **Two-tower retrieval + a ranker** is still the backbone; **generative retrieval / semantic IDs** (TIGER-style) and LLM-augmented rankers are the 2026 frontier.
+- Evaluation stresses **counterfactual / off-policy** estimation and exposure bias; offline NDCG ≠ online lift remains the core lesson.
+- Cold-start is increasingly handled with **content / LLM embeddings** (Voyage, Cohere embed-v4).
+
 **Altitude:** Builder → Engineer · **Anchor case:** a "customers also bought" recommender whose real job is incremental revenue, not offline NDCG.
 
 ### Learning goals
@@ -532,6 +580,8 @@ reason_codes = np.argsort(-np.abs(expl.shap_values(Xte[:1])))[0][:3]
 - On **Instacart** (or **H&M Personalized Fashion**, **RetailRocket**), build a two-tower retrieval model + a gradient-boosted ranker; report Recall@k and NDCG@k with a **temporal** split.
 - Run a **cold-start** slice (new users/items) and a **popularity-bias** analysis (coverage, long-tail exposure).
 - **Deliverable:** `verticals/retail-recsys/` with ranking metrics, cold-start slice, and a popularity-bias note. **Acceptance:** temporal split; cold-start performance reported separately; a note on why offline ≠ online.
+
+▶ **Practical project:** `krishnaik06/Movie-Recommender-in-python` — build retrieval + ranking with explicit cold-start and popularity-bias slices.
 
 ### Harness / reusable skill — `$recsys-slice-eval`
 - **Purpose:** evaluate a recommender beyond a single averaged metric.
@@ -585,6 +635,11 @@ def ndcg_at_k(ranked_items, relevant, k=10):
 
 ## Week 8 — Retail & E-commerce II: Demand Forecasting & Inventory Decisions
 
+### State of the Art (June 2026)
+- **Time-series foundation models** (TimesFM, Chronos / Chronos-Bolt, Moirai, TimeGPT) now give strong zero-shot baselines; global gradient-boosted models (`mlforecast`) remain the production workhorse.
+- The discipline is **quantile / probabilistic forecasts → newsvendor decisions** (pinball loss at the service level), not point RMSE.
+- **Conformal prediction** gives distribution-free coverage on intermittent demand.
+
 **Altitude:** Engineer · **Anchor case:** a SKU-level demand forecast that feeds a reorder decision — where the *asymmetric* cost of stock-outs vs. overstock, not RMSE, defines "good."
 
 ### Learning goals
@@ -602,6 +657,8 @@ def ndcg_at_k(ranked_items, relevant, k=10):
 - On **M5 / Corporación Favorita / Rossmann**, build per-SKU forecasts (`statsforecast` baselines + a global LightGBM/`mlforecast` model); evaluate WAPE/MASE and **pinball loss at the service-level quantile**.
 - Convert forecasts to reorder quantities via the newsvendor rule; simulate stock-out vs. overstock cost vs. a naive baseline.
 - **Deliverable:** `verticals/retail-forecast/` with a metric table, the inventory simulation, and cost-vs-baseline. **Acceptance:** beats a seasonal-naive baseline on WAPE *and* on simulated inventory cost.
+
+▶ **Practical project:** `krishnaik06/Stock-MArket-Forecasting` — build SKU-style forecasts and convert them to a newsvendor reorder decision with a cost simulation.
 
 ### Harness / reusable skill — `$decision-forecast-eval`
 - **Purpose:** evaluate a forecast by the *decision* it drives, not just by point error.
@@ -656,6 +713,11 @@ fc = sf.predict(h=28, level=[80])
 
 ## Week 9 — Manufacturing & Industry 4.0: Predictive Maintenance & Vision QC
 
+### State of the Art (June 2026)
+- **Anomalib 2.0** one-class detectors (**PatchCore, EfficientAD, Dinomaly**) train on good parts only; **vision foundation features (DINOv2/v3)** are the 2026 backbone.
+- **Zero-/few-shot visual anomaly** (WinCLIP, AnomalyCLIP) handles novel defect types; RUL still uses asymmetric PHM scoring.
+- On-line inspection drives **quantized / on-device** vision at the edge.
+
 **Altitude:** Engineer · **Anchor case:** an assembly-line system that both predicts machine failure from sensor streams (remaining-useful-life) and flags defective parts from images — where missed defects ship and false alarms halt the line.
 
 ### Learning goals
@@ -673,6 +735,8 @@ fc = sf.predict(h=28, level=[80])
 - On **MVTec-AD**, train an Anomalib one-class detector (PatchCore) per category; report image- and pixel-level AUROC and the false-alarm rate at a chosen threshold.
 - On **NASA C-MAPSS (turbofan)**, build an RUL model; evaluate with the asymmetric PHM scoring function and lead-time analysis.
 - **Deliverable:** `verticals/manufacturing/` with anomaly localization maps, RUL curves, and an operating-threshold note. **Acceptance:** localization shown; RUL beats a "constant mean" baseline on the asymmetric score.
+
+▶ **Practical project:** `krishnaik06/Tomato-Leaf-Disease-Prediction` — train a visual defect/disease detector and report localization + a false-alarm operating threshold.
 
 ### Harness / reusable skill — `$anomaly-qc-eval`
 - **Purpose:** evaluate a rare-defect / unseen-failure system against operational costs.
@@ -725,6 +789,11 @@ def phm_score(rul_true, rul_pred):
 
 ## Week 10 — Education: Tutoring Agents & Learning Science (FERPA, Pedagogical Safety)
 
+### State of the Art (June 2026)
+- Tutoring is **agentic** (Claude Agent SDK, Khanmigo-style) with hint-ladders + **tool/CAS verification** of every step; **answer-leakage** is the headline failure.
+- **Pedagogy-as-eval** (LLM-judge on scaffolding, not just answer accuracy) is standard; deep knowledge tracing adapts difficulty.
+- **FERPA + minors / COPPA** and the EU AI Act's education-as-high-risk framing govern data and deployment.
+
 **Altitude:** Engineer · **Anchor case:** a math-tutoring agent that must *teach*, not just answer — guiding a struggling student without doing the homework for them, and never being confidently wrong on a fact.
 
 ### Learning goals
@@ -742,6 +811,8 @@ def phm_score(rul_true, rul_pred):
 - Build a tutoring agent (Claude Agent SDK) over a problem set (**GSM8K / MATH** items or a curriculum subset) with: a hint ladder, a CAS/code verifier for the solution, and a knowledge-tracing state.
 - Build a **pedagogy eval**: an LLM-judge rubric scoring scaffolding quality, answer-leakage, and factual correctness on simulated student transcripts; run an "adversarial student" who tries to extract the answer.
 - **Deliverable:** `verticals/education/` with the agent, the pedagogy-eval rubric + scores, and an answer-leakage rate. **Acceptance:** verified-correct solutions; answer-leakage rate reported under adversarial probing.
+
+▶ **Practical project:** `krishnaik06/Agentic-LanggraphCrash-course` — build the Socratic tutoring agent with a hint-ladder + CAS verifier and an answer-leakage probe.
 
 ### Harness / reusable skill — `$pedagogy-eval`
 - **Purpose:** score a tutoring interaction on teaching quality, not just final-answer correctness.
@@ -795,6 +866,11 @@ def next_hint(state): return HINT_LADDER[min(state["attempts"], len(HINT_LADDER)
 
 ## Week 11 — AI for Science: Surrogates, Property Prediction & Inverse Design
 
+### State of the Art (June 2026)
+- Per-domain foundation models: **AlphaFold 3** (structure/interactions), **MatterGen / MACE / Orb** (materials & ML interatomic potentials), **Boltz-2**; **scaffold/structure splits** remain non-negotiable.
+- **Neural operators (FNO) + physics-informed constraints** for PDE surrogates; OOD honesty + uncertainty (conformal) is the trust gate.
+- Agentic "AI co-scientist" loops (hypothesis → experiment → report) are emerging (deep dive in S15/S17).
+
 **Altitude:** Engineer → Specialist · **Anchor case:** a molecular/material property predictor and a fast PDE surrogate that replaces an expensive simulation in a design loop — where physical validity and out-of-distribution honesty matter more than test R².
 
 ### Learning goals
@@ -812,6 +888,8 @@ def next_hint(state): return HINT_LADDER[min(state["attempts"], len(HINT_LADDER)
 - On **MoleculeNet (ESOL/BBBP/Tox21)** or **Materials Project**, train a GNN (or `chemprop`) property predictor with a **scaffold split**; report metrics on novel scaffolds + an uncertainty estimate.
 - Build a small **PDE surrogate** (e.g., a Fourier Neural Operator or MLP) for a 1D heat/Burgers equation; check it against the numerical solver and a conservation/units sanity test.
 - **Deliverable:** `verticals/ai-for-science/` with scaffold-split metrics, an OOD slice, and a physical-validity check. **Acceptance:** scaffold-split (not random) metrics reported; surrogate respects the sanity check or the violation is documented.
+
+▶ **Practical project:** `krishnaik06/AQI-Project` — build a scientific regression surrogate and report an OOD/extrapolation slice with an uncertainty estimate.
 
 ### Harness / reusable skill — `$ood-science-eval`
 - **Purpose:** evaluate a scientific model on extrapolation and physical validity, not just in-distribution fit.
@@ -864,6 +942,11 @@ def scaffold_split(smiles, frac_train=0.8):
 
 ## Week 12 — Capstone Build & Deployment-Risk Dossier
 
+### State of the Art (June 2026)
+- A shipped solution = **tailored model/agent + cost-matched eval with slices + a deployment-risk dossier** (drift monitor via Evidently, failure catalog, human-in-the-loop, audit trail).
+- **NIST AI RMF + the relevant sector regulation** (mapped to artifacts) is the accountability spine; **EU AI Act Aug-2026 / Omnibus-2027** dates must be cited correctly.
+- **Human-review UX** (evidence, uncertainty, correction, escalation) is graded engineering, not an afterthought.
+
 **Altitude:** Engineer · **Anchor case:** *your* Week-1 vertical, now shipped end-to-end.
 
 ### Learning goals
@@ -878,6 +961,8 @@ def scaffold_split(smiles, frac_train=0.8):
 - Finish **M2** (model/agent passing eval) and **M3** (deployment-risk dossier) for your anchor.
 - Stand up a minimal **drift monitor** (`evidently`) and a **failure-mode catalog** (top 5 ways it breaks + the detection + the fallback).
 - **Deliverable:** `capstone/` with the solution, eval, governance card, and dossier. **Acceptance:** the capstone acceptance checklist (top of file) is fully satisfied; every claim traces to an artifact.
+
+▶ **Practical project:** `krishnaik06/mlproject` — wrap your anchor solution in the end-to-end template (pipelines, CI, deploy) and bolt on the drift monitor + dossier.
 
 ### Harness / reusable skill — `$deployment-risk-dossier`
 - **Purpose:** assemble the production-readiness and accountability package for a high-stakes model.
@@ -925,6 +1010,11 @@ assert not drift, "Distribution shift detected — trigger review before serving
 
 ## Week 13 — Ship Review: Stakeholder + Regulator Panel & Cross-Vertical Synthesis
 
+### State of the Art (June 2026)
+- The bar is a **decision tool with bounded risk**, defended to a stakeholder + regulator panel on leakage, fairness (adverse-impact), drift, and accountability.
+- **Model cards + datasheets + the AI RMF profile** are the portable artifacts; the six-lens method is the reusable rubric.
+- Public-good / low-resource framing (equity + limitations note) is a first-class capstone option.
+
 **Altitude:** Engineer → Specialist · **Anchor case:** defending your shipped solution to a panel role-playing the domain stakeholder *and* a skeptical regulator.
 
 ### Learning goals
@@ -938,6 +1028,8 @@ assert not drift, "Distribution shift detected — trigger review before serving
 ### Hands-on build (the lab)
 - **M4:** 12-minute ship review + 8-minute panel defense; submit final repo.
 - Write a one-page **cross-vertical synthesis**: the same five traps as they appeared in each vertical and the discipline that caught them.
+
+▶ **Practical project:** `krishnaik06/Data-Science-Projects-For-Resumes` — package and present your shipped solution for the stakeholder + regulator panel.
 
 ### Harness / reusable skill — `$ship-review`
 - **Purpose:** run a structured pre-deployment review of any domain AI system.
@@ -988,5 +1080,23 @@ By the end you can: take an AI capability into a *regulated, consequential* doma
 
 ## Skills produced (reused program-wide)
 `$domain-readiness` · `$xai-audit` · `$faithfulness-judge` · `$citation-verifier` · `$pit-leakage-audit` · `$model-governance-card` · `$recsys-slice-eval` · `$decision-forecast-eval` · `$anomaly-qc-eval` · `$pedagogy-eval` · `$ood-science-eval` · `$deployment-risk-dossier` · `$ship-review`
+
+---
+
+## 🛠 Hands-on repositories & build studios (merged June 2026)
+
+**Clone-and-run repos** (verified June 2026; full catalog in [`PROJECTS.md`](PROJECTS.md)):
+- `krishnaik06/Credit-Card-Fraudlent` — end-to-end card-fraud project; a substrate for PIT-correct features and fixed-operating-point eval — Lecture 5.
+- `krishnaik06/Malaria-Detection` — medical-image classification with an end-to-end pipeline; patient-level splits + XAI audit — Lecture 2.
+- `krishnaik06/Stock-MArket-Forecasting` — time-series forecasting project for temporal validation and probabilistic intervals — Lectures 6, 8.
+- `krishnaik06/Movie-Recommender-in-python` — recommender baseline for retrieval/ranking, cold-start, and popularity-bias slices — Lecture 7.
+- `VizuaraAI/pharma-slm` — a ~350M domain small LM with a full pipeline; a worked regulated-domain (pharma) build — Lectures 3, 11.
+- `ashishpatel26/500-AI-...-Projects-with-code` — a 500-project bank to source anchor-vertical and per-week lab starters — all verticals.
+
+**Build studios** (specs in [`PROJECTS.md`](PROJECTS.md)):
+- **Domain RAG (regulated)** — a medical/legal/finance assistant with citations, abstention, and an audit trail — *Lectures 3–4*.
+- **Public-good track** — an on-device/low-bandwidth assistant for an underserved setting, with a human-review UX and equity note — *Lectures 10–12*.
+
+**Public-good / low-resource track:** AI tutor for underserved learners, public-health/agriculture assistant, civic/accessibility assistant — each on-device/low-bandwidth where possible, with a human-review UX and an equity/limitations note (graded).
 </content>
 </invoke>
