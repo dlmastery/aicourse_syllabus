@@ -38,6 +38,9 @@ a **State of the Art (June 2026)** note with **hyperlinked references** (papers 
 - **[`CHAPTER-PROJECT-MAP.md`](CHAPTER-PROJECT-MAP.md)** — every chapter → its practical project.
 - **[`KRISHNAIK-PROJECTS-MAP.md`](KRISHNAIK-PROJECTS-MAP.md)** — each Krish Naik repo → the lectures it powers.
 - **[`PROJECTS.md`](PROJECTS.md)** — clone-and-run repo catalog + build studios (Krish Naik, Vizuara, popular).
+- **[`skills/`](skills/)** — every skill referenced in the syllabi as a proper `skills/<name>/SKILL.md`
+  (YAML frontmatter + definition): the **23 book reader-skills** (`$ml-*`, from the source book) +
+  **195 program harness-skills** (one per lecture's "Harness / reusable skill"). See [`skills/README.md`](skills/README.md).
 - **[`00-teaching-rubric.md`](00-teaching-rubric.md)**, **[`CHANGELOG.md`](CHANGELOG.md)**, **[`_research/`](_research/)**.
 
 ## Pedagogy
