@@ -1,20 +1,46 @@
 ---
 name: generative-eval
-description: evaluate a generator beyond eyeballing. Use when a learner/engineer is working through the relevant lecture's hands-on build and needs a repeatable, evidence-producing procedure.
+description: Evaluate a generative model with quantitative metrics (FID, CLIPScore) plus diversity/memorization checks instead of eyeballing samples. Use when building or critiquing a DDPM/diffusion/GAN generator and you need a repeatable, evidence-producing quality verdict.
 ---
 
 # Generative Eval
 
-A reusable **harness skill** from the *Modern AI Mastery (June 2026)* program — a small machine for repeatable thinking that turns a one-off task into a checklist that leaves behind evidence.
+A harness skill that turns "the samples look good" into a defensible, reproducible measurement: distributional quality, conditional alignment, diversity, and a memorization guard.
 
-## Definition
+## When to use
+- You trained a diffusion/GAN/VAE generator and need a number, not a vibe.
+- You must compare two generators (e.g., before/after a schedule change) on equal footing.
+- A reviewer asks "are these samples just memorized training images?"
 
-- **Purpose:** evaluate a generator beyond eyeballing.
-- **Inputs:** generated + real samples. **Required outputs:** FID (and/or CLIPScore for conditional), a diversity check (mode-coverage / nearest-neighbor to training set to catch memorization), and a sample grid. **Evidence artifact:** `gen-eval.md`.
+## Inputs
+- A set of generated samples and a matched set of real samples.
+- (Conditional models) the prompts/conditions used to generate.
+- The training set (or an index of it) for the nearest-neighbor memorization check.
+
+## Workflow
+1. Fix the sample count and resolution for both real and generated sets (state them).
+2. Compute FID (unconditional quality) and, for conditional models, CLIPScore for prompt alignment.
+3. Run a diversity / mode-coverage check (e.g., recall or cluster coverage).
+4. Run a memorization guard: nearest-neighbor distance from generated samples to the training set; flag suspiciously close matches.
+5. Assemble a labeled sample grid (best, median, worst).
+6. Write the verdict: pass/fail against the target, with the weakest axis named.
+
+## Outputs & evidence artifact
+- `gen-eval.md` — FID (+CLIPScore if conditional), diversity metric, memorization findings, the sample grid, and a one-line verdict.
+
+## Acceptance checks
+- [ ] FID computed on a stated, equal sample count for both sets.
+- [ ] A memorization/nearest-neighbor check is present and interpreted.
+- [ ] A diversity metric is reported (not just fidelity).
+- [ ] The artifact names the single weakest axis and a next step.
+
+## Worked example
+`Use $generative-eval to score my DDPM CIFAR-10 samples vs the test set` → `gen-eval.md` with FID 28.4 (target <30 ✓), recall 0.41 (low → mild mode-drop), NN check shows no train leakage, and a 3×3 grid. Verdict: ship, but diversity is the axis to improve.
+
+## Related skills in the wild
+- [UKGovernmentBEIS/inspect_ai](https://github.com/UKGovernmentBEIS/inspect_ai) — eval-harness patterns (datasets/scorers) transferable to generative scoring.
+- [anthropics/claude-cookbooks](https://github.com/anthropics/claude-cookbooks) — `/evaluation` and multimodal recipes for building rigorous eval loops.
+- [anthropics/skills](https://github.com/anthropics/skills) — SKILL.md format authority and evidence-producing skill patterns.
 
 ## Used in
 - Subject 05 · Part B — Multimodal & Generative AI · Week 4 — Diffusion From Scratch I: DDPM (the Forward & Reverse Process)
-
-## How to invoke
-
-In a Codex-style environment: `Use $generative-eval to ...`. Otherwise follow the Definition above as a prompt scaffold / checklist. Always end by committing the named evidence artifact.

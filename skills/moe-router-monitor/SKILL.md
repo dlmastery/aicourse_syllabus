@@ -1,20 +1,43 @@
 ---
 name: moe-router-monitor
-description: monitor MoE routing health (per-expert load, drop rate, balance loss) and flag collapse. Use when a learner/engineer is working through the relevant lecture's hands-on build and needs a repeatable, evidence-producing procedure.
+description: Monitor MoE routing health during training/pretraining — per-expert load, token-drop rate, balance loss — and flag expert collapse early. Use when pretraining a Mixture-of-Experts model and you need to catch routing pathologies before they waste compute.
 ---
 
-# Moe Router Monitor
+# MoE Router Monitor
 
-A reusable **harness skill** from the *Modern AI Mastery (June 2026)* program — a small machine for repeatable thinking that turns a one-off task into a checklist that leaves behind evidence.
+A harness skill that watches the part of MoE training most likely to silently fail: the router. It tracks expert utilization, drop rate, and balance loss over a batch stream and raises a collapse flag before a few experts monopolize routing.
 
-## Definition
+## When to use
+- You are pretraining an MoE model and need live routing-health signals.
+- Loss looks fine but you suspect experts are collapsing or being dropped.
+- You want an automatic flag rather than eyeballing histograms.
 
-- **Purpose:** monitor MoE routing health (per-expert load, drop rate, balance loss) and flag collapse.
-- **Inputs:** an MoE model + a batch stream. **Outputs:** utilization histogram, drop rate, collapse flag. **Evidence artifact:** `evidence/week06-moe.md`.
+## Inputs
+- An MoE model and a batch stream from the training run.
+
+## Workflow
+1. For each batch, record the per-expert token-assignment counts.
+2. Compute the utilization histogram and an imbalance metric.
+3. Track the token-drop rate (tokens exceeding expert capacity).
+4. Track the auxiliary balance loss over training.
+5. Raise a collapse flag when utilization concentration or drop rate crosses a threshold.
+
+## Outputs & evidence artifact
+- `evidence/week06-moe.md` — the utilization histogram, drop rate, balance-loss trace, and the collapse flag (with the threshold used).
+
+## Acceptance checks
+- [ ] Per-expert utilization is tracked over the batch stream, not once.
+- [ ] Token-drop rate is reported.
+- [ ] A collapse flag with an explicit threshold is implemented.
+- [ ] The balance loss is traced alongside utilization.
+
+## Worked example
+`Use $moe-router-monitor on my pretraining run` → at step 3k, 2 of 8 experts handle 60% of tokens, drop rate climbing to 8%; collapse flag raised → increase balance-loss weight.
+
+## Related skills in the wild
+- [huggingface/trl](https://github.com/huggingface/trl) — training loops to instrument for routing metrics.
+- [volcengine/verl](https://github.com/volcengine/verl) — scalable training framework for large MoE runs.
+- [anthropics/claude-cookbooks](https://github.com/anthropics/claude-cookbooks) — observability recipes for training monitoring.
 
 ## Used in
 - Subject 02 · Part A — Large Language Models: Pretraining → Post-Training · Week 6 — Mixture-of-Experts and Long-Context Pretraining
-
-## How to invoke
-
-In a Codex-style environment: `Use $moe-router-monitor to ...`. Otherwise follow the Definition above as a prompt scaffold / checklist. Always end by committing the named evidence artifact.
