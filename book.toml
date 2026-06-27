@@ -9,6 +9,7 @@ language = "en"
 default-theme = "rust"
 preferred-dark-theme = "coal"
 additional-css = ["claude-theme.css"]
+additional-js = ["claude-theme.js"]
 git-repository-url = "https://github.com/dlmastery/aicourse_syllabus"
 edit-url-template = "https://github.com/dlmastery/aicourse_syllabus/edit/master/{path}"
 

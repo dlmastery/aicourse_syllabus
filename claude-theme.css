@@ -164,5 +164,11 @@ blockquote {
 .nav-chapters:hover { color: var(--claude-coral); }
 #searchbar:focus { border-color: var(--claude-coral); outline: none; }
 
+/* ---------- Collapsible sidebar sections (toggle both ways) ---------- */
+#sidebar .part-title { cursor: pointer; user-select: none; transition: color 0.12s ease; }
+#sidebar .part-title:hover { color: var(--claude-coral); }
+#sidebar .part-title::before { content: "\25BE"; display: inline-block; width: 1em; font-size: 0.8em; opacity: 0.55; }
+#sidebar .part-title.collapsed::before { content: "\25B8"; }
+
 /* ---------- Horizontal rules ---------- */
 .content hr { border: none; border-top: 1px solid var(--table-border-color); margin: 2.2em 0; }
