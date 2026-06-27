@@ -826,7 +826,7 @@ def ndcg_at_k(ranked_items, relevant, k=10):
 
 **References & links:**
 - [`krishnaik06/Movie-Recommender-in-python`](https://github.com/krishnaik06/Movie-Recommender-in-python)
-- [Hu et al., 2021 - LoRA](https://arxiv.org/abs/2106.09685)
+
 
 <!-- sota:11L07 -->
 
@@ -921,7 +921,7 @@ fc = sf.predict(h=28, level=[80])
 
 **References & links:**
 - [`krishnaik06/Stock-MArket-Forecasting`](https://github.com/krishnaik06/Stock-MArket-Forecasting)
-- [Hong et al., 2024 - ORPO](https://arxiv.org/abs/2403.07691)
+
 
 <!-- sota:11L08 -->
 
@@ -1014,7 +1014,7 @@ def phm_score(rul_true, rul_pred):
 
 **References & links:**
 - [`krishnaik06/Tomato-Leaf-Disease-Prediction`](https://github.com/krishnaik06/Tomato-Leaf-Disease-Prediction)
-- [Radford et al., 2021 - CLIP](https://arxiv.org/abs/2103.00020)
+
 
 <!-- sota:11L09 -->
 
@@ -1108,9 +1108,8 @@ def next_hint(state): return HINT_LADDER[min(state["attempts"], len(HINT_LADDER)
 
 **References & links:**
 - [`krishnaik06/Agentic-LanggraphCrash-course`](https://github.com/krishnaik06/Agentic-LanggraphCrash-course)
-- [Su et al., 2021 - RoPE](https://arxiv.org/abs/2104.09864)
-- [EU AI Act timeline](https://artificialintelligenceact.eu/implementation-timeline/)
-- [LangGraph](https://github.com/langchain-ai/langgraph)
+- [EU AI Act - implementation timeline](https://artificialintelligenceact.eu/implementation-timeline/)
+
 
 <!-- sota:11L10 -->
 
@@ -1203,9 +1202,9 @@ def scaffold_split(smiles, frac_train=0.8):
 
 **References & links:**
 - [`krishnaik06/AQI-Project`](https://github.com/krishnaik06/AQI-Project)
-- [Su et al., 2021 - RoPE](https://arxiv.org/abs/2104.09864)
-- [Abramson et al., 2024 - AlphaFold3](https://www.nature.com/articles/s41586-024-07487-w)
+- [Abramson et al., 2024 - AlphaFold3 (Nature)](https://www.nature.com/articles/s41586-024-07487-w)
 - [Raissi et al., 2019 - PINNs](https://arxiv.org/abs/1711.10561)
+
 
 <!-- sota:11L11 -->
 
@@ -1290,7 +1289,8 @@ assert not drift, "Distribution shift detected — trigger review before serving
 
 **References & links:**
 - [`krishnaik06/mlproject`](https://github.com/krishnaik06/mlproject)
-- [EU AI Act timeline](https://artificialintelligenceact.eu/implementation-timeline/)
+- [EU AI Act - implementation timeline](https://artificialintelligenceact.eu/implementation-timeline/)
+
 
 <!-- sota:11L12 -->
 
@@ -1373,7 +1373,7 @@ def ship_gate(dossier: dict) -> dict:
 
 **References & links:**
 - [`krishnaik06/Data-Science-Projects-For-Resumes`](https://github.com/krishnaik06/Data-Science-Projects-For-Resumes)
-- [Schulman et al., 2017 - PPO](https://arxiv.org/abs/1707.06347)
+
 
 <!-- sota:11L13 -->
 
@@ -1543,9 +1543,9 @@ class PatchEmbed(nn.Module):
 
 **References & links:**
 - [`VizuaraAI/Transformers-for-vision-BOOK`](https://github.com/VizuaraAI/Transformers-for-vision-BOOK)
-- [Vaswani et al., 2017 - Attention Is All You Need](https://arxiv.org/abs/1706.03762)
 - [Dao et al., 2022 - FlashAttention](https://arxiv.org/abs/2205.14135)
 - [Dosovitskiy et al., 2020 - ViT](https://arxiv.org/abs/2010.11929)
+
 
 <!-- sota:12L01 -->
 
@@ -1636,6 +1636,7 @@ def clip_loss(img_emb, txt_emb, logit_scale):
 - [`VizuaraAI/Transformers-for-vision-BOOK`](https://github.com/VizuaraAI/Transformers-for-vision-BOOK)
 - [Faysse et al., 2024 - ColPali](https://arxiv.org/abs/2407.01449)
 - [Radford et al., 2021 - CLIP](https://arxiv.org/abs/2103.00020)
+
 
 <!-- sota:12L02 -->
 
@@ -1731,9 +1732,8 @@ def vqa(image, question):
 - [`VizuaraAI/infertutor-arena-capstone`](https://github.com/VizuaraAI/infertutor-arena-capstone)
 - [Hu et al., 2021 - LoRA](https://arxiv.org/abs/2106.09685)
 - [Dettmers et al., 2023 - QLoRA](https://arxiv.org/abs/2305.14314)
-- [Liu et al., 2023 - LLaVA](https://arxiv.org/abs/2304.08485)
 - [Hugging Face TRL](https://github.com/huggingface/trl)
-- [Hugging Face PEFT](https://github.com/huggingface/peft)
+
 
 <!-- sota:12L03 -->
 
@@ -1827,9 +1827,8 @@ def loss_fn(model, x0):
 
 **References & links:**
 - [`VizuaraAILabs/Principles-of-Diffusion-Models`](https://github.com/VizuaraAILabs/Principles-of-Diffusion-Models)
-- [Radford et al., 2021 - CLIP](https://arxiv.org/abs/2103.00020)
-- [Ho et al., 2020 - DDPM](https://arxiv.org/abs/2006.11239)
-- [HF diffusers](https://github.com/huggingface/diffusers)
+- [Ho et al., 2020 - Denoising Diffusion (DDPM)](https://arxiv.org/abs/2006.11239)
+
 
 <!-- sota:12L04 -->
 
@@ -1924,11 +1923,7 @@ clip = CLIPScore(model_name_or_path="openai/clip-vit-base-patch16")
 **References & links:**
 - [`VizuaraAILabs/Principles-of-Diffusion-Models`](https://github.com/VizuaraAILabs/Principles-of-Diffusion-Models)
 - [Hu et al., 2021 - LoRA](https://arxiv.org/abs/2106.09685)
-- [Radford et al., 2021 - CLIP](https://arxiv.org/abs/2103.00020)
-- [Ho et al., 2020 - DDPM](https://arxiv.org/abs/2006.11239)
-- [Rombach et al., 2022 - Latent Diffusion](https://arxiv.org/abs/2112.10752)
-- [Hugging Face PEFT](https://github.com/huggingface/peft)
-- [HF diffusers](https://github.com/huggingface/diffusers)
+
 
 <!-- sota:12L05 -->
 
@@ -2024,10 +2019,9 @@ def sample(model, shape, steps=8):                 # Euler ODE integration noise
 
 **References & links:**
 - [`VizuaraAILabs/Principles-of-Diffusion-Models`](https://github.com/VizuaraAILabs/Principles-of-Diffusion-Models)
-- [Rafailov et al., 2023 - DPO](https://arxiv.org/abs/2305.18290)
-- [Radford et al., 2021 - CLIP](https://arxiv.org/abs/2103.00020)
-- [Ho et al., 2020 - DDPM](https://arxiv.org/abs/2006.11239)
+- [Ho et al., 2020 - Denoising Diffusion (DDPM)](https://arxiv.org/abs/2006.11239)
 - [Lipman et al., 2022 - Flow Matching](https://arxiv.org/abs/2210.02747)
+
 
 <!-- sota:12L06 -->
 
@@ -2114,8 +2108,7 @@ def temporal_consistency(frame_feats):             # frame_feats: (T, D) e.g. CL
 
 **References & links:**
 - [`VizuaraAI/vla-driving-simulation`](https://github.com/VizuaraAI/vla-driving-simulation)
-- [Radford et al., 2021 - CLIP](https://arxiv.org/abs/2103.00020)
-- [HF diffusers](https://github.com/huggingface/diffusers)
+
 
 <!-- sota:12L07 -->
 
@@ -2207,6 +2200,7 @@ def transcribe_wer(audio_path, reference):
 - [`VizuaraAI/audio-llm`](https://github.com/VizuaraAI/audio-llm)
 - [Radford et al., 2022 - Whisper](https://arxiv.org/abs/2212.04356)
 
+
 <!-- sota:12L08 -->
 
 ## Week 9 — Any-to-Any & Unified Multimodal Models
@@ -2295,7 +2289,8 @@ def multimodal_turn(audio_path, image):
 
 **References & links:**
 - [`Shubhamsaboo/awesome-llm-apps`](https://github.com/Shubhamsaboo/awesome-llm-apps)
-- [Radford et al., 2022 - Whisper](https://arxiv.org/abs/2212.04356)
+- [Model Context Protocol docs](https://modelcontextprotocol.io)
+
 
 <!-- sota:12L09 -->
 
@@ -2391,8 +2386,8 @@ def horizon_error(world, traj):                    # compounding error vs ground
 
 **References & links:**
 - [`VizuaraAI/vla-driving-simulation`](https://github.com/VizuaraAI/vla-driving-simulation)
-- [Micheli et al., 2022 - IRIS](https://arxiv.org/abs/2209.00588)
-- [Farama Gymnasium](https://github.com/Farama-Foundation/Gymnasium)
+- [Ho et al., 2020 - Denoising Diffusion (DDPM)](https://arxiv.org/abs/2006.11239)
+
 
 <!-- sota:12L10 -->
 
@@ -2483,10 +2478,9 @@ def mm_rag_answer(query, page_images, retriever, vlm, threshold=0.25):
 
 **References & links:**
 - [`NirDiamant/RAG_Techniques`](https://github.com/NirDiamant/RAG_Techniques)
+- [Model Context Protocol docs](https://modelcontextprotocol.io)
 - [Faysse et al., 2024 - ColPali](https://arxiv.org/abs/2407.01449)
-- [Lewis et al., 2020 - RAG](https://arxiv.org/abs/2005.11401)
-- [Radford et al., 2021 - CLIP](https://arxiv.org/abs/2103.00020)
-- [Qdrant](https://github.com/qdrant/qdrant)
+
 
 <!-- sota:12L11 -->
 
@@ -2572,10 +2566,7 @@ def capstone_gate(report): return {k: f(report) for k, f in ACCEPT.items()}
 
 **References & links:**
 - [`VizuaraAI/infertutor-arena-capstone`](https://github.com/VizuaraAI/infertutor-arena-capstone)
-- [vLLM docs](https://docs.vllm.ai)
-- [Radford et al., 2021 - CLIP](https://arxiv.org/abs/2103.00020)
-- [Schulman et al., 2017 - PPO](https://arxiv.org/abs/1707.06347)
-- [HF diffusers](https://github.com/huggingface/diffusers)
+
 
 <!-- sota:12L12 -->
 
@@ -2722,6 +2713,7 @@ def value_iteration(P, R, gamma=0.99, tol=1e-8):
 - [DeepSeek-AI, 2025 - DeepSeek-R1](https://arxiv.org/abs/2501.12948)
 - [Farama Gymnasium](https://github.com/Farama-Foundation/Gymnasium)
 
+
 <!-- sota:13L01 -->
 
 ## Week 2 — Model-Free Prediction & Control: Monte Carlo, TD, Q-Learning, SARSA
@@ -2823,11 +2815,10 @@ def q_learning(env, episodes=500, alpha=0.5, gamma=0.99, eps=0.1):
 
 **References & links:**
 - [`VizuaraAILabs/OpenClaw-RL-Tutorial`](https://github.com/VizuaraAILabs/OpenClaw-RL-Tutorial)
-- [Hu et al., 2021 - LoRA](https://arxiv.org/abs/2106.09685)
-- [Ouyang et al., 2022 - InstructGPT/RLHF](https://arxiv.org/abs/2203.02155)
 - [Shao et al., 2024 - GRPO/RLVR](https://arxiv.org/abs/2402.03300)
 - [Farama Gymnasium](https://github.com/Farama-Foundation/Gymnasium)
-- [veRL](https://github.com/volcengine/verl)
+- [veRL (RL for LLMs)](https://github.com/volcengine/verl)
+
 
 <!-- sota:13L02 -->
 
@@ -2928,10 +2919,8 @@ def dqn_loss(batch, q_net, target_net, gamma=0.99, double=True):
 **References & links:**
 - [`VizuaraAILabs/OpenClaw-RL-Tutorial`](https://github.com/VizuaraAILabs/OpenClaw-RL-Tutorial)
 - [Dao et al., 2022 - FlashAttention](https://arxiv.org/abs/2205.14135)
-- [Hu et al., 2021 - LoRA](https://arxiv.org/abs/2106.09685)
-- [Radford et al., 2021 - CLIP](https://arxiv.org/abs/2103.00020)
 - [Mnih et al., 2013 - DQN](https://arxiv.org/abs/1312.5602)
-- [Farama Gymnasium](https://github.com/Farama-Foundation/Gymnasium)
+
 
 <!-- sota:13L03 -->
 
@@ -3030,11 +3019,9 @@ def reinforce_step(logps, rewards, gamma=0.99, baseline=None):
 **References & links:**
 - [`VizuaraAI/RL-in-Production-Bootcamp-Resources`](https://github.com/VizuaraAI/RL-in-Production-Bootcamp-Resources)
 - [Shao et al., 2024 - DeepSeekMath/GRPO](https://arxiv.org/abs/2402.03300)
-- [Schulman et al., 2015 - GAE](https://arxiv.org/abs/1506.02438)
-- [Mnih et al., 2013 - DQN](https://arxiv.org/abs/1312.5602)
 - [Hugging Face TRL](https://github.com/huggingface/trl)
-- [Farama Gymnasium](https://github.com/Farama-Foundation/Gymnasium)
-- [veRL](https://github.com/volcengine/verl)
+- [veRL (RL for LLMs)](https://github.com/volcengine/verl)
+
 
 <!-- sota:13L04 -->
 
@@ -3136,7 +3123,7 @@ def ppo_clip_loss(logp, logp_old, adv, eps=0.2):
 - [Radford et al., 2021 - CLIP](https://arxiv.org/abs/2103.00020)
 - [Schulman et al., 2017 - PPO](https://arxiv.org/abs/1707.06347)
 - [Schulman et al., 2015 - GAE](https://arxiv.org/abs/1506.02438)
-- [Farama Gymnasium](https://github.com/Farama-Foundation/Gymnasium)
+
 
 <!-- sota:13L05 -->
 
@@ -3232,11 +3219,8 @@ def iql_value_loss(q_net, v_net, s, a, expectile=0.7):
 
 **References & links:**
 - [`VizuaraAI/RL-in-Production-Bootcamp-Resources`](https://github.com/VizuaraAI/RL-in-Production-Bootcamp-Resources)
-- [Su et al., 2021 - RoPE](https://arxiv.org/abs/2104.09864)
-- [Schulman et al., 2017 - PPO](https://arxiv.org/abs/1707.06347)
-- [Mnih et al., 2013 - DQN](https://arxiv.org/abs/1312.5602)
-- [Farama Gymnasium](https://github.com/Farama-Foundation/Gymnasium)
-- [LeRobot](https://github.com/huggingface/lerobot)
+- [Hugging Face LeRobot](https://github.com/huggingface/lerobot)
+
 
 <!-- sota:13L06 -->
 
@@ -3331,10 +3315,8 @@ def uct_select(node, c=1.41):
 
 **References & links:**
 - [`VizuaraAI/RL-in-Production-Bootcamp-Resources`](https://github.com/VizuaraAI/RL-in-Production-Bootcamp-Resources)
-- [Hu et al., 2021 - LoRA](https://arxiv.org/abs/2106.09685)
-- [Schulman et al., 2017 - PPO](https://arxiv.org/abs/1707.06347)
-- [Micheli et al., 2022 - IRIS](https://arxiv.org/abs/2209.00588)
-- [Farama Gymnasium](https://github.com/Farama-Foundation/Gymnasium)
+- [Ho et al., 2020 - Denoising Diffusion (DDPM)](https://arxiv.org/abs/2006.11239)
+
 
 <!-- sota:13L07 -->
 
@@ -3428,13 +3410,13 @@ def dpo_loss(pi_lw, pi_ll, ref_lw, ref_ll, beta=0.1):
 
 **References & links:**
 - [`VizuaraAI/RL-in-Production-Bootcamp-Resources`](https://github.com/VizuaraAI/RL-in-Production-Bootcamp-Resources)
-- [Su et al., 2021 - RoPE](https://arxiv.org/abs/2104.09864)
-- [vLLM docs](https://docs.vllm.ai)
 - [Rafailov et al., 2023 - DPO](https://arxiv.org/abs/2305.18290)
 - [Hong et al., 2024 - ORPO](https://arxiv.org/abs/2403.07691)
 - [Ethayarajh et al., 2024 - KTO](https://arxiv.org/abs/2402.01306)
 - [Meng et al., 2024 - SimPO](https://arxiv.org/abs/2405.14734)
 - [Ouyang et al., 2022 - InstructGPT/RLHF](https://arxiv.org/abs/2203.02155)
+- [Shao et al., 2024 - GRPO/RLVR](https://arxiv.org/abs/2402.03300)
+
 
 <!-- sota:13L08 -->
 
@@ -3531,13 +3513,10 @@ def grpo_advantages(rewards, group_size, drgrpo=False):
 
 **References & links:**
 - [`VizuaraAILabs/DeepSeek-From-Scratch`](https://github.com/VizuaraAILabs/DeepSeek-From-Scratch)
-- [`openai/gsm8k`](https://github.com/openai/gsm8k)
-- [vLLM docs](https://docs.vllm.ai)
 - [Ouyang et al., 2022 - InstructGPT/RLHF](https://arxiv.org/abs/2203.02155)
 - [Shao et al., 2024 - DeepSeekMath/GRPO](https://arxiv.org/abs/2402.03300)
 - [DeepSeek-AI, 2025 - DeepSeek-R1](https://arxiv.org/abs/2501.12948)
-- [Radford et al., 2021 - CLIP](https://arxiv.org/abs/2103.00020)
-- [Schulman et al., 2017 - PPO](https://arxiv.org/abs/1707.06347)
+
 
 <!-- sota:13L09 -->
 
@@ -3637,11 +3616,10 @@ class SWEEnv:
 **References & links:**
 - [`VizuaraAI/RL-in-Production-Bootcamp-Resources`](https://github.com/VizuaraAI/RL-in-Production-Bootcamp-Resources)
 - [vLLM docs](https://docs.vllm.ai)
-- [Ouyang et al., 2022 - InstructGPT/RLHF](https://arxiv.org/abs/2203.02155)
-- [Shao et al., 2024 - DeepSeekMath/GRPO](https://arxiv.org/abs/2402.03300)
+- [Shao et al., 2024 - GRPO/RLVR](https://arxiv.org/abs/2402.03300)
 - [Jimenez et al., 2023 - SWE-bench](https://arxiv.org/abs/2310.06770)
-- [Farama Gymnasium](https://github.com/Farama-Foundation/Gymnasium)
-- [veRL](https://github.com/volcengine/verl)
+- [veRL (RL for LLMs)](https://github.com/volcengine/verl)
+
 
 <!-- sota:13L10 -->
 
@@ -3739,7 +3717,8 @@ def rollout(env, instruction, horizon=200, chunk=10):
 
 **References & links:**
 - [`VizuaraAILabs/ACT-Maniskill`](https://github.com/VizuaraAILabs/ACT-Maniskill)
-- [LeRobot](https://github.com/huggingface/lerobot)
+- [Hugging Face LeRobot](https://github.com/huggingface/lerobot)
+
 
 <!-- sota:13L11 -->
 
@@ -3834,9 +3813,8 @@ ppo_update(policy, buffer, adv, ret)                 # reuse $ppo-trainer
 
 **References & links:**
 - [`VizuaraAILabs/Modern-Robot-Learning`](https://github.com/VizuaraAILabs/Modern-Robot-Learning)
-- [Schulman et al., 2017 - PPO](https://arxiv.org/abs/1707.06347)
-- [Schulman et al., 2015 - GAE](https://arxiv.org/abs/1506.02438)
 - [Farama Gymnasium](https://github.com/Farama-Foundation/Gymnasium)
+
 
 <!-- sota:13L12 -->
 
@@ -3929,10 +3907,8 @@ def constrained_objective(reward_adv, cost_adv, lam, budget_violation):
 
 **References & links:**
 - [`VizuaraAI/RL-in-Production-Bootcamp-Resources`](https://github.com/VizuaraAI/RL-in-Production-Bootcamp-Resources)
-- [Kaplan et al., 2020 - Scaling Laws](https://arxiv.org/abs/2001.08361)
-- [Shao et al., 2024 - GRPO/RLVR](https://arxiv.org/abs/2402.03300)
-- [Schulman et al., 2017 - PPO](https://arxiv.org/abs/1707.06347)
 - [Farama Gymnasium](https://github.com/Farama-Foundation/Gymnasium)
+
 
 <!-- sota:13L13 -->
 
@@ -4022,12 +3998,9 @@ save_packet(env, agent, report, audit)   # $rl-evidence-packet
 **References & links:**
 - [`VizuaraAI/RL-in-Production-Bootcamp-Resources`](https://github.com/VizuaraAI/RL-in-Production-Bootcamp-Resources)
 - [vLLM docs](https://docs.vllm.ai)
-- [Ouyang et al., 2022 - InstructGPT/RLHF](https://arxiv.org/abs/2203.02155)
-- [Shao et al., 2024 - DeepSeekMath/GRPO](https://arxiv.org/abs/2402.03300)
-- [DeepSeek-AI, 2025 - DeepSeek-R1](https://arxiv.org/abs/2501.12948)
-- [Schulman et al., 2017 - PPO](https://arxiv.org/abs/1707.06347)
-- [veRL](https://github.com/volcengine/verl)
-- [LeRobot](https://github.com/huggingface/lerobot)
+- [veRL (RL for LLMs)](https://github.com/volcengine/verl)
+- [Hugging Face LeRobot](https://github.com/huggingface/lerobot)
+
 
 <!-- sota:13L14 -->
 
@@ -4217,8 +4190,8 @@ def triage_complete(t): return all(v for v in t.values())   # gate before presen
 
 **References & links:**
 - [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook)
-- [Schulman et al., 2017 - PPO](https://arxiv.org/abs/1707.06347)
-- [Abramson et al., 2024 - AlphaFold3](https://www.nature.com/articles/s41586-024-07487-w)
+- [Fedus et al., 2021 - MoE](https://arxiv.org/abs/2101.03961)
+
 
 <!-- sota:15L01 -->
 
@@ -4309,7 +4282,8 @@ def audit_claim(claim: dict, rerun_fn, n_seeds=5):
 
 **References & links:**
 - [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook)
-- [Schulman et al., 2017 - PPO](https://arxiv.org/abs/1707.06347)
+- [Model Context Protocol docs](https://modelcontextprotocol.io)
+
 
 <!-- sota:15L02 -->
 
@@ -4403,7 +4377,7 @@ def fold(seq):
 
 **References & links:**
 - [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook)
-- [Abramson et al., 2024 - AlphaFold3](https://www.nature.com/articles/s41586-024-07487-w)
+
 
 <!-- sota:15L03 -->
 
@@ -4493,7 +4467,7 @@ def validity_funnel(smiles_list, train_set):
 
 **References & links:**
 - [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook)
-- [Su et al., 2021 - RoPE](https://arxiv.org/abs/2104.09864)
+
 
 <!-- sota:15L04 -->
 
@@ -4588,7 +4562,7 @@ def loss(net, x_d, t_d, u_d, x_c, t_c, lam=1.0):
 
 **References & links:**
 - [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook)
-- [Raissi et al., 2019 - PINNs](https://arxiv.org/abs/1711.10561)
+
 
 <!-- sota:15L05 -->
 
@@ -4683,7 +4657,7 @@ def token_edit_sim(pred, gold):                     # continuous: smooth credit
 **References & links:**
 - [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook)
 - [Hoffmann et al., 2022 - Chinchilla scaling](https://arxiv.org/abs/2203.15556)
-- [Kaplan et al., 2020 - Scaling Laws](https://arxiv.org/abs/2001.08361)
+
 
 <!-- sota:15L06 -->
 
@@ -4776,10 +4750,7 @@ def patch_and_measure(clean, corrupt, layer, pos):
 
 **References & links:**
 - [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook)
-- [Wei et al., 2022 - Chain-of-Thought](https://arxiv.org/abs/2201.11903)
-- [Anthropic, 2023 - Towards Monosemanticity](https://transformer-circuits.pub/2023/monosemantic-features)
-- [Anthropic - Transformer Circuits](https://transformer-circuits.pub)
-- [veRL](https://github.com/volcengine/verl)
+
 
 <!-- sota:15L07 -->
 
@@ -4871,6 +4842,7 @@ def neurosymbolic_solve(problem, llm, max_repairs=3):
 **References & links:**
 - [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook)
 
+
 <!-- sota:15L08 -->
 
 ## Week 9 — World Models & Simulation for Reasoning and Control
@@ -4959,8 +4931,8 @@ def exploitation_gap(world, policy, real_env, n=20):
 
 **References & links:**
 - [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook)
-- [Micheli et al., 2022 - IRIS](https://arxiv.org/abs/2209.00588)
-- [Farama Gymnasium](https://github.com/Farama-Foundation/Gymnasium)
+- [Ho et al., 2020 - Denoising Diffusion (DDPM)](https://arxiv.org/abs/2006.11239)
+
 
 <!-- sota:15L09 -->
 
@@ -5052,9 +5024,8 @@ def self_improve_round(model, problems, verify):
 
 **References & links:**
 - [`VizuaraAILabs/DeepSeek-From-Scratch`](https://github.com/VizuaraAILabs/DeepSeek-From-Scratch)
-- [Su et al., 2021 - RoPE](https://arxiv.org/abs/2104.09864)
-- [Shao et al., 2024 - GRPO/RLVR](https://arxiv.org/abs/2402.03300)
-- [Gu & Dao, 2023 - Mamba](https://arxiv.org/abs/2312.00752)
+- [Gu & Dao, 2023 - Mamba (SSM)](https://arxiv.org/abs/2312.00752)
+
 
 <!-- sota:15L10 -->
 
@@ -5149,10 +5120,8 @@ def attempt_proof(theorem: Theorem, llm, max_steps=50):
 
 **References & links:**
 - [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook)
-- [Su et al., 2021 - RoPE](https://arxiv.org/abs/2104.09864)
 - [Shao et al., 2024 - GRPO/RLVR](https://arxiv.org/abs/2402.03300)
-- [Lewis et al., 2020 - RAG](https://arxiv.org/abs/2005.11401)
-- [EU AI Act timeline](https://artificialintelligenceact.eu/implementation-timeline/)
+
 
 <!-- sota:15L11 -->
 
@@ -5237,8 +5206,8 @@ def sprint_ready(s): return s["result"] is not None and s["baseline"] and s["lim
 
 **References & links:**
 - [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook)
-- [veRL](https://github.com/volcengine/verl)
-- [UK AISI Inspect](https://inspect.aisi.org.uk)
+- [UK AISI Inspect (evals)](https://inspect.aisi.org.uk)
+
 
 <!-- sota:15L12 -->
 
@@ -5322,6 +5291,7 @@ def final_gate(project: dict): return {k: bool(project.get(k)) for k in FINAL_GA
 
 **References & links:**
 - [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook)
+
 
 <!-- sota:15L13 -->
 

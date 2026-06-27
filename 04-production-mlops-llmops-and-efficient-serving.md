@@ -183,8 +183,7 @@ CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]
 
 **References & links:**
 - [`krishnaik06/mlproject`](https://github.com/krishnaik06/mlproject)
-- [Schulman et al., 2017 - PPO](https://arxiv.org/abs/1707.06347)
-- [veRL](https://github.com/volcengine/verl)
+
 
 <!-- sota:09L01 -->
 
@@ -293,7 +292,7 @@ spec:
 - [`GokuMohandas/Made-With-ML`](https://github.com/GokuMohandas/Made-With-ML)
 - [Dao et al., 2022 - FlashAttention](https://arxiv.org/abs/2205.14135)
 - [vLLM docs](https://docs.vllm.ai)
-- [veRL](https://github.com/volcengine/verl)
+
 
 <!-- sota:09L02 -->
 
@@ -402,6 +401,7 @@ eta_features()
 **References & links:**
 - [`krishnaik06/Kidney-Disease-Classification-Deep-Learning-Project`](https://github.com/krishnaik06/Kidney-Disease-Classification-Deep-Learning-Project)
 
+
 <!-- sota:09L03 -->
 
 ## Week 4 — Experiment Tracking, Model Registry & Reproducible Training
@@ -502,6 +502,8 @@ with mlflow.start_run():
 **References & links:**
 - [`DataTalksClub/mlops-zoomcamp`](https://github.com/DataTalksClub/mlops-zoomcamp)
 - [Shao et al., 2024 - DeepSeekMath/GRPO](https://arxiv.org/abs/2402.03300)
+- [MLflow docs](https://mlflow.org/docs/latest/index.html)
+
 
 <!-- sota:09L04 -->
 
@@ -611,12 +613,9 @@ def predict(r: Req, resp: Response):
 **References & links:**
 - [`VizuaraAI/infertutor-arena-capstone`](https://github.com/VizuaraAI/infertutor-arena-capstone)
 - [Dao et al., 2022 - FlashAttention](https://arxiv.org/abs/2205.14135)
-- [Kwon et al., 2023 - vLLM/PagedAttention](https://arxiv.org/abs/2309.06180)
 - [vLLM docs](https://docs.vllm.ai)
 - [Leviathan et al., 2022 - Speculative Decoding](https://arxiv.org/abs/2211.17192)
-- [Rafailov et al., 2023 - DPO](https://arxiv.org/abs/2305.18290)
-- [Schulman et al., 2017 - PPO](https://arxiv.org/abs/1707.06347)
-- [veRL](https://github.com/volcengine/verl)
+
 
 <!-- sota:09L05 -->
 
@@ -719,8 +718,7 @@ jobs:
 
 **References & links:**
 - [`promptfoo/promptfoo`](https://github.com/promptfoo/promptfoo)
-- [Ouyang et al., 2022 - InstructGPT/RLHF](https://arxiv.org/abs/2203.02155)
-- [Schulman et al., 2017 - PPO](https://arxiv.org/abs/1707.06347)
+
 
 <!-- sota:09L06 -->
 
@@ -822,9 +820,7 @@ litellm_settings:
 
 **References & links:**
 - [`decodingml/llm-twin-course`](https://github.com/decodingml/llm-twin-course)
-- [vLLM docs](https://docs.vllm.ai)
-- [Schulman et al., 2017 - PPO](https://arxiv.org/abs/1707.06347)
-- [Langfuse](https://github.com/langfuse/langfuse)
+
 
 <!-- sota:09L07 -->
 
@@ -928,8 +924,7 @@ def answer(query: str) -> str:
 
 **References & links:**
 - [`langfuse/langfuse`](https://github.com/langfuse/langfuse)
-- [Schulman et al., 2017 - PPO](https://arxiv.org/abs/1707.06347)
-- [LangGraph](https://github.com/langchain-ai/langgraph)
+
 
 <!-- sota:09L08 -->
 
@@ -1028,7 +1023,7 @@ if share > 0.3:                 # tune from history, not gut feel
 - **SLO / error-budget + for-duration** alerts to beat pager fatigue.
 
 **References & links:**
-- [Schulman et al., 2017 - PPO](https://arxiv.org/abs/1707.06347)
+
 
 <!-- sota:09L09 -->
 
@@ -1128,7 +1123,7 @@ strategy:
 - **A/B / interleaving** to decide promotion on a real metric, not a hunch.
 
 **References & links:**
-- [Schulman et al., 2017 - PPO](https://arxiv.org/abs/1707.06347)
+
 
 <!-- sota:09L10 -->
 
@@ -1232,11 +1227,8 @@ agent = g.compile()
 
 **References & links:**
 - [`krishnaik06/Agentic-LanggraphCrash-course`](https://github.com/krishnaik06/Agentic-LanggraphCrash-course)
-- [Yao et al., 2024 - tau-bench](https://arxiv.org/abs/2406.12045)
-- [Schulman et al., 2017 - PPO](https://arxiv.org/abs/1707.06347)
-- [Greshake et al., 2023 - Indirect Prompt Injection](https://arxiv.org/abs/2302.12173)
-- [LangGraph](https://github.com/langchain-ai/langgraph)
-- [Langfuse](https://github.com/langfuse/langfuse)
+- [LangGraph (durable agents)](https://github.com/langchain-ai/langgraph)
+
 
 <!-- sota:09L11 -->
 
@@ -1337,11 +1329,8 @@ Student-chosen, but must be **versioned (DVC)** and **documented** (size + licen
 - [`GokuMohandas/Made-With-ML`](https://github.com/GokuMohandas/Made-With-ML)
 - [Dao et al., 2022 - FlashAttention](https://arxiv.org/abs/2205.14135)
 - [vLLM docs](https://docs.vllm.ai)
-- [Rafailov et al., 2023 - DPO](https://arxiv.org/abs/2305.18290)
-- [Hong et al., 2024 - ORPO](https://arxiv.org/abs/2403.07691)
-- [Schulman et al., 2017 - PPO](https://arxiv.org/abs/1707.06347)
-- [EU AI Act timeline](https://artificialintelligenceact.eu/implementation-timeline/)
-- [veRL](https://github.com/volcengine/verl)
+- [EU AI Act - implementation timeline](https://artificialintelligenceact.eu/implementation-timeline/)
+
 
 <!-- sota:09L12 -->
 

@@ -222,12 +222,12 @@ Trainer(model=model, args=args, train_dataset=ds).train()
 
 **References & links:**
 - [`VizuaraAILabs/nano-gpt-oss`](https://github.com/VizuaraAILabs/nano-gpt-oss)
+- [Fedus et al., 2021 - MoE](https://arxiv.org/abs/2101.03961)
 - [Hu et al., 2021 - LoRA](https://arxiv.org/abs/2106.09685)
 - [Dettmers et al., 2023 - QLoRA](https://arxiv.org/abs/2305.14314)
 - [Rafailov et al., 2023 - DPO](https://arxiv.org/abs/2305.18290)
-- [Ouyang et al., 2022 - InstructGPT/RLHF](https://arxiv.org/abs/2203.02155)
 - [Shao et al., 2024 - DeepSeekMath/GRPO](https://arxiv.org/abs/2402.03300)
-- [veRL](https://github.com/volcengine/verl)
+
 
 <!-- sota:03L01 -->
 
@@ -333,8 +333,8 @@ LocalPipelineExecutor(pipeline=pipeline, tasks=4).run()
 
 **References & links:**
 - [`VizuaraAILabs/truly-open-gpt-oss`](https://github.com/VizuaraAILabs/truly-open-gpt-oss)
-- [Su et al., 2021 - RoPE](https://arxiv.org/abs/2104.09864)
-- [EU AI Act timeline](https://artificialintelligenceact.eu/implementation-timeline/)
+- [EU AI Act - implementation timeline](https://artificialintelligenceact.eu/implementation-timeline/)
+
 
 <!-- sota:03L02 -->
 
@@ -442,7 +442,7 @@ def dedup(docs, threshold=0.8):
 
 **References & links:**
 - [`VizuaraAILabs/truly-open-gpt-oss`](https://github.com/VizuaraAILabs/truly-open-gpt-oss)
-- [veRL](https://github.com/volcengine/verl)
+
 
 <!-- sota:03L03 -->
 
@@ -549,9 +549,10 @@ def fit_scaling(runs):                      # runs: list of (N_params, D_tokens,
 
 **References & links:**
 - [`VizuaraAILabs/DeepSeek-From-Scratch`](https://github.com/VizuaraAILabs/DeepSeek-From-Scratch)
-- [Su et al., 2021 - RoPE](https://arxiv.org/abs/2104.09864)
+- [Su et al., 2021 - RoPE rotary embeddings](https://arxiv.org/abs/2104.09864)
 - [Hoffmann et al., 2022 - Chinchilla scaling](https://arxiv.org/abs/2203.15556)
-- [Kaplan et al., 2020 - Scaling Laws](https://arxiv.org/abs/2001.08361)
+- [Fedus et al., 2021 - MoE](https://arxiv.org/abs/2101.03961)
+
 
 <!-- sota:03L04 -->
 
@@ -655,8 +656,8 @@ def setup_fsdp(model):
 
 **References & links:**
 - [`VizuaraAI/vizuara-5d-parallelism-workshop`](https://github.com/VizuaraAI/vizuara-5d-parallelism-workshop)
-- [Su et al., 2021 - RoPE](https://arxiv.org/abs/2104.09864)
-- [veRL](https://github.com/volcengine/verl)
+- [Fedus et al., 2021 - MoE](https://arxiv.org/abs/2101.03961)
+
 
 <!-- sota:03L05 -->
 
@@ -767,7 +768,9 @@ class MoEFFN(nn.Module):
 
 **References & links:**
 - [`VizuaraAI/Mixture_of_Experts`](https://github.com/VizuaraAI/Mixture_of_Experts)
-- [Su et al., 2021 - RoPE](https://arxiv.org/abs/2104.09864)
+- [Su et al., 2021 - RoPE rotary embeddings](https://arxiv.org/abs/2104.09864)
+- [Fedus et al., 2021 - MoE](https://arxiv.org/abs/2101.03961)
+
 
 <!-- sota:03L06 -->
 
@@ -868,9 +871,8 @@ results = lm_eval.simple_evaluate(
 
 **References & links:**
 - [`mlabonne/llm-course`](https://github.com/mlabonne/llm-course)
-- [`openai/gsm8k`](https://github.com/openai/gsm8k)
-- [vLLM docs](https://docs.vllm.ai)
-- [UK AISI Inspect](https://inspect.aisi.org.uk)
+- [UK AISI Inspect (evals)](https://inspect.aisi.org.uk)
+
 
 <!-- sota:03L07 -->
 
@@ -974,13 +976,13 @@ trainer.train()
 
 **References & links:**
 - [`krishnaik06/Finetuning-LLM`](https://github.com/krishnaik06/Finetuning-LLM)
-- [Su et al., 2021 - RoPE](https://arxiv.org/abs/2104.09864)
 - [Hu et al., 2021 - LoRA](https://arxiv.org/abs/2106.09685)
 - [Dettmers et al., 2023 - QLoRA](https://arxiv.org/abs/2305.14314)
 - [Liu et al., 2024 - DoRA](https://arxiv.org/abs/2402.09353)
 - [Hugging Face TRL](https://github.com/huggingface/trl)
 - [Hugging Face PEFT](https://github.com/huggingface/peft)
-- [Unsloth](https://github.com/unslothai/unsloth)
+- [Unsloth (fast QLoRA)](https://github.com/unslothai/unsloth)
+
 
 <!-- sota:03L08 -->
 
@@ -1087,11 +1089,10 @@ ppo_cfg = PPOConfig(output_dir="ppo", kl_coef=0.05, batch_size=64)
 - [`mlabonne/llm-course`](https://github.com/mlabonne/llm-course)
 - [Ouyang et al., 2022 - InstructGPT/RLHF](https://arxiv.org/abs/2203.02155)
 - [Shao et al., 2024 - GRPO/RLVR](https://arxiv.org/abs/2402.03300)
-- [Radford et al., 2021 - CLIP](https://arxiv.org/abs/2103.00020)
 - [Schulman et al., 2017 - PPO](https://arxiv.org/abs/1707.06347)
-- [Schulman et al., 2015 - GAE](https://arxiv.org/abs/1506.02438)
-- [Bai et al., 2022 - Constitutional AI](https://arxiv.org/abs/2212.08073)
 - [Hugging Face TRL](https://github.com/huggingface/trl)
+- [veRL (RL for LLMs)](https://github.com/volcengine/verl)
+
 
 <!-- sota:03L09 -->
 
@@ -1195,10 +1196,9 @@ dpo.train()
 - [Rafailov et al., 2023 - DPO](https://arxiv.org/abs/2305.18290)
 - [Hong et al., 2024 - ORPO](https://arxiv.org/abs/2403.07691)
 - [Ethayarajh et al., 2024 - KTO](https://arxiv.org/abs/2402.01306)
-- [Meng et al., 2024 - SimPO](https://arxiv.org/abs/2405.14734)
-- [Ouyang et al., 2022 - InstructGPT/RLHF](https://arxiv.org/abs/2203.02155)
 - [Shao et al., 2024 - DeepSeekMath/GRPO](https://arxiv.org/abs/2402.03300)
 - [Schulman et al., 2017 - PPO](https://arxiv.org/abs/1707.06347)
+
 
 <!-- sota:03L10 -->
 
@@ -1305,13 +1305,9 @@ GRPOTrainer(model="./dpo-ckpt", reward_funcs=[correctness_reward],
 
 **References & links:**
 - [`VizuaraAILabs/OpenClaw-RL-Tutorial`](https://github.com/VizuaraAILabs/OpenClaw-RL-Tutorial)
-- [`openai/gsm8k`](https://github.com/openai/gsm8k)
-- [vLLM docs](https://docs.vllm.ai)
-- [Rafailov et al., 2023 - DPO](https://arxiv.org/abs/2305.18290)
 - [Shao et al., 2024 - DeepSeekMath/GRPO](https://arxiv.org/abs/2402.03300)
 - [DeepSeek-AI, 2025 - DeepSeek-R1](https://arxiv.org/abs/2501.12948)
-- [Wei et al., 2022 - Chain-of-Thought](https://arxiv.org/abs/2201.11903)
-- [Radford et al., 2021 - CLIP](https://arxiv.org/abs/2103.00020)
+
 
 <!-- sota:03L11 -->
 
@@ -1414,13 +1410,12 @@ out = llm.generate(prompts, SamplingParams(max_tokens=512, temperature=0.7))
 
 **References & links:**
 - [`VizuaraAI/llm-inference-tutorial`](https://github.com/VizuaraAI/llm-inference-tutorial)
-- [Su et al., 2021 - RoPE](https://arxiv.org/abs/2104.09864)
 - [Dao et al., 2022 - FlashAttention](https://arxiv.org/abs/2205.14135)
-- [Kwon et al., 2023 - vLLM/PagedAttention](https://arxiv.org/abs/2309.06180)
 - [vLLM docs](https://docs.vllm.ai)
 - [Leviathan et al., 2022 - Speculative Decoding](https://arxiv.org/abs/2211.17192)
-- [Lin et al., 2023 - AWQ](https://arxiv.org/abs/2306.00978)
-- [Shao et al., 2024 - DeepSeekMath/GRPO](https://arxiv.org/abs/2402.03300)
+- [Bai et al., 2022 - Constitutional AI](https://arxiv.org/abs/2212.08073)
+- [EU AI Act - implementation timeline](https://artificialintelligenceact.eu/implementation-timeline/)
+
 
 <!-- sota:03L12 -->
 
@@ -1524,11 +1519,8 @@ json.dump(report, open("capstone/metrics.json", "w"))    # every report claim ->
 - [`VizuaraAI/pharma-slm`](https://github.com/VizuaraAI/pharma-slm)
 - [Rafailov et al., 2023 - DPO](https://arxiv.org/abs/2305.18290)
 - [Shao et al., 2024 - DeepSeekMath/GRPO](https://arxiv.org/abs/2402.03300)
-- [Schulman et al., 2017 - PPO](https://arxiv.org/abs/1707.06347)
-- [EU AI Act timeline](https://artificialintelligenceact.eu/implementation-timeline/)
-- [Hugging Face TRL](https://github.com/huggingface/trl)
-- [Hugging Face PEFT](https://github.com/huggingface/peft)
-- [veRL](https://github.com/volcengine/verl)
+- [EU AI Act - implementation timeline](https://artificialintelligenceact.eu/implementation-timeline/)
+
 
 <!-- sota:03L13 -->
 
@@ -4176,8 +4168,8 @@ def scaling_curve(model, problems, Ns=(1,2,4,8,16,32)):
 
 **References & links:**
 - [`mlabonne/llm-course`](https://github.com/mlabonne/llm-course)
-- [Kaplan et al., 2020 - Scaling Laws](https://arxiv.org/abs/2001.08361)
 - [Wang et al., 2022 - Self-Consistency](https://arxiv.org/abs/2203.11171)
+
 
 <!-- sota:06L02 -->
 
@@ -4283,6 +4275,7 @@ def prm_score(chain: str, prm) -> float:   # process reward = min/mean step scor
 **References & links:**
 - [`VizuaraAI/RL-in-Production-Bootcamp-Resources`](https://github.com/VizuaraAI/RL-in-Production-Bootcamp-Resources)
 
+
 <!-- sota:06L03 -->
 
 ## Week 4 — ReAct, Tool Use & Search: Reasoning That Acts
@@ -4387,10 +4380,9 @@ def react(model, question, tools, max_steps=8, max_cost=0.5):
 
 **References & links:**
 - [`krishnaik06/Agentic-LanggraphCrash-course`](https://github.com/krishnaik06/Agentic-LanggraphCrash-course)
-- [Yao et al., 2023 - Tree of Thoughts](https://arxiv.org/abs/2305.10601)
-- [Yao et al., 2022 - ReAct](https://arxiv.org/abs/2210.03629)
-- [Schick et al., 2023 - Toolformer](https://arxiv.org/abs/2302.04761)
-- [LangGraph](https://github.com/langchain-ai/langgraph)
+- [Model Context Protocol docs](https://modelcontextprotocol.io)
+- [LangGraph (durable agents)](https://github.com/langchain-ai/langgraph)
+
 
 <!-- sota:06L04 -->
 
@@ -4500,10 +4492,10 @@ trainer.train()
 - [vLLM docs](https://docs.vllm.ai)
 - [Ouyang et al., 2022 - InstructGPT/RLHF](https://arxiv.org/abs/2203.02155)
 - [Shao et al., 2024 - DeepSeekMath/GRPO](https://arxiv.org/abs/2402.03300)
-- [DeepSeek-AI, 2025 - DeepSeek-R1](https://arxiv.org/abs/2501.12948)
-- [Radford et al., 2021 - CLIP](https://arxiv.org/abs/2103.00020)
-- [Schulman et al., 2017 - PPO](https://arxiv.org/abs/1707.06347)
 - [Hugging Face TRL](https://github.com/huggingface/trl)
+- [Unsloth (fast QLoRA)](https://github.com/unslothai/unsloth)
+- [veRL (RL for LLMs)](https://github.com/volcengine/verl)
+
 
 <!-- sota:06L05 -->
 
@@ -4606,12 +4598,9 @@ cfg = GRPOConfig(
 
 **References & links:**
 - [`VizuaraAI/RL-in-Production-Bootcamp-Resources`](https://github.com/VizuaraAI/RL-in-Production-Bootcamp-Resources)
-- [vLLM docs](https://docs.vllm.ai)
-- [Hu et al., 2021 - LoRA](https://arxiv.org/abs/2106.09685)
 - [Shao et al., 2024 - DeepSeekMath/GRPO](https://arxiv.org/abs/2402.03300)
 - [Radford et al., 2021 - CLIP](https://arxiv.org/abs/2103.00020)
-- [Hugging Face TRL](https://github.com/huggingface/trl)
-- [veRL](https://github.com/volcengine/verl)
+
 
 <!-- sota:06L06 -->
 
@@ -4716,8 +4705,8 @@ def self_improve(model, prompts, verifier, iters=3, n=8):
 
 **References & links:**
 - [`VizuaraAILabs/OpenClaw-RL-Tutorial`](https://github.com/VizuaraAILabs/OpenClaw-RL-Tutorial)
-- [Shao et al., 2024 - DeepSeekMath/GRPO](https://arxiv.org/abs/2402.03300)
 - [Jimenez et al., 2023 - SWE-bench](https://arxiv.org/abs/2310.06770)
+
 
 <!-- sota:06L07 -->
 
@@ -4820,6 +4809,7 @@ def perturbation_drop(model, problems, perturb):
 
 **References & links:**
 - [`mlabonne/llm-course`](https://github.com/mlabonne/llm-course)
+
 
 <!-- sota:06L08 -->
 
@@ -4930,8 +4920,7 @@ def faithfulness(model, q, chain, hint):
 - [Dao et al., 2022 - FlashAttention](https://arxiv.org/abs/2205.14135)
 - [vLLM docs](https://docs.vllm.ai)
 - [Leviathan et al., 2022 - Speculative Decoding](https://arxiv.org/abs/2211.17192)
-- [Rafailov et al., 2023 - DPO](https://arxiv.org/abs/2305.18290)
-- [Wei et al., 2022 - Chain-of-Thought](https://arxiv.org/abs/2201.11903)
+
 
 <!-- sota:06L09 -->
 
@@ -5040,12 +5029,12 @@ def capstone_gate(base, prompts, verifier, heldout, perturbed):
 **References & links:**
 - [`VizuaraAI/RL-in-Production-Bootcamp-Resources`](https://github.com/VizuaraAI/RL-in-Production-Bootcamp-Resources)
 - [vLLM docs](https://docs.vllm.ai)
-- [Rafailov et al., 2023 - DPO](https://arxiv.org/abs/2305.18290)
 - [Shao et al., 2024 - DeepSeekMath/GRPO](https://arxiv.org/abs/2402.03300)
 - [DeepSeek-AI, 2025 - DeepSeek-R1](https://arxiv.org/abs/2501.12948)
-- [Wang et al., 2022 - Self-Consistency](https://arxiv.org/abs/2203.11171)
 - [Hugging Face TRL](https://github.com/huggingface/trl)
-- [veRL](https://github.com/volcengine/verl)
+- [veRL (RL for LLMs)](https://github.com/volcengine/verl)
+- [UK AISI Inspect (evals)](https://inspect.aisi.org.uk)
+
 
 <!-- sota:06L10 -->
 

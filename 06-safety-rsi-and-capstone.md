@@ -160,9 +160,8 @@ def measure_harm_rate(model, behaviors, judge):
 
 **References & links:**
 - [`anthropics/courses`](https://github.com/anthropics/courses)
-- [Su et al., 2021 - RoPE](https://arxiv.org/abs/2104.09864)
-- [Schulman et al., 2017 - PPO](https://arxiv.org/abs/1707.06347)
-- [EU AI Act timeline](https://artificialintelligenceact.eu/implementation-timeline/)
+- [EU AI Act - implementation timeline](https://artificialintelligenceact.eu/implementation-timeline/)
+
 
 <!-- sota:14L01 -->
 
@@ -257,8 +256,7 @@ def evaluate_intervention(model, harm_set, cap_set, benign_set, judge):
 - [Rafailov et al., 2023 - DPO](https://arxiv.org/abs/2305.18290)
 - [Ouyang et al., 2022 - InstructGPT/RLHF](https://arxiv.org/abs/2203.02155)
 - [Shao et al., 2024 - DeepSeekMath/GRPO](https://arxiv.org/abs/2402.03300)
-- [Bai et al., 2022 - Constitutional AI](https://arxiv.org/abs/2212.08073)
-- [Hugging Face TRL](https://github.com/huggingface/trl)
+
 
 <!-- sota:14L02 -->
 
@@ -351,8 +349,9 @@ def gcg_jailbreak(model, tokenizer, prompt, target="Sure, here is"):
 
 **References & links:**
 - [`anthropics/anthropic-cookbook`](https://github.com/anthropics/anthropic-cookbook)
-- [Schulman et al., 2017 - PPO](https://arxiv.org/abs/1707.06347)
-- [Zou et al., 2023 - GCG attacks](https://arxiv.org/abs/2307.15043)
+- [Fedus et al., 2021 - MoE](https://arxiv.org/abs/2101.03961)
+- [Zou et al., 2023 - GCG adversarial attacks](https://arxiv.org/abs/2307.15043)
+
 
 <!-- sota:14L03 -->
 
@@ -448,9 +447,9 @@ def answer_with_rag(query, retriever, llm, defend=False):
 
 **References & links:**
 - [`anthropics/anthropic-cookbook`](https://github.com/anthropics/anthropic-cookbook)
-- [Schulman et al., 2017 - PPO](https://arxiv.org/abs/1707.06347)
-- [Zou et al., 2023 - GCG attacks](https://arxiv.org/abs/2307.15043)
+- [Model Context Protocol docs](https://modelcontextprotocol.io)
 - [Greshake et al., 2023 - Indirect Prompt Injection](https://arxiv.org/abs/2302.12173)
+
 
 <!-- sota:14L04 -->
 
@@ -545,7 +544,7 @@ def moderate(text, role="user"):
 
 **References & links:**
 - [`anthropics/anthropic-cookbook`](https://github.com/anthropics/anthropic-cookbook)
-- [Schulman et al., 2017 - PPO](https://arxiv.org/abs/1707.06347)
+
 
 <!-- sota:14L05 -->
 
@@ -637,6 +636,7 @@ def behavior_delta(model, tasks, judge):
 
 **References & links:**
 - [`anthropics/courses`](https://github.com/anthropics/courses)
+
 
 <!-- sota:14L06 -->
 
@@ -734,9 +734,7 @@ def sae_loss(x, x_hat, h, l1=1e-3):
 
 **References & links:**
 - [`anthropics/courses`](https://github.com/anthropics/courses)
-- [Anthropic, 2023 - Towards Monosemanticity](https://transformer-circuits.pub/2023/monosemantic-features)
-- [Anthropic - Transformer Circuits](https://transformer-circuits.pub)
-- [veRL](https://github.com/volcengine/verl)
+
 
 <!-- sota:14L07 -->
 
@@ -830,9 +828,7 @@ def monitor_and_gate(agent, monitor, task):
 
 **References & links:**
 - [`anthropics/courses`](https://github.com/anthropics/courses)
-- [Wei et al., 2022 - Chain-of-Thought](https://arxiv.org/abs/2201.11903)
-- [Schulman et al., 2017 - PPO](https://arxiv.org/abs/1707.06347)
-- [Anthropic - Transformer Circuits](https://transformer-circuits.pub)
+
 
 <!-- sota:14L08 -->
 
@@ -925,10 +921,9 @@ def constitutional_revise(model, prompt, constitution):
 **References & links:**
 - [`anthropics/anthropic-cookbook`](https://github.com/anthropics/anthropic-cookbook)
 - [Rafailov et al., 2023 - DPO](https://arxiv.org/abs/2305.18290)
-- [Ouyang et al., 2022 - InstructGPT/RLHF](https://arxiv.org/abs/2203.02155)
-- [Schulman et al., 2017 - PPO](https://arxiv.org/abs/1707.06347)
 - [Bai et al., 2022 - Constitutional AI](https://arxiv.org/abs/2212.08073)
 - [Hugging Face TRL](https://github.com/huggingface/trl)
+
 
 <!-- sota:14L09 -->
 
@@ -1025,10 +1020,9 @@ def capability_task(dataset, tools):
 
 **References & links:**
 - [`anthropics/courses`](https://github.com/anthropics/courses)
-- [Su et al., 2021 - RoPE](https://arxiv.org/abs/2104.09864)
-- [Schulman et al., 2017 - PPO](https://arxiv.org/abs/1707.06347)
-- [ICLR 2026 RSI Workshop](https://recursive-workshop.github.io/)
-- [UK AISI Inspect](https://inspect.aisi.org.uk)
+- [Anthropic - Responsible Scaling Policy](https://www.anthropic.com/news/anthropics-responsible-scaling-policy)
+- [UK AISI Inspect (evals)](https://inspect.aisi.org.uk)
+
 
 <!-- sota:14L10 -->
 
@@ -1123,8 +1117,7 @@ def guarded_execute(action, args, context, human_gate):
 
 **References & links:**
 - [`anthropics/anthropic-cookbook`](https://github.com/anthropics/anthropic-cookbook)
-- [Yao et al., 2024 - tau-bench](https://arxiv.org/abs/2406.12045)
-- [Schulman et al., 2017 - PPO](https://arxiv.org/abs/1707.06347)
+
 
 <!-- sota:14L11 -->
 
@@ -1219,10 +1212,8 @@ gaps = [k for k, v in controls.items() if v["status"] != "met"]
 
 **References & links:**
 - [`anthropics/courses`](https://github.com/anthropics/courses)
-- [Su et al., 2021 - RoPE](https://arxiv.org/abs/2104.09864)
-- [Schulman et al., 2017 - PPO](https://arxiv.org/abs/1707.06347)
-- [Zou et al., 2023 - GCG attacks](https://arxiv.org/abs/2307.15043)
-- [EU AI Act timeline](https://artificialintelligenceact.eu/implementation-timeline/)
+- [EU AI Act - implementation timeline](https://artificialintelligenceact.eu/implementation-timeline/)
+
 
 <!-- sota:14L12 -->
 
@@ -1312,11 +1303,8 @@ assert reeval.residual_risk_documented and card.every_claim_has_evidence
 
 **References & links:**
 - [`anthropics/anthropic-cookbook`](https://github.com/anthropics/anthropic-cookbook)
-- [Yao et al., 2024 - tau-bench](https://arxiv.org/abs/2406.12045)
-- [Schulman et al., 2017 - PPO](https://arxiv.org/abs/1707.06347)
-- [Zou et al., 2023 - GCG attacks](https://arxiv.org/abs/2307.15043)
-- [EU AI Act timeline](https://artificialintelligenceact.eu/implementation-timeline/)
-- [UK AISI Inspect](https://inspect.aisi.org.uk)
+- [UK AISI Inspect (evals)](https://inspect.aisi.org.uk)
+
 
 <!-- sota:14L13 -->
 
@@ -1502,6 +1490,7 @@ class RSILoop:
 - [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook)
 - [Shao et al., 2024 - GRPO/RLVR](https://arxiv.org/abs/2402.03300)
 
+
 <!-- sota:17L01 -->
 
 ## Week 2 — Self-Generated Data & Self-Play (and the Collapse Problem)
@@ -1581,6 +1570,7 @@ def self_play_round(proposer, solver, verify, n=256, min_div=0.3):
 **References & links:**
 - [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook)
 
+
 <!-- sota:17L02 -->
 
 ## Week 3 — Test-Time Self-Improvement & Inference-Time Scaling
@@ -1659,6 +1649,7 @@ def compute_as_teacher(model, x, k=16, verify=None):
 **References & links:**
 - [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook)
 
+
 <!-- sota:17L03 -->
 
 ## Week 4 — Agentic Memory & Lifelong/Continual Learning
@@ -1735,7 +1726,7 @@ class EvolvingMemory:
 
 **References & links:**
 - [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook)
-- [Yao et al., 2024 - tau-bench](https://arxiv.org/abs/2406.12045)
+
 
 <!-- sota:17L04 -->
 
@@ -1813,8 +1804,7 @@ def verified_reward(traj, verifiers):                 # require agreement / exec
 **References & links:**
 - [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook)
 - [Shao et al., 2024 - GRPO/RLVR](https://arxiv.org/abs/2402.03300)
-- [Jimenez et al., 2023 - SWE-bench](https://arxiv.org/abs/2310.06770)
-- [ICLR 2026 RSI Workshop](https://recursive-workshop.github.io/)
+
 
 <!-- sota:17L05 -->
 
@@ -1896,8 +1886,8 @@ def code_self_improve(agent, task, rounds=3):
 
 **References & links:**
 - [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook)
-- [Yao et al., 2022 - ReAct](https://arxiv.org/abs/2210.03629)
 - [Jimenez et al., 2023 - SWE-bench](https://arxiv.org/abs/2310.06770)
+
 
 <!-- sota:17L06 -->
 
@@ -1976,7 +1966,7 @@ def research_step(agent, sandbox):
 
 **References & links:**
 - [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook)
-- [Kaplan et al., 2020 - Scaling Laws](https://arxiv.org/abs/2001.08361)
+
 
 <!-- sota:17L07 -->
 
@@ -2060,6 +2050,7 @@ def evolve(pop, compare, mutate, gens=20):
 **References & links:**
 - [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook)
 
+
 <!-- sota:17L08 -->
 
 ## Week 9 — Self-Improving Reasoning: Curricula at the Edge of Learnability
@@ -2139,6 +2130,7 @@ def frontier_sample(tasks, model, lo=0.3, hi=0.7):
 - [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook)
 - [Shao et al., 2024 - DeepSeekMath/GRPO](https://arxiv.org/abs/2402.03300)
 
+
 <!-- sota:17L09 -->
 
 ## Week 10 — Tiny Recursive Models & Iterative Architectures
@@ -2216,6 +2208,7 @@ class TinyRecursive(nn.Module):
 
 **References & links:**
 - [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook)
+
 
 <!-- sota:17L10 -->
 
@@ -2298,8 +2291,8 @@ def vla_self_improve(policy, world_model, env, rounds=5):
 
 **References & links:**
 - [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook)
-- [Micheli et al., 2022 - IRIS](https://arxiv.org/abs/2209.00588)
-- [Farama Gymnasium](https://github.com/Farama-Foundation/Gymnasium)
+- [Ho et al., 2020 - Denoising Diffusion (DDPM)](https://arxiv.org/abs/2006.11239)
+
 
 <!-- sota:17L11 -->
 
@@ -2376,8 +2369,7 @@ def rsi_evidence(system, frozen_eval):
 
 **References & links:**
 - [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook)
-- [ICLR 2026 RSI Workshop](https://recursive-workshop.github.io/)
-- [veRL](https://github.com/volcengine/verl)
+
 
 <!-- sota:17L12 -->
 
@@ -2457,8 +2449,9 @@ def safety_gate(update, checks):                        # block the self-update 
 
 **References & links:**
 - [`VizuaraAI/paper-to-notebook`](https://github.com/VizuaraAI/paper-to-notebook)
-- [Zou et al., 2023 - GCG attacks](https://arxiv.org/abs/2307.15043)
-- [EU AI Act timeline](https://artificialintelligenceact.eu/implementation-timeline/)
+- [EU AI Act - implementation timeline](https://artificialintelligenceact.eu/implementation-timeline/)
+- [Anthropic - Responsible Scaling Policy](https://www.anthropic.com/news/anthropics-responsible-scaling-policy)
+
 
 <!-- sota:17L13 -->
 
@@ -2648,7 +2641,8 @@ groundedness:        {target: 0.90, measure: "RAG faithfulness judge", gate: M2}
 
 **References & links:**
 - [`GokuMohandas/Made-With-ML`](https://github.com/GokuMohandas/Made-With-ML)
-- [LangGraph](https://github.com/langchain-ai/langgraph)
+- [Model Context Protocol docs](https://modelcontextprotocol.io)
+
 
 <!-- sota:16L01 -->
 
@@ -2741,11 +2735,9 @@ def rag_answer(query, retriever, reranker, llm, k=20, top=5):
 - [`decodingml/llm-twin-course`](https://github.com/decodingml/llm-twin-course)
 - [Faysse et al., 2024 - ColPali](https://arxiv.org/abs/2407.01449)
 - [Es et al., 2023 - RAGAS](https://arxiv.org/abs/2309.15217)
-- [Asai et al., 2023 - Self-RAG](https://arxiv.org/abs/2310.11511)
 - [Edge et al., 2024 - GraphRAG](https://arxiv.org/abs/2404.16130)
-- [Gao et al., 2022 - HyDE](https://arxiv.org/abs/2212.10496)
-- [Lewis et al., 2020 - RAG](https://arxiv.org/abs/2005.11401)
-- [Qdrant](https://github.com/qdrant/qdrant)
+- [Qdrant vector DB](https://github.com/qdrant/qdrant)
+
 
 <!-- sota:16L02 -->
 
@@ -2847,9 +2839,9 @@ async def orchestrate(task, mcp_sessions, agents):
 - [Dettmers et al., 2023 - QLoRA](https://arxiv.org/abs/2305.14314)
 - [Liu et al., 2024 - DoRA](https://arxiv.org/abs/2402.09353)
 - [Rafailov et al., 2023 - DPO](https://arxiv.org/abs/2305.18290)
-- [Wu et al., 2023 - AutoGen](https://arxiv.org/abs/2308.08155)
 - [Model Context Protocol docs](https://modelcontextprotocol.io)
-- [LangGraph](https://github.com/langchain-ai/langgraph)
+- [LangGraph (durable agents)](https://github.com/langchain-ai/langgraph)
+
 
 <!-- sota:16L03 -->
 
@@ -2941,11 +2933,9 @@ def eval_gate(system, test_set, judge, redteam, targets):
 
 **References & links:**
 - [`GokuMohandas/Made-With-ML`](https://github.com/GokuMohandas/Made-With-ML)
-- [Yao et al., 2024 - tau-bench](https://arxiv.org/abs/2406.12045)
 - [Jimenez et al., 2023 - SWE-bench](https://arxiv.org/abs/2310.06770)
-- [Zou et al., 2023 - GCG attacks](https://arxiv.org/abs/2307.15043)
-- [Greshake et al., 2023 - Indirect Prompt Injection](https://arxiv.org/abs/2302.12173)
-- [UK AISI Inspect](https://inspect.aisi.org.uk)
+- [UK AISI Inspect (evals)](https://inspect.aisi.org.uk)
+
 
 <!-- sota:16L04 -->
 
@@ -3042,8 +3032,8 @@ jobs:
 - [Dao et al., 2022 - FlashAttention](https://arxiv.org/abs/2205.14135)
 - [vLLM docs](https://docs.vllm.ai)
 - [Leviathan et al., 2022 - Speculative Decoding](https://arxiv.org/abs/2211.17192)
-- [veRL](https://github.com/volcengine/verl)
-- [Langfuse](https://github.com/langfuse/langfuse)
+- [Langfuse (LLM observability)](https://github.com/langfuse/langfuse)
+
 
 <!-- sota:16L05 -->
 
@@ -3135,7 +3125,7 @@ def monitor_drift(prod_logs, judge, baseline_quality, window=200, drop=0.05):
 
 **References & links:**
 - [`GokuMohandas/Made-With-ML`](https://github.com/GokuMohandas/Made-With-ML)
-- [Langfuse](https://github.com/langfuse/langfuse)
+
 
 <!-- sota:16L06 -->
 

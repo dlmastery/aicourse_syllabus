@@ -1485,8 +1485,9 @@ def handle_untrusted(content, task):
 - **EU AI Act** GPAI obligations apply **Aug 2, 2026** — deployed agent systems are in scope.
 
 **References & links:**
-- [Greshake et al., 2023 - Indirect Prompt Injection](https://arxiv.org/abs/2302.12173)
-- [EU AI Act timeline](https://artificialintelligenceact.eu/implementation-timeline/)
+- [Model Context Protocol docs](https://modelcontextprotocol.io)
+- [EU AI Act - implementation timeline](https://artificialintelligenceact.eu/implementation-timeline/)
+
 
 <!-- sota:07L11 -->
 
@@ -1588,10 +1589,9 @@ def ship_gate():
 
 **References & links:**
 - [`langchain-ai/langchain`](https://github.com/langchain-ai/langchain)
-- [Yao et al., 2024 - tau-bench](https://arxiv.org/abs/2406.12045)
-- [EU AI Act timeline](https://artificialintelligenceact.eu/implementation-timeline/)
-- [LangGraph](https://github.com/langchain-ai/langgraph)
-- [Langfuse](https://github.com/langfuse/langfuse)
+- [Model Context Protocol docs](https://modelcontextprotocol.io)
+- [EU AI Act - implementation timeline](https://artificialintelligenceact.eu/implementation-timeline/)
+
 
 <!-- sota:07L12 -->
 
@@ -1818,9 +1818,9 @@ def profile(model, repo):
 
 **References & links:**
 - [`microsoft/generative-ai-for-beginners`](https://github.com/microsoft/generative-ai-for-beginners)
-- [`openai/human-eval`](https://github.com/openai/human-eval)
 - [vLLM docs](https://docs.vllm.ai)
 - [Jimenez et al., 2023 - SWE-bench](https://arxiv.org/abs/2310.06770)
+
 
 <!-- sota:08L01 -->
 
@@ -1909,8 +1909,9 @@ this week is qualitative + your A/B numbers.
 
 **References & links:**
 - [`VizuaraAI/modern-software-developer-bootcamp`](https://github.com/VizuaraAI/modern-software-developer-bootcamp)
-- [Rafailov et al., 2023 - DPO](https://arxiv.org/abs/2305.18290)
 - [Jimenez et al., 2023 - SWE-bench](https://arxiv.org/abs/2310.06770)
+- [Model Context Protocol docs](https://modelcontextprotocol.io)
+
 
 <!-- sota:08L02 -->
 
@@ -2060,6 +2061,7 @@ def fix(task, max_steps=12):
 **References & links:**
 - [Jimenez et al., 2023 - SWE-bench](https://arxiv.org/abs/2310.06770)
 
+
 <!-- sota:08L03 -->
 
 ## Week 4 — The AI IDE: Context, Embeddings, and PRDs as MCP Resources
@@ -2159,7 +2161,8 @@ def schema() -> str:
 
 **References & links:**
 - [`modelcontextprotocol/servers`](https://github.com/modelcontextprotocol/servers)
-- [Jimenez et al., 2023 - SWE-bench](https://arxiv.org/abs/2310.06770)
+- [Model Context Protocol docs](https://modelcontextprotocol.io)
+
 
 <!-- sota:08L04 -->
 
@@ -2295,7 +2298,7 @@ def run_gated(task):
 
 **References & links:**
 - [`anthropics/anthropic-cookbook`](https://github.com/anthropics/anthropic-cookbook)
-- [Jimenez et al., 2023 - SWE-bench](https://arxiv.org/abs/2310.06770)
+
 
 <!-- sota:08L05 -->
 
@@ -2416,7 +2419,7 @@ def agent_run(cmd):
 
 **References & links:**
 - [`krishnaik06/Dockers`](https://github.com/krishnaik06/Dockers)
-- [`e2b-dev/E2B`](https://github.com/e2b-dev/E2B)
+
 
 <!-- sota:08L06 -->
 
@@ -2531,8 +2534,7 @@ def test_viewer_cannot_edit():                           # human-authored constr
 - **Reward-hacking audits** for self-tested coding agents — don't let the agent grade its own bugs.
 
 **References & links:**
-- [Su et al., 2021 - RoPE](https://arxiv.org/abs/2104.09864)
-- [Hong et al., 2024 - ORPO](https://arxiv.org/abs/2403.07691)
+
 
 <!-- sota:08L07 -->
 
@@ -2648,8 +2650,8 @@ jobs:
 - Studies still show AI-assisted devs ship **more insecure code while feeling more confident**.
 
 **References & links:**
-- [`semgrep/semgrep`](https://github.com/semgrep/semgrep)
-- [Semgrep](https://semgrep.dev)
+- [Semgrep (SAST)](https://semgrep.dev)
+
 
 <!-- sota:08L08 -->
 
@@ -2764,11 +2766,7 @@ jobs:
 
 **References & links:**
 - [`openai/openai-cookbook`](https://github.com/openai/openai-cookbook)
-- [`microsoft/CodeReviewer`](https://github.com/microsoft/CodeReviewer)
-- [Jimenez et al., 2023 - SWE-bench](https://arxiv.org/abs/2310.06770)
-- [LangGraph](https://github.com/langchain-ai/langgraph)
-- [veRL](https://github.com/volcengine/verl)
-- [Langfuse](https://github.com/langfuse/langfuse)
+
 
 <!-- sota:08L09 -->
 
@@ -2887,8 +2885,7 @@ test("owner shares editor; viewer blocked from editing", async ({ page }) => {
 - **Reconciliation** (real API/types/states) is the actual engineering now, not the generation.
 
 **References & links:**
-- [Hu et al., 2021 - LoRA](https://arxiv.org/abs/2106.09685)
-- [Rafailov et al., 2023 - DPO](https://arxiv.org/abs/2305.18290)
+
 
 <!-- sota:08L10 -->
 
@@ -3010,6 +3007,7 @@ def evaluate(agent):
 - [`krishnaik06/mlproject`](https://github.com/krishnaik06/mlproject)
 - [Jimenez et al., 2023 - SWE-bench](https://arxiv.org/abs/2310.06770)
 
+
 <!-- sota:08L11 -->
 
 ## Week 12 — Capstone: Ship a Real Feature End-to-End with a Coding Agent
@@ -3114,10 +3112,9 @@ def ship_gate():
 
 **References & links:**
 - [`krishnaik06/Deployment-flask`](https://github.com/krishnaik06/Deployment-flask)
-- [Su et al., 2021 - RoPE](https://arxiv.org/abs/2104.09864)
-- [Rafailov et al., 2023 - DPO](https://arxiv.org/abs/2305.18290)
-- [Jimenez et al., 2023 - SWE-bench](https://arxiv.org/abs/2310.06770)
-- [EU AI Act timeline](https://artificialintelligenceact.eu/implementation-timeline/)
+- [Model Context Protocol docs](https://modelcontextprotocol.io)
+- [EU AI Act - implementation timeline](https://artificialintelligenceact.eu/implementation-timeline/)
+
 
 <!-- sota:08L12 -->
 
