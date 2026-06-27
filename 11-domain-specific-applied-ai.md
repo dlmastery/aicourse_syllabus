@@ -1098,5 +1098,3 @@ By the end you can: take an AI capability into a *regulated, consequential* doma
 - **Public-good track** — an on-device/low-bandwidth assistant for an underserved setting, with a human-review UX and equity note — *Lectures 10–12*.
 
 **Public-good / low-resource track:** AI tutor for underserved learners, public-health/agriculture assistant, civic/accessibility assistant — each on-device/low-bandwidth where possible, with a human-review UX and an equity/limitations note (graded).
-</content>
-</invoke>

@@ -1038,4 +1038,4 @@ By the end you can: read frontier AI papers for the claim–evidence gap; reprod
 **Build studios** (specs in [`PROJECTS.md`](PROJECTS.md)):
 - **Automated research mini-agent** — hypothesis → experiment → report → uncertainty statement, audited against your own re-run — *Lectures 2, 12–13*
 - **Synthetic-data audit** — real+synthetic vs real-only; artifact / model-collapse check across rounds — *Lecture 10*
-</content>
+

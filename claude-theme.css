@@ -1,0 +1,168 @@
+/* ============================================================
+   Claude.ai-inspired theme for mdBook
+   Warm paper canvas · coral accent · editorial serif headings
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap');
+
+:root {
+  --claude-cream:      #F0EEE6;
+  --claude-canvas:     #FAF9F5;
+  --claude-coral:      #D97757;
+  --claude-coral-deep: #C2613F;
+  --claude-ink:        #1F1E1D;
+  --claude-ink-soft:   #3D3C39;
+  --claude-border:     #E5E2D8;
+  --sans:  "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+}
+
+/* ---------- LIGHT (mapped onto mdBook 'light' + 'rust') ---------- */
+html.light, html.rust {
+  --bg: var(--claude-canvas);
+  --fg: var(--claude-ink);
+
+  --sidebar-bg: var(--claude-cream);
+  --sidebar-fg: var(--claude-ink-soft);
+  --sidebar-non-existant: #b7b4a7;
+  --sidebar-active: var(--claude-coral);
+  --sidebar-spacer: var(--claude-border);
+
+  --scrollbar: #cfccbf;
+  --icons: #908d7e;
+  --icons-hover: var(--claude-ink);
+
+  --links: var(--claude-coral-deep);
+  --inline-code-color: #b14a2c;
+
+  --theme-popup-bg: var(--claude-canvas);
+  --theme-popup-border: var(--claude-border);
+  --theme-hover: #EBE9DF;
+
+  --quote-bg: var(--claude-cream);
+  --quote-border: var(--claude-coral);
+
+  --table-border-color: var(--claude-border);
+  --table-header-bg: #ECE9DF;
+  --table-alternate-bg: #F4F2EA;
+
+  --searchbar-border-color: var(--claude-border);
+  --searchbar-bg: #FFFFFF;
+  --searchbar-fg: var(--claude-ink);
+  --searchbar-shadow-color: #d9d6c9;
+  --searchresults-header-fg: #908d7e;
+  --searchresults-border-color: var(--claude-border);
+  --searchresults-li-bg: var(--claude-cream);
+  --search-mark-bg: #F1B6A0;
+}
+
+/* ---------- DARK (mapped onto mdBook 'coal', 'navy', 'ayu') ---------- */
+html.coal, html.navy, html.ayu {
+  --bg: #262624;
+  --fg: #F5F4EE;
+
+  --sidebar-bg: #1F1E1D;
+  --sidebar-fg: #C9C7BD;
+  --sidebar-non-existant: #5a5850;
+  --sidebar-active: #E2886B;
+  --sidebar-spacer: #38362F;
+
+  --scrollbar: #55534b;
+  --icons: #8f8d82;
+  --icons-hover: #F5F4EE;
+
+  --links: #E89B80;
+  --inline-code-color: #EAA88E;
+
+  --theme-popup-bg: #2B2A27;
+  --theme-popup-border: #38362F;
+  --theme-hover: #34332E;
+
+  --quote-bg: #2B2A27;
+  --quote-border: var(--claude-coral);
+
+  --table-border-color: #38362F;
+  --table-header-bg: #2F2E2A;
+  --table-alternate-bg: #2A2925;
+
+  --searchbar-border-color: #38362F;
+  --searchbar-bg: #2B2A27;
+  --searchbar-fg: #F5F4EE;
+  --searchbar-shadow-color: #000000;
+  --searchresults-header-fg: #8f8d82;
+  --searchresults-border-color: #38362F;
+  --searchresults-li-bg: #2B2A27;
+  --search-mark-bg: #9C5236;
+}
+
+/* ---------- Typography ---------- */
+.content {
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.72;
+  letter-spacing: 0.005em;
+}
+.content h1, .content h2, .content h3, .content h4, .content h5 {
+  font-family: var(--serif);
+  font-weight: 600;
+  letter-spacing: -0.012em;
+  line-height: 1.25;
+}
+.content h1 { font-size: 2.15rem; margin-top: 0.4em; }
+.content h2 {
+  font-size: 1.6rem;
+  margin-top: 2.4rem;
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid var(--table-border-color);
+}
+.content h3 { font-size: 1.28rem; margin-top: 1.8rem; }
+.menu-title { font-family: var(--serif); font-weight: 600; letter-spacing: -0.01em; }
+.sidebar, .chapter { font-family: var(--sans); }
+.sidebar .chapter li a { font-size: 0.9rem; line-height: 1.5; }
+
+/* ---------- Links ---------- */
+.content a, .content a:visited { color: var(--links); text-decoration: none; }
+.content a:hover { text-decoration: underline; text-underline-offset: 2px; }
+
+/* ---------- Sidebar items: pill hover + coral active ---------- */
+.chapter li a { border-radius: 8px; padding: 4px 10px; transition: background 0.12s ease; }
+.chapter li a:hover { background: var(--theme-hover); }
+.chapter li a.active { color: var(--sidebar-active); font-weight: 600; }
+
+/* ---------- Code ---------- */
+.content pre { border-radius: 12px; padding: 0.2rem 0.1rem; }
+.content pre > code { border-radius: 12px; font-size: 0.86em; }
+.content code {
+  border-radius: 6px;
+  padding: 0.12em 0.38em;
+  background: var(--quote-bg);
+  font-size: 0.86em;
+}
+
+/* ---------- Blockquotes / callouts ---------- */
+blockquote {
+  border-inline-start: 4px solid var(--quote-border) !important;
+  border-radius: 10px;
+  padding: 0.8em 1.1em;
+  background: var(--quote-bg);
+}
+
+/* ---------- Tables: rounded, soft ---------- */
+.content table { border-radius: 10px; overflow: hidden; border-collapse: separate; border-spacing: 0; }
+.content table thead { font-family: var(--sans); }
+.content table td, .content table th { border-color: var(--table-border-color); }
+
+/* ---------- Top menu bar ---------- */
+.menu-bar { background: var(--sidebar-bg); border-bottom: 1px solid var(--sidebar-spacer); }
+.menu-bar i, .menu-bar .icon-button { color: var(--icons); }
+
+/* ---------- Reading column: roomier, paper feel ---------- */
+.page { padding-top: 0; }
+.content main { max-width: 760px; margin: 0 auto; padding: 0 18px 40px; }
+
+/* ---------- Coral accents on nav arrows & search ---------- */
+.nav-chapters:hover { color: var(--claude-coral); }
+#searchbar:focus { border-color: var(--claude-coral); outline: none; }
+
+/* ---------- Horizontal rules ---------- */
+.content hr { border: none; border-top: 1px solid var(--table-border-color); margin: 2.2em 0; }

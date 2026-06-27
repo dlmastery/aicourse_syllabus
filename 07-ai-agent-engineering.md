@@ -1345,5 +1345,3 @@ exists; **evaluate** agents with tau-bench-style pass^k gates; run them as a pro
 **Build studios** (specs in [`PROJECTS.md`](PROJECTS.md)):
 - **Secure MCP agent** — an MCP tool server with auth, scopes, and audit logs plus an agent that consumes it safely — *Lectures 3, 11*
 - **Self-evolving rubric lab** — rubric generation with judge-agreement and bias / reward-hacking tests — *Lectures 9–10*
-</content>
-</invoke>

@@ -1307,4 +1307,3 @@ context-as-MCP-resources; choose **autonomy levels and human-in-the-loop gates**
 - **AI PR reviewer** — static / security / architecture / style reviewers with a human merge gate — *Lectures 8–9*
 - **Coding-agent self-repair** — unit-test generation + hidden tests + a reward-hacking audit — *Lectures 3, 7*
 - **AI SRE incident bot** — RCA draft, telemetry correlation, and human-approved rollback — *Lecture 11*
-</content>

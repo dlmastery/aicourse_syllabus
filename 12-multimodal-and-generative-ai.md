@@ -982,4 +982,3 @@ By the end you can: implement a Vision Transformer, a CLIP contrastive loss, a D
 
 **Build studios** (specs in [`PROJECTS.md`](PROJECTS.md)):
 - **VLA / world-model reading lab** — robotics-policy / world-model evaluation with a safety analysis — *Lectures 10–11*.
-</content>
