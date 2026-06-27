@@ -85,6 +85,18 @@ Per-week weights below are the share of the 58% lab bucket, expressed as **% of 
 
 ▶ **Practical project:** `VizuaraAI/llm-inference-tutorial` — instrument and profile a served model's forward pass to classify the memory- vs compute-bound bottleneck.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab T4/A100 (or local `uv venv`); `pip install torch transformers` + clone the repo; load Qwen3-8B FP16.
+2. **Warm up:** 3 warm-up forwards, then `torch.cuda.synchronize()`.
+3. **Profile:** wrap a forward in `torch.profiler` (CUDA activity), export a Chrome trace, list the top-5 kernels by CUDA time.
+4. **Budget:** compute weights + activations + KV memory by hand; compare to `torch.cuda.max_memory_allocated()`.
+5. **Classify:** for matmul vs softmax vs layernorm, compute arithmetic intensity and label each compute- or memory-bound.
+6. **Report:** write the roofline classification.
+- **Artifact:** committed Colab + `evidence/week01-profile/bottleneck-report.md` + the Chrome trace.
+- **Use `$gpu-profile`:** it turns the trace into the bottleneck + top-time-sink table.
+- **Done when:** 3/3 ops correctly classified and predicted memory within 15% of measured.
+- **Stretch:** repeat at batch 8 and show which ops flip compute↔memory-bound.
+
 ### Harness / reusable skill — `$gpu-profile`
 - **Purpose:** turn any model/op into a profile that names the bottleneck (compute vs memory) and the top time-sinks.
 - **Inputs:** a model + input shape. **Outputs:** a kernel-time table, a roofline classification, a memory breakdown.
@@ -167,6 +179,17 @@ print("alloc GB:", torch.cuda.max_memory_allocated()/1e9)   # compare to your bu
 - **Deliverable:** a precision-tradeoff table (speed/mem/quality) + a one-paragraph "when to use which." **Acceptance:** FP8 shows a real memory/throughput win with quality drop quantified on a fixed eval (not "looks fine").
 
 ▶ **Practical project:** `VizuaraAILabs/nano-gpt-oss` — run BF16/FP16 mixed-precision training and reproduce (then fix) an FP16-overflow→NaN.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab A100; `pip install torch torchao transformers`; clone the repo.
+2. **Baseline:** run the same generation in FP16, BF16, and FP8 (`torchao` float8) on a fixed prompt set.
+3. **Measure:** record latency, peak memory, and an MMLU/GSM8K subset score per dtype.
+4. **Break it:** force an FP16 overflow→NaN, then fix with BF16 / loss scaling and explain via the format's max value.
+5. **Tabulate:** speed/mem/quality table + a one-paragraph "when to use which."
+- **Artifact:** committed notebook + `tradeoff-table.md` + the NaN repro/fix note.
+- **Use `$precision-sweep`:** it produces the table + a recommended dtype.
+- **Done when:** FP8 shows a real mem/throughput win with a quantified quality delta on a fixed eval.
+- **Stretch:** add per-tensor vs per-channel FP8 scaling and show the outlier-channel effect.
 
 ### Harness / reusable skill — `$precision-sweep`
 - **Purpose:** for any model, compare precisions on speed/memory/quality with a fixed eval, and recommend one.
@@ -252,6 +275,17 @@ print(results)        # -> tradeoff-table.md
 
 ▶ **Practical project:** `mlabonne/llm-course` — use its quantization notebooks (GPTQ/AWQ/GGUF) to quantize the 8B and re-eval quality.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab; `pip install autoawq auto-gptq llmcompressor transformers vllm`; open the course's quantization notebook.
+2. **Calibrate:** build a WikiText calibration set; quantize the 8B with AWQ INT4 (group 128) and GPTQ INT4.
+3. **W8A8:** run SmoothQuant W8A8 via llm-compressor; export vLLM-ready checkpoints.
+4. **Serve & eval:** `vllm serve` each variant; score the fixed MMLU/GSM8K subset; measure tokens/s + GB.
+5. **Decide:** method × {quality, tokens/s, GB} table; write the ADR recommending a recipe.
+- **Artifact:** committed notebook + `quant-comparison.md` + ADR-001.
+- **Use `$quantize-and-verify`:** quantize → verify quality on a fixed eval → go/no-go.
+- **Done when:** ≥1 INT4 variant holds ≥98% of FP16 quality while cutting memory ≥3×.
+- **Stretch:** add an FP8 W8A8 variant and compare against INT4 on Blackwell-class kernels.
+
 ### Harness / reusable skill — `$quantize-and-verify`
 - **Purpose:** quantize any model with a chosen method + verify quality on a fixed eval before it ships.
 - **Inputs:** a model + calibration data + an eval. **Outputs:** quantized weights, a quality/speed/memory delta, a go/no-go.
@@ -332,6 +366,17 @@ model.save_quantized("Qwen3-8B-awq-int4")
 
 ▶ **Practical project:** `krishnaik06/Finetuning-LLM` — QLoRA-fine-tune a 4-bit base on one GPU, then merge and serve the result.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab / single 24 GB GPU; `pip install bitsandbytes peft trl transformers vllm`; clone the repo.
+2. **QLoRA:** load the 8B in NF4 (double-quant), attach LoRA adapters, fine-tune on a small instruction set.
+3. **Merge:** merge adapters, export, re-eval on the fixed set vs the base.
+4. **FP8 serve:** produce an FP8 checkpoint (llm-compressor); serve on vLLM.
+5. **Prove served gain:** benchmark served tokens/s with `benchmark_serving.py` at batch 1 and batch 32 vs FP16/INT4.
+- **Artifact:** committed notebook + `served-speedup.md` + the merged adapter.
+- **Use `$lowbit-serve`:** pick an accelerated format, fine-tune if needed, verify the *served* gain.
+- **Done when:** the served FP8/INT4 variant beats FP16 end-to-end with quality within budget.
+- **Stretch:** show where the served gain disappears at high concurrency and explain why.
+
 ### Harness / reusable skill — `$lowbit-serve`
 - **Purpose:** select a low-bit format your serving stack accelerates, fine-tune if needed (QLoRA), and verify the *served* gain.
 - **Inputs:** a model + serving stack + quality budget. **Outputs:** a served variant + a benchmark proving real speedup + quality delta.
@@ -409,6 +454,17 @@ m = get_peft_model(m, LoraConfig(r=16, lora_alpha=32, target_modules=["q_proj","
 - **Deliverable:** a compression report (pruning + distillation rows, real speedup vs theoretical). **Acceptance:** 2:4 sparsity shows a measured wall-clock speedup (not just a parameter-count reduction) and the distilled student beats its from-scratch twin.
 
 ▶ **Practical project:** `VizuaraAILabs/Tiny-Stories-Regional` — train a small distilled-scale LM and compare it against a from-scratch same-size twin.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab; `pip install torch torchao transformers`; clone the repo.
+2. **Distill:** train a small student from a larger teacher (logit KD, tuned temperature) on the corpus.
+3. **Twin:** train a same-size model from scratch; compare accuracy to the distilled student.
+4. **2:4 sparsity:** apply 2:4 semi-structured sparsity (`torchao`) to the 8B; measure served wall-clock vs dense.
+5. **Report:** compression table — theoretical vs real speedup + quality delta.
+- **Artifact:** committed notebook + `compression-report.md`.
+- **Use `$compress-verify`:** verify a hardware-real speedup *and* an in-budget quality delta.
+- **Done when:** 2:4 shows a measured wall-clock speedup and the distilled student beats its from-scratch twin.
+- **Stretch:** add SparseGPT/Wanda one-shot pruning and re-eval.
 
 ### Harness / reusable skill — `$compress-verify`
 - **Purpose:** compress a model (prune/distill) and verify both a *hardware-real* speedup and an in-budget quality delta.
@@ -488,6 +544,17 @@ print("dense vs 2:4:", bench(dense), bench(m), "  MMLU delta:", eval_mmlu(m)-bas
 - **Deliverable:** an attention-scaling report (latency/memory vs context, FA on/off, paged vs naive). **Acceptance:** FA-3 shows a measured memory + throughput win at long context, and your KV-cache prediction matches measurement within 15%.
 
 ▶ **Practical project:** `VizuaraAI/kv-cache-token-reduction-walkthrough` — measure KV-cache growth and the FlashAttention/paged-KV win across 1k/8k/32k context.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab A100; `pip install vllm transformers flash-attn`; clone the repo.
+2. **Backends:** benchmark eager vs FlashAttention-3/4 at 1k/8k/32k context (latency, memory, tokens/s).
+3. **KV formula:** compute KV-cache bytes from the formula; verify against measured memory as context grows.
+4. **Paged:** show vLLM PagedAttention raising concurrent sequences at the same memory.
+5. **Curve:** plot latency/memory vs context, FA on/off, paged vs naive.
+- **Artifact:** committed notebook + `attention-scaling.md`.
+- **Use `$attention-bench`:** quantify attention/KV cost across context + prove the FA/paged win.
+- **Done when:** FA shows a measured long-context win and KV prediction matches within 15%.
+- **Stretch:** add FP8 KV-cache and re-measure max concurrency.
 
 ### Harness / reusable skill — `$attention-bench`
 - **Purpose:** quantify attention/KV-cache cost across context lengths and prove the win from FlashAttention + paged KV.
@@ -569,6 +636,17 @@ for attn in ["eager", "flash_attention_3"]:
 
 ▶ **Practical project:** `VizuaraAI/infertutor-arena-capstone` — serve on Modal + vLLM and benchmark continuous batching / TTFT / ITL across concurrency.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Modal or RunPod serverless GPU; `pip install vllm sglang`; clone the repo; deploy the quantized 8B.
+2. **Serve 3 ways:** stand up vLLM, SGLang, and TensorRT-LLM on the same checkpoint.
+3. **Benchmark:** run `benchmark_serving.py`/GuideLLM at concurrency 1/8/32/64; capture TTFT, ITL, throughput.
+4. **Prefix cache:** demonstrate SGLang RadixAttention on a shared-system-prompt workload (TTFT win).
+5. **Decide:** engine comparison table + ADR-002 recommending a stack.
+- **Artifact:** committed config + `engine-comparison.md` + ADR-002.
+- **Use `$serving-engine-bench`:** benchmark + choose an engine on real metrics.
+- **Done when:** continuous batching beats static by a measured margin and prefix caching gives a TTFT win.
+- **Stretch:** add a disaggregated prefill/decode run and compare throughput.
+
 ### Harness / reusable skill — `$serving-engine-bench`
 - **Purpose:** benchmark and choose an inference engine for a given workload (chat vs batch vs RAG) on real metrics.
 - **Inputs:** a model + workload profile + SLOs. **Outputs:** TTFT/ITL/throughput table, max concurrency, a justified engine pick.
@@ -646,6 +724,17 @@ python -m vllm.entrypoints.benchmark_serving \
 
 ▶ **Practical project:** `VizuaraAI/llm-inference-tutorial` — configure speculative decoding (draft / EAGLE) and measure acceptance rate + decode-latency win.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab A100/Modal; `pip install vllm`; clone the repo; load the quantized 8B + a 1B draft.
+2. **Configure:** enable vLLM speculative decoding with (a) the draft model and (b) EAGLE-3 / n-gram.
+3. **Acceptance:** measure acceptance rate and per-step accepted length.
+4. **Latency:** benchmark decode latency at batch 1 vs batch 32 vs the no-speculation baseline.
+5. **Equivalence:** prove greedy outputs are identical to baseline.
+- **Artifact:** committed notebook + `spec-decode-report.md`.
+- **Use `$spec-decode`:** add speculation and verify an output-preserving latency win.
+- **Done when:** measured decode-latency drop at batch 1 with identical greedy outputs.
+- **Stretch:** show the KV-quant + speculative incompatibility and document the gotcha.
+
 ### Harness / reusable skill — `$spec-decode`
 - **Purpose:** add speculative decoding to a served model and verify a real, output-preserving latency win.
 - **Inputs:** a target model + a draft/method. **Outputs:** acceptance rate, latency delta vs batch, an output-equivalence check.
@@ -722,6 +811,17 @@ out = llm.generate(prompts, sp)
 - **Deliverable:** an MoE analysis (active/total params, throughput, memory, routing-balance plot). **Acceptance:** you can explain, with measured numbers, why the MoE needs more memory but less compute per token than a dense peer, and show its expert load distribution.
 
 ▶ **Practical project:** `VizuaraAILabs/DeepSeek-From-Scratch` — inspect MLA/MoE routing and per-expert load on a from-scratch MoE.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab A100; `pip install torch transformers`; clone the repo.
+2. **Run MoE:** load a Qwen3-MoE / Mixtral-style model with `output_router_logits=True`.
+3. **Accounting:** compute active vs total params; measure tokens/s and memory vs a dense peer.
+4. **Routing:** histogram per-expert token counts; sweep top-k and observe load balance.
+5. **Report:** active/total accounting + throughput/memory + expert-load plot + ADR-003.
+- **Artifact:** committed notebook + `moe-analysis.md` + ADR-003.
+- **Use `$moe-analyze`:** profile active/total, serving cost, and routing balance.
+- **Done when:** you explain with numbers why MoE needs more memory but less compute/token, with a load histogram.
+- **Stretch:** simulate expert-parallel all-to-all cost across 2 GPUs.
 
 ### Harness / reusable skill — `$moe-analyze`
 - **Purpose:** profile an MoE model's active/total params, serving cost, and routing balance to inform a deploy decision.
@@ -807,6 +907,17 @@ print("expert load (should be roughly flat):", counts)
 
 ▶ **Practical project:** `VizuaraAI/kv-cache-token-reduction-walkthrough` — push toward 128k with FP8 KV + eviction and run a long-context-vs-RAG cost comparison.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab A100/Modal; `pip install vllm transformers`; clone the repo.
+2. **Quantize KV:** serve with FP8 KV-cache + StreamingLLM/sliding-window at 16k/64k/128k.
+3. **Max ctx/GB:** measure max context per GB vs full-precision KV; record quality deltas.
+4. **LC vs RAG:** run a long-doc QA task as long-context vs retrieval; compare cost + accuracy.
+5. **Probe:** run a lost-in-the-middle probe; write the LC-vs-RAG recommendation.
+- **Artifact:** committed notebook + `longctx-report.md`.
+- **Use `$longctx-budget`:** find the cheapest path to a target context under a quality floor.
+- **Done when:** KV quantization raises max ctx/GB with a quantified quality delta + a defended LC-vs-RAG pick.
+- **Stretch:** add YaRN scaling and eval quality at 256k.
+
 ### Harness / reusable skill — `$longctx-budget`
 - **Purpose:** find the cheapest way to hit a target context length under a quality floor (KV-quant/eviction/window/RAG).
 - **Inputs:** a model + target context + quality floor + a long-doc task. **Outputs:** max-context-per-GB curve, quality deltas per lever, an LC-vs-RAG recommendation.
@@ -887,6 +998,17 @@ for seq in [16384, 65536, 131072]:
 - **Deliverable:** a parallelism report (memory/throughput vs strategy) + a "which plan for which model+hardware" decision table. **Acceptance:** you demonstrate fitting a model that does *not* fit on one GPU via sharding, and show how serving latency changes with TP degree, explaining the interconnect role.
 
 ▶ **Practical project:** `VizuaraAI/vizuara-5d-parallelism-workshop` — run DP/TP/PP/CP/EP sharding on multi-GPU and read the memory/comms tradeoff.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** multi-GPU (Modal/RunPod 2–8×); `pip install torch deepspeed accelerate vllm`; clone the workshop.
+2. **Shard:** fine-tune the 8B with FSDP2 (or ZeRO-3) across 2+ GPUs; record peak mem/GPU + throughput.
+3. **Tensor-parallel:** serve a 70B (quantized) with `--tensor-parallel-size`; sweep TP degree vs latency.
+4. **Diagnose:** name the bottleneck (comms overlap, pipeline bubble, interconnect).
+5. **Plan:** decision table — which plan for which model + hardware + goal.
+- **Artifact:** committed configs + `parallel-plan.md`.
+- **Use `$parallel-plan`:** choose + validate a DP/FSDP/TP/PP strategy.
+- **Done when:** you fit a model that doesn't fit on one GPU and show TP-degree latency with the interconnect role.
+- **Stretch:** add context + expert parallelism (5D) and compare.
 
 ### Harness / reusable skill — `$parallel-plan`
 - **Purpose:** choose and validate a parallelism strategy (DP/FSDP-ZeRO/TP/PP) for a target model + hardware + latency goal.
@@ -978,6 +1100,17 @@ Take one open model from a vanilla **FP16** checkpoint to a **quantized, optimiz
 - [ ] A **$/1M-tokens** figure is computed for the recommended deployment.
 
 ▶ **Practical project:** `VizuaraAI/infertutor-arena-capstone` — take a model FP16 → quantized → served → benchmarked end-to-end as the capstone reference.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Modal/RunPod serverless GPU; full stack (`vllm`, `llmcompressor`, `peft`); clone the capstone repo.
+2. **Pipeline:** profile FP16 → quantize (≥2 methods) → FA + paged/FP8 KV → serve (vLLM) → speculative.
+3. **Benchmark:** sweep concurrency for TTFT/ITL/throughput; verify speculative equivalence.
+4. **Cost:** compute $/1M tokens with prompt caching + model routing.
+5. **Pareto:** one quality-vs-latency-vs-cost chart across every variant + a defended operating point.
+- **Artifact:** the pipeline repo + `capstone/efficiency-report.md` (Pareto chart + cost table).
+- **Use `$efficiency-report`:** assemble all nine skills into one reproducible report.
+- **Done when:** a ≥98%-quality variant at a measured latency/cost win, served speedup proven, $/1M computed.
+- **Stretch:** add a distributed/MoE serving demo appropriate to your model size.
 
 ### Harness / reusable skill — `$efficiency-report`
 - **Purpose:** assemble all nine skills into one reproducible Pareto-frontier efficiency report + deployment recommendation.

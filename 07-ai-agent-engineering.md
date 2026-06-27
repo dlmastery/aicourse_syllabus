@@ -134,6 +134,18 @@ gate is green on a held-out task split, every agent action is traced, and a docu
 
 ▶ **Practical project:** `The-Pocket/PocketFlow` — study and extend a ~100-line agent framework to internalize the bare observe→think→act loop before any heavyweight framework.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** local `uv` env (Python 3.12) + `anthropic` SDK + `git clone The-Pocket/PocketFlow`; key in `.env`.
+2. Read PocketFlow's node/flow core, then write `atlas/loop.py` as a bare while-loop: model call → parse JSON action → dispatch.
+3. Add two fake tools (`get_policy`, `get_employee`) and a 6-step cap with explicit done-detection.
+4. Log `(step, state_len, action, obs)` per turn to `evidence/week01-trace.jsonl`.
+5. Run the 10 hand-written T&E questions; confirm termination on all.
+6. Write the "agent vs workflow" autonomy note for three Atlas tasks.
+- **Artifact:** runnable `atlas/loop.py` + `trace.jsonl` committed; a Colab that replays one question.
+- **Use `$agent-anatomy-map`:** fill the five organs + stop rule before coding.
+- **Done when:** loop terminates on all 10, never exceeds the cap, every turn is logged.
+- **Stretch:** swap in an open-weight model (Qwen3 via Ollama) and compare loop behavior.
+
 ### Harness / reusable skill — `$agent-anatomy-map`
 - **Purpose:** before building any agent, force a one-screen design that names each organ and the stopping rule.
 - **Inputs:** a task description. **Required outputs:** the five organs filled in (planner? controller, tools,
@@ -241,6 +253,18 @@ def run(question: str) -> str:
   zero JSON parse failures across 30 prompts; every tool returns a model-readable error on bad input.
 
 ▶ **Practical project:** `anthropics/anthropic-cookbook` — adapt its tool-use / structured-output recipes to build Atlas's typed, constrained-decoding tool belt.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** `uv` env + `anthropic` + `pydantic`; open the cookbook's tool-use / structured-output notebooks.
+2. Define 5 tools as Pydantic models (enums, ranges, ISO dates) in `atlas/tools.py`; emit `model_json_schema()`.
+3. Force structured/tool calls; write model-facing error strings ("meal cap $75; reduce or escalate").
+4. Build `eval/toolcall.py`: 30 labeled prompts → expected `(tool, args)`; score tool + arg accuracy.
+5. Run it; record exact-tool accuracy and JSON parse-failure count.
+6. Find the most-confused tool pair and rewrite that description.
+- **Artifact:** `atlas/tools.py` + a tool-call accuracy report committed.
+- **Use `$tool-schema-designer`:** turn each capability into a typed contract + three must-fail inputs.
+- **Done when:** ≥90% tool selection, 0 parse failures, every bad input returns a model-readable error.
+- **Stretch:** add an "irrelevance" case set (BFCL-style) and measure false tool-calls.
 
 ### Harness / reusable skill — `$tool-schema-designer`
 - **Purpose:** turn a capability into a safe, model-friendly tool contract.
@@ -357,6 +381,18 @@ TOOL_SPECS = [{"name": "file_expense", "input_schema": FileExpense.model_json_sc
 
 ▶ **Practical project:** `modelcontextprotocol/servers` — clone the official example servers (filesystem/git/fetch), mirror their structure, and build your own Atlas MCP server.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** `uv` env + `mcp` Python SDK (`fastmcp`) + Node 22 for the Inspector; `git clone modelcontextprotocol/servers`.
+2. Build `atlas_mcp/server.py` with FastMCP: ≥3 tools, ≥2 resources (`policy://{topic}`, `employee://{id}`), ≥1 prompt.
+3. Run it over stdio; connect from Claude Desktop / VS Code via config.
+4. Connect the same server to your Week-1 loop via the MCP client SDK; auto-discover tools (no hard-coded table).
+5. Capture `capabilities.json` + a log of two hosts using it.
+6. Write the 3-line trust-boundary note (scopes, read/write surface).
+- **Artifact:** `evidence/week03-mcp/` (server + manifest + README) committed.
+- **Use `$mcp-server-scaffold`:** classify each capability tool/resource/prompt before implementing.
+- **Done when:** the same server works unchanged from two hosts and the agent lists tools dynamically.
+- **Stretch:** expose it over streamable HTTP and connect a remote client.
+
 ### Harness / reusable skill — `$mcp-server-scaffold`
 - **Purpose:** stand up a correct, documented MCP server for any backend in under an hour.
 - **Inputs:** a backend (functions + data). **Outputs:** a server exposing tools/resources/prompts, a capability
@@ -470,6 +506,18 @@ if __name__ == "__main__":
 
 ▶ **Practical project:** `NirDiamant/GenAI_Agents` — adapt its ReAct / plan-and-execute / reflection implementations and benchmark them on the Atlas booking tasks.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** `uv` env + `anthropic`; `git clone NirDiamant/GenAI_Agents`; skim its ReAct / plan-execute / reflection notebooks.
+2. Implement `atlas/planners.py` with three strategies behind one interface: `react`, `plan_execute`, `reflexion`.
+3. Wire Reflexion to an EXTERNAL verifier (rule/test), not self-grade.
+4. Run all three on 15 multi-step booking tasks; record success, mean steps, token cost.
+5. Build the comparison table; compute whether reflection's gain beat its spend.
+6. Write the per-task recommendation ("X for short, Y for long").
+- **Artifact:** `atlas/planners.py` + `evidence/week04-strategy.md` table committed.
+- **Use `$reasoning-strategy-picker`:** choose strategy by horizon / step-independence / checkable-signal.
+- **Done when:** 3 strategies run, success AND cost reported, recommendation justified by numbers.
+- **Stretch:** add a 30-task GAIA/HotpotQA subset and re-rank the strategies.
+
 ### Harness / reusable skill — `$reasoning-strategy-picker`
 - **Purpose:** choose a reasoning/planning strategy for a task by its structure, not by fashion.
 - **Inputs:** task horizon, step-independence, availability of a checkable signal, latency/cost budget.
@@ -570,6 +618,18 @@ def reflexion(task, max_rounds=2, verify=None):
 
 ▶ **Practical project:** `krishnaik06/RAG-Tutorials` — reuse its embed→store→retrieve stack as the raw long-term-memory baseline, then A/B it against Mem0/LangMem.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** `uv` env + `chromadb`/`pgvector` + an embedding model; `git clone krishnaik06/RAG-Tutorials` for the embed→retrieve stack.
+2. Build `atlas/memory_raw.py`: a write-gate + dedupe + recency-weighted top-k retrieval.
+3. Build `atlas/memory_mem0.py`: the same behavior via Mem0 (and a LangMem variant); compare ergonomics.
+4. Author 20 two-session tasks where session 2 needs a session-1 fact.
+5. A/B run with vs without long-term memory; record success delta + prompt-token delta + stored-count.
+6. Write the privacy/PII + retention note.
+- **Artifact:** both memory layers + `evidence/week05-ab.md` committed.
+- **Use `$agent-memory-designer`:** specify memory types, write/retrieval policy, decay rule.
+- **Done when:** the A/B shows effect on success AND tokens; the write-gate cuts stored count.
+- **Stretch:** score recall on a LoCoMo/LongMemEval subset.
+
 ### Harness / reusable skill — `$agent-memory-designer`
 - **Purpose:** design a memory layer that helps without bloating.
 - **Inputs:** task, what should persist, privacy constraints. **Outputs:** memory types used, write policy,
@@ -669,6 +729,18 @@ def recall(query: str, user_id: str, k=5):
   *pauses* at the human node and *resumes* correctly; the memo recommends a framework per a stated requirement.
 
 ▶ **Practical project:** `krishnaik06/Agentic-LanggraphCrash-course` — follow it to rebuild Atlas as a checkpointed LangGraph graph with a human-approval node.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** `uv` env + `langgraph` + `langgraph-checkpoint`; follow `krishnaik06/Agentic-LanggraphCrash-course`.
+2. Build `atlas/graph.py`: nodes plan → act → (human-approve if amount>$500) → file; an explicit `AtlasState`.
+3. Add a `MemorySaver` checkpointer and `interrupt_before=["human_approve"]`.
+4. Rebuild the same agent in one other framework (Claude Agent SDK / CrewAI / Pydantic AI); note LoC + what was free.
+5. Run both on the Week-4 15-task set; confirm identical results.
+6. Write the requirement-driven framework-selection memo.
+- **Artifact:** both implementations + `evidence/week06-framework-memo.md` committed.
+- **Use `$framework-selector`:** pick by durability / control / multi-agent / typing needs.
+- **Done when:** the LangGraph run pauses at the human node and resumes correctly.
+- **Stretch:** add time-travel debugging (replay from a past checkpoint).
 
 ### Harness / reusable skill — `$framework-selector`
 - **Purpose:** pick an agent framework from requirements, not hype.
@@ -772,6 +844,18 @@ app = g.compile(checkpointer=MemorySaver(), interrupt_before=["human_approve"])
 
 ▶ **Practical project:** `microsoft/ai-agents-for-beginners` — use its multi-agent / orchestration lessons as the pattern base for the Atlas orchestrator + A2A specialists.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** `uv` env + your Week-6 framework + the A2A sample server; skim `microsoft/ai-agents-for-beginners` multi-agent lessons.
+2. Split Atlas into an orchestrator + 3 specialists (Flight/Policy/Expense) in `atlas/multi/`.
+3. Publish A2A agent cards; have the orchestrator discover and dispatch by capability (no hard-wiring).
+4. Add a debate node + judge for a borderline expense call.
+5. Compare single-agent vs multi-agent on 20 tasks: success, latency, cost.
+6. Write the honest single-vs-multi verdict (it may not be worth it).
+- **Artifact:** `atlas/multi/` + `evidence/week07-single-vs-multi.md` + an A2A discovery log committed.
+- **Use `$multi-agent-architect`:** decide topology + hand-off contracts before coding.
+- **Done when:** specialists are discovered via agent cards and the comparison states worth-it-or-not, with numbers.
+- **Stretch:** stress coordination on an AgentBench environment.
+
 ### Harness / reusable skill — `$multi-agent-architect`
 - **Purpose:** decide the agent topology and hand-off contracts before coding.
 - **Inputs:** the task's sub-skills, parallelism, need for independent verification. **Outputs:** a topology
@@ -872,6 +956,18 @@ def handle(task: str) -> str:
 
 ▶ **Practical project:** `web-arena-x/webarena` — self-host its realistic sites and run your Playwright browser agent against a task subset.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** `uv` env + `playwright` (`playwright install`) + the self-hosted `web-arena-x/webarena` sandbox.
+2. Build `atlas/browser/agent.py`: a perceive (screenshot + a11y) → act → verify loop with set-of-marks tagging.
+3. Add explicit `wait_for_load_state` + a per-step post-condition assertion.
+4. Run 10 booking flows on the sandbox; record success, mean actions, recovery-after-failure.
+5. Compare against the Week-2 API-tool version of the same booking.
+6. Write the "replace-with-MCP-tool" note for the flaky steps.
+- **Artifact:** `evidence/week08-browser/` (run logs + screenshots) committed.
+- **Use `$browser-agent-debugger`:** categorize each failed step (stale view / grounding / wait / verification).
+- **Done when:** ≥70% sandbox success, every action verified, API-preference note written.
+- **Stretch:** evaluate on a WebVoyager live-task subset.
+
 ### Harness / reusable skill — `$browser-agent-debugger`
 - **Purpose:** diagnose why a GUI agent step failed (stale view, wrong grounding, missing wait, bad verification).
 - **Inputs:** a failing run trace + screenshots. **Outputs:** the failure category, the fix, and whether the step
@@ -970,6 +1066,18 @@ def step(page, goal):
   pass@1), failures categorized, and the CI gate actually blocks a deliberately-broken agent.
 
 ▶ **Practical project:** `sierra-research/tau-bench` — run the official τ-bench/τ²-bench harness on `airline`, then mirror its structure for the ≥40-task Atlas pass^k suite.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** `uv` env + `git clone sierra-research/tau-bench` (+ tau2-bench); install its harness.
+2. Run the official `airline` domain for calibration; read its simulated-user + DB-check design.
+3. Build `eval/atlas_bench.py`: ≥40 T&E tasks with hidden-info user sims + programmatic DB-state checks.
+4. Run each task k=5; compute pass^1, pass^5, and a failure-category breakdown.
+5. Add a GitHub Actions job that fails the build if held-out pass^5 drops below threshold.
+6. Screenshot the gate blocking a deliberately-broken agent.
+- **Artifact:** `evidence/week09-eval/` (task set + pass^k table + CI gate) committed.
+- **Use `$agent-eval-suite`:** turn "seems to work" into a reproducible gating eval.
+- **Done when:** pass^k reported (not just pass@1), failures categorized, the CI gate actually blocks.
+- **Stretch:** add a GAIA long-horizon slice for generalization.
 
 ### Harness / reusable skill — `$agent-eval-suite`
 - **Purpose:** turn "seems to work" into a reproducible, gating eval.
@@ -1072,6 +1180,18 @@ def report(tasks, k=5):
   every action is traceable end-to-end, a run that exceeds budget is aborted, and a >$500 action triggers the human gate.
 
 ▶ **Practical project:** `langfuse/langfuse` — self-host it and instrument Atlas so every LLM/tool/sub-agent call is a span with cost and latency.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** `uv` env + `langfuse` SDK + a self-hosted Langfuse (Docker compose).
+2. Decorate Atlas with `@observe`; make every LLM/tool/sub-agent call a child span tagged with cost + latency.
+3. Add a per-run cost budget (abort over $X) + semantic caching for repeat policy lookups.
+4. Add an input guardrail (PII/injection screen) + a HITL gate for actions >$500 / external sends.
+5. Build a Langfuse dashboard: cost/run, p95 latency, success rate, top failure categories.
+6. Write the one-page AgentOps runbook (budgets, guardrails, HITL, rollback).
+- **Artifact:** `evidence/week10-agentops/` (dashboard screenshot + runbook + over-budget trace) committed.
+- **Use `$agentops-instrumenter`:** add tracing, budgets, guardrails, HITL triggers from the risk profile.
+- **Done when:** every action is traceable end-to-end, an over-budget run aborts, a >$500 action gates.
+- **Stretch:** wire model routing (cheap-first, escalate on hard steps) and measure savings.
 
 ### Harness / reusable skill — `$agentops-instrumenter`
 - **Purpose:** make any agent observable, budgeted, and gated.
@@ -1176,6 +1296,18 @@ def resolve(ticket):
 
 ▶ **Practical project:** `ethz-spylab/agentdojo` — run its prompt-injection attack/defense harness against hardened Atlas and report attack-success-rate before vs after.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** `uv` env + `git clone ethz-spylab/agentdojo`; install its attack/defense harness.
+2. Build an attack set: 15 indirect-injection payloads in receipts/web/email Atlas ingests.
+3. Run them against un-hardened Atlas; record which succeed.
+4. Harden: content screening, least-privilege tool scoping, action allow-list, dual-LLM quarantine, HITL on high-impact.
+5. Re-run the attack set + AgentDojo's harness; report attack-success-rate before vs after.
+6. Add `eval/injection_regression.py` to CI; the build fails if any known attack succeeds.
+- **Artifact:** `evidence/week11-redteam/` (attack set + before/after table mapped to OWASP LLM Top 10) committed.
+- **Use `$agent-red-team`:** attack systematically, then verify each defense layer.
+- **Done when:** every pre-hardening success is now blocked and the regression gates CI.
+- **Stretch:** add InjecAgent payloads and re-measure.
+
 ### Harness / reusable skill — `$agent-red-team`
 - **Purpose:** systematically attack an agent and verify defenses before shipping.
 - **Inputs:** the agent + its tools + the content it ingests. **Outputs:** an attack set mapped to OWASP LLM Top 10,
@@ -1261,6 +1393,18 @@ def handle_untrusted(content, task):
   injection attack is blocked; and every claim in the memo links to a file/trace in the packet.
 
 ▶ **Practical project:** `langchain-ai/langchain` — ship the capstone Atlas on production LangGraph (durable checkpointing, streaming, HITL) wired to your MCP server and pass^k gate.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** `uv` env + `langgraph` + `mcp` + `langfuse` + Docker; one small cloud box or Modal for deploy.
+2. Assemble Atlas: MCP server + orchestrator/≥2 A2A specialists + short/long memory + planner.
+3. Wire the ≥40-task pass^k eval as a CI deploy gate on a held-out split.
+4. Instrument with Langfuse (per-run cost + latency) + guardrails + the injection regression.
+5. Deploy (Docker + cloud/Modal); run the held-out eval + a documented injection attack.
+6. Assemble the evidence packet + 3-page design memo (every claim links to a file/trace).
+- **Artifact:** deployed Atlas + `capstone/` evidence packet + 15-min demo committed.
+- **Use `$agent-system-evidence-packet`:** bundle architecture + pass^k + traces + cost + security + runbook.
+- **Done when:** the eval gate is green on held-out, every action is traced, the injection attack is blocked.
+- **Stretch:** add an open-weight fallback model and re-run the gate to prove vendor-neutrality.
 
 ### Harness / reusable skill — `$agent-system-evidence-packet`
 - **Purpose:** assemble architecture diagram + eval report (pass^k) + trace samples + cost analysis + security

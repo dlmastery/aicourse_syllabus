@@ -64,6 +64,18 @@ _1 academic quarter · 3 lecture-hours/week · 13 lectures (~39 contact hrs). Fu
 
 ▶ **Practical project:** `anthropics/courses` — work the red-teaming/eval notebooks to build a threat model + baseline harm-rate table for the support assistant.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** `pip install transformers`; a frontier API key (Claude/GPT-5.x); clone `anthropics/courses`.
+2. **Threat model:** write `threat_model.yaml` (assets/actors/vectors/impact/controls) for the support assistant.
+3. **Probe set:** 20 adversarial prompts from HarmBench/AdvBench across harm categories.
+4. **Baseline:** run them; log refusals vs compliances → a base harm-rate table.
+5. **Prioritize:** score and pick top-3 risks (misuse / misalignment / systemic separated).
+6. **Sanity:** ensure every harm category has ≥1 probe.
+- **Artifact:** `threat_model.yaml` + baseline harm-rate table.
+- **Use `$threat-modeler`:** turn the system into a structured, prioritized threat model.
+- **Done when:** every category probed; base rate measured; top-3 prioritized.
+- **Stretch:** add an emergent-behavior path beyond the "evil hacker".
+
 ### Harness / reusable skill — `$threat-modeler`
 - **Purpose:** turn any AI system into a structured threat model before mitigation.
 - **Inputs:** system description, deployment context. **Required outputs:** asset list, actor list, attack vectors, impact ratings, existing controls, top-3 priority risks.
@@ -143,6 +155,18 @@ def measure_harm_rate(model, behaviors, judge):
 
 ▶ **Practical project:** `anthropics/anthropic-cookbook` — adapt a fine-tuning/classification recipe to run a refusal fine-tune and quantify the alignment tax + over-refusal rate.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** GPU; `pip install trl transformers datasets`; `Qwen3-1.7B`; clone `anthropics/anthropic-cookbook`.
+2. **Fine-tune:** refusal SFT/DPO on the `Anthropic/hh-rlhf` harmless split.
+3. **Safety eval:** harm-rate before/after.
+4. **Capability eval:** a held-out MMLU/GSM8K slice → the alignment-tax Δ.
+5. **Over-refusal:** measure on XSTest benign-but-spicy prompts.
+6. **Decide:** ship/no-ship from the tradeoff.
+- **Artifact:** before/after tradeoff table (harm↓, capability Δ, over-refusal).
+- **Use `$alignment-tax-meter`:** quantify the safety/capability tradeoff + recommendation.
+- **Done when:** harm drops with a quantified tax and over-refusal rate.
+- **Stretch:** diversify refusal data and show paraphrase robustness.
+
 ### Harness / reusable skill — `$alignment-tax-meter`
 - **Purpose:** quantify the safety/capability tradeoff of any intervention. **Inputs:** model before/after, capability + safety + over-refusal evals. **Outputs:** a tradeoff table and a "ship/no-ship" recommendation.
 - **Evidence artifact:** `evidence/week02-tax.md`.
@@ -216,6 +240,18 @@ def evaluate_intervention(model, harm_set, cap_set, benign_set, judge):
 - **Deliverable:** ASR table (manual vs GCG vs PAIR) + 3 transferability tests; **Acceptance:** at least one attack family achieves non-trivial ASR with a documented judge.
 
 ▶ **Practical project:** `anthropics/anthropic-cookbook` — use the cookbook’s prompting/eval patterns to run manual + automated jailbreaks and report calibrated ASR with transcripts.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** GPU; `pip install nanogcg transformers`; PAIR repo; HarmBench behaviors. *(Course models / sandbox only.)*
+2. **Manual:** role-play / refusal-suppression templates against your Week-2 model.
+3. **GCG:** run nanoGCG to find an adversarial suffix on a HarmBench behavior.
+4. **PAIR:** an attacker-LLM loop (black-box) against the support assistant.
+5. **Judge:** calibrate the ASR judge against human labels on a sample.
+6. **Transfer:** 3 transferability tests (open→closed).
+- **Artifact:** ASR table (manual/GCG/PAIR) + transcripts + transferability matrix.
+- **Use `$jailbreak-suite`:** the reusable attack battery reused every defense week.
+- **Done when:** ≥1 attack family hits non-trivial ASR with a calibrated judge.
+- **Stretch:** test whether the Week-2 safety FT survives GCG.
 
 ### Harness / reusable skill — `$jailbreak-suite`
 - **Purpose:** a reusable attack battery (manual templates + GCG + PAIR) with a consistent judge. **Inputs:** target model, behavior set. **Outputs:** per-attack ASR, transcripts, transferability matrix.
@@ -291,6 +327,18 @@ def gcg_jailbreak(model, tokenizer, prompt, target="Sure, here is"):
 - **Deliverable:** attack-success before/after defense + a permission-scoping diagram; **Acceptance:** the defense reduces injection success while you document residual risk.
 
 ▶ **Practical project:** `anthropics/anthropic-cookbook` — extend a tool-use recipe to demo indirect injection + a spotlighting/quarantine defense, measuring residual ASR.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** `pip install`; AgentDojo (`ethz-spylab/agentdojo`); a tool-using agent recipe.
+2. **Attack:** plant an instruction in a RAG doc that exfiltrates a canary secret; confirm it fires.
+3. **Channel sweep:** test each tool/data channel for indirect injection.
+4. **Defend:** spotlighting + an output filter + a quarantined-LLM pattern.
+5. **Re-measure:** injection ASR per channel before/after; map to the OWASP LLM Top-10.
+6. **Document** residual risk + a least-privilege scoping diagram.
+- **Artifact:** channel-wise ASR + defense diagram + OWASP mapping.
+- **Use `$injection-redteam`:** systematic direct/indirect injection + exfiltration tester.
+- **Done when:** injection+exfil demonstrated and measurably reduced.
+- **Stretch:** add an encoding-based bypass and a structural (dual-LLM) fix.
 
 ### Harness / reusable skill — `$injection-redteam`
 - **Purpose:** systematically test an agent for direct/indirect injection and exfiltration. **Inputs:** agent + tools + data channels. **Outputs:** injection ASR per channel, exfiltration test results, defense recommendations mapped to OWASP LLM Top-10.
@@ -370,6 +418,18 @@ def answer_with_rag(query, retriever, llm, defend=False):
 
 ▶ **Practical project:** `anthropics/anthropic-cookbook` — use the moderation/classification recipe to enforce a model spec with a guard model and tune the operating point on a labeled set.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** `pip install transformers`; Llama Guard 3/4; NeMo Guardrails.
+2. **Spec:** write a testable `model_spec.md` (allow/refuse/defer + examples).
+3. **Moderate:** Llama Guard as input+output filter; NeMo topic/PII rails.
+4. **Measure:** precision/recall on a labeled harmful+benign set.
+5. **Operating point:** choose a threshold on the PR curve by cost.
+6. **Gap list:** where the policy was too vague to enforce.
+- **Artifact:** model spec + PR curve + operating-point memo.
+- **Use `$policy-enforcer`:** compile the spec into a measurable guardrail layer.
+- **Done when:** hits a stated recall on harmful while over-block stays in budget.
+- **Stretch:** add a behavioral layer that resists social-engineering around the guard.
+
 ### Harness / reusable skill — `$policy-enforcer`
 - **Purpose:** compile a model spec into an enforceable, measurable guardrail layer. **Inputs:** model spec, guard model, labeled eval set. **Outputs:** input/output filters, precision/recall, operating point, residual-gap list.
 - **Evidence artifact:** `evidence/week05-moderation/`.
@@ -447,6 +507,18 @@ def moderate(text, role="user"):
 
 ▶ **Practical project:** `anthropics/courses` — reproduce an alignment-faking-style matched-pair probe and interpret the observed-vs-unobserved behavior delta honestly.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** an API model + a local reasoning model; clone `anthropics/courses`.
+2. **Matched pairs:** the same task with/without a "[This is an evaluation.]" cue.
+3. **Measure:** the behavior delta (observed vs unobserved).
+4. **Alignment-faking probe:** does behavior change when it believes outputs are training vs deployment?
+5. **Rigor:** pre-register the prediction + effect size; control cue leakage.
+6. **Interpret:** what would distinguish "scheming" from noise.
+- **Artifact:** observed-vs-unobserved behavior table + a caveats note.
+- **Use `$deception-probe`:** matched-pair, cue-controlled observation-dependence test.
+- **Done when:** a delta is measured (or convincingly absent) with significance + alternatives.
+- **Stretch:** pair it with a CoT/interp signal (Weeks 7–8).
+
 ### Harness / reusable skill — `$deception-probe`
 - **Purpose:** test for observation-dependent behavior and eval-gaming. **Inputs:** model, task set, observation-cue variants. **Outputs:** behavior-delta table, honeypot results, an evidentiary-caveats note.
 - **Evidence artifact:** `evidence/week06-deception/`.
@@ -520,6 +592,18 @@ def behavior_delta(model, tasks, judge):
 - **Deliverable:** a feature dictionary (≥10 interpreted features) + one ablation/steering result; **Acceptance:** at least several features are clearly interpretable with an intervention that confirms the interpretation.
 
 ▶ **Practical project:** `anthropics/courses` — follow the interpretability material to train a small SAE on a layer and validate ≥10 features with an ablation/steering test.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** GPU; `pip install sae_lens transformer_lens`; `Qwen3-1.7B`.
+2. **Collect activations:** hook a layer's residual stream on a Pile/OpenWebText subset.
+3. **Train SAE:** a one-hidden-layer autoencoder + L1; tune λ; resample dead features.
+4. **Interpret:** a dashboard of top-activating tokens per feature (≥10 features).
+5. **Validate:** ablate/steer a feature and measure the output change.
+6. **Honesty:** report feature density + SAE limits.
+- **Artifact:** feature dictionary (≥10) + ablation result + density stats.
+- **Use `$sae-feature-lab`:** train+interpret SAE features on any layer.
+- **Done when:** several features clearly interpretable + one intervention confirms.
+- **Stretch:** compare to released Gemma Scope SAEs.
 
 ### Harness / reusable skill — `$sae-feature-lab`
 - **Purpose:** train + interpret SAE features on any model layer. **Inputs:** model, layer, activation corpus. **Outputs:** trained SAE, feature dictionary with max-activating examples, ablation-validated interpretations.
@@ -601,6 +685,18 @@ def sae_loss(x, x_hat, h, l1=1e-3):
 
 ▶ **Practical project:** `anthropics/courses` — build a CoT monitor + faithfulness test and report monitor PR plus the model’s CoT unfaithfulness rate.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** an API monitor + a local reasoning model; GSM8K/BBH traces.
+2. **Monitor:** a monitor LLM scores each reasoning step for unsafe intent; gate the final action on flags.
+3. **PR:** measure monitor precision/recall on a labeled reasoning set.
+4. **Faithfulness:** inject a biasing hint into the CoT; measure the unfaithfulness rate.
+5. **Escalation:** route high-risk flags to a human gate; log them.
+6. **Caveat:** state the monitorability-erosion risk.
+- **Artifact:** monitor PR + faithfulness rate + escalation log.
+- **Use `$cot-monitor`:** reusable reasoning-trace monitor + faithfulness tester.
+- **Done when:** monitor catches a documented fraction of unsafe traces; unfaithfulness quantified.
+- **Stretch:** show that RL-ing against the monitor obfuscates the CoT.
+
 ### Harness / reusable skill — `$cot-monitor`
 - **Purpose:** reusable reasoning-trace monitor + faithfulness tester for agents. **Inputs:** agent traces, monitor model, perturbation suite. **Outputs:** flag precision/recall, faithfulness rate, escalation log.
 - **Evidence artifact:** `evidence/week08-cot/`.
@@ -677,6 +773,18 @@ def monitor_and_gate(agent, monitor, task):
 
 ▶ **Practical project:** `anthropics/anthropic-cookbook` — implement a critique→revise constitutional loop, build an AI-preference set, and compare RLAIF vs human-data harm-rate.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** GPU + a critic API; `pip install trl transformers`; Collective CAI principles as a template.
+2. **Critique→revise:** a written-constitution loop on harmful prompts.
+3. **Preference set:** build AI-judgment pairs; run DPO/RLAIF.
+4. **Compare:** harm-rate + helpfulness vs the Week-2 human-data fine-tune.
+5. **Audit:** AI labels vs a human sample (inherited bias).
+6. **Document** the cost/quality tradeoff.
+- **Artifact:** RLAIF-vs-RLHF table + the constitution + sampled critiques.
+- **Use `$constitutional-aligner`:** align from a written constitution via critique→revise→RLAIF.
+- **Done when:** RLAIF reduces harm comparably to human data, tradeoff documented.
+- **Stretch:** add adversarial critique prompting to fight sycophancy.
+
 ### Harness / reusable skill — `$constitutional-aligner`
 - **Purpose:** align a model from a written constitution via critique→revise→RLAIF. **Inputs:** base model, constitution, prompt set. **Outputs:** aligned model, AI-preference set, RLHF-vs-RLAIF tradeoff report.
 - **Evidence artifact:** `evidence/week09-cai/`.
@@ -751,6 +859,18 @@ def constitutional_revise(model, prompt, constitution):
 - **Deliverable:** capability eval report (with elicitation details) + a 1-page RSP decision memo; **Acceptance:** the eval uses non-trivial elicitation and the memo ties a measured number to a concrete safeguard decision.
 
 ▶ **Practical project:** `anthropics/courses` — run a strongly-elicited dangerous-capability proxy eval with Inspect AI and draft an RSP go/no-go memo tying a number to a safeguard.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** `pip install inspect-ai`; a frontier API; benign WMDP/Cybench proxies only.
+2. **Elicit strongly:** tools + few-shot scaffolding (not a naive prompt).
+3. **Run:** a dangerous-capability proxy eval with Inspect AI, epochs for CI.
+4. **Compare:** the strong-vs-naive elicitation gap.
+5. **RSP memo:** measured capability → threshold → required safeguard → go/no-go.
+6. **Report** capability AND propensity separately.
+- **Artifact:** capability report (elicitation log) + 1-page RSP memo.
+- **Use `$capability-eval`:** elicitation-strong eval mapped to a scaling decision.
+- **Done when:** non-trivial elicitation used; memo ties a number to a safeguard.
+- **Stretch:** add machine-unlearning and re-measure with a relearning probe.
 
 ### Harness / reusable skill — `$capability-eval`
 - **Purpose:** run elicitation-strong capability evals and map them to scaling decisions. **Inputs:** model, capability task suite, elicitation methods. **Outputs:** capability score with CI, elicitation log, threshold/safeguard recommendation.
@@ -830,6 +950,18 @@ def capability_task(dataset, tools):
 
 ▶ **Practical project:** `anthropics/anthropic-cookbook` — wrap a tool-using agent recipe with an authorization layer + human-gate and measure unsafe-action rate vs utility on AgentDojo/τ-bench.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** isolated containers (no prod creds); AgentDojo / tau-bench; a tool-using agent recipe.
+2. **Authz layer:** wrap tools with a least-privilege policy + human-gate for irreversible actions.
+3. **Evaluate:** task success vs unsafe-action rate, with/without the gate.
+4. **Containment:** sandbox + a full audit trail of every action+decision.
+5. **Tradeoff:** a safety/utility table.
+6. **Multi-agent:** note collusion / cascade risks.
+- **Artifact:** safety/utility tradeoff table + containment doc + audit trail.
+- **Use `$agent-safety-harness`:** authz + sandbox + monitoring wrapper.
+- **Done when:** the gate cuts unsafe actions with a documented utility cost.
+- **Stretch:** add τ²-bench pass^k reliability measurement.
+
 ### Harness / reusable skill — `$agent-safety-harness`
 - **Purpose:** authorization + sandbox + monitoring wrapper for tool-using agents. **Inputs:** agent, tool set, risk policy. **Outputs:** gated agent, unsafe-action rate, utility delta, audit trail.
 - **Evidence artifact:** `evidence/week11-agent/`.
@@ -906,6 +1038,18 @@ def guarded_execute(action, args, context, human_gate):
 
 ▶ **Practical project:** `anthropics/courses` — map the support assistant to EU-AI-Act/NIST-RMF obligations and produce an auditable compliance dossier.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** EU AI Act consolidated text + Digital Omnibus; NIST AI RMF + GenAI Profile; OWASP LLM Top-10; ISO 42001.
+2. **Classify:** place the assistant in EU AI Act risk tiers (Aug-2-2026 enforcement; Annex-III deferral to Dec-2-2027).
+3. **Map obligations:** each requirement → a concrete control/artifact.
+4. **NIST/OWASP:** cross-map to RMF functions + LLM Top-10.
+5. **Gaps:** list unmet obligations + remediation.
+6. **Assemble** the dossier.
+- **Artifact:** an auditable EU-AI-Act/NIST compliance dossier.
+- **Use `$compliance-mapper`:** obligations → controls → evidence artifacts.
+- **Done when:** full obligation mapping + residual gaps documented with dates.
+- **Stretch:** draft the GPAI transparency documentation.
+
 ### Harness / reusable skill — `$compliance-mapper`
 - **Purpose:** map a system's technical controls to EU AI Act + NIST RMF + OWASP requirements. **Inputs:** system + control inventory. **Outputs:** tier classification, obligation-to-control matrix, gap list, model/system card.
 - **Evidence artifact:** `evidence/week12-governance/`.
@@ -978,6 +1122,18 @@ gaps = [k for k, v in controls.items() if v["status"] != "met"]
 - **Deliverable:** `capstone/` repo + a system safety card + a 4-page report + a live demo of one attack and its defense; **Acceptance:** every claim links to an artifact, mitigations are quantified, residual risk is stated, and the go/no-go is defended.
 
 ▶ **Practical project:** `anthropics/anthropic-cookbook` — assemble a full red-team→mitigation→eval safety case for one system with an artifact-linked safety card.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** reuse HarmBench/AgentDojo/tau-bench/Inspect AI on a chosen system.
+2. **Threat model → red-team:** ≥3 attack families with calibrated ASR.
+3. **Mitigations:** ≥2 with quantified safety/utility tradeoffs.
+4. **Re-eval:** before/after ASR + one interpretability/monitoring signal.
+5. **Governance:** EU-AI-Act/NIST mapping + a residual-risk statement.
+6. **Safety card** + 4-page report + a live attack→defense demo.
+- **Artifact:** the safety card + report (every claim → artifact).
+- **Use `$safety-case-builder`:** assemble threat model + red-team + mitigations + evals + governance into one case.
+- **Done when:** mitigations quantified, residual risk stated, go/no-go defended.
+- **Stretch:** add a CoT-monitoring signal to the case.
 
 ### Harness / reusable skill — `$safety-case-builder`
 - **Purpose:** assemble threat model + red-team + mitigations + evals + governance into one auditable safety case. **Evidence artifact:** the safety card + report (this *is* the deliverable).

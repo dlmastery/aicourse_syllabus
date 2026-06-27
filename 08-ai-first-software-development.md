@@ -136,6 +136,18 @@ roll it back in one command and explain the monitoring you'd watch.
 
 ▶ **Practical project:** `microsoft/generative-ai-for-beginners` — use its code-generation lessons to profile a model's capability-vs-grounding failure shape on Quill.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** `uv` env (Python) or Node + your coding model SDK; skim `microsoft/generative-ai-for-beginners` code-gen lessons.
+2. Build `experiments/code_profile/`: 12 Quill tasks on a ladder (one-liner → cross-file → convention-bound).
+3. Run each with curated (not whole-repo) context; record pass/fail.
+4. Label every failure: capability / grounding / context-overflow.
+5. Pin temperature + seed; re-run to confirm reproducibility.
+6. Write the one-page delegation map (delegate / pair / self).
+- **Artifact:** `evidence/week01-profile.md` + delegation map committed.
+- **Use `$coding-model-profile`:** learn the model's failure shape on THIS repo before trusting it.
+- **Done when:** every failure is cause-labeled and the delegation map is backed by results.
+- **Stretch:** repeat with an open-weight code model (Qwen3-Coder) and compare failure shapes.
+
 ### Harness / reusable skill — `$coding-model-profile`
 - **Purpose:** before trusting a model on a codebase, learn its failure shape *here*.
 - **Inputs:** a repo + a difficulty ladder of tasks. **Outputs:** a pass/fail table, a failure-cause label per task
@@ -233,6 +245,18 @@ def profile(model, repo):
   (fewer iterations to passing acceptance criteria), measured, not asserted.
 
 ▶ **Practical project:** `VizuaraAI/modern-software-developer-bootcamp` — follow its spec→PRD→plan workflow to turn the Quill sharing request into an agent-ready PRD.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** `uv`/Node + Claude Code or Cursor; skim `VizuaraAI/modern-software-developer-bootcamp` spec workflow.
+2. Write `prd/share-notes.md`: problem, users, testable requirements, API/type changes, acceptance, non-goals, security.
+3. Curate an ordered context bundle (critical constraint last) + 1–2 in-repo few-shot examples.
+4. A/B: run the agent on the wish prompt vs the PRD + context.
+5. Measure iterations-to-pass, rework, and tokens for both.
+6. Commit the PRD as shared truth.
+- **Artifact:** `prd/share-notes.md` + `evidence/week02-ab.md` committed.
+- **Use `$spec-to-prd`:** convert any request into an agent-ready PRD + context manifest.
+- **Done when:** the PRD version produces materially less rework, measured not asserted.
+- **Stretch:** reverse-engineer two SWE-bench Verified issues into PRDs.
 
 ### Harness / reusable skill — `$spec-to-prd`
 - **Purpose:** convert any feature request into an agent-ready PRD + curated context bundle.
@@ -333,6 +357,18 @@ Teams need to share notes read/write or read-only with specific members.
 
 ▶ **Practical project:** `Aider-AI/aider` — clone it and benchmark your from-scratch `minicoder` against this production agent on the same seeded bugs.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** `uv` env + your model SDK; `pip install aider-chat` (`Aider-AI/aider`) as the production comparison.
+2. Build `minicoder/`: tools `read_file`, `grep`, `apply_patch`, `run_tests`; a read→patch→test→repeat loop.
+3. Make verification in-loop: after a patch, run tests and feed the real exit code back (no self-report).
+4. Add a stop rule (green / step-cap / cost-cap) and minimal-diff edits.
+5. Fix 5 seeded CLI bugs + 2 Quill bugs; log red→green per bug.
+6. Run Aider on the same 7 bugs; record the capability gap.
+- **Artifact:** `minicoder/` + `evidence/week03-fixlog.md` committed.
+- **Use `$coding-agent-loop`:** a minimal debuggable loop you understand end-to-end.
+- **Done when:** ≥5/7 fixed via the agent's own verification, edits are minimal diffs, the loop always terminates.
+- **Stretch:** run your agent on 5 SWE-bench Verified "lite" instances.
+
 ### Harness / reusable skill — `$coding-agent-loop`
 - **Purpose:** a minimal, debuggable coding-agent loop you understand end-to-end (the thing IDEs hide).
 - **Inputs:** a repo + a failing test or bug. **Outputs:** localized files, a minimal patch, the test red→green
@@ -431,6 +467,18 @@ def fix(task, max_steps=12):
   raises first-pass correctness / lowers rework, and the agent demonstrably pulls the PRD from the MCP resource.
 
 ▶ **Practical project:** `modelcontextprotocol/servers` — follow its resource examples to expose Quill's PRDs and DB schema as `prd://` / `schema://` MCP resources to the IDE.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** `uv` env + `mcp` SDK + Cursor/Claude Code; clone `modelcontextprotocol/servers` resource examples.
+2. Write a `CLAUDE.md`/rules file (conventions, commands, architecture) for Quill.
+3. Build `context_mcp/server.py` exposing `prd://{feature}` and `schema://db` resources.
+4. Wire `@`-mentions + the MCP server into the IDE so the agent auto-pulls truth.
+5. A/B a small change with vs without the rules file + MCP resources.
+6. Measure first-pass acceptance + rework; confirm the agent reads the PRD resource.
+- **Artifact:** `evidence/week04-context-pack/` (rules file + MCP server + A/B note) committed.
+- **Use `$project-context-pack`:** make the repo AI-ready so agents are grounded by default.
+- **Done when:** the configured setup raises first-pass correctness and the agent pulls the PRD from MCP.
+- **Stretch:** add a runbook resource and a freshness check that re-indexes on change.
 
 ### Harness / reusable skill — `$project-context-pack`
 - **Purpose:** make a repo "AI-ready" so agents are grounded by default.
@@ -534,6 +582,18 @@ def schema() -> str:
 
 ▶ **Practical project:** `anthropics/anthropic-cookbook` — adapt its agent/plan-mode patterns to build the plan-gate → diff-gate → irreversible-action-gate workflow.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** `uv`/Node + Claude Code (plan mode) or Cursor; skim `anthropics/anthropic-cookbook` agent patterns.
+2. Build `workflow/gated_agent.py`: the agent emits a plan outline ONLY (no code yet).
+3. Add a plan-approval gate, then a diff-review gate, then an irreversible-action gate (migrations/deploys/deletes).
+4. Apply to two Quill changes: low-stakes UI copy (delegated) + high-stakes schema migration (gated each step).
+5. Record where the plan gate caught a bad approach and lines of wasted impl avoided.
+6. Write the autonomy-level + gate decision log.
+- **Artifact:** `evidence/week05-autonomy.md` + decision logs committed.
+- **Use `$autonomy-gate-designer`:** set autonomy level + gates + rollback path per task.
+- **Done when:** the high-stakes change is blocked at the plan gate ≥once; no irreversible action runs unapproved.
+- **Stretch:** add scoped sandbox creds (bridge to Week 6) to the gated runner.
+
 ### Harness / reusable skill — `$autonomy-gate-designer`
 - **Purpose:** decide and enforce the right autonomy level + gates for a task.
 - **Inputs:** a task + its reversibility/stakes. **Outputs:** the autonomy level, the gates (plan/diff/irreversible),
@@ -632,6 +692,18 @@ def run_gated(task):
   command is blocked or requires explicit approval.
 
 ▶ **Practical project:** `krishnaik06/Dockers` — use it to build the repo-scoped, no-host-creds, network-off dev container the agent executes inside.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Docker + Warp (AI terminal); use `krishnaik06/Dockers` as the dev-container reference.
+2. Write `.devcontainer/devcontainer.json`: repo-only mount, `--network=none`, `--cap-drop=ALL`, no host creds.
+3. Add `safe_exec.py`: an allow-list for unattended commands (test/build/lint); everything else needs approval.
+4. Run `minicoder`/Claude Code inside the container; demonstrate a blocked `rm -rf`/`curl|sh`.
+5. Build 2 Warp saved workflows (env+test, build+preview).
+6. Log the blocked dangerous command + the containment proof.
+- **Artifact:** `evidence/week06-sandbox/` (devcontainer + allow-list + Warp workflows + block log) committed.
+- **Use `$agent-sandbox-config`:** scope fs/network/creds/time + the approval path for the rest.
+- **Done when:** agent code has no host creds / no default network, and a destructive command is blocked.
+- **Stretch:** swap the container for an ephemeral E2B sandbox and verify AgentDojo exfil scenarios fail.
 
 ### Harness / reusable skill — `$agent-sandbox-config`
 - **Purpose:** make it safe for an agent to *execute* code and commands.
@@ -734,6 +806,18 @@ def agent_run(cmd):
 
 ▶ **Practical project:** `evalplus/evalplus` — run its augmented test suites to expose weak AI tests, then harden Quill's suite to a mutation-score bar.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** `uv` env + `pytest` + `hypothesis` + `mutmut`; use `evalplus/evalplus` to expose weak tests.
+2. Have the agent generate a test suite for Quill's sharing feature.
+3. Harden it: add real asserts + ≥1 validated property-based test (e.g. sharing is idempotent).
+4. Run mutation testing; iterate until the mutation score crosses the bar (≥70% on changed code).
+5. Seed 3 bugs; compare AI-only vs hardened tests by mutants killed + bugs caught.
+6. Document the tautological tests you removed/fixed.
+- **Artifact:** `evidence/week07-tests/` (suite + coverage + mutation before/after) committed.
+- **Use `$ai-test-hardener`:** turn AI tests into tests that actually constrain behavior.
+- **Done when:** mutation score meets the bar, the property test catches a missed bug, weak tests are fixed.
+- **Stretch:** measure catch rate on a Defects4J/BugsInPy bug.
+
 ### Harness / reusable skill — `$ai-test-hardener`
 - **Purpose:** turn AI-generated tests into tests that actually constrain behavior.
 - **Inputs:** code + AI-generated tests. **Outputs:** a coverage + mutation report, added asserts, ≥1 validated
@@ -831,6 +915,18 @@ def test_viewer_cannot_edit():                           # human-authored constr
   by the gate (not by luck), the build fails on a secret/critical finding, and each fix is verified.
 
 ▶ **Practical project:** `juice-shop/juice-shop` — point your SAST/secret/deps/DAST gate at this deliberately-vulnerable app to prove it catches real vulns.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** GitHub Actions + `semgrep` + `gitleaks` + `trivy` + OWASP ZAP; target `juice-shop/juice-shop`.
+2. Add a blocking `security.yml`: SAST + secret scan + deps scan + a ZAP baseline against the running app.
+3. Plant 3 realistic AI-style vulns in Quill (string-built SQL, hardcoded key, vulnerable dep).
+4. Confirm each is caught; make the build fail on a secret/critical finding.
+5. Add an AI security-review prompt flagging authz/injection/secret risks on PRs.
+6. Fix each vuln + write the triage note (justified suppressions).
+- **Artifact:** `evidence/week08-security/` (CI gate + planted vulns + scan output + fixes) committed.
+- **Use `$secure-code-gate`:** stop insecure AI code from shipping with a layered gate.
+- **Done when:** all 3 planted vulns are caught (not by luck) and the build fails on a critical/secret.
+- **Stretch:** add dependency provenance + a slopsquatting check on agent-suggested packages.
 
 ### Harness / reusable skill — `$secure-code-gate`
 - **Purpose:** stop insecure AI code from shipping.
@@ -931,6 +1027,18 @@ jobs:
 
 ▶ **Practical project:** `openai/openai-cookbook` — adapt its evaluation/review recipes to build the grounded AI PR reviewer wired as a branch-protection gate.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** GitHub Actions + Claude Code review / CodeRabbit; skim `openai/openai-cookbook` eval/review recipes.
+2. Configure an AI reviewer grounded in the rules file + PRD with a focused checklist (bugs, error-handling, security, convention).
+3. Wire it as a branch-protection gate that blocks unresolved high-severity findings.
+4. Run on 5 PRs (3 real, 2 with planted bugs); record caught/missed + false-positive rate.
+5. Tune the prompt to cut noise below a stated FP threshold.
+6. Write the review-effectiveness report.
+- **Artifact:** `evidence/week09-review/` (reviewer config + 5-PR report + branch rule) committed.
+- **Use `$ai-review-gate`:** a calibrated AI gate that complements human review.
+- **Done when:** both planted bugs caught, FP rate brought below threshold, high-severity blocks merge.
+- **Stretch:** add a self-review prompt the author runs before opening the PR.
+
 ### Harness / reusable skill — `$ai-review-gate`
 - **Purpose:** a calibrated AI review gate that complements (not replaces) human review.
 - **Inputs:** a repo + conventions + PR. **Outputs:** a grounded reviewer config, a checklist, a severity→gate
@@ -1028,6 +1136,18 @@ jobs:
   API (no mocks), follows conventions, has error/empty states, and the E2E happy+error path passes.
 
 ▶ **Practical project:** `shadcn-ui/ui` — reconcile generated Quill UI into its component conventions, wired to the real share API with error/empty states.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Node + Vercel `v0` (or Lovable/Bolt) + `shadcn-ui/ui` + Playwright.
+2. Generate Quill's sharing UI (share dialog, permissions list, role selector).
+3. Reconcile: rewire to the real `POST /notebooks/:id/share` API, apply shadcn conventions, drop mock data.
+4. Add loading/error/empty states; run a screenshot→critique→revise visual loop for two issues.
+5. Add a Playwright E2E (share → appears → viewer blocked) + a component test.
+6. Record the kept-vs-rewritten line fraction.
+- **Artifact:** `evidence/week10-ui/` (reconciled PR + E2E + before/after screenshots) committed.
+- **Use `$ui-reconcile`:** turn generated UI into production code that fits the codebase.
+- **Done when:** UI uses the real API (no mocks), has error/empty states, E2E happy+error passes.
+- **Stretch:** run a Lighthouse/axe accessibility audit and fix the top finding.
 
 ### Harness / reusable skill — `$ui-reconcile`
 - **Purpose:** turn generated UI into production code that fits the codebase.
@@ -1134,6 +1254,18 @@ test("owner shares editor; viewer blocked from editing", async ({ page }) => {
 
 ▶ **Practical project:** `krishnaik06/mlproject` — reuse its CI/deploy template as the monitored-deploy base for the shipped feature and the incident drill.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Sentry + OpenTelemetry + a flag tool (OpenFeature/LaunchDarkly); base the deploy on `krishnaik06/mlproject` CI.
+2. Instrument Quill's feature: error tracking, p95 latency, a key-flow success metric; set an SLO + alert.
+3. Deploy behind a feature flag with a canary + one-command rollback.
+4. Inject a regression behind the flag; detect via the alert.
+5. Have an AI agent triage logs, correlate the deploy, propose a mitigation + fix PR (human-gated).
+6. Roll back; write a blameless postmortem; run your workflow on a 20-instance SWE-bench Verified subset.
+- **Artifact:** `evidence/week11-ops/` (monitoring/flag config + postmortem) + `week11-swebench.md` committed.
+- **Use `$ai-incident-runbook`:** operate the feature with a practiced incident loop.
+- **Done when:** the alert fires, you roll back in one command, the postmortem has root cause + prevention, SWE-bench is reproducible.
+- **Stretch:** add an automated SLO-burn alert that pages only on fast burn.
+
 ### Harness / reusable skill — `$ai-incident-runbook`
 - **Purpose:** operate an AI-built feature in production with a practiced incident loop.
 - **Inputs:** a deployed feature. **Outputs:** monitoring + SLO + alert config, a flag/canary/rollback setup, an
@@ -1222,6 +1354,18 @@ def evaluate(agent):
   one command on demand; and every claim in the memo links to a PR, test, scan, or trace in the packet.
 
 ▶ **Practical project:** `krishnaik06/Deployment-flask` — package and deploy the capstone Quill feature behind a real endpoint with flag/canary/rollback.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Claude Code/Cursor + the full CI (tests/security/review) + a PaaS; use `krishnaik06/Deployment-flask` for the deploy path.
+2. Commit the PRD as an MCP resource; build the feature behind autonomy gates.
+3. Add AI-generated + human-curated tests (incl. a property test) meeting the mutation/coverage bar.
+4. Pass the security gate (SAST/secrets/deps/DAST) + the AI + human review gate.
+5. Reconcile the UI with E2E tests; deploy behind a flag + canary + one-command rollback.
+6. Add monitoring + run one incident drill; assemble the evidence packet + 3-page memo.
+- **Artifact:** merged, deployed feature + `capstone/` evidence packet + 15-min demo committed.
+- **Use `$ai-delivery-evidence-packet`:** bundle PRD + trajectory + tests + scan + review + deploy/rollback + monitoring.
+- **Done when:** feature is live behind a flag, all gates green, one-command rollback works on demand.
+- **Stretch:** add a SWE-bench-style self-eval of the agent workflow to the packet.
 
 ### Harness / reusable skill — `$ai-delivery-evidence-packet`
 - **Purpose:** assemble PRD + agent trajectory + test/mutation report + security scan + review record + deploy/rollback

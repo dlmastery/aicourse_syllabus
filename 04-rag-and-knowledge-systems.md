@@ -84,6 +84,18 @@ Per-week lab weights (the 55%): W1 5 · W2 5 · W3 6 · W4 7 · W5 6 · W6 8 · 
 
 ▶ **Practical project:** `krishnaik06/RAG-Tutorials` — clone the intro RAG notebook and rebuild it as your load→chunk→embed→retrieve→generate baseline over the AcmeCorp wiki.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Google Colab (T4) or local `uv venv`; `pip install langchain chromadb sentence-transformers pypdf`.
+2. **Data:** load the 200 AcmeCorp wiki pages into `docs/`; write `ingest.py`.
+3. **Build:** chunk at 512 tokens, embed with `BAAI/bge-m3`, store in a local Chroma collection (`hnsw:space=cosine`).
+4. **Run:** `ask.py` embeds the question, cosine top-3, stuffs a Claude/GPT prompt with "answer only from context."
+5. **Eval:** `eval_manual.py` over 20 hand-written Q/A; label correct/incorrect/refused; split retrieval-miss vs generation-miss.
+6. **Ship:** commit `evidence/week01-baseline.md` with the accuracy line + error split.
+- **Artifact:** runnable Colab (`rag_baseline.ipynb`) + the frozen 20-question gold file committed to the repo.
+- **Use `$rag-baseline`:** it stands up the simplest honest pipeline and its error-split eval before any optimization.
+- **Done when:** pipeline answers all 20; baseline accuracy reproducible from seed; errors split into retrieval vs generation.
+- **Stretch:** swap `bge-m3` for `text-embedding-3-large` and record the accuracy delta.
+
 ### Harness / reusable skill — `$rag-baseline`
 - **Purpose:** for any new corpus, stand up the simplest honest RAG pipeline and its eval before any optimization.
 - **Inputs:** a document folder + a handful of Q/A pairs.
@@ -176,6 +188,18 @@ def retrieve(question: str, k: int = 3) -> list[str]:
 
 ▶ **Practical project:** `krishnaik06/Updated-Langchain` — use its document-loader and text-splitter modules to implement and compare fixed/recursive/semantic chunkers on the PDF policy pack.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab/local; `pip install langchain-text-splitters unstructured pymupdf sentence-transformers`.
+2. **Data:** parse the AcmeCorp PDF policy pack with `pymupdf`/`unstructured`, preserving `source`/`section`/`page` metadata.
+3. **Build:** implement fixed, `RecursiveCharacterTextSplitter(512, 64)`, and semantic chunkers in `chunkers.py`.
+4. **Run:** re-embed the corpus under each strategy into separate Chroma collections.
+5. **Eval:** re-run the Week-1 eval; build `evidence/week02-chunking.md` (strategy × accuracy × avg-chunk-size × retrieval-miss).
+6. **Ship:** commit the comparison table + a one-paragraph justified pick naming the mechanism.
+- **Artifact:** `chunkers.py` + a comparison notebook + metadata-preserving ingest.
+- **Use `$chunk-strategist`:** pick and justify a strategy by measuring ≥3 options, not guessing.
+- **Done when:** ≥3 strategies run with tables intact; chosen strategy beats Week-1 retrieval-miss; win attributed to a mechanism.
+- **Stretch:** add parent/child retrieval (small child, parent context) and measure the lift.
+
 ### Harness / reusable skill — `$chunk-strategist`
 - **Purpose:** pick and justify a chunking strategy for a given corpus by measuring, not guessing.
 - **Inputs:** a document set + the frozen eval.
@@ -264,6 +288,18 @@ def semantic_chunks(sentences: list[str], emb, tau: float = 0.55) -> list[str]:
 - **Deliverable:** `evidence/week03-vectordb.md` with the recall/latency/cost table and a justified DB choice for the portal. **Acceptance:** you report recall@10 (not just latency) and pick a DB with a stated tradeoff reason.
 
 ▶ **Practical project:** `Shubhamsaboo/awesome-llm-apps` — port one of its RAG apps across Chroma/Qdrant/pgvector and benchmark recall@10 vs p95 latency.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab/local; `pip install qdrant-client chromadb pgvector psycopg numpy`.
+2. **Data:** load 1M chunks (Week-2 output + synthetic padding) into Chroma, Qdrant, and pgvector.
+3. **Build:** `vectordb_bench.py` — index build time, p95 query latency, recall@10 vs exact NumPy argsort; sweep `ef_search ∈ {16,32,64,128,256}`.
+4. **Run:** add a metadata-filtered query (product + date) per store; compare pre- vs post-filter recall.
+5. **Eval:** tabulate recall/latency/cost in `evidence/week03-vectordb.md`.
+6. **Ship:** commit a justified DB pick with the stated tradeoff.
+- **Artifact:** the benchmark script + a recall-vs-latency plot.
+- **Use `$vectordb-selector`:** choose and configure a store from measured recall/latency/ops, not hype.
+- **Done when:** recall@10 reported (not just latency) on ≥2 DBs; `ef` sweep + filter test present; pick justified by tradeoff.
+- **Stretch:** enable scalar/binary quantization and re-measure the recall/memory tradeoff.
 
 ### Harness / reusable skill — `$vectordb-selector`
 - **Purpose:** choose and configure a vector store from measured recall/latency/ops needs, not hype.
@@ -356,6 +392,18 @@ def recall_at_k(qc, E, queries, gt, k=10, ef=64):
 
 ▶ **Practical project:** `NirDiamant/RAG_Techniques` — run its fusion-retrieval and reranking notebooks (BM25+dense+RRF → Cohere/BGE rerank) on your corpus and measure the per-stage lift.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab; `pip install rank-bm25 cohere sentence-transformers` + a Cohere/BGE reranker key.
+2. **Data:** index AcmeCorp + a BEIR set (`BeIR/scifact`) with qrels.
+3. **Build:** `hybrid.py` — BM25 + dense, fuse with RRF (`k=60`); `rerank.py` — re-score fused top-50 with `rerank-v3.5` / `bge-reranker-v2-m3`, keep top-5.
+4. **Run:** evaluate dense / hybrid / hybrid+rerank on HotpotQA + AcmeCorp.
+5. **Eval:** report nDCG@10 + recall@50 per stage + a per-query rescue breakdown in `evidence/week04-hybrid.md`.
+6. **Ship:** commit the three-stage table + a latency note.
+- **Artifact:** the hybrid+rerank notebook + per-stage eval.
+- **Use `$retriever-stack`:** add each stage only if it earns its latency, with the rescues named.
+- **Done when:** BM25+dense+RRF+reranker wired; nDCG on qrels; you name which query type the reranker fixes.
+- **Stretch:** tune RRF weighting and compare to a normalized-score fusion.
+
 ### Harness / reusable skill — `$retriever-stack`
 - **Purpose:** assemble and measure a dense→hybrid→reranked retriever, adding each stage only if it earns its latency.
 - **Inputs:** corpus + labeled queries.
@@ -445,6 +493,18 @@ def rerank(query, docs, cohere_client, top=5):
 
 ▶ **Practical project:** `NirDiamant/RAG_Techniques` — adapt its late-interaction/ColBERT recipe and compare nDCG@10 and index size to your Week-4 hybrid+rerank stack.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab GPU; `pip install ragatouille colbert-ai`.
+2. **Data:** index AcmeCorp + a LoTTE/BEIR out-of-domain set with ColBERTv2 via RAGatouille.
+3. **Build:** `colbert_lab.py` — `RAGPretrainedModel.from_pretrained("colbert-ir/colbertv2.0")`, `.index(...)`, `.search(...)`.
+4. **Run:** compare nDCG@10 + on-disk index size to Week-4's dense and hybrid+rerank stacks.
+5. **Eval:** find 5 queries ColBERT rescues that dense+rerank missed; characterize them.
+6. **Ship:** commit `evidence/week05-colbert.md` with the quality-vs-index-size table + a use-it/skip-it verdict.
+- **Artifact:** the ColBERT index + a comparison notebook.
+- **Use `$late-interaction-eval`:** decide whether late interaction earns its storage cost on this corpus.
+- **Done when:** ColBERT compared to your best prior stack; both a quality number and a storage number reported; verdict justified.
+- **Stretch:** index the AcmeCorp PDFs with ColPali and compare visual vs text retrieval.
+
 ### Harness / reusable skill — `$late-interaction-eval`
 - **Purpose:** evaluate whether late interaction earns its storage cost on a given corpus.
 - **Inputs:** corpus + labeled queries + the Week 4 reranked baseline.
@@ -530,6 +590,18 @@ def maxsim(Eq, Ed):                       # Eq:(Tq,D)  Ed:(Td,D), normalized
 - **Deliverable:** `evidence/week06-eval/` with the metric dashboard + judge-validation note. **Acceptance:** every metric is reproducible from the frozen gold set and the judge's κ vs humans is reported (and >0.6 or flagged).
 
 ▶ **Practical project:** `NirDiamant/RAG_Techniques` — wire its evaluation notebooks to RAGAS and compute faithfulness + context precision/recall on the frozen gold set.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab; `pip install ragas pytrec_eval datasets`.
+2. **Data:** assemble a 100-question gold set (HotpotQA + 50 AcmeCorp) with reference answers + relevant chunk ids.
+3. **Build:** `ragas_eval.py` — context precision/recall, faithfulness, answer relevance; `pytrec_eval` for MAP/nDCG.
+4. **Run:** validate the judge — hand-label 30 answers, compute Cohen's κ vs the LLM judge.
+5. **Eval:** assemble the metric dashboard in `evidence/week06-eval/`.
+6. **Ship:** commit the dashboard + the judge-validation note (κ).
+- **Artifact:** the eval notebook + frozen gold set + dashboard.
+- **Use `$rag-eval`:** turn "looks good" into a reproducible scorecard separating retrieval from generation.
+- **Done when:** retrieval + generation metrics both on frozen gold; judge κ reported (>0.6 or flagged); reproducible from seed.
+- **Stretch:** add RAGTruth-calibrated faithfulness thresholds and re-score.
 
 ### Harness / reusable skill — `$rag-eval` (the spine of the course)
 - **Purpose:** turn "looks good" into a reproducible scorecard separating retrieval from generation quality.
@@ -621,6 +693,18 @@ print(report)                            # per-metric means
 
 ▶ **Practical project:** `krishnaik06/Agentic-LanggraphCrash-course` — build HyDE/CRAG/Self-RAG as LangGraph nodes and ablate each against the Week-6 eval.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab/local; `pip install langgraph langchain tavily-python` (web fallback for CRAG).
+2. **Data:** reuse the Week-6 pipeline + frozen gold set.
+3. **Build:** `hyde.py`, `crag.py`, `self_rag.py` as LangGraph nodes, each an on/off toggle.
+4. **Run:** run the Week-6 eval for baseline / +HyDE / +CRAG / +Self-RAG.
+5. **Eval:** `evidence/week07-advanced.md` ablation table + per-technique rescued/regressed queries + refusal rate.
+6. **Ship:** commit the table + a kept-techniques decision.
+- **Artifact:** the LangGraph ablation graph + eval table.
+- **Use `$rag-ablation`:** keep only techniques that beat the eval, with the regressions named.
+- **Done when:** all 3 wired as real toggles; each kept technique shows a net win; you name a query type where one hurts.
+- **Stretch:** add Adaptive-RAG routing (skip retrieval on easy queries) and measure the noise reduction.
+
 ### Harness / reusable skill — `$rag-ablation`
 - **Purpose:** add advanced-RAG techniques as toggles and keep only those that beat the eval, with the regressions named.
 - **Inputs:** baseline pipeline + the `$rag-eval` harness + a list of candidate techniques.
@@ -709,6 +793,18 @@ def crag_grade(q: str, docs: list[str], grader_llm) -> str:
 - **Deliverable:** `evidence/week08-agentic-graph-sql/` with per-backend wins + routed-system eval. **Acceptance:** each backend beats vector-RAG on its target query class, and the router sends queries to the right place ≥85% of the time.
 
 ▶ **Practical project:** `run-llama/llama_index` — use its GraphRAG, query-router, and Text2SQL modules to route multi-hop / global / analytical queries to the right backend.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab/local; `pip install llama-index neo4j neo4j-graphrag duckdb`.
+2. **Data:** extract an AcmeCorp knowledge graph into Neo4j; load the `tickets` table into DuckDB.
+3. **Build:** `agentic_rag.py` (planner+retriever+reflector with a step budget), `graphrag/` (VectorCypherRetriever), `text2sql.py` (schema-grounded, read-only sandbox), `router.py`.
+4. **Run:** 10 multi-hop + 3 global + analytical questions; classify and route each.
+5. **Eval:** per-backend wins + routed-system eval + routing accuracy in `evidence/week08-agentic-graph-sql/`.
+6. **Ship:** commit `router-eval.md`.
+- **Artifact:** the routed multi-backend app + Neo4j graph + SQL guardrail log.
+- **Use `$knowledge-router`:** route each query class to the right backend with evidence.
+- **Done when:** agentic+graph+SQL functional with guardrails; each backend beats vector-RAG on its class; router ≥85% accurate.
+- **Stretch:** add a cost guard + max-step cap and report agent loop budgets.
 
 ### Harness / reusable skill — `$knowledge-router`
 - **Purpose:** route a query to vector / graph / SQL retrieval and justify the choice per query class with evidence.
@@ -803,6 +899,18 @@ def route(q: str, clf_llm) -> str:
 
 ▶ **Practical project:** `decodingml/llm-twin-course` — adapt its production RAG service to add semantic caching, injection guardrails, and a measured p95/cost SLA.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** local; `pip install fastapi uvicorn redis` + an LLM gateway; `uv` env.
+2. **Data:** a replayed traffic sample + a 50-question SLA set + `data/redteam/` injection docs.
+3. **Build:** `serve.py` (FastAPI + gateway + semantic cache + streaming), `guardrails.py` (citation enforce, PII redact, injection detect), `longctx_vs_rag.py`.
+4. **Run:** load-test p95 latency + cost/query; run 10 injection attempts; compute the long-context-vs-RAG crossover.
+5. **Eval:** `evidence/week09-production/` SLA table + crossover plot + red-team log.
+6. **Ship:** a deploy/no-deploy call.
+- **Artifact:** the served FastAPI portal + load-test + red-team scripts.
+- **Use `$rag-prod-harness`:** make the system production-safe and cost-bounded with measured SLA, caching, guardrails.
+- **Done when:** portal meets a stated p95 SLA; blocks ≥8/10 injections; long-context decision backed by crossover data.
+- **Stretch:** add prompt-caching for static prefixes and re-measure cost/query.
+
 ### Harness / reusable skill — `$rag-prod-harness`
 - **Purpose:** make a RAG system production-safe and cost-bounded with measured SLA, caching, and guardrails.
 - **Inputs:** a working retriever+generator + traffic samples + an SLA target.
@@ -895,6 +1003,18 @@ def injection_guard(chunk: str, guard_llm) -> bool:
 - **Deliverable:** `capstone/` repo + a 3-page report. **Acceptance:** every claim in the report ("hybrid added +X nDCG," "faithfulness 0.9," "p95 < Y ms," "blocks injection") points to a file in `evidence/`; the final system beats the Week 1 baseline on both a retrieval and a generation metric.
 
 ▶ **Practical project:** `Shubhamsaboo/awesome-llm-apps` — fork a full RAG app and extend it into your routed, guarded, eval-gated knowledge portal.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** fork a full RAG app from the repo; `uv` env + your Week-1→9 retriever stack.
+2. **Data:** a real ≥5k-chunk corpus + ≥80 gold Q/A/relevance triples.
+3. **Build:** ingestion → routed retrieval (hybrid+rerank, graph/SQL where measured) → guarded generation with citations → eval dashboard → served API.
+4. **Run:** an ablation showing each kept component beats the simpler system on the frozen eval.
+5. **Eval:** `eval_gate.py` checks nDCG@10 > baseline, faithfulness > 0.85, p95 < SLA, injection-block > 0.8.
+6. **Ship:** `capstone/` repo + a 3-page report where every claim → a file.
+- **Artifact:** the deployed portal + evidence packet + report.
+- **Use `$rag-evidence-packet`:** assemble baseline → ablations → dashboard → SLA/safety into one reviewable bundle.
+- **Done when:** every report claim points to `evidence/`; final system beats Week-1 on a retrieval AND a generation metric; one-command rebuild.
+- **Stretch:** expose the retriever as an MCP tool and add agent memory.
 
 ### Harness / reusable skill — `$rag-evidence-packet`
 - **Purpose:** assemble baseline → ablations → eval dashboard → SLA/safety logs into one reviewable bundle.

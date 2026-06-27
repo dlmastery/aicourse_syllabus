@@ -63,6 +63,18 @@ This is a **portfolio** course. The six milestones below sum to **100%**. Each m
 
 ▶ **Practical project:** `GokuMohandas/Made-With-ML` — use its project-scoping/metrics structure to write the charter + `metrics.yaml` and run the feasibility spike.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** clone `GokuMohandas/Made-With-ML`; pick a track; name a primary dataset (URL+license).
+2. **Frame:** the decision improved + the user, not "a chatbot".
+3. **Metrics:** write `metrics.yaml` (task-success / p95-latency / cost / unsafe-action / groundedness targets).
+4. **Architecture sketch:** agents, tools, data sources, MCP servers.
+5. **Risk:** name the riskiest assumption + how M2 tests it.
+6. **Feasibility spike:** the single riskiest call working end-to-end (one MCP tool / one retrieval).
+- **Artifact:** `M1/` charter + `metrics.yaml` + architecture diagram + spike log.
+- **Use `$project-charter`:** vague idea → a scoped, measurable charter.
+- **Done when:** numeric targets set; spike runs; out-of-scope + kill criterion stated.
+- **Stretch:** add a baseline (how it's done today) measurement.
+
 ### Harness / reusable skill — `$project-charter`
 - **Purpose:** turn a vague idea into a scoped, measurable agentic-system charter.
 - **Inputs:** problem idea, users, constraints. **Required outputs:** decision-framing, success metrics + targets, architecture sketch, riskiest assumption + test plan, out-of-scope list, kill criterion.
@@ -134,6 +146,18 @@ groundedness:        {target: 0.90, measure: "RAG faithfulness judge", gate: M2}
 - **Acceptance:** the prototype answers a held-out query set above the M1 groundedness target, and retrieval quality (recall@k / nDCG) is measured, not assumed.
 
 ▶ **Practical project:** `decodingml/llm-twin-course` — adapt its end-to-end RAG pipeline (ingestion→hybrid retrieval→rerank) and measure recall@k + Ragas faithfulness.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** clone `decodingml/llm-twin-course`; a vector DB (Qdrant/Pinecone/pgvector); `pip install ragas`.
+2. **Ingest+chunk:** ≥2 chunking strategies on your corpus.
+3. **Retrieve:** hybrid BM25+dense → reranker (Cohere/BGE); consider ColPali for PDFs.
+4. **Measure:** recall@k + nDCG.
+5. **Groundedness:** Ragas faithfulness on a held-out query set.
+6. **Data card:** sources / licenses / PII / freshness.
+- **Artifact:** `M2/` rag pipeline + rag-eval metrics + data card + prototype log.
+- **Use `$rag-evaluator`:** measure + tune retrieval end-to-end.
+- **Done when:** prototype beats the M1 groundedness target; retrieval measured not assumed.
+- **Stretch:** add agentic query-rewriting and re-measure.
 
 ### Harness / reusable skill — `$rag-evaluator`
 - **Purpose:** measure and tune a retrieval/RAG layer end-to-end. **Inputs:** corpus, query set with references. **Outputs:** retrieval metrics (recall@k, nDCG), groundedness/faithfulness, hallucination rate, a tuning recommendation (chunking/rerank/hybrid weights).
@@ -208,6 +232,18 @@ def rag_answer(query, retriever, reranker, llm, k=20, top=5):
 - **Acceptance:** the multi-agent system completes the core task end-to-end via MCP tools, with a documented agent topology and failure-isolation strategy.
 
 ▶ **Practical project:** `Shubhamsaboo/awesome-llm-apps` — template a multi-agent app, expose tools via MCP, and add a justified fine-tune-or-not decision record.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** clone `Shubhamsaboo/awesome-llm-apps`; LangGraph / Claude Agent SDK / OpenAI Agents SDK.
+2. **Topology:** orchestrator + specialist agents with explicit responsibilities.
+3. **MCP:** expose tools/data via MCP servers; agents consume them via MCP clients (no bespoke glue).
+4. **Fine-tune decision:** justify a LoRA/QLoRA run OR a memo proving RAG/prompting suffices.
+5. **Memory + context engineering:** Mem0/LangMem; failure-isolation gates between agents.
+6. **End-to-end:** complete the core task via MCP tools.
+- **Artifact:** `M3/` agent graph + MCP server specs + traces + fine-tune record.
+- **Use `$agent-orchestrator`:** an orchestration + MCP-tooling scaffold with tracing.
+- **Done when:** the multi-agent task completes via MCP; topology + failure-isolation documented.
+- **Stretch:** add A2A delegation to a second agent.
 
 ### Harness / reusable skill — `$agent-orchestrator`
 - **Purpose:** a reusable multi-agent orchestration + MCP-tooling scaffold with tracing. **Inputs:** task spec, agent roles, MCP tool servers. **Outputs:** running orchestrated system, per-agent traces, failure-isolation report, a fine-tune decision record.
@@ -289,6 +325,18 @@ async def orchestrate(task, mcp_sessions, agents):
 
 ▶ **Practical project:** `GokuMohandas/Made-With-ML` — reuse its testing/CI patterns to make evals a merge gate, then add a HarmBench/AgentDojo red-team + system card.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** `pip install inspect-ai deepeval`; tau-bench/AgentDojo; HarmBench; reuse the Made-With-ML CI patterns.
+2. **Harness:** a curated test set + scorers (exact-match/tool-correctness + a calibrated LLM-judge).
+3. **Agent eval:** τ²-bench/AgentDojo tool-use correctness + unsafe-action rate.
+4. **Gate CI:** a regression on any PR fails the build.
+5. **Safety review:** `$jailbreak-suite` + `$injection-redteam` + ≥2 quantified mitigations + residual risk.
+6. **System card.**
+- **Artifact:** `M4/` scorecard + eval-gated CI + safety report + system card.
+- **Use `$eval-gate`:** a CI-integrated eval + safety gate with a ship/no-ship verdict.
+- **Done when:** evals reproducible + CI-gated; meets M1 task-success + unsafe-action targets (or documents the gap).
+- **Stretch:** calibrate the judge against human labels and report agreement.
+
 ### Harness / reusable skill — `$eval-gate`
 - **Purpose:** a reusable, CI-integrated eval + safety gate. **Inputs:** system, test set, judge, safety red-team. **Outputs:** scorecard vs targets, regression diff, red-team ASR + mitigations, ship/no-ship verdict.
 - **Evidence artifact:** `M4/` (eval scorecard, CI config, safety report, system card).
@@ -362,6 +410,18 @@ def eval_gate(system, test_set, judge, redteam, targets):
 - **Acceptance:** the system serves traffic (real or shadow), meets M1 p95-latency and cost-per-task targets under a load test, and a rollback has been rehearsed.
 
 ▶ **Practical project:** `GokuMohandas/Made-With-ML` — follow its deploy/CI-CD path to ship the system with an eval-gated pipeline, dashboard, and rehearsed rollback.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Docker + (K8s or Modal/Replicate/Baseten/RunPod) + Terraform; LiteLLM/Portkey gateway; Langfuse.
+2. **Deploy:** a CI/CD that runs the M4 eval gate before promoting.
+3. **Cost:** prompt caching + model routing + semantic cache + batching; vLLM + FP8 KV-cache for self-hosted.
+4. **Observe:** a dashboard (task success, p95 latency, cost/task, error, per-agent) + alerts.
+5. **Safe rollout:** shadow → canary → documented rollback; human-gate high-impact actions.
+6. **Load test** (Locust/k6) to the M1 SLOs.
+- **Artifact:** `M5/` IaC + CI/CD + dashboard + load-test/cost report + rollback runbook.
+- **Use `$agentops-deployer`:** a deploy + observe + safe-release harness.
+- **Done when:** serves traffic; meets p95+cost targets under load; rollback rehearsed.
+- **Stretch:** add speculative decoding and measure the latency change.
 
 ### Harness / reusable skill — `$agentops-deployer`
 - **Purpose:** a reusable deploy + observe + safe-release harness for agentic systems. **Inputs:** system, infra config, SLOs. **Outputs:** deployed service, CI/CD with eval gate, observability dashboard, load-test report, rollback runbook.
@@ -438,6 +498,18 @@ jobs:
 - **Acceptance:** the system survived the monitoring window, ≥1 incident has a postmortem, results are reported against M1 targets honestly, and the report is fully artifact-linked.
 
 ▶ **Practical project:** `GokuMohandas/Made-With-ML` — use its monitoring/iteration guidance to run a drift-sampling window and ship one closed-loop fix with a postmortem.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** live or replayed traffic; the M5 dashboard; judge-sampling for drift.
+2. **Monitor window (≥2 weeks):** live quality sampling on the dashboard.
+3. **Incident:** trigger/inject ≥1 incident; detection → response → postmortem.
+4. **Drift:** flag a regression; ship one closed-loop fix (data refresh or eval update).
+5. **Final report (8–12 pp):** every claim cites a file; results vs M1 targets including misses.
+6. **Handoff runbook** + a live demo.
+- **Artifact:** `M6/` + the full `capstone/` packet + report + demo + runbook.
+- **Use `$production-evidence-packet`:** assemble charter → incident into one auditable bundle.
+- **Done when:** survived the window; ≥1 postmortem; a drift fix; report fully artifact-linked.
+- **Stretch:** add an automated drift alert with a threshold.
 
 ### Harness / reusable skill — `$production-evidence-packet`
 - **Purpose:** assemble charter + RAG eval + agent traces + eval scorecard + safety case + ops dashboard + incident log into one auditable bundle. **Evidence artifact:** the packet + final report (this *is* the deliverable).

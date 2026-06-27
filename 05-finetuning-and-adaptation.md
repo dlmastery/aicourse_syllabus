@@ -81,6 +81,18 @@ Per-week lab weights (the 55%): W1 5 · W2 6 · W3 7 · W4 6 · W5 7 · W6 6 · 
 
 ▶ **Practical project:** `mlabonne/llm-course` — use its prompt-vs-RAG-vs-fine-tune material to build the strong prompted baseline + cost model before any GPU time.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab/local; `pip install transformers datasets`; a frontier API key.
+2. **Data:** AcmeCorp support corpus → carve a frozen 150-example eval with reference answers + a rubric.
+3. **Build:** `baseline_prompt.py` (best-effort few-shot + format instructions on a frontier model) + `cost_model.py` ($/1k for prompted-frontier vs a hypothetical served 8B).
+4. **Run:** score format-compliance (`json.loads`) + judged quality on the frozen eval.
+5. **Eval:** classify the dominant gap (knowledge → RAG, behavior/format → SFT, preference → DPO).
+6. **Ship:** `evidence/week01-decision.md` (baseline score + cost model + recommended path with a falsifiable bar).
+- **Artifact:** the decision memo + frozen `gold_v1.jsonl` + cost model.
+- **Use `$adaptation-decision`:** decide prompt vs RAG vs fine-tune from evidence before spending GPU.
+- **Done when:** strong prompted baseline + frozen eval + cost model; gap classified with examples; path has a success bar.
+- **Stretch:** add a RAG variant and show whether it closes a knowledge gap fine-tuning wouldn't.
+
 ### Harness / reusable skill — `$adaptation-decision`
 - **Purpose:** decide prompt vs RAG vs fine-tune from evidence, not instinct, before spending GPU hours.
 - **Inputs:** a task + a prompted baseline + the failure analysis.
@@ -170,6 +182,18 @@ def eval_prompted(model, eval_set) -> dict:
 - **Deliverable:** `evidence/week02-data/` with dataset card (size, sources, filters, decontam report) + 10 inspected examples. **Acceptance:** zero eval contamination detected, loss-masking verified on a sample, dataset card complete.
 
 ▶ **Practical project:** `VizuaraAI/pharma-slm` — follow its data pipeline to format, dedup, and decontaminate your domain SFT set with a defensible dataset card.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab/local; `pip install datasets datasketch trl`.
+2. **Data:** AcmeCorp raw tickets (~20k).
+3. **Build:** `prep.py` — chat-template SFT JSONL, MinHash dedup, n-gram + embedding decontam vs the frozen eval, quality filters.
+4. **Run:** build two variants — small-clean (1.5k) and large-noisy (15k).
+5. **Eval:** verify loss-masking on a sample; produce a decontam report (target 0 overlap).
+6. **Ship:** `evidence/week02-data/` dataset card + 10 inspected rows.
+- **Artifact:** the prep pipeline + dataset card + decontam report.
+- **Use `$sft-data-prep`:** turn raw data into a clean, decontaminated, correctly-templated set with a defensible card.
+- **Done when:** zero eval contamination; loss-mask verified on a sample; dataset card complete.
+- **Stretch:** add an LLM quality-scorer filter and compare card stats before/after.
 
 ### Harness / reusable skill — `$sft-data-prep`
 - **Purpose:** turn raw domain data into a clean, decontaminated, correctly-templated SFT set with a defensible card.
@@ -263,6 +287,18 @@ def decontaminate(train, eval_texts, n=13, thresh=0.8):
 
 ▶ **Practical project:** `krishnaik06/Finetuning-LLM` — run its LoRA SFT notebook on an 8B base and beat the Week-1 prompted baseline on format compliance.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab (A100) or local 24GB; `pip install trl peft bitsandbytes unsloth wandb`.
+2. **Data:** the small-clean (1.5k) and large-noisy (15k) sets from Week 2.
+3. **Build:** `train_lora.py` — `LoraConfig(r=16, alpha=32, target_modules=[q,k,v,o,gate,up,down])`, `SFTTrainer`, `completion_only_loss=True`.
+4. **Run:** LoRA SFT on small-clean (log loss to W&B); run the data showdown vs large-noisy; sweep `r ∈ {8,16,64}`.
+5. **Eval:** evaluate on the frozen set vs the Week-1 prompted baseline.
+6. **Ship:** `evidence/week03-lora/` loss curve + eval table + data showdown + `r` sweep.
+- **Artifact:** the training config + loss curve + eval-vs-baseline table.
+- **Use `$lora-trainer`:** run a reproducible LoRA SFT, isolating the 1–2 hyperparameters that moved the metric.
+- **Done when:** LoRA beats the prompted baseline on format compliance; data hypothesis confirmed/refuted with numbers; seed committed.
+- **Stretch:** target only attention vs attention+MLP and quantify the underfit.
+
 ### Harness / reusable skill — `$lora-trainer`
 - **Purpose:** run a reproducible LoRA SFT and report whether it beats the prompted baseline, with the hyperparameters that mattered isolated.
 - **Inputs:** a base model + a prepped dataset + the frozen eval.
@@ -355,6 +391,18 @@ trainer.train()        # eval on FROZEN gold_v1.jsonl, compare to prompted basel
 
 ▶ **Practical project:** `krishnaik06/Finetuning-LLM` — switch its config to 4-bit QLoRA and measure the memory / throughput / quality tradeoff vs Week-3 full-precision LoRA.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab/local 24–48GB; `BitsAndBytesConfig(load_in_4bit, nf4, double_quant, compute_dtype=bf16)` or Unsloth `FastLanguageModel`.
+2. **Data:** the small-clean set (reused) + a long-ticket subset for context headroom.
+3. **Build:** `train_qlora.py` — 4-bit base + bf16 adapters, `optim="paged_adamw_8bit"`, `gradient_checkpointing=True`.
+4. **Run:** log `torch.cuda.max_memory_allocated()` + tokens/sec vs Week-3 LoRA; push model/context to what only fits in 4-bit.
+5. **Eval:** compare memory / throughput / eval to full-precision LoRA; test the served (merged) artifact.
+6. **Ship:** `evidence/week04-qlora/` table + a use-4-bit-or-not decision.
+- **Artifact:** the QLoRA config + memory/throughput/eval table.
+- **Use `$qlora-trainer`:** train under a memory budget and report the exact memory/quality tradeoff.
+- **Done when:** quality delta vs LoRA measured (not assumed); memory savings quantified; served artifact evaluated.
+- **Stretch:** try DoRA and compare the quality/throughput tradeoff.
+
 ### Harness / reusable skill — `$qlora-trainer`
 - **Purpose:** train under a memory budget with 4-bit base + LoRA, and report the exact memory/quality tradeoff.
 - **Inputs:** base model + dataset + a GPU memory budget.
@@ -445,6 +493,18 @@ bnb = BitsAndBytesConfig(
 
 ▶ **Practical project:** `mlabonne/llm-course` — run its DPO notebook on your SFT checkpoint and report length-controlled win-rate over the SFT model.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab/local; `pip install trl`; the SFT checkpoint from Week 3/4.
+2. **Data:** `prep_prefs.py` — chosen/rejected support pairs (edits / human ranking / stronger-model vs SFT) with quality checks; UltraFeedback for warm-up.
+3. **Build:** `train_dpo.py` — `DPOTrainer(beta=0.1, ref_model=None)` from the SFT checkpoint.
+4. **Run:** sweep `β`; log mean KL to the reference.
+5. **Eval:** judged win-rate vs SFT AND length-controlled win-rate; report length stats.
+6. **Ship:** `evidence/week05-dpo/` preference card + β sweep + win-rate table.
+- **Artifact:** the preference dataset card + DPO config + KL trace.
+- **Use `$preference-tuner`:** prove preference tuning improves judged quality without reward-hacking (length, drift).
+- **Done when:** DPO beats SFT on judged win-rate; no verbosity blow-up (length-controlled reported); proper reference frozen.
+- **Stretch:** re-run with SimPO and compare length-controlled win-rate.
+
 ### Harness / reusable skill — `$preference-tuner`
 - **Purpose:** run a preference-optimization step and prove it improves judged quality without reward-hacking (length, drift).
 - **Inputs:** an SFT checkpoint + a preference dataset + the frozen eval/judge.
@@ -531,6 +591,18 @@ trainer.train()
 
 ▶ **Practical project:** `mlabonne/llm-course` — use its preference-alignment notebooks to run ORPO + KTO and pick an objective by your actual data shape.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab/local; `pip install trl`; reuse the Week-5 DPO run.
+2. **Data:** UltraFeedback (paired) + a derived unpaired KTO set (binarized good/bad) + HH-RLHF as a second source.
+3. **Build:** `compare_prefs.py` — `ORPOTrainer` (no ref) + `KTOTrainer` (unpaired) on matched data.
+4. **Run:** tabulate win-rate, length, GPU-hours, and data-format needs.
+5. **Eval:** build a decision matrix tying method to data shape + observed pathology.
+6. **Ship:** `evidence/week06-pref-compare/` methods table + a justified objective.
+- **Artifact:** the methods-comparison notebook + decision matrix.
+- **Use `$preference-method-selector`:** choose an objective from data shape, reference-model availability, and pathologies.
+- **Done when:** ≥2 methods run on the right data shape; comparison table complete; choice tied to data shape + pathology.
+- **Stretch:** add IPO and show where it fixes DPO overfitting.
+
 ### Harness / reusable skill — `$preference-method-selector`
 - **Purpose:** choose a preference-optimization objective from data shape, reference-model availability, and observed pathologies.
 - **Inputs:** the preference data (paired/unpaired, size) + compute budget + observed failures (length, drift).
@@ -615,6 +687,18 @@ kto = KTOTrainer(model=sft, train_dataset=binary_ds, processing_class=tok,
 - **Deliverable:** `evidence/week07-rft-distill/` with the RFT-vs-SFT format-compliance curve + the distillation comparison. **Acceptance:** RFT improves verifiable-format compliance over SFT-only, and you show the reward isn't being gamed (inspect samples).
 
 ▶ **Practical project:** `VizuaraAI/RL-in-Production-Bootcamp-Resources` — adapt its RLHF→GRPO walkthrough into a verifiable-reward RFT loop on the function-call task.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab GPU; `pip install trl`; the function-call SFT checkpoint.
+2. **Data:** Glaive function-calling v2 prompts.
+3. **Build:** `rft_format.py` — `GRPOTrainer(reward_funcs=[reward_valid_call], num_generations=8)` with `reward = valid_json AND schema_match`; `distill.py` for teacher→8B distillation.
+4. **Run:** train; inspect top-reward samples for gaming; compare to SFT-only.
+5. **Eval:** RFT-vs-SFT format-compliance curve + the distillation comparison.
+6. **Ship:** `evidence/week07-rft-distill/` reward def + curve + hacking inspection.
+- **Artifact:** the GRPO RFT loop + distillation notebook + reward-hacking inspection.
+- **Use `$verifiable-rft`:** improve a verifiable skill with a programmatic reward + anti-gaming checks.
+- **Done when:** RFT beats SFT-only on verifiable-format compliance; reward shown not gamed (samples inspected).
+- **Stretch:** harden the checker against a gaming case you found and re-train.
 
 ### Harness / reusable skill — `$verifiable-rft`
 - **Purpose:** improve a verifiable skill with a programmatic reward, with anti-gaming checks.
@@ -708,6 +792,18 @@ trainer.train()    # INSPECT top-reward samples for gaming; compare vs SFT-only
 
 ▶ **Practical project:** `VizuaraAI/pharma-slm` — reuse its eval pipeline to build a multi-axis target + general + safety regression matrix across your checkpoints.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab/local; `pip install lm-eval inspect-ai`.
+2. **Data:** AcmeCorp target eval + general suite (MMLU-Pro slice, GSM8K, IFEval) + a refusal/safety probe set.
+3. **Build:** `regression_suite.py` — run base / SFT / DPO / RFT checkpoints across all axes into a before/after matrix.
+4. **Run:** validate the domain judge (κ vs human on 30 samples).
+5. **Eval:** flag any general-ability regression beyond `ε`.
+6. **Ship:** `evidence/week08-regression/` matrix + ship/no-ship memo.
+- **Artifact:** the multi-axis regression matrix + validated judge.
+- **Use `$finetune-regression`:** gate a fine-tune on target gain AND no significant general/safety regression.
+- **Done when:** every checkpoint scored on all axes incl. base; judge κ reported; regressions flagged with a decision.
+- **Stretch:** add a continual-learning replay mix and measure the forgetting reduction.
+
 ### Harness / reusable skill — `$finetune-regression`
 - **Purpose:** gate a fine-tune on target gain AND no-significant-regression across general capability and safety.
 - **Inputs:** candidate checkpoints + target eval + a general/safety suite.
@@ -796,6 +892,18 @@ def ship(matrix, base, cand, eps=0.02) -> bool:
 
 ▶ **Practical project:** `VizuaraAI/llm-inference-tutorial` — serve your quantized multi-LoRA model with vLLM and load-test p95 / throughput / $-per-1k-answers.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** local GPU; `pip install vllm`; AWQ/GPTQ the tuned model.
+2. **Data:** a replayed traffic sample + the Week-8 regression suite.
+3. **Build:** `serve_vllm.py` — `LLM(quantization="awq", enable_lora=True, max_loras=4)` serving the base + ≥2 adapters; `quant_eval.py`.
+4. **Run:** load-test throughput + p95; re-run the regression gate on the *quantized served* model.
+5. **Eval:** quant quality/latency table + multi-LoRA throughput + $/1k-answers vs prompted-frontier.
+6. **Ship:** `evidence/week09-serving/` SLA + served-model regression result.
+- **Artifact:** the vLLM multi-LoRA serving config + load test + cost table.
+- **Use `$adapter-serving`:** verify the *served* artifact still passes eval and beats the baseline on cost.
+- **Done when:** quantized multi-LoRA served; passes the regression gate; $/1k-answers win shown vs frontier.
+- **Stretch:** enable FP8 KV-cache + speculative decoding and re-measure p95.
+
 ### Harness / reusable skill — `$adapter-serving`
 - **Purpose:** serve quantized adapters under an SLA and verify the *served* artifact still passes eval and beats the baseline on cost.
 - **Inputs:** tuned checkpoint + adapters + an SLA + the regression suite.
@@ -881,6 +989,18 @@ def answer(prompt, adapter_path, adapter_id):
 - **Deliverable:** `capstone/` repo + a 3-page report. **Acceptance:** the tuned model beats the Week 1 prompted baseline on the frozen target eval, passes the regression gate (no general regression beyond `ε`), and shows a $/1k-answers win — every claim links to a file in `evidence/`.
 
 ▶ **Practical project:** `krishnaik06/Finetuning-LLM` — assemble the full decide → data → LoRA/QLoRA → DPO → serve pipeline into your capstone repo.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** assemble the full pipeline repo; `uv` env + W&B.
+2. **Data:** the declared target task (SupportGenie or your own) + a frozen ≥120 held-out eval + general/safety suite.
+3. **Build:** decide → data card → SFT (LoRA/QLoRA) → preference-tune → (optional RFT/distill) → regress → serve.
+4. **Run:** `ship_gate.py` — `beats_prompting`, `no_regression`, `cheaper`, with traceable run ids.
+5. **Eval:** an ablation showing each stage's contribution.
+6. **Ship:** `capstone/` repo + a 3-page report.
+- **Artifact:** the end-to-end pipeline + evidence packet + report.
+- **Use `$adaptation-evidence-packet`:** assemble decision → data → runs → regression → serving SLA into one bundle.
+- **Done when:** tuned model beats the Week-1 baseline; passes the regression gate (no general loss beyond ε); $/1k-answers win; every claim → a run.
+- **Stretch:** add multi-LoRA per-tenant adapters and show the cost amortization.
 
 ### Harness / reusable skill — `$adaptation-evidence-packet`
 - **Purpose:** assemble decision → data card → training runs → regression matrix → serving SLA into one reviewable bundle.

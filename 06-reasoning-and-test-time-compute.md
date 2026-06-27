@@ -80,6 +80,18 @@ Per-week lab weights (the 55%): W1 5 · W2 6 · W3 6 · W4 7 · W5 7 · W6 7 · 
 
 ▶ **Practical project:** `mlabonne/llm-course` — use its evaluation notebooks to build the GSM8K/MATH direct-vs-CoT baseline with token cost and a contamination note.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab; `pip install math-verify datasets`; a small open base via API/vLLM.
+2. **Data:** GSM8K + a 500-problem MATH subset.
+3. **Build:** `eval_math.py` — direct vs CoT prompting, robust `extract_answer` (`####` / `\boxed{}`), `math-verify`.
+4. **Run:** report accuracy + tokens/problem; add a contamination probe (n-gram overlap / fresh set).
+5. **Eval:** validate the extractor on 20 hand-checked samples.
+6. **Ship:** `evidence/week01-baseline.md` direct-vs-CoT + tokens + contamination note.
+- **Artifact:** the eval-harness notebook + frozen baseline.
+- **Use `$reasoning-eval`:** measure accuracy with objective verification, token cost, and contamination awareness.
+- **Done when:** baselines reproducible from seed; extractor validated on samples; CoT-vs-direct lift reported with token cost.
+- **Stretch:** add a fresh AIME-2025 slice and check the contamination gap.
+
 ### Harness / reusable skill — `$reasoning-eval`
 - **Purpose:** measure reasoning accuracy with objective verification, token cost, and contamination awareness — the baseline everything is judged against.
 - **Inputs:** a model + a math/reasoning set + an answer verifier.
@@ -171,6 +183,18 @@ def eval_set(model, problems, cot=True) -> dict:
 
 ▶ **Practical project:** `mlabonne/llm-course` — extend the eval loop with self-consistency + best-of-N and plot the test-time scaling curve (accuracy vs N and tokens).
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab; reuse the Week-1 harness; temperature sampling enabled.
+2. **Data:** GSM8K + MATH-500 (+ AIME for genuinely hard problems).
+3. **Build:** `self_consistency.py` (sample N, majority vote) + `best_of_n.py` (score with a verifier).
+4. **Run:** sweep `N ∈ {1,2,4,8,16,32}` at temperature 0.8; log accuracy + total tokens.
+5. **Eval:** plot accuracy vs N and vs tokens; mark the knee; pick an operating N by accuracy-per-token.
+6. **Ship:** `evidence/week02-scaling/` curve + chosen N + its cost.
+- **Artifact:** the scaling-curve notebook + plot.
+- **Use `$test-time-scaler`:** find the accuracy-per-compute operating point for parallel vs longer chains.
+- **Done when:** concave curve in N and tokens; knee identified; operating N justified by accuracy-per-token, beating Week-1 single-CoT.
+- **Stretch:** compare N short chains (vote) vs one long chain at an equal token budget.
+
 ### Harness / reusable skill — `$test-time-scaler`
 - **Purpose:** find the accuracy-per-compute operating point for parallel sampling vs longer chains.
 - **Inputs:** a model + an eval set + an aggregation method (vote / best-of-N).
@@ -256,6 +280,18 @@ def scaling_curve(model, problems, Ns=(1,2,4,8,16,32)):
 - **Deliverable:** `evidence/week03-verifiers/` with the selection-method comparison + a reward-hacking probe (can you find chains the verifier mis-scores?). **Acceptance:** verifier-guided selection beats plain majority vote, and you report at least one way each scorer can be fooled.
 
 ▶ **Practical project:** `VizuaraAI/RL-in-Production-Bootcamp-Resources` — build an outcome verifier + PRM and compare majority-vote / ORM / PRM selection on MATH.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab; `pip install math-verify sympy`; an off-the-shelf PRM (Math-Shepherd-style).
+2. **Data:** GSM8K/MATH + PRM800K/Math-Shepherd for process understanding.
+3. **Build:** `verifier.py` (robust outcome reward) + `prm.py` (per-step scoring, min/mean over steps).
+4. **Run:** compare majority-vote vs ORM-best-of-N vs PRM-weighted selection.
+5. **Eval:** report selection lift over majority + a reward-hacking probe (chains the verifier mis-scores).
+6. **Ship:** `evidence/week03-verifiers/` comparison + hacking probe.
+- **Artifact:** the verifier + PRM notebook + selection comparison.
+- **Use `$verifier-suite`:** build and validate the reward signal RL and best-of-N depend on, incl. its hacking surface.
+- **Done when:** verifier validated vs ground truth; selection beats majority vote; ≥1 way each scorer is fooled reported.
+- **Stretch:** train a tiny outcome verifier and compare to `math-verify`.
 
 ### Harness / reusable skill — `$verifier-suite`
 - **Purpose:** build and validate the reward signal (outcome and/or process) that RL and best-of-N depend on, including its hacking surface.
@@ -345,6 +381,18 @@ def prm_score(chain: str, prm) -> float:   # process reward = min/mean step scor
 
 ▶ **Practical project:** `krishnaik06/Agentic-LanggraphCrash-course` — build a bounded ReAct + code/search agent and beat CoT-only on computation-heavy and fresh-facts questions.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab/local; `pip install langgraph`; a search tool (Tavily/Exa) + a code-exec tool.
+2. **Data:** GSM8K-hard (computation) + GAIA / HotpotQA (fresh-facts, multi-hop).
+3. **Build:** `react_agent.py` — Thought/Action/Observation loop with a code tool, search tool, step budget, cost cap; `deep_research.py` (plan→search→read→synthesize→cite).
+4. **Run:** tool-augmented vs CoT-only on both sets; respect the budget.
+5. **Eval:** `evidence/week04-react/` tool-vs-CoT comparison + a trace gallery (good + failed) + a failure fix.
+6. **Ship:** commit traces + budget logs.
+- **Artifact:** the bounded ReAct/deep-research agent + trace gallery.
+- **Use `$reasoning-agent`:** prove tools beat pure CoT where computation/freshness matters, within budget.
+- **Done when:** tools beat CoT on computation/fresh-facts; every run respects the step/cost budget; a failure trace + fix shown.
+- **Stretch:** expose the code tool over MCP and re-run.
+
 ### Harness / reusable skill — `$reasoning-agent`
 - **Purpose:** build a bounded ReAct/deep-research loop and prove tools beat pure CoT where computation/freshness matters.
 - **Inputs:** a task + a tool set + a step/cost budget.
@@ -431,6 +479,18 @@ def react(model, question, tools, max_steps=8, max_cost=0.5):
 - **Deliverable:** `evidence/week05-grpo/` with reward+eval co-plots, length dynamics, and a sample gallery (before/after). **Acceptance:** held-out accuracy rises with reward (not just reward going up), KL stays bounded, and you show the reward isn't being gamed.
 
 ▶ **Practical project:** `VizuaraAILabs/OpenClaw-RL-Tutorial` — run its hands-on GRPO loop with a verifiable reward and co-plot reward vs held-out GSM8K/MATH accuracy.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** multi-GPU box or Unsloth single-GPU; `pip install trl vllm`; an 8B base/SFT checkpoint.
+2. **Data:** GSM8K/MATH training prompts with verifiable answers (+ DeepScaleR pool).
+3. **Build:** `train_grpo.py` — `GRPOTrainer(reward_funcs=[reward_correct], num_generations=8, beta=0.04, use_vllm=True)`.
+4. **Run:** log reward, KL, response length, and held-out GSM8K/MATH every K steps.
+5. **Eval:** co-plot reward vs held-out accuracy; audit samples for reward hacking + "aha" behaviors.
+6. **Ship:** `evidence/week05-grpo/` co-plots + KL/length + before/after gallery.
+- **Artifact:** the GRPO loop + reward/eval co-plot.
+- **Use `$grpo-trainer`:** run a verifiable-reward GRPO loop validated against held-out eval and audited for hacking.
+- **Done when:** held-out accuracy rises with reward (not just reward); KL bounded; reward shown not gamed.
+- **Stretch:** try R1-Zero (pure RL from base) and compare chain readability.
 
 ### Harness / reusable skill — `$grpo-trainer`
 - **Purpose:** run a verifiable-reward GRPO loop where the reward curve is validated against a held-out eval and audited for hacking.
@@ -520,6 +580,18 @@ trainer.train()
 
 ▶ **Practical project:** `VizuaraAI/RL-in-Production-Bootcamp-Resources` — add DAPO / Dr.GRPO options to your loop and ablate against vanilla GRPO on eval-per-compute.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** the same RL box; extend the Week-5 loop.
+2. **Data:** DAPO-Math-17k + GSM8K/MATH held-out.
+3. **Build:** `train_grpo_v2.py` — `GRPOConfig(epsilon_high=0.28, loss_type="dr_grpo", mask_truncated_completions=True, scale_rewards=False, beta=0.0)` + dynamic sampling.
+4. **Run:** ablate vanilla GRPO vs +Dr.GRPO vs +DAPO; track reward, eval, length, entropy.
+5. **Eval:** diagnose which pathology each fix cured; compare eval-per-compute.
+6. **Ship:** `evidence/week06-grpo-fixes/` ablation + length/entropy traces.
+- **Artifact:** the stabilized GRPO loop + ablation table.
+- **Use `$grpo-stabilizer`:** match the right targeted fix (length, entropy, bias) to the observed pathology.
+- **Done when:** ≥1 stabilization beats vanilla on held-out at equal/less compute; length/entropy pathologies shown fixed.
+- **Stretch:** add overlong-reward shaping and measure the length-distribution shift.
+
 ### Harness / reusable skill — `$grpo-stabilizer`
 - **Purpose:** diagnose and fix GRPO instabilities (length, entropy, bias) with the right targeted technique.
 - **Inputs:** a GRPO run + its dynamics (reward, eval, length, entropy).
@@ -605,6 +677,18 @@ cfg = GRPOConfig(
 - **Deliverable:** `evidence/week07-longhorizon/` with the self-improvement curve across iterations + a diversity/contamination check. **Acceptance:** at least two self-improvement iterations show held-out gains (or a documented plateau), and you check the model isn't just amplifying memorized solutions.
 
 ▶ **Practical project:** `VizuaraAILabs/OpenClaw-RL-Tutorial` — implement a verify→filter→SFT self-improvement loop and track per-iteration held-out gains with a diversity check.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab/local GPU; reuse the Week-3 verifier + an SFT base.
+2. **Data:** MATH/GSM8K prompts.
+3. **Build:** `self_improve.py` — sample N, keep verified-correct, decontam+dedup, SFT on the wins; repeat ≥2 iterations.
+4. **Run:** eval held-out EVERY iteration; track answer diversity per round.
+5. **Eval:** plot the self-improvement curve; diagnose plateau/collapse.
+6. **Ship:** `evidence/week07-longhorizon/` curve + diversity/decontam check.
+- **Artifact:** the STaR/ReST loop + per-iteration eval.
+- **Use `$self-improve-loop`:** prove (or honestly disprove) iteration gains without collapse.
+- **Done when:** ≥2 iterations show held-out gains (or a documented plateau); model checked it isn't amplifying memorized solutions.
+- **Stretch:** add a short agentic-RL trajectory reward (SWE-bench-style) as a stretch run.
 
 ### Harness / reusable skill — `$self-improve-loop`
 - **Purpose:** run a verify-filter-SFT self-improvement loop and prove (or honestly disprove) iteration gains without collapse.
@@ -693,6 +777,18 @@ def self_improve(model, prompts, verifier, iters=3, n=8):
 
 ▶ **Practical project:** `mlabonne/llm-course` — assemble AIME / GPQA / ARC-AGI-style runners with bootstrap error bars and a GSM-Symbolic perturbation audit.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab; `pip install numpy`; runners for the hard sets.
+2. **Data:** AIME 2024/25, a GPQA-Diamond subset, an ARC-AGI set + GSM-Symbolic for perturbation.
+3. **Build:** `eval_hard.py` (pass@1, maj@k, pass@k with compute + bootstrap CIs) + `contamination_audit.py` (perturb rename/renumber → accuracy drop).
+4. **Run:** score all benchmarks; inspect chains for lucky guesses.
+5. **Eval:** `evidence/week08-hard-eval/` scorecard (CIs + compute) + perturbation audit + a right-answer/wrong-chain case.
+6. **Ship:** commit the audit.
+- **Artifact:** the hard-eval runners + contamination-audit notebook.
+- **Use `$reasoning-audit`:** evaluate on contamination-resistant sets with error bars, compute, and a faithfulness audit.
+- **Done when:** scores carry CIs; perturbation test run (big drop flags memorization); ≥1 right-answer/wrong-chain surfaced.
+- **Stretch:** add LiveBench fresh problems and compare to the perturbation drop.
+
 ### Harness / reusable skill — `$reasoning-audit`
 - **Purpose:** evaluate reasoning on hard, contamination-resistant sets with error bars, compute, and a memorization/faithfulness audit.
 - **Inputs:** a model + hard benchmarks + a perturbation generator.
@@ -779,6 +875,18 @@ def perturbation_drop(model, problems, perturb):
 - **Deliverable:** `evidence/week09-deploy/` with the adaptive-vs-flat compute curve, a faithfulness report, and the serving SLA. **Acceptance:** adaptive compute beats flat on accuracy-per-token, the faithfulness probe is run with a result, and the served system meets a stated SLA.
 
 ▶ **Practical project:** `VizuaraAI/kv-cache-token-reduction-walkthrough` — serve reasoning with budget caps + KV-cache tricks and measure adaptive-vs-flat accuracy-per-token.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** local GPU; `pip install vllm`; a difficulty scorer (length/embedding/router).
+2. **Data:** GSM8K (mixed difficulty) + MATH + a faithfulness probe set (perturbed chains).
+3. **Build:** `adaptive_compute.py` (budget/samples per difficulty), `faithfulness_probe.py` (inject hint / corrupt a step), `serve_reasoning.py` (budget caps + speculative decoding).
+4. **Run:** compare flat-max vs adaptive on accuracy-per-token; measure p95 + cost/query.
+5. **Eval:** `evidence/week09-deploy/` adaptive-vs-flat curve + faithfulness report + SLA.
+6. **Ship:** a deploy decision.
+- **Artifact:** the adaptive-compute router + faithfulness probe + served endpoint.
+- **Use `$reasoning-deploy`:** deploy reasoning under a compute budget with adaptive effort + a faithfulness check.
+- **Done when:** adaptive beats flat on accuracy-per-token; faithfulness probe run with a result; served system meets a stated SLA.
+- **Stretch:** add FP8 KV-cache and quantify the latency-slope improvement.
 
 ### Harness / reusable skill — `$reasoning-deploy`
 - **Purpose:** deploy reasoning under a compute budget with adaptive effort, a faithfulness check, and a measured SLA.
@@ -867,6 +975,18 @@ def faithfulness(model, q, chain, hint):
 - **Deliverable:** `capstone/` repo + a 3-page report. **Acceptance:** the trained model beats the Week-1 baseline on held-out GSM8K/MATH *and* on a contamination-resistant check (perturbation drop small), the reward curve corresponds to real eval gains (not hacking), and every claim links to a file in `evidence/`.
 
 ▶ **Practical project:** `VizuaraAI/RL-in-Production-Bootcamp-Resources` — run the full baseline → verifier → GRPO → hard-eval pipeline as your reproduction-audit capstone.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** assemble the full reasoning-pipeline repo; `uv` env + W&B; an RL box.
+2. **Data:** GSM8K/MATH (train + held-out) + a perturbed/fresh set (GSM-Symbolic / AIME-2025) + DAPO-Math-17k pool.
+3. **Build:** frozen baselines → verifier suite → GRPO (+Week-6 stabilization) → hard-eval audit → bounded served endpoint.
+4. **Run:** `repro_gate.py` — `beats_baseline`, `real_reasoning` (perturbation drop < 0.10), `not_hacked`, `compute_fair`.
+5. **Eval:** an ablation showing the RL step's contribution over SFT/test-time-compute alone.
+6. **Ship:** `capstone/` repo + a 3-page report.
+- **Artifact:** the end-to-end RL pipeline + evidence packet + report.
+- **Use `$reasoning-evidence-packet`:** assemble baselines → verifier → GRPO curves → hard-eval audit → SLA into one auditable bundle.
+- **Done when:** model beats Week-1 on held-out AND a contamination-resistant check; reward↔eval aligned; every claim → a run.
+- **Stretch:** reproduce a second seed and report variance across runs.
 
 ### Harness / reusable skill — `$reasoning-evidence-packet`
 - **Purpose:** assemble baselines → verifier → GRPO curves → hard-eval audit → SLA into one reviewable bundle that survives a reproduction audit.

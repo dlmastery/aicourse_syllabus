@@ -71,6 +71,18 @@ _1 academic quarter · 3 lecture-hours/week · 10 lectures (~30 contact hrs). Fu
 
 ▶ **Practical project:** `krishnaik06/mlproject` — clone and run the end-to-end ML template; adopt its modular `src/`, config, and one-command run as the reproducible-repo blueprint for `ml-foundations/`.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** local `uv` env (`uv venv && uv pip install numpy pandas scikit-learn pytest`); clone `krishnaik06/mlproject` for reference.
+2. **Scaffold:** create `ml-foundations/` with `data/ src/ tests/ evidence/`, a pinned `pyproject.toml`, and `seed.py` calling `np.random.default_rng(0)`.
+3. **Data:** drop `delivery.csv` in `data/`; write `src/load.py` returning `X, y` and asserting shapes.
+4. **Implement:** `src/matmul.py` (triple-loop `matmul`) + `src/baseline.py` (predict training mean, compute MAE).
+5. **Run & test:** `pytest` compares `matmul` to `np.dot` (1e-9); `python -m src.baseline` prints baseline MAE in minutes.
+6. **Record:** log the matmul timing ratio + baseline MAE to `evidence/week01-bench.md`; commit with the seed.
+- **Artifact:** a runnable `ml-foundations/` repo (one-command `python -m src.baseline`) committed to GitHub.
+- **Use `$study-harness`:** run the 7-step loop on "matrix multiplication" — explain → formalize → counterexample → rebuild → log prediction/result/revision.
+- **Done when:** matmul matches NumPy < 1e-9; baseline MAE printed with units; the repo re-runs deterministically from a clean clone.
+- **Stretch:** add a GitHub Actions CI job (from `mlproject`) that runs `pytest` on every push.
+
 ### Harness / reusable skill — `$study-harness`
 - **Purpose:** turn any new concept into a reusable 7-step study loop.
 - **Inputs:** one topic (e.g., "matrix multiplication"). **Required outputs:** simple explanation, formal
@@ -126,6 +138,18 @@ and what **changed** in your mental model of "why NumPy exists."
 
 ▶ **Practical project:** `microsoft/ML-For-Beginners` — work the regression-module NumPy/pandas notebooks to drill vectorized prediction, broadcasting, and shape reasoning.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Google Colab; `pip install numpy pandas matplotlib`; open the ML-For-Beginners regression notebooks alongside.
+2. **Data:** load `delivery.csv` into an `(n, d)` array; standardize with `(X - mu)/sd` and annotate the broadcast shapes.
+3. **Implement:** `linalg.py` with `dot`, `matvec`, `l2_norm`, `standardize` — pure NumPy, each unit-tested vs the builtin.
+4. **Vectorize:** rewrite Week-1's looped baseline as `X @ w + b`; assert identical output to the loop.
+5. **Annotate:** add `# (n, d)` shape comments on every line and one deliberate broadcasting bug to observe the `(n,n)` blow-up.
+6. **Visualize:** scatter predicted vs actual delivery minutes to sanity-check the vectorized prediction.
+- **Artifact:** a shape-annotated `linalg.py` + a Colab notebook committed to the repo.
+- **Use `$shape-checker`:** annotate each result's shape and predict one failure before running.
+- **Done when:** all `linalg` ops match NumPy; vectorized prediction equals the loop; every line carries a verified shape comment.
+- **Stretch:** add a `@shape_assert` decorator that raises on unexpected output dimensions.
+
 ### Harness / reusable skill — `$shape-checker`
 - **Purpose:** annotate every line of model code with the shape of its result.
 - **Inputs:** a code snippet. **Outputs:** the same snippet with `# (n, d)` shape comments and one predicted failure.
@@ -176,6 +200,18 @@ Predict the output shape of `X @ w` for `X:(100,3)`, `w:(3,)`. Run. Then break i
 - **Deliverable:** passing gradient check on the delivery model. **Acceptance:** max abs diff < 1e-6.
 
 ▶ **Practical project:** `ashishpatel26/500-AI-Machine-Learning-Projects-with-code` — take a linear-regression / gradient-descent-from-scratch project and add a finite-difference gradient check.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab; `pip install numpy matplotlib`; clone a linear-regression-from-scratch project from `ashishpatel26/500-...`.
+2. **Implement analytic:** `grads.py` with the squared-error gradient `dL/dw = X.T @ (Xw - y) / n`.
+3. **Implement numeric:** `numerical_grad(f, w, eps=1e-5)` central differences over each parameter.
+4. **Check:** assert `max|analytic - numeric| < 1e-6` on the delivery model; log the worst-offending parameter.
+5. **Interpret:** flip the sign of the distance-weight and show the loss rises — confirm gradient direction.
+6. **Visualize:** plot loss vs a single weight with the analytic slope arrow overlaid.
+- **Artifact:** `grads.py` + `evidence/week03-gradcheck.md` (analytic-vs-numeric table).
+- **Use `$gradient-check`:** never trust a hand-derived gradient without the numeric pass/fail.
+- **Done when:** max abs diff < 1e-6; you can state the sign of each partial; the check is committed.
+- **Stretch:** add the logistic-loss gradient and gradient-check it too.
 
 ### Harness / reusable skill — `$gradient-check`
 - **Purpose:** never trust a hand-derived gradient without a numerical check.
@@ -229,6 +265,18 @@ Predict whether increasing the distance-weight raises or lowers predicted delive
 
 ▶ **Practical project:** `microsoft/AI-For-Beginners` — run its probability / Naive-Bayes notebooks and connect the likelihood to the cross-entropy loss you derived.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab; `pip install numpy scipy matplotlib scikit-learn`; open AI-For-Beginners probability/Naive-Bayes notebooks.
+2. **Data:** load `tickets.csv` (text_len, n_links, urgent); report the positive (urgent) base rate.
+3. **Implement:** `stats.py` sampling + a from-scratch histogram; `nll_gauss` and `nll_bern` loss functions.
+4. **Derive:** show numerically that minimizing squared error = Gaussian-noise MLE; cross-entropy = Bernoulli MLE.
+5. **Evaluate:** fit Naive Bayes; output predicted probabilities (not labels) and bucket them into calibration bins.
+6. **Visualize:** plot a reliability diagram and mark where 0.51 vs 0.99 land.
+- **Artifact:** `evidence/week04-mle.md` (loss-from-likelihood derivation + numeric check) + the calibration plot.
+- **Use `$uncertainty-reader`:** translate one predicted probability into plain English + a base-rate caution.
+- **Done when:** the squared-error↔Gaussian equivalence is shown numerically; base rate reported; a probability interpreted with its caveat.
+- **Stretch:** compute the Brier score and compare it to accuracy on the imbalanced set.
+
 ### Harness / reusable skill — `$uncertainty-reader`
 - **Purpose:** translate any probabilistic output into plain-English meaning + one base-rate caution.
 - **Inputs:** a predicted probability + context. **Outputs:** interpretation, what it ignores, one failure case.
@@ -277,6 +325,18 @@ Predict whether a 90%-accurate ticket classifier is "good" when only 5% of ticke
 - **Deliverable:** loss-curve plot + two run logs. **Acceptance:** stable run beats the Week 1 baseline MAE.
 
 ▶ **Practical project:** `krishnaik06/AQI-Project` — train the AQI regression with your own gradient-descent loop, logging loss curves and beating the mean baseline.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab; `pip install numpy pandas matplotlib`; clone `krishnaik06/AQI-Project` for the AQI dataset + framing.
+2. **Data:** load the AQI table, standardize features, hold out 20% for validation.
+3. **Implement:** `gd.py` full-batch + mini-batch gradient descent; log MSE per epoch into `hist`.
+4. **Sweep:** train at three learning rates; save one stable and one diverging run log side by side.
+5. **Evaluate:** confirm the stable run beats the predict-the-mean MAE baseline.
+6. **Visualize:** overlay the loss curves; annotate where the diverging LR explodes.
+- **Artifact:** `evidence/week05-training/` (loss plot + stable/unstable logs + a 5-line diagnosis).
+- **Use `$training-diagnostics`:** read the loss curve and rank likely causes (LR too high/low, bug, data) + the cheapest next experiment.
+- **Done when:** the stable run beats the mean baseline; the LR sweep is logged; the diagnosis names the diverging cause.
+- **Stretch:** add momentum and show it reaches the target loss in fewer epochs.
 
 ### Harness / reusable skill — `$training-diagnostics`
 - **Purpose:** read a loss curve and rank the likely causes of bad training.
@@ -328,6 +388,18 @@ Predict which of three learning rates will diverge before running the sweep. Rec
 
 ▶ **Practical project:** `microsoft/ML-For-Beginners` — reproduce its logistic-regression lesson, then match coefficients against your from-scratch `logreg.py`.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab; `pip install numpy scikit-learn matplotlib`; open the ML-For-Beginners logistic-regression lesson.
+2. **Data:** `tickets.csv` (classification) + `delivery.csv` (regression); standardize features.
+3. **Implement:** `logreg.py` from scratch (sigmoid + cross-entropy + GD), gradient-checked.
+4. **Reproduce:** fit `sklearn.LogisticRegression`; compare coefficients to your version within 1e-2.
+5. **Threshold:** choose the decision threshold by cost (not 0.5); tabulate precision/recall at the chosen cut.
+6. **Visualize:** plot the sigmoid + the fitted decision boundary on two features.
+- **Artifact:** both implementations + `evidence/week06-baseline-memo.md` (coefficient-comparison table).
+- **Use `$baseline-builder`:** propose the simplest baseline + metric + critical slices before any complex model.
+- **Done when:** coefficients agree within 1e-2; threshold chosen by cost; the memo names why a complex model isn't yet justified.
+- **Stretch:** add L2 and show the coefficient shrinkage vs the unregularized fit.
+
 ### Harness / reusable skill — `$baseline-builder`
 - **Purpose:** for any new dataset, propose the simplest reasonable baseline + evaluation plan before any complex model.
 - **Inputs:** dataset + target. **Outputs:** naive baseline, first interpretable model, metric, critical slices,
@@ -378,6 +450,18 @@ Predict which feature gets the largest logistic weight for ticket urgency; fit; 
 
 ▶ **Practical project:** `krishnaik06/Credit-Card-Fraudlent` — compare tree / random-forest / boosted models on the fraud split and audit for leakage.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab; `pip install scikit-learn xgboost pandas`; clone `krishnaik06/Credit-Card-Fraudlent` for the fraud data.
+2. **Data:** load the fraud table; build a time-aware (not random) train/test split to avoid leakage.
+3. **Implement:** a small from-scratch decision tree (Gini, max-depth), then `RandomForestClassifier` + `XGBClassifier`.
+4. **Compare:** one table — majority / logistic / tree / forest / boosted — same split, same metric (PR-AUC).
+5. **Audit:** check for leakage (e.g., post-event columns); inspect feature importance without overclaiming.
+6. **Slice:** report performance on the rare-fraud slice, not just the average.
+- **Artifact:** `evidence/week07-model-comparison.md` (comparison table + slice table + justified pick).
+- **Use `$tabular-model-review`:** drive the split strategy, slice comparison, leakage notes, and the final recommendation.
+- **Done when:** all models share one split/metric; a leakage audit is documented; the pick is justified, not "boosting won."
+- **Stretch:** calibrate the boosted model (Platt/isotonic) and re-check the rare-slice precision.
+
 ### Harness / reusable skill — `$tabular-model-review`
 - **Purpose:** honest structured-data model comparison. **Inputs:** dataset + candidate models.
   **Outputs:** split strategy, slice comparison, leakage notes, calibration concern, justified pick.
@@ -427,6 +511,18 @@ Predict which model wins the rare fraud slice before running; compare; record wh
 
 ▶ **Practical project:** `krishnaik06/Credit-Card-Fraudlent` — run a threshold sweep + per-slice error table on the fraud model and write the evaluation-review note.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab; `pip install scikit-learn matplotlib pandas`; reuse the Week-7 fraud model + time-aware split.
+2. **Implement:** `eval.py` — confusion matrix, precision/recall/F1, ROC + PR curves.
+3. **Sweep:** `threshold_sweep(y, scores)` over 0.05–0.95 → a CSV of (t, precision, recall, F1).
+4. **Slice:** build a per-slice error table (e.g., new-merchant, high-amount) from the same predictions.
+5. **Decide:** pick the threshold at the recall you actually need; read off the precision cost.
+6. **Write:** a one-page review note stating one thing the headline metric hides.
+- **Artifact:** `evidence/week08-eval/` (sweep CSV + slice table + review note).
+- **Use `$evaluation-review`:** review the result for hidden-metric gaps, threshold/calibration issues, and critical slices.
+- **Done when:** the sweep CSV + slice table exist; the note names a real limitation; the threshold is chosen by cost.
+- **Stretch:** add a cost-weighted metric and compare the chosen operating point.
+
 ### Harness / reusable skill — `$evaluation-review`
 - **Purpose:** review any result for what the main metric hides, threshold/calibration issues, critical slices,
   and whether the evidence supports the claim. **Evidence artifact:** the review note.
@@ -475,6 +571,18 @@ Predict the precision at the recall you need *before* sweeping the threshold; sw
 
 ▶ **Practical project:** `ashishpatel26/500-AI-Machine-Learning-Projects-with-code` — take an overfitting/regularization project; plot train-vs-validation and close the gap with L2.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab; `pip install numpy scikit-learn matplotlib`; pick an overfitting/regularization project from `ashishpatel26/500-...`.
+2. **Data:** `delivery.csv` with engineered polynomial features of degree 1–11.
+3. **Implement:** `generalization_lab.py` fitting each degree; record train and validation error.
+4. **Diagnose:** find the degree where validation error turns up (the overfitting point).
+5. **Regularize:** add L2; sweep the strength and watch the train–val gap close.
+6. **Visualize:** plot train-vs-validation curves with the overfit point and the regularized curve overlaid.
+- **Artifact:** `evidence/week09-generalization/` (curve + a short theory note).
+- **Use `$generalization-translator`:** turn capacity/VC language into one practical lesson + one misuse to avoid.
+- **Done when:** you can point to the exact overfitting degree; L2 measurably closes the gap; the note avoids quoting VC bounds as practical.
+- **Stretch:** reproduce a mini double-descent curve by pushing capacity well past the interpolation point.
+
 ### Harness / reusable skill — `$generalization-translator`
 - **Purpose:** translate learning-theory language (capacity, uniform convergence, VC) into a practical lesson +
   one misuse to avoid. **Evidence artifact:** the theory note.
@@ -519,6 +627,18 @@ Predict the polynomial degree where validation error bottoms out; run the sweep;
   **Acceptance:** every claim in the report points to a file in the evidence packet.
 
 ▶ **Practical project:** `krishnaik06/Data-Science-Projects-For-Resumes` — pick one end-to-end project and ship it as your capstone evidence packet (framing → baseline → compare → eval).
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** local `uv` env + Colab; `pip install scikit-learn pandas matplotlib`; pick one project from `krishnaik06/Data-Science-Projects-For-Resumes` (or California Housing).
+2. **Frame:** write `framing-memo.md` — the decision, prediction moment, and what leakage would look like.
+3. **Baseline:** ship a predict-the-mean/majority baseline with its metric.
+4. **Model:** train ≥3 models on one split; compare honestly (reuse the Week-7 review).
+5. **Evaluate:** threshold sweep + slice table + a generalization curve.
+6. **Assemble:** bundle framing + baseline + comparison + eval + generalization into `capstone/` with a 2-page report.
+- **Artifact:** a `capstone/` folder where every claim in `report.md` links to a file.
+- **Use `$project-evidence-packet`:** assemble the framing memo + baseline + comparison + eval note into one reviewable bundle.
+- **Done when:** the loop is complete (frame→baseline→compare→eval→generalize); every report claim links to an artifact; a defended next experiment is stated.
+- **Stretch:** wrap the model in a small Streamlit app that shows a prediction + its uncertainty.
 
 ### Harness / reusable skill — `$project-evidence-packet`
 - **Purpose:** assemble framing memo + baseline + comparison + eval note + generalization note into one

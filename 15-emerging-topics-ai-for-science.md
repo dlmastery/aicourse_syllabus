@@ -94,6 +94,18 @@ Produce **either** a faithful reproduction (with an ablation that goes beyond th
 
 ▶ **Practical project:** `VizuaraAI/paper-to-notebook` — triage 3 thread papers and turn the chosen one into a running baseline notebook.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab; `pip install transformers datasets`; clone `VizuaraAI/paper-to-notebook`.
+2. **Triage 3:** run `$paper-triage` on 3 thread papers (claim/evidence/repro-tier/contamination/disconfirming test).
+3. **Pick one:** get its baseline running or checkpoint loading end-to-end in the notebook.
+4. **Lit map:** one page — claim, evidence, gap, what you'd test.
+5. **Falsifiable:** name the cheapest disconfirming experiment.
+6. **Record** what was missing from the repo.
+- **Artifact:** `frontier/week01-thread.md` + 3 triage notes + a running baseline notebook.
+- **Use `$paper-triage`:** the gate before presenting any paper.
+- **Done when:** baseline runs/loads; the map names a falsifiable test.
+- **Stretch:** find the sober follow-up that tempered the splashy result.
+
 ### Harness / reusable skill — `$paper-triage`
 - **Purpose:** rapidly assess a frontier paper's claim, evidence, reproducibility, and the one experiment that would confirm/refute it.
 - **Inputs:** a paper. **Required outputs:** the central claim, the strongest and weakest evidence, reproducibility tier, contamination risk, and the cheapest disconfirming test. **Evidence artifact:** `triage/<paper>.md`.
@@ -168,6 +180,18 @@ def triage_complete(t): return all(v for v in t.values())   # gate before presen
 
 ▶ **Practical project:** `VizuaraAI/paper-to-notebook` — reproduce an AI-Scientist-style claim into a notebook and independently re-run it to find an over-claim.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab; a tiny benchmark (CIFAR-10 subset / sklearn task); the AI-Scientist repo as reference.
+2. **Run an agent:** AI-Scientist-style (or a scoped Claude Agent SDK agent) proposes + tests a regularizer.
+3. **Audit:** independently re-run every claimed result (multi-seed).
+4. **Verdict:** supported vs over-claimed (within 2σ of the claim?).
+5. **Novelty check:** literature-check any "novel" claim.
+6. **Name** the verification bottleneck.
+- **Artifact:** `frontier/ai-scientist/` transcript + `claim-audit.md` + a validity verdict.
+- **Use `$research-claim-audit`:** independent reproduction + gap analysis.
+- **Done when:** ≥1 claim independently checked; ≥1 over-claim/error documented.
+- **Stretch:** re-seed and show whether the headline survives.
+
 ### Harness / reusable skill — `$research-claim-audit`
 - **Purpose:** independently verify a claim produced by an autonomous (or human) research process.
 - **Inputs:** a claimed result + its code/log. **Required outputs:** a reproduction attempt, a validity verdict, and the specific gap (if any) between claim and evidence. **Evidence artifact:** `claim-audit.md`.
@@ -241,6 +265,18 @@ def audit_claim(claim: dict, rerun_fn, n_seeds=5):
 - **Deliverable:** `frontier/structure/` with predictions, accuracy vs PDB, a confidence-vs-error analysis, and `frontier/M1-litmap.md`. **Acceptance:** structures predicted; confidence correlates (or not) with error, reported honestly; M1 baseline runs.
 
 ▶ **Practical project:** `VizuaraAI/paper-to-notebook` — build an ESMFold inference notebook, compare to PDB (TM-score/RMSD), and analyze pLDDT-vs-error calibration.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** GPU Colab; `pip install transformers torch`; PDB sequences + ESMFold (`facebook/esmfold_v1`).
+2. **Fold:** run ESMFold on a handful of sequences.
+3. **Compare:** TM-score/RMSD vs PDB ground truth.
+4. **Confidence:** analyze pLDDT vs actual error (calibration).
+5. **Equivariance:** explain where SE(3)-equivariance matters.
+6. **Limits:** name failure regimes (dynamics, novel folds, complexes).
+- **Artifact:** `frontier/structure/repro.md` + confidence-vs-error analysis + `M1-litmap.md`.
+- **Use `$scientific-repro`:** reproduce with provenance + an honest delta.
+- **Done when:** structures predicted; confidence calibration reported; M1 baseline runs.
+- **Stretch:** compare to an OpenFold (MSA) run on an orphan protein.
 
 ### Harness / reusable skill — `$scientific-repro`
 - **Purpose:** reproduce a scientific-ML result with full provenance and an honest delta.
@@ -317,6 +353,18 @@ def fold(seq):
 
 ▶ **Practical project:** `VizuaraAI/paper-to-notebook` — reproduce a generator/screen on QM9 / Materials Project as a validity-funnel notebook (generated→valid→novel→synthesizable).
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab; `pip install rdkit`; QM9 / Materials Project API (free key).
+2. **Generate/screen:** a molecular generator or a stability screen.
+3. **Validity funnel:** generated → valid (RDKit) → novel → synthesizable, count per stage.
+4. **Uncertainty:** an applicability-domain/OOD check on novel candidates.
+5. **Baseline:** compare hit-rate to random/enumeration.
+6. **Honesty:** proposed ≠ validated, explicit.
+- **Artifact:** `frontier/materials/validity-check.md` + the candidate funnel.
+- **Use `$discovery-validity-check`:** separate proposals from validated discoveries.
+- **Done when:** validity+novelty reported; proposal-vs-discovery made explicit.
+- **Stretch:** run DFT formation-energy on the top survivors.
+
 ### Harness / reusable skill — `$discovery-validity-check`
 - **Purpose:** separate plausible proposals from validated discoveries.
 - **Inputs:** generated candidates. **Required outputs:** chemical-validity rate, novelty vs training set, synthesizability/applicability flag, and the count that survives each filter. **Evidence artifact:** `validity-check.md`.
@@ -388,6 +436,18 @@ def validity_funnel(smiles_list, train_set):
 - **Deliverable:** `frontier/pinn/` with the PINN solution, solver comparison, the FNO surrogate, and a loss-balancing note. **Acceptance:** PINN matches the solver within tolerance (or the pathology is diagnosed); FNO generalizes across instances.
 
 ▶ **Practical project:** `VizuaraAI/paper-to-notebook` — build a Burgers PINN + an FNO in one notebook, validate vs a solver, and compare generalization across instances.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab; `pip install deepxde torch`; neuraloperator data.
+2. **PINN:** a 1D Burgers'/heat solver with a PDE-residual loss (`torch.autograd.grad`).
+3. **Validate:** compare to a numerical solver within tolerance.
+4. **FNO:** train a Fourier Neural Operator on a family of instances.
+5. **Compare:** accuracy + speed; generalization to a new initial condition.
+6. **Diagnose:** spectral-bias / loss-balancing pathologies.
+- **Artifact:** `frontier/pinn/physics-validity.md` + solver comparison + FNO results.
+- **Use `$physics-validity`:** PDE-residual + solver + conservation checks.
+- **Done when:** PINN matches solver (or pathology diagnosed); FNO generalizes.
+- **Stretch:** add Fourier features and show the high-frequency fix.
 
 ### Harness / reusable skill — `$physics-validity`
 - **Purpose:** validate a learned PDE solution against physics and a numerical reference.
@@ -467,6 +527,18 @@ def loss(net, x_d, t_d, u_d, x_c, t_c, lam=1.0):
 
 ▶ **Practical project:** `VizuaraAI/paper-to-notebook` — reproduce grokking on modular arithmetic and test whether ‘emergence’ survives a continuous metric.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab; `pip install transformers datasets`; Pythia suite / BIG-Bench tasks.
+2. **Grokking:** a tiny transformer on `(a+b) mod p`; watch val long after train fits.
+3. **Two metrics:** the same predictions under exact-match vs a continuous metric.
+4. **Verdict:** does "emergence" survive the smooth metric?
+5. **Scaling:** fit a power law; state the fitted range (no over-extrapolation).
+6. **Multi-seed** the grokking curve.
+- **Artifact:** `frontier/emergence/emergence-probe.md` + `M2-repro.md`.
+- **Use `$emergence-probe`:** test claimed jumps as real vs metric artifact.
+- **Done when:** the metric-artifact effect demonstrated/refuted; M2 reproduced w/ seeds.
+- **Stretch:** cite induction-head / implicit-GD evidence for ICL.
+
 ### Harness / reusable skill — `$emergence-probe`
 - **Purpose:** test whether a claimed emergent jump is real or a metric artifact.
 - **Inputs:** a capability-vs-scale (or vs-step) result. **Required outputs:** the curve under a discontinuous and a continuous metric, and a verdict on whether emergence survives. **Evidence artifact:** `emergence-probe.md`.
@@ -541,6 +613,18 @@ def token_edit_sim(pred, gold):                     # continuous: smooth credit
 - **Deliverable:** `frontier/interp/` with the circuit (patching evidence), SAE feature interpretations, and a faithfulness note. **Acceptance:** ≥1 causal patching result; ≥5 interpreted features with evidence (max-activating examples).
 
 ▶ **Practical project:** `VizuaraAI/paper-to-notebook` — reproduce an induction-head activation-patching result and interpret ≥5 SAE features in one notebook.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab; `pip install transformer_lens sae_lens`; GPT-2 small / Pythia.
+2. **Circuit:** find an induction head via activation patching.
+3. **Causal test:** patch a clean activation into a corrupt run — did behavior restore?
+4. **SAE:** load (sae_lens) or train an SAE; interpret 5 features w/ max-activating examples.
+5. **Validate:** ablate a circuit component; confirm the behavior breaks.
+6. **Caveat** CoT faithfulness.
+- **Artifact:** `frontier/interp/interp-evidence.md` + patching + SAE features.
+- **Use `$interp-evidence`:** hold interpretability claims to a causal standard.
+- **Done when:** ≥1 causal patching result; ≥5 interpreted features with evidence.
+- **Stretch:** compare your SAE features to Neuronpedia.
 
 ### Harness / reusable skill — `$interp-evidence`
 - **Purpose:** hold interpretability claims to a causal standard.
@@ -617,6 +701,18 @@ def patch_and_measure(clean, corrupt, layer, pos):
 
 ▶ **Practical project:** `VizuaraAI/paper-to-notebook` — build an LLM+solver generate-execute-repair loop on ARC/GSM8K and beat a pure-LLM baseline on a generalization slice.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab; an ARC-AGI subset or GSM8K; a sandboxed Python executor.
+2. **Hybrid:** the LLM writes a program; execute it (really run, don't simulate).
+3. **Repair loop:** feed real errors back; iterate to a verified answer.
+4. **Baseline:** compare to a pure-LLM solver.
+5. **Generalization slice:** test the systematic-generalization split.
+6. **Report** verification pass-rate + repair count.
+- **Artifact:** `frontier/neurosymbolic/neurosymbolic-eval.md` + baseline comparison.
+- **Use `$neurosymbolic-loop`:** the generate→execute→verify→repair wrapper.
+- **Done when:** the hybrid beats pure-LLM on the generalization slice (or the failure is analyzed).
+- **Stretch:** add SAT/SMT for a constraint task.
+
 ### Harness / reusable skill — `$neurosymbolic-loop`
 - **Purpose:** wrap any reasoning task in a generate→execute→verify→repair loop.
 - **Inputs:** a task + a symbolic executor. **Required outputs:** the hybrid's accuracy, the verification pass-rate, the repair count, and a comparison to pure-neural. **Evidence artifact:** `neurosymbolic-eval.md`.
@@ -691,6 +787,18 @@ def neurosymbolic_solve(problem, llm, max_repairs=3):
 
 ▶ **Practical project:** `VizuaraAI/paper-to-notebook` — run a Dreamer/IRIS-style world model and quantify the imagined-vs-real exploitation gap in a notebook.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** GPU Colab; `pip install gymnasium`; DreamerV3/IRIS reference; Atari-100k / DMC.
+2. **World model:** run a Dreamer/tokenized model on a control/Atari task.
+3. **Compare:** planning-in-imagination vs model-free sample efficiency.
+4. **Exploitation:** the imagined-vs-real return gap.
+5. **Horizon:** an error-vs-horizon curve → trustworthy horizon.
+6. **M3 ablation** with a result table.
+- **Artifact:** `frontier/world-sim/sim-fidelity.md` + `M3-ablation.md`.
+- **Use `$sim-fidelity-eval`:** is the simulator good enough to plan/train inside?
+- **Done when:** sample-efficiency reported; exploitation characterized; M3 has a table.
+- **Stretch:** add an uncertainty penalty and re-check the gap.
+
 ### Harness / reusable skill — `$sim-fidelity-eval`
 - **Purpose:** assess whether a learned simulator is good enough to plan/train inside.
 - **Inputs:** a world model + a policy. **Required outputs:** rollout fidelity vs horizon, an exploitation check (imagined vs real return gap), and a trustworthy-horizon recommendation. **Evidence artifact:** `sim-fidelity.md`.
@@ -761,6 +869,18 @@ def exploitation_gap(world, policy, real_env, n=20):
 - **Deliverable:** `frontier/efficiency/` with the loop or benchmark, a collapse/diversity or quality-vs-length analysis, and a frontier note. **Acceptance:** a measured trade-off curve; the failure mode (collapse or recall) addressed.
 
 ▶ **Practical project:** `VizuaraAILabs/DeepSeek-From-Scratch` — reproduce an SSM/efficiency comparison (or a verified self-improvement loop) as a trade-off-curve notebook.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** GPU; `pip install mamba-ssm transformers`; clone `VizuaraAILabs/DeepSeek-From-Scratch`.
+2. **Pick:** a self-improvement (STaR) loop OR a Mamba-vs-Transformer long-context benchmark.
+3. **Self-improve:** generate → verify → filter → fine-tune; track yield + diversity per round.
+4. **OR SSM:** throughput + accuracy vs sequence length; find the crossover.
+5. **Failure mode:** model collapse (diversity/tail) or the recall gap.
+6. **Recommend** by regime.
+- **Artifact:** `frontier/efficiency/frontier-tradeoff.md` + the trade-off curve.
+- **Use `$frontier-tradeoff`:** quality–cost/diversity trade-off, rigorously.
+- **Done when:** a measured trade-off curve; the failure mode addressed.
+- **Stretch:** test a Transformer-SSM hybrid (Jamba-style).
 
 ### Harness / reusable skill — `$frontier-tradeoff`
 - **Purpose:** characterize a quality–cost (or quality–diversity) trade-off rigorously.
@@ -837,6 +957,18 @@ def self_improve_round(model, problems, verify):
 
 ▶ **Practical project:** `VizuaraAI/paper-to-notebook` — build a Lean 4 + LeanDojo proof-search notebook on a small theorem set and report verified-rate.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab; `pip install`; Lean 4 + LeanDojo/mathlib.
+2. **Autoformalize:** a small theorem set into Lean.
+3. **Proof search:** LLM + Lean (AlphaProof-style) over the set.
+4. **Verify:** the Lean kernel is the ground-truth reward.
+5. **Report:** verified-rate + a failure taxonomy.
+6. **Connect** to the societal-impact panel.
+- **Artifact:** a Lean 4 + LeanDojo proof-search notebook + verified-rate.
+- **Use `$verifiable-reasoning-eval`:** formal-verification-grounded scoring.
+- **Done when:** verified-rate reported on the theorem set with provenance.
+- **Stretch:** add an autoformalization-accuracy check.
+
 ### Harness / reusable skill — `$verifiable-reasoning-eval`
 - **Purpose:** evaluate a reasoning system where correctness is formally checkable.
 - **Inputs:** a prover + a formal benchmark. **Required outputs:** verified solve-rate, search budget, failure analysis, and a note on what verifiability does/doesn't guarantee (statement faithfulness). **Evidence artifact:** `proving-eval.md`.
@@ -910,6 +1042,18 @@ def attempt_proof(theorem: Theorem, llm, max_steps=50):
 
 ▶ **Practical project:** `VizuaraAI/paper-to-notebook` — under time pressure, convert one frontier result into a runnable, ablated notebook with seeds pinned.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Modal/Colab serverless GPU + prompt caching; pick one frontier result.
+2. **Scope:** a reproducible sub-result (not the hero run).
+3. **Reproduce the trend:** a scaled-down ablation; pin seeds.
+4. **Eval:** an Inspect AI / DeepEval quick harness.
+5. **Honesty:** report the delta from the paper.
+6. **Time-box** and ship.
+- **Artifact:** a runnable, ablated notebook with seeds pinned.
+- **Use `$frontier-sprint`:** a fast, honest frontier build under pressure.
+- **Done when:** the trend reproduced or refuted; the delta reported.
+- **Stretch:** add a second seed-set to bound variance.
+
 ### Harness / reusable skill — `$frontier-sprint`
 - **Purpose:** execute a time-boxed frontier build without dropping evidence discipline.
 - **Inputs:** an idea + a time budget. **Required outputs:** the minimal scoped build, one result vs baseline, and a limitations note. **Evidence artifact:** `hackathon/result.md`.
@@ -977,6 +1121,18 @@ def sprint_ready(s): return s["result"] is not None and s["baseline"] and s["lim
 - **Deliverable:** `frontier/final/` with the short paper, talk slides, and two peer reviews. **Acceptance:** the final mini-project checklist (top of file) is fully satisfied; the paper has an honest limitations section and a real ablation.
 
 ▶ **Practical project:** `VizuaraAI/paper-to-notebook` — package your reproduction as a clean, one-command notebook to accompany the short paper + talk.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** your project artifacts; a NeurIPS/ICLR reviewer-guideline template.
+2. **Package:** a one-command repro (uv-pinned env).
+3. **Defense prep:** the 3 hardest questions + baseline/ablation gaps + the likely over-claim.
+4. **Talk:** a 12-min conference talk + an 8-min defense.
+5. **Peer review:** two classmates' papers at the `$paper-triage` standard.
+6. **Limitations-first** framing.
+- **Artifact:** `frontier/final/` short paper + slides + two peer reviews + defense prep.
+- **Use `$research-defense`:** stress-test the claim before presenting.
+- **Done when:** the final checklist satisfied; honest limitations + a real ablation.
+- **Stretch:** pre-register the single hardest question and how the answer held.
 
 ### Harness / reusable skill — `$research-defense`
 - **Purpose:** stress-test a research claim before (and during) presentation.

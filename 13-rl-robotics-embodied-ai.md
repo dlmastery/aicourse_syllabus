@@ -65,6 +65,18 @@ _1 academic quarter · 3 lecture-hours/week · 14 lectures (~42 contact hrs). Fu
 
 ▶ **Practical project:** `VizuaraAILabs/OpenClaw-RL-Tutorial` — implement value & policy iteration on the tutorial gridworld and assert both converge to the same V*.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** local CPU or Colab; `pip install gymnasium numpy matplotlib`; clone `VizuaraAILabs/OpenClaw-RL-Tutorial`.
+2. **Model the MDP:** encode the gridworld as explicit `P[s,a,s']` and `R[s,a]` arrays (cross-check with `FrozenLake-v1`).
+3. **Implement DP:** code `policy_evaluation`, `policy_iteration`, `value_iteration` from scratch — no RL library.
+4. **Cross-check:** assert PI and VI converge to the same `V*` within `1e-8`; unit-test against a hand-computed 2-state MDP.
+5. **Visualize:** plot `V*` as a heatmap and confirm the greedy policy flows to the goal.
+6. **Reason about γ:** sweep `γ∈{0.5,0.9,0.99}` and record how horizon `1/(1-γ)` changes the policy.
+- **Artifact:** runnable `value_iteration.py` + heatmap + convergence log committed to `rl-embodied/`.
+- **Use `$mdp-modeler`:** write the `(S,A,P,R,γ)` spec + one Markov-violation risk before coding.
+- **Done when:** PI==VI to 1e-8; greedy policy reaches goal; γ/horizon reasoning recorded.
+- **Stretch:** add a stochastic (slippery) variant and show how it changes `V*`.
+
 ### Harness / reusable skill — `$mdp-modeler`
 - **Purpose:** turn any informal control problem into an explicit MDP spec before coding.
 - **Inputs:** a task description. **Required outputs:** state space, action space, transition assumptions, reward function, discount choice + justification, and one stated Markov-violation risk.
@@ -150,6 +162,18 @@ def value_iteration(P, R, gamma=0.99, tol=1e-8):
 
 ▶ **Practical project:** `VizuaraAILabs/OpenClaw-RL-Tutorial` — code tabular Q-learning vs SARSA on CliffWalking and reproduce the safe-vs-optimal path split over ≥5 seeds.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** `pip install gymnasium numpy matplotlib`; envs `CliffWalking-v0` + `FrozenLake-v1`.
+2. **Build the harness:** a seeded ε-greedy rollout loop returning `(s,a,r,s',done)` + return stats.
+3. **Implement both learners:** tabular Q-learning (off-policy `max`) and SARSA (on-policy `a'`) sharing the harness.
+4. **Schedule exploration:** decay ε→0.01; zero the bootstrap target on `done`.
+5. **Reproduce the cliff split:** plot mean±std return over ≥5 seeds — Q-learning risky-optimal, SARSA safe.
+6. **Stability check:** confirm same seed → same return (deterministic replay).
+- **Artifact:** return-curve plot + cliff trajectories + seed-stability table in `rl-embodied/`.
+- **Use `$rollout-harness`:** commit this seeded loop once — it is reused every later week.
+- **Done when:** Q-learning optimal, SARSA safe-suboptimal, both reproducible over seeds.
+- **Stretch:** add Expected-SARSA and compare target variance.
+
 ### Harness / reusable skill — `$rollout-harness`
 - **Purpose:** a seeded, vectorizable environment-interaction loop reused all course.
 - **Inputs:** env id, policy fn, n_episodes, seed. **Outputs:** trajectories `(s,a,r,s',done)`, return stats, and a deterministic-replay check.
@@ -234,6 +258,18 @@ def q_learning(env, episodes=500, alpha=0.5, gamma=0.99, eps=0.1):
 
 ▶ **Practical project:** `VizuaraAILabs/OpenClaw-RL-Tutorial` — build DQN→Double→Dueling→PER on LunarLander and attribute each ablation’s sample-efficiency gain.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab T4 / local GPU; `pip install gymnasium[box2d] torch ale-py`.
+2. **Baseline DQN:** replay buffer + target net + ε-greedy + Huber loss on `LunarLander-v3`.
+3. **Add increments:** layer in Double → Dueling → Prioritized Replay; one return curve per variant (3 seeds).
+4. **Diagnose divergence:** log Q-values; read a deadly-triad failure (exploding Q / overestimation) from the plot.
+5. **Attribute gains:** table mapping each Rainbow component to its sample-efficiency delta.
+6. **Validate:** DQN solves `LunarLander` (>200 mean return).
+- **Artifact:** ablation curves + Q-divergence diagnosis + component-attribution table.
+- **Use `$value-debugger`:** feed it Q/loss/return logs to name the firing deadly-triad symptom + cheapest fix.
+- **Done when:** >200 return; each ablation reproducible; one divergence diagnosed.
+- **Stretch:** add n-step returns and measure the bias/variance shift.
+
 ### Harness / reusable skill — `$value-debugger`
 - **Purpose:** diagnose value-based divergence. **Inputs:** Q-value logs, loss, return. **Outputs:** which deadly-triad symptom is firing (exploding Q, overestimation, replay staleness) + cheapest fix.
 - **Evidence artifact:** an annotated diverging-vs-stable Q-value plot.
@@ -315,6 +351,18 @@ def dqn_loss(batch, q_net, target_net, gamma=0.99, double=True):
 
 ▶ **Practical project:** `VizuaraAI/RL-in-Production-Bootcamp-Resources` — implement REINFORCE + value baseline + A2C and quantify the baseline’s gradient-variance reduction.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab GPU; `pip install gymnasium torch metadrive-simulator`; clone `VizuaraAI/RL-in-Production-Bootcamp-Resources`.
+2. **REINFORCE:** implement on `CartPole-v1` with correct reward-to-go.
+3. **Add baseline:** a learned value baseline; plot gradient-estimate variance with vs without.
+4. **A2C:** synchronous advantage actor-critic on MetaDrive discrete mode.
+5. **Stabilize:** normalize advantages per batch; add an entropy bonus.
+6. **Compare:** REINFORCE vs +baseline variance + the A2C return curve.
+- **Artifact:** variance-reduction plot + A2C curve + entropy log.
+- **Use `$gradient-variance-meter`:** quantify gradient-norm variance and recommend the next reduction.
+- **Done when:** baseline measurably cuts variance; A2C beats random on MetaDrive.
+- **Stretch:** swap in GAE and re-measure variance.
+
 ### Harness / reusable skill — `$gradient-variance-meter`
 - **Purpose:** quantify policy-gradient variance and the effect of variance-reduction tricks. **Inputs:** logp, returns/advantages. **Outputs:** gradient-norm variance over a batch + a recommended next reduction (baseline → GAE → normalization).
 - **Evidence artifact:** `evidence/week04-variance.md`.
@@ -395,6 +443,18 @@ def reinforce_step(logps, rewards, gamma=0.99, baseline=None):
 
 ▶ **Practical project:** `VizuaraAI/RL-in-Production-Bootcamp-Resources` — train PPO+GAE on MuJoCo HalfCheetah/MetaDrive and sweep λ and clip ε with a KL health trace.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** GPU; `pip install gymnasium[mujoco] torch metadrive-simulator`.
+2. **Implement PPO:** PPO-clip + GAE + value-clipping + entropy bonus.
+3. **Train:** MuJoCo `HalfCheetah-v5` and MetaDrive continuous control.
+4. **Health trace:** log approx-KL, clip-fraction, entropy; early-stop the epoch on a KL spike.
+5. **Sweep:** λ∈{0.9,0.95,0.99}, clip ε∈{0.1,0.2,0.3}; build a sensitivity table.
+6. **Validate:** HalfCheetah >4000 return reproducibly.
+- **Artifact:** learning curves + KL/clip-fraction trace + sensitivity table.
+- **Use `$ppo-trainer`:** this instrumented trainer is the backbone reused in Weeks 8–10.
+- **Done when:** >4000 HalfCheetah; MetaDrive learns; health signals healthy.
+- **Stretch:** add running reward normalization and compare stability.
+
 ### Harness / reusable skill — `$ppo-trainer`
 - **Purpose:** a reusable, instrumented PPO trainer (the backbone for Weeks 8–10 RLHF/GRPO).
 - **Inputs:** env/rollout fn, policy+value nets, PPO config. **Outputs:** trained policy, KL/clip-fraction/entropy logs, and a "healthy training" checklist result.
@@ -474,6 +534,18 @@ def ppo_clip_loss(logp, logp_old, adv, eps=0.2):
 
 ▶ **Practical project:** `VizuaraAI/RL-in-Production-Bootcamp-Resources` — train IQL vs BC on a Minari dataset and show DAgger fixes compounding error.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** GPU; `pip install minari gymnasium[mujoco] torch`.
+2. **BC + DAgger:** train on a MuJoCo expert; show DAgger fixes compounding error on long horizons.
+3. **Offline RL:** implement IQL (expectile regression) on a Minari `medium` dataset.
+4. **Audit data:** state/action coverage, return distribution, behavior-policy entropy.
+5. **Compare:** IQL vs BC return table on sub-optimal data.
+6. **Split:** trajectory-level held-out, no leakage.
+- **Artifact:** BC-vs-DAgger drift plot + IQL-vs-BC table + data audit.
+- **Use `$offline-data-auditor`:** produce the imitation-vs-offline-RL recommendation from the dataset.
+- **Done when:** IQL>BC on medium data; DAgger beats BC on long horizons.
+- **Stretch:** swap IQL for CQL and compare conservatism.
+
 ### Harness / reusable skill — `$offline-data-auditor`
 - **Purpose:** assess whether a logged dataset can support offline RL. **Inputs:** trajectory dataset. **Outputs:** state/action coverage, return distribution, behavior-policy entropy, and an imitation-vs-offline-RL recommendation.
 - **Evidence artifact:** `evidence/week06-data-audit.md`.
@@ -550,6 +622,18 @@ def iql_value_loss(q_net, v_net, s, a, expectile=0.7):
 - **Deliverable:** MCTS strength curve vs simulations + imagined-vs-real rollout comparison; **Acceptance:** MCTS beats a random opponent decisively; world-model reconstructions are visually faithful for ≥10 steps.
 
 ▶ **Practical project:** `VizuaraAI/RL-in-Production-Bootcamp-Resources` — build UCT MCTS on Connect-Four + a tiny IRIS-style world model and measure the safe imagination horizon.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** GPU; `pip install gymnasium[atari] ale-py torch`; reference `eloialonso/iris`.
+2. **MCTS:** UCT on Connect-Four; plug a value net for AlphaZero-lite self-play.
+3. **World model:** train a tiny IRIS-style VQ tokenizer + Transformer dynamics on an Atari env.
+4. **Imagine:** roll out imagined trajectories; inspect reconstruction fidelity per horizon.
+5. **Trust horizon:** measure per-horizon reconstruction/return error → max safe imagination horizon.
+6. **Validate:** MCTS beats random decisively; reconstructions faithful ≥10 steps.
+- **Artifact:** MCTS strength curve + imagined-vs-real rollouts + trust audit.
+- **Use `$model-trust-auditor`:** bound policy training by the measured safe horizon.
+- **Done when:** strong MCTS; faithful ≥10-step model; horizon cap recorded.
+- **Stretch:** train the policy in imagination and check for model exploitation.
 
 ### Harness / reusable skill — `$model-trust-auditor`
 - **Purpose:** measure how far into the future a learned model can be trusted. **Inputs:** model, real rollouts. **Outputs:** per-horizon reconstruction/return error and a "max safe imagination horizon."
@@ -628,6 +712,18 @@ def uct_select(node, c=1.41):
 
 ▶ **Practical project:** `VizuaraAI/RL-in-Production-Bootcamp-Resources` — SFT→DPO on UltraFeedback with TRL, then swap SimPO/KTO/ORPO and compare length-controlled win-rate.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** GPU; `pip install trl peft transformers datasets vllm`.
+2. **SFT→DPO:** on `ultrafeedback_binarized` with `Qwen3-0.6B`/`Llama-3.2-1B`.
+3. **Swap methods:** re-run with SimPO / KTO / ORPO configs.
+4. **Baseline:** a PPO-RLHF run (TRL `PPOTrainer` + reward model) on the same data.
+5. **Eval honestly:** LLM-judge win-rate + length-controlled win-rate + a KL audit.
+6. **Recommend:** pick the method by data property (paired/unpaired/single-stage budget).
+- **Artifact:** cross-method win-rate table + KL/length audit.
+- **Use `$preference-tuner`:** the reusable harness across DPO/SimPO/KTO/ORPO.
+- **Done when:** DPO improves judge win-rate over SFT without length-hacking.
+- **Stretch:** add a cross-family judge + human spot-check.
+
 ### Harness / reusable skill — `$preference-tuner`
 - **Purpose:** a reusable preference-optimization harness across DPO/SimPO/KTO/ORPO. **Inputs:** SFT model, preference data, method. **Outputs:** tuned model, win-rate vs reference, KL/length/reward-hacking report.
 - **Evidence artifact:** `evidence/week08-pref/` with the cross-method comparison.
@@ -703,6 +799,18 @@ def dpo_loss(pi_lw, pi_ll, ref_lw, ref_ll, beta=0.1):
 - **Deliverable:** pass@1 curve + response-length curve across variants + a "length-hacking" check; **Acceptance:** GRPO improves GSM8K pass@1 over the SFT base; Dr.GRPO reduces length inflation without losing accuracy.
 
 ▶ **Practical project:** `VizuaraAILabs/DeepSeek-From-Scratch` — train GRPO on GSM8K with an exact-match verifier and ablate GRPO→Dr.GRPO→DAPO on pass@1 and response length.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** GPU; `pip install verl trl vllm transformers datasets`; clone `VizuaraAILabs/DeepSeek-From-Scratch`.
+2. **Verifier:** an exact-match checker on `openai/gsm8k`.
+3. **GRPO:** train `Qwen3-1.7B` with group sampling, group-relative advantage, no critic.
+4. **Ablate:** GRPO → Dr.GRPO (drop std/length norm) → add DAPO dynamic sampling.
+5. **Track:** pass@1 + mean response length per variant; a length-hacking check.
+6. **Harden:** spot-check accepted answers for verifier gaming.
+- **Artifact:** pass@1 + length curves + variant ablation + gaming report.
+- **Use `$rlvr-trainer`:** verifier + group sampler + GRPO/DAPO objective as one harness.
+- **Done when:** GRPO↑pass@1 over SFT; Dr.GRPO cuts length without losing accuracy.
+- **Stretch:** add MATH-500 and compare difficulty transfer.
 
 ### Harness / reusable skill — `$rlvr-trainer`
 - **Purpose:** a verifiable-reward RL harness (verifier + group sampler + GRPO/DAPO objective). **Inputs:** base model, prompt set, verifier fn, variant. **Outputs:** trained model, pass@k, length/format metrics, verifier-gaming report.
@@ -782,6 +890,18 @@ def grpo_advantages(rewards, group_size, drgrpo=False):
 - **Deliverable:** resolved-rate curve on held-out bugs + an infra throughput report (rollout/sec, GPU util); **Acceptance:** trained agent resolves more held-out bugs than the SFT base; infra report identifies the bottleneck stage.
 
 ▶ **Practical project:** `VizuaraAI/RL-in-Production-Bootcamp-Resources` — wrap a repo+pytest as a Gymnasium env and train an agent with veRL+Ray+vLLM; report resolved-rate + the infra bottleneck.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** multi-GPU/serverless; `pip install verl vllm ray`; SWE-Gym / SWE-bench Verified instances.
+2. **Build the env:** wrap a Python repo + pytest as Gymnasium-style (apply patch → run tests → reward).
+3. **Reward:** partial credit = passed/total; protect test files; keep held-out tests.
+4. **Train:** GRPO over sampled patches with veRL + Ray + vLLM on seeded bugs.
+5. **Profile infra:** rollout/sec, GPU util; find the bottleneck stage (gen/reward/train).
+6. **Evaluate:** resolved-rate on held-out bugs vs the SFT base.
+- **Artifact:** resolved-rate curve + infra throughput report + reward-sparsity stats.
+- **Use `$agentic-rl-env`:** the reusable verifiable agentic env (sandbox + reward + trajectory logger).
+- **Done when:** agent beats SFT base on held-out; bottleneck identified.
+- **Stretch:** add curriculum/partial-credit shaping and measure the lift.
 
 ### Harness / reusable skill — `$agentic-rl-env`
 - **Purpose:** a reusable verifiable agentic environment (tool sandbox + reward + trajectory logger). **Inputs:** task spec, tools, verifier. **Outputs:** Gymnasium-compatible env, trajectory logs, reward-sparsity stats.
@@ -864,6 +984,18 @@ class SWEEnv:
 
 ▶ **Practical project:** `VizuaraAILabs/ACT-Maniskill` — fine-tune an action-chunking (ACT) policy on ManiSkill and evaluate sim success-rate with an embodied-eval harness.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** GPU; `pip install mani-skill lerobot torch`; clone `VizuaraAILabs/ACT-Maniskill`.
+2. **Data:** load LeRobot/ManiSkill demos with action chunking.
+3. **Fine-tune:** train an ACT (or SmolVLA) policy on the manipulation task.
+4. **Closed-loop eval:** roll the policy in sim; measure success-rate + sim-to-real caveats.
+5. **Compare:** imitation vs RL fine-tuning on the same task.
+6. **Audit:** log unsafe/degenerate behaviors.
+- **Artifact:** success-rate curve + an embodied-eval report.
+- **Use `$embodied-eval`:** standardized closed-loop success/safety evaluation.
+- **Done when:** policy beats a random/BC baseline on held-out scenes.
+- **Stretch:** add residual RL on top of the BC policy and re-measure.
+
 ### Harness / reusable skill — `$embodied-eval`
 - **Purpose:** standardized closed-loop evaluation for embodied policies. **Inputs:** policy, sim env, perturbation suite. **Outputs:** success-rate, robustness curve under randomization, failure-mode taxonomy.
 - **Evidence artifact:** `evidence/week11-vla/` with success-rate + robustness curves.
@@ -944,6 +1076,18 @@ def rollout(env, instruction, horizon=200, chunk=10):
 
 ▶ **Practical project:** `VizuaraAILabs/Modern-Robot-Learning` — train a massively-parallel locomotion policy and a 2-agent CTDE task; audit the locomotion reward for shaping exploits.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** GPU; Isaac Lab / MJX (massively parallel) per repo; clone `VizuaraAILabs/Modern-Robot-Learning`.
+2. **Locomotion:** train a humanoid/quadruped policy with 4096+ parallel envs.
+3. **MARL:** a 2-agent CTDE task with PettingZoo (centralized critic, decentralized actors).
+4. **Reward audit:** inspect the locomotion reward for shaping exploits (e.g., reward for jitter).
+5. **Domain randomization:** add it for sim-to-real robustness.
+6. **Evaluate:** locomotion return + a multi-agent coordination metric.
+- **Artifact:** locomotion curve + CTDE result + a reward-shaping audit note.
+- **Use `$reward-shaping-auditor`:** flag shaped-reward exploits before they dominate.
+- **Done when:** stable locomotion; 2-agent task solved; ≥1 shaping exploit caught.
+- **Stretch:** scale to 3+ agents and test for emergent collusion.
+
 ### Harness / reusable skill — `$reward-shaping-auditor`
 - **Purpose:** detect reward-shaping exploits in continuous control. **Inputs:** reward components, trajectory rollouts. **Outputs:** per-term contribution, exploit flags (e.g., reward high but task failed), and a shaping fix.
 - **Evidence artifact:** `evidence/week12-locomotion/` with the reward-term breakdown.
@@ -1021,6 +1165,18 @@ ppo_update(policy, buffer, adv, ret)                 # reuse $ppo-trainer
 
 ▶ **Practical project:** `VizuaraAI/RL-in-Production-Bootcamp-Resources` — red-team a trained policy’s reward for hacking and demonstrate a constrained-MDP/penalty mitigation.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** reuse a trained policy + its reward from an earlier week.
+2. **Red-team:** search for behaviors that inflate reward without solving the task (specification gaming).
+3. **Quantify:** measure reward vs true task success — show the Goodhart gap.
+4. **Mitigate:** add a constrained-MDP penalty / KL control / held-out judge.
+5. **Re-eval:** before/after reward-hacking rate + task success.
+6. **Document residual risk.**
+- **Artifact:** a reward-hacking incident report + the hardened reward.
+- **Use `$reward-hacking-redteam`:** the reusable specification-gaming probe.
+- **Done when:** ≥1 real hack demonstrated and measurably reduced.
+- **Stretch:** try a multi-objective reward and check for new exploits.
+
 ### Harness / reusable skill — `$reward-hacking-redteam`
 - **Purpose:** systematically probe an RL agent/reward for exploits. **Inputs:** agent, reward fn, true-objective metric. **Outputs:** ranked exploit hypotheses, a demonstrated hack, a mitigation, and a re-eval.
 - **Evidence artifact:** `evidence/week13-safety/` red-team report (carried into Subject 14).
@@ -1091,6 +1247,18 @@ def constrained_objective(reward_adv, cost_adv, lam, budget_violation):
 - **Deliverable:** `capstone/` repo + 3-page report + demo (video or notebook); **Acceptance:** the agent beats a named baseline on held-out tasks *and* passes its own reward-hacking audit.
 
 ▶ **Practical project:** `VizuaraAI/RL-in-Production-Bootcamp-Resources` — ship one agentic-RL system end-to-end (train → held-out eval → reward-hacking audit → evidence packet).
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** pick a track — SWE-RL (coding), MetaDrive (driving), or LeRobot/ManiSkill (embodied).
+2. **Spec:** MDP/agentic spec, algorithm, baseline, success metric, anticipated reward hack.
+3. **Train:** PPO/GRPO/VLA with the right Week-5/9/11 harness; ≥3 seeds.
+4. **Evaluate:** held-out vs the named baseline + one ablation.
+5. **Safety audit:** `$reward-hacking-redteam` probe + a mitigation.
+6. **Package:** 3-page report (every claim → artifact) + a demo.
+- **Artifact:** the full evidence packet + demo committed to `rl-embodied/`.
+- **Use `$rl-evidence-packet`:** compose all course skills into one auditable bundle.
+- **Done when:** beats baseline on held-out (≥3 seeds); safety audit passes; demo runs.
+- **Stretch:** add a second track and compare transfer.
 
 ### Harness / reusable skill — `$rl-evidence-packet`
 - **Purpose:** assemble MDP spec + training logs + eval + ablation + safety audit into one reviewable bundle. **Evidence artifact:** the packet itself (this *is* the deliverable).

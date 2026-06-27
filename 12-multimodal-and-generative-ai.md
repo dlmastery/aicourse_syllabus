@@ -92,6 +92,17 @@ Ship **two coupled artifacts**:
 
 ▶ **Practical project:** `VizuaraAI/Transformers-for-vision-BOOK` — implement the ViT (patch-embed → attention → class head) from scratch and verify it against a reference.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab GPU; `pip install torch timm einops`; clone the repo; load CIFAR-10.
+2. **Build:** implement `PatchEmbed`, multi-head attention, a transformer block, the ViT classifier in pure PyTorch.
+3. **Train:** train on CIFAR-10 with augmentation; report top-1 accuracy.
+4. **Compare:** vs a `timm` ViT + a small ResNet; visualize attention rollout for 5 images.
+5. **Verify:** shape checks + output-parity vs the reference + a param-count comparison.
+- **Artifact:** `builds/vit/` with the ViT, accuracy table, attention images, `verify.md`.
+- **Use `$from-scratch-verifier`:** prove the module matches a reference (shapes + parity).
+- **Done when:** the from-scratch ViT beats a linear baseline and attention maps render.
+- **Stretch:** ablate positional embeddings and add register tokens.
+
 ### Harness / reusable skill — `$from-scratch-verifier`
 - **Purpose:** prove a from-scratch module matches a reference implementation.
 - **Inputs:** your module + a reference (`timm`/`transformers`). **Required outputs:** shape checks at every stage, output-parity test on a fixed input, and a parameter-count comparison. **Evidence artifact:** `verify.md`.
@@ -169,6 +180,17 @@ class PatchEmbed(nn.Module):
 
 ▶ **Practical project:** `VizuaraAI/Transformers-for-vision-BOOK` — train a dual-encoder with the symmetric InfoNCE loss and measure both-direction retrieval.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab GPU; `pip install torch open_clip_torch`; clone the repo; load a Flickr30k/COCO subset.
+2. **Loss:** implement the symmetric InfoNCE loss (normalized embeddings, learned τ).
+3. **Train:** a small dual-encoder (ViT tower + text tower); report image↔text Recall@1/5/10.
+4. **Zero-shot:** run zero-shot CIFAR-10 with `open_clip` weights; sweep 5 prompt templates.
+5. **Report:** retrieval + zero-shot tables + a prompt-sensitivity note.
+- **Artifact:** `builds/clip/clip-eval.md` + retrieval/zero-shot tables.
+- **Use `$contrastive-eval`:** R@k both directions + zero-shot + prompt sensitivity.
+- **Done when:** symmetric loss verified and Recall@k reported both directions.
+- **Stretch:** swap in a SigLIP-2 sigmoid loss and compare.
+
 ### Harness / reusable skill — `$contrastive-eval`
 - **Purpose:** evaluate any image–text model on retrieval and zero-shot, both directions.
 - **Inputs:** image/text encoders + a paired set. **Required outputs:** R@1/5/10 (i→t and t→i), zero-shot accuracy, and a prompt-template sensitivity note. **Evidence artifact:** `clip-eval.md`.
@@ -240,6 +262,17 @@ def clip_loss(img_emb, txt_emb, logit_scale):
 - **Deliverable:** `builds/vlm/` with inference results, a LoRA fine-tune, and a before/after table. **Acceptance:** measurable lift on the target slice; ≥3 hallucination examples documented.
 
 ▶ **Practical project:** `VizuaraAI/infertutor-arena-capstone` — run/serve a Qwen-VL VLM for VQA and LoRA-fine-tune it on a target slice.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab A100/Modal; `pip install transformers peft bitsandbytes`; clone the repo; load Qwen2.5-VL / LLaVA-NeXT.
+2. **Zero-shot:** run VQA/captioning on VQAv2/TextVQA/DocVQA samples; inspect failures.
+3. **Probe:** per-capability accuracy (objects/counting/text-in-image/spatial) + a hallucination rate.
+4. **LoRA:** fine-tune on a small target instruction set; report before/after on a held-out slice.
+5. **Document:** ≥3 hallucination examples + a resolution-sensitivity note.
+- **Artifact:** `builds/vlm/vlm-probe.md` + LoRA before/after table.
+- **Use `$vlm-probe`:** per-capability accuracy + hallucination rate before deploying.
+- **Done when:** measurable LoRA lift on the slice and ≥3 hallucinations documented.
+- **Stretch:** add AnyRes high-res tiling and re-measure DocVQA.
 
 ### Harness / reusable skill — `$vlm-probe`
 - **Purpose:** characterize a VLM's strengths/failures before deploying it.
@@ -317,6 +350,17 @@ def vqa(image, question):
 - **Deliverable:** `builds/ddpm/` with training code, sample grids, and FID. **Acceptance:** recognizable samples; FID reported; cosine vs linear compared.
 
 ▶ **Practical project:** `VizuaraAILabs/Principles-of-Diffusion-Models` — implement the DDPM forward/reverse + time-conditioned U-Net and report FID.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab GPU; `pip install torch torchvision diffusers`; clone the repo; load CIFAR-10/CelebA (32–64px).
+2. **Schedule:** implement the DDPM β/ᾱ schedule + closed-form forward noising.
+3. **U-Net:** build a small time-conditioned U-Net; train the ε-objective.
+4. **Sample:** an ancestral sampler → a sample grid; compute FID vs the training set.
+5. **Ablate:** compare linear vs cosine schedule; add a nearest-neighbor memorization check.
+- **Artifact:** `builds/ddpm/gen-eval.md` + sample grids + FID + schedule comparison.
+- **Use `$generative-eval`:** FID + a diversity/memorization check + a sample grid.
+- **Done when:** recognizable samples, FID reported, cosine vs linear compared.
+- **Stretch:** swap the U-Net for a small DiT backbone and compare FID.
 
 ### Harness / reusable skill — `$generative-eval`
 - **Purpose:** evaluate a generator beyond eyeballing.
@@ -396,6 +440,17 @@ def loss_fn(model, x0):
 
 ▶ **Practical project:** `VizuaraAILabs/Principles-of-Diffusion-Models` — extend to latent diffusion + CFG and LoRA/DreamBooth fine-tune with a CLIPScore eval.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab A100; `pip install diffusers transformers peft`; clone the repo; pull SD-2.1/SDXL or FLUX.1.
+2. **CFG sweep:** run inference; sweep the classifier-free guidance scale; document the quality/alignment trade-off.
+3. **Fine-tune:** LoRA/DreamBooth on a 10–20 image concept set (with prior preservation).
+4. **Eval:** CLIPScore on held-out prompts (PartiPrompts) + a sample grid.
+5. **Midterm:** submit the W4 DDPM report.
+- **Artifact:** `builds/latent-diffusion/t2i-eval.md` + `midterm/ddpm-report.md`.
+- **Use `$t2i-eval`:** realism + alignment (CLIPScore + a CFG-scale curve).
+- **Done when:** the fine-tune produces the target concept, CFG sweep documented, CLIPScore reported.
+- **Stretch:** compare a rectified-flow base (SD3.5/FLUX) on the same prompts.
+
 ### Harness / reusable skill — `$t2i-eval`
 - **Purpose:** evaluate a text-to-image model on realism *and* alignment.
 - **Inputs:** prompts + generations. **Required outputs:** FID-or-realism note, CLIPScore per prompt, a CFG-scale curve, and a failure-prompt set. **Evidence artifact:** `t2i-eval.md`.
@@ -470,6 +525,17 @@ clip = CLIPScore(model_name_or_path="openai/clip-vit-base-patch16")
 - **Deliverable:** `builds/flow-matching/` with the loss, a steps-vs-FID curve across methods, and a short writeup. **Acceptance:** flow matching matches/beats DDPM at far fewer steps, or the gap is explained.
 
 ▶ **Practical project:** `VizuaraAILabs/Principles-of-Diffusion-Models` — retrain with a conditional flow-matching objective and plot FID-vs-NFE against DDPM/DDIM.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab GPU; `pip install torch torchvision`; clone the repo; reuse the CIFAR/CelebA setup.
+2. **FM loss:** implement conditional flow matching on the linear path (predict the velocity).
+3. **Sample:** an Euler/Heun ODE sampler at 4/10/50 steps.
+4. **Frontier:** plot FID-vs-NFE for flow matching vs your DDPM and DDIM.
+5. **Pick:** recommend an operating point on the quality–compute frontier.
+- **Artifact:** `builds/flow-matching/sampler-benchmark.md` + steps-vs-FID curve.
+- **Use `$sampler-benchmark`:** FID vs NFE curve + the recommended operating point.
+- **Done when:** flow matching matches/beats DDPM at far fewer steps (or the gap is explained).
+- **Stretch:** add a reflow / few-step distillation pass and re-plot.
 
 ### Harness / reusable skill — `$sampler-benchmark`
 - **Purpose:** compare generative samplers on the quality–compute frontier.
@@ -550,6 +616,17 @@ def sample(model, shape, steps=8):                 # Euler ODE integration noise
 
 ▶ **Practical project:** `VizuaraAI/vla-driving-simulation` — generate action-conditioned frames and measure a temporal-consistency proxy + flicker catalog.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab A100/Modal; `pip install diffusers transformers`; clone the repo; pull SVD/CogVideoX.
+2. **Generate:** image- and text-to-video on a handful of prompts.
+3. **Consistency:** measure a frame-to-frame CLIP/feature-similarity temporal proxy.
+4. **Inspect:** catalog ≥2 failure modes (flicker, morphing, physics violation).
+5. **Honesty:** document the resolution/length/latency reality.
+- **Artifact:** `builds/video/video-eval.md` + clips + failure catalog.
+- **Use `$video-consistency-eval`:** temporal coherence, not just single-frame quality.
+- **Done when:** the consistency metric is reported and ≥2 failure modes documented.
+- **Stretch:** score against VBench dimensions.
+
 ### Harness / reusable skill — `$video-consistency-eval`
 - **Purpose:** evaluate generated video for temporal coherence, not just single-frame quality.
 - **Inputs:** generated clips. **Required outputs:** frame-quality proxy, temporal-consistency score, text alignment, and a flicker/identity-drift catalog. **Evidence artifact:** `video-eval.md`.
@@ -620,6 +697,17 @@ def temporal_consistency(frame_feats):             # frame_feats: (T, D) e.g. CL
 - **Deliverable:** `builds/audio/` with WER tables (incl. a hard slice), TTS samples, and a robustness note. **Acceptance:** WER reported with a slice; TTS intelligibility rated.
 
 ▶ **Practical project:** `VizuaraAI/audio-llm` — build the Whisper ASR→WER + TTS pipeline and evaluate a noisy/accented slice.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab GPU; `pip install openai-whisper jiwer torchaudio`; clone the repo; load a LibriSpeech subset + MUSAN noise.
+2. **ASR:** transcribe `test-clean`; compute WER with identical normalization on both sides.
+3. **Slice:** add noise/accent; compute the WER gap; compare Whisper sizes.
+4. **TTS:** run XTTS-v2/Kokoro on generated text; do a small MOS listening rubric.
+5. **Report:** WER tables (incl. the hard slice) + TTS samples + a robustness note.
+- **Artifact:** `builds/audio/asr-eval.md` + TTS samples + listening rubric.
+- **Use `$asr-robustness-eval`:** overall + noise/accent-sliced WER + a normalization note.
+- **Done when:** WER reported with a slice and TTS intelligibility rated.
+- **Stretch:** add an EnCodec/Mimi audio-token round-trip and inspect quality.
 
 ### Harness / reusable skill — `$asr-robustness-eval`
 - **Purpose:** evaluate a speech system beyond clean-set WER.
@@ -694,6 +782,17 @@ def transcribe_wer(audio_path, reference):
 
 ▶ **Practical project:** `Shubhamsaboo/awesome-llm-apps` — assemble a speech→VLM→speech any-to-any pipeline and compare it head-to-head with a native multimodal model.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab/Modal; `pip install openai-whisper transformers gradio`; clone the repo; pick a multimodal app.
+2. **Pipeline:** speech-in (Whisper) → VLM reasoning over an image → text + optional speech out, via an agent SDK / router.
+3. **Native:** compare against a single native model (Qwen2.5-Omni) on the same tasks.
+4. **Measure:** per-modality quality, end-to-end latency, failures at modality boundaries.
+5. **Recommend:** a native-vs-pipeline write-up.
+- **Artifact:** `builds/any2any/any2any-eval.md` + head-to-head comparison.
+- **Use `$modality-router-eval`:** routing/fusion quality + latency + a native-vs-pipeline recommendation.
+- **Done when:** a working multimodal round-trip + a data-backed recommendation.
+- **Stretch:** add interleaved text+image output and check cross-modal alignment.
+
 ### Harness / reusable skill — `$modality-router-eval`
 - **Purpose:** evaluate a multimodal system's routing/fusion choices.
 - **Inputs:** a multimodal system + task set. **Required outputs:** per-modality quality, end-to-end latency, failure cases at modality boundaries, and a native-vs-pipeline recommendation. **Evidence artifact:** `any2any-eval.md`.
@@ -765,6 +864,17 @@ def multimodal_turn(audio_path, image):
 - **Deliverable:** `builds/world-model/` with rollout predictions, an error-vs-horizon curve, and a planning/imagination demo. **Acceptance:** rollouts shown; compounding-error curve plotted; one use (planning or data-augmentation) demonstrated.
 
 ▶ **Practical project:** `VizuaraAI/vla-driving-simulation` — train/run an action-conditioned world model and plot rollout error vs horizon.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab GPU; `pip install torch gymnasium ale-py`; clone the repo; collect `(obs, action, next_obs)` trajectories.
+2. **Train:** a tokenized/latent action-conditioned next-frame world model (IRIS/DreamerV3-style).
+3. **Rollout:** imagine multi-step futures from a start latent.
+4. **Error curve:** plot per-step + cumulative prediction error vs horizon; find the drift point.
+5. **Use:** demo one use (planning or data augmentation).
+- **Artifact:** `builds/world-model/rollout-eval.md` + error-vs-horizon curve + demo.
+- **Use `$rollout-eval`:** per-step/cumulative error + a trustworthy-horizon estimate.
+- **Done when:** rollouts shown, the compounding-error curve plotted, one use demonstrated.
+- **Stretch:** compare a video-diffusion world-model framing.
 
 ### Harness / reusable skill — `$rollout-eval`
 - **Purpose:** evaluate a world model's predictive fidelity over time.
@@ -846,6 +956,17 @@ def horizon_error(world, traj):                    # compounding error vs ground
 
 ▶ **Practical project:** `NirDiamant/RAG_Techniques` — build multimodal/agentic RAG with ColPali-style retrieval + a grounding/abstention guardrail.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab/Modal; `pip install colpali-engine transformers qdrant-client`; clone the repo; load DocVQA/InfographicVQA.
+2. **Retrieve:** ColPali-style page-image retrieval (no OCR) over the document set.
+3. **Ground:** grounded answering with region/page citations.
+4. **Agentic:** add a zoom/OCR tool + an abstention ("can't see it") guardrail.
+5. **Eval:** answer accuracy + a grounding/hallucination check; report abstention on OOD queries.
+- **Artifact:** `builds/mm-rag/mm-grounding.md` + abstention report.
+- **Use `$mm-grounding-eval`:** grounding rate + hallucination rate + abstention correctness.
+- **Done when:** grounded citations to pages, hallucination rate measured, abstention works on OOD.
+- **Stretch:** add a reranker (voyage-multimodal-3) and re-measure grounding.
+
 ### Harness / reusable skill — `$mm-grounding-eval`
 - **Purpose:** verify multimodal answers are grounded in retrieved visual evidence.
 - **Inputs:** answers + retrieved images/regions. **Required outputs:** grounding rate, hallucination rate, abstention correctness, and the worst ungrounded case. **Evidence artifact:** `mm-grounding.md`.
@@ -916,6 +1037,17 @@ def mm_rag_answer(query, page_images, retriever, vlm, threshold=0.25):
 - **Deliverable:** `capstone/` with both artifacts, evals, demo, and report. **Acceptance:** the capstone checklist (top of file) is fully satisfied.
 
 ▶ **Practical project:** `VizuaraAI/infertutor-arena-capstone` — ship the coupled diffusion-model + served VLM app with honest evals as the capstone.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Modal/Colab; full stack (`diffusers`, `transformers`, `gradio`); clone the capstone repo.
+2. **Generation:** finish your from-scratch diffusion/flow model → sample grid → FID vs baseline → memorization check.
+3. **Understanding:** the VLM app → capability slices → grounding/hallucination eval → abstention guardrail.
+4. **Integrate:** one Gradio demo coupling both; every number cites an artifact.
+5. **Report:** sample grids + FID/CLIPScore + capability/grounding tables + a failure catalog.
+- **Artifact:** `capstone/` (both artifacts + evals + demo + `report.md`).
+- **Use `$multimodal-capstone-packet`:** assemble generation + understanding evidence into one bundle.
+- **Done when:** FID with a baseline + a grounding metric + ≥1 failure slice, every claim traceable.
+- **Stretch:** serve the VLM on vLLM and report served latency.
 
 ### Harness / reusable skill — `$multimodal-capstone-packet`
 - **Purpose:** assemble generation + understanding evidence into one reviewable bundle.

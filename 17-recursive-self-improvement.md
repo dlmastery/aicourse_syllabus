@@ -94,6 +94,18 @@ _1 academic quarter · 3 lecture-hours/week · 13 lectures (~39 contact hrs). Fu
 
 ▶ **Practical project:** `VizuaraAI/paper-to-notebook` — turn a chosen RSI-workshop paper into a runnable notebook and five-lens-classify 5 papers.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab; clone `VizuaraAI/paper-to-notebook`; pull 5 RSI-workshop papers.
+2. **Scaffold `Agent0-Loop`:** `generate_tasks→solve→verify→select→update` as logged stubs.
+3. **No-op run:** confirm the evidence log records every stage.
+4. **Classify:** five-lens (change/temporal/mechanism/context/evidence) for 5 papers + one failure mode each.
+5. **Hygiene:** ensure the verifier is independent of the generator.
+6. **Define** a held-out measure.
+- **Artifact:** the loop skeleton + `evidence/w01-five-lens.md`.
+- **Use `$rsi-classifier`:** classify any RSI method + name its collapse risk.
+- **Done when:** 5 papers classified; verifier independent; held-out measure named.
+- **Stretch:** add a second context (coding vs reasoning) classification.
+
 ### Harness / reusable skill — `$rsi-classifier`
 - **Purpose:** classify any RSI method by the five lenses + name its collapse risk.
 - **Inputs:** a paper/system. **Outputs:** {change target, temporal regime, mechanism, context, evidence} + one failure mode.
@@ -163,6 +175,18 @@ class RSILoop:
 
 ▶ **Practical project:** `VizuaraAI/paper-to-notebook` — reproduce a self-play loop notebook showing collapse with vs without a diversity/verification filter.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** GPU Colab; `pip install transformers datasets`; GSM8K seed tasks.
+2. **Self-play:** a proposer invents tasks, a solver attempts them; both improve.
+3. **Anti-collapse:** add an embedding-diversity + verification filter.
+4. **Two runs:** collapse (no filter) vs verified (filter); plot quality.
+5. **Monitor:** diversity, verifier pass-rate, eval drift.
+6. **Explain** via the adversarial-imitation view.
+- **Artifact:** two runs (collapse vs verified) + a stabilization note.
+- **Use `$collapse-monitor`:** detect self-training collapse early.
+- **Done when:** the verified run avoids collapse, shown; a mechanism story given.
+- **Stretch:** add asymmetry (GASP-style) and compare.
+
 ### Harness / reusable skill — `$collapse-monitor`
 - **Purpose:** detect self-training collapse early (diversity, verifier pass-rate, eval drift). **Evidence:** collapse dashboard.
 
@@ -223,6 +247,18 @@ def self_play_round(proposer, solver, verify, n=256, min_div=0.3):
 - **Deliverable:** an accuracy-vs-inference-compute curve + the reusable reasoning cache.
 
 ▶ **Practical project:** `VizuaraAI/paper-to-notebook` — build a verify-then-self-distill test-time loop and plot held-out pass@1 vs inference compute.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** GPU Colab; MATH/AIME items; a verifier.
+2. **Sample-many:** best-of-k generations.
+3. **Compute-as-teacher:** verify, pick the best, self-distill into context/short adapter.
+4. **Measure:** held-out pass@1 lift vs inference compute spent.
+5. **Cache:** a time-aware reasoning cache (no train/test leakage).
+6. **Plot** the cost axis.
+- **Artifact:** accuracy-vs-inference-compute curve + reasoning cache.
+- **Use `$test-time-improver`:** verify-then-self-distill wrapper, held-out lift per compute.
+- **Done when:** test pass@1 improves (not just train); cost plotted.
+- **Stretch:** add an RL-trained verifier (RL^V) and compare.
 
 ### Harness / reusable skill — `$test-time-improver`
 - **Purpose:** wrap any model with verify-then-self-distill at inference; report held-out lift per compute unit. **Evidence:** the curve.
@@ -285,6 +321,18 @@ def compute_as_teacher(model, x, k=16, verify=None):
 
 ▶ **Practical project:** `VizuaraAI/paper-to-notebook` — implement a self-improving skill-memory notebook and measure forward transfer vs forgetting across a task stream.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab; a task stream (GSM8K + tau-bench tools).
+2. **Memory:** write verified "skills", retrieve them, periodically self-distill/compress.
+3. **Transfer:** measure forward transfer across the sequence.
+4. **Forgetting:** measure it; add orthogonal-gradient-projection updates.
+5. **Eviction:** recency/utility to bound growth.
+6. **Audit** memory growth.
+- **Artifact:** transfer/forgetting curves + a memory-growth audit.
+- **Use `$memory-evolver`:** write/retrieve/compress/forget with a forgetting check.
+- **Done when:** new tasks solved faster; forgetting bounded + measured.
+- **Stretch:** compare to a plain vector store (no consolidation).
+
 ### Harness / reusable skill — `$memory-evolver`
 - **Purpose:** manage a self-improving skill memory (write/retrieve/compress/forget) with a forgetting check. **Evidence:** the curves.
 
@@ -345,6 +393,18 @@ class EvolvingMemory:
 
 ▶ **Practical project:** `VizuaraAI/paper-to-notebook` — train a verifier, red-team it for gaming, and harden it with execution grounding in a notebook.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** GPU; SWE-bench Verified (executable reward) + a judged-QA set.
+2. **Train:** a small verifier.
+3. **Run the loop;** then red-team the verifier for gaming.
+4. **Cross-check:** add a second verifier / execution grounding.
+5. **Re-measure:** held-out gains after hardening.
+6. **Quarantine** disagreements (don't train on them).
+- **Artifact:** a reward-hacking incident report + the hardened verifier.
+- **Use `$verifier-auditor`:** stress-test a reward/judge for gaming.
+- **Done when:** a real hack demonstrated + fixed; held-out gain survives independent eval.
+- **Stretch:** add periodic human spot-checks.
+
 ### Harness / reusable skill — `$verifier-auditor`
 - **Purpose:** stress-test a reward/judge for gaming; report exploits + the held-out impact. **Evidence:** the incident report.
 
@@ -403,6 +463,18 @@ def verified_reward(traj, verifiers):                 # require agreement / exec
 - **Deliverable:** SWE-bench Verified score curve + baseline comparison + a failure taxonomy.
 
 ▶ **Practical project:** `VizuaraAI/paper-to-notebook` — reproduce an ACE/AUTOHARNESS-style code-self-improvement loop on SWE-bench Verified vs a simple ReAct baseline.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** GPU; SWE-bench Verified (500) + a small internal repo set.
+2. **Synthesize:** auto-build a test/harness (AUTOHARNESS-style) per task.
+3. **Self-improve:** generate → run tests → pass/fail preference (ACE-style).
+4. **Baseline:** a simple ReAct agent (the #40 anti-hype check).
+5. **Eval:** SWE-bench Verified score curve + the baseline comparison.
+6. **Failure taxonomy** (test-gaming, overfit).
+- **Artifact:** score curve + baseline comparison + failure taxonomy.
+- **Use `$code-harness-synth`:** ground improvement in execution.
+- **Done when:** execution-verified gains beat a real baseline; no test-gaming.
+- **Stretch:** add AGENTS.md repo-context and measure the help.
 
 ### Harness / reusable skill — `$code-harness-synth`
 - **Purpose:** auto-build a test/eval harness for a coding task so improvement is grounded in execution. **Evidence:** the harness + scores.
@@ -468,6 +540,18 @@ def code_self_improve(agent, task, rounds=3):
 
 ▶ **Practical project:** `VizuaraAI/paper-to-notebook` — build an execution-grounded propose→run→read research-loop notebook and write an honest ‘did it discover?’ verdict.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** GPU; PostTrainBench tasks + a tiny Pythia/Qwen fine-tuning sandbox.
+2. **Propose:** the agent proposes a training-config change.
+3. **Execute:** run it (execution-grounded, seeded).
+4. **Read+iterate:** update only on reproduced wins.
+5. **Transfer:** test the discovery→application gap.
+6. **Honest** writeup.
+- **Artifact:** an automated-experiment log + a "did it discover?" writeup.
+- **Use `$research-loop`:** propose→execute→read→iterate with reproducible evidence.
+- **Done when:** seeded/repeated/logged; the transfer-gap analyzed.
+- **Stretch:** add an LLM-as-evolutionary-optimizer over configs (OMEGA-style).
+
 ### Harness / reusable skill — `$research-loop`
 - **Purpose:** run propose→execute→read→iterate research cycles with logged, reproducible evidence. **Evidence:** the experiment log.
 
@@ -528,6 +612,18 @@ def research_step(agent, sandbox):
 - **Deliverable:** an evolution trajectory + novelty/quality plots.
 
 ▶ **Practical project:** `VizuaraAI/paper-to-notebook` — implement a pairwise-comparison evolutionary loop (prompts/programs) and plot novelty vs quality.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab; a prompt/program search task (GSM8K prompt evolution).
+2. **Population:** archive-based, novelty-driven.
+3. **Pairwise:** gradient-free "which is more interesting/better" feedback (Feedback Descent).
+4. **Track:** an open-ended novelty metric + quality.
+5. **Pareto:** keep quality+novelty; early-stop on goodhart.
+6. **Show** qualitative emergence.
+- **Artifact:** an evolution trajectory + novelty/quality plots.
+- **Use `$open-ended-evolver`:** population-based novelty-driven optimization.
+- **Done when:** sustained novelty+quality; the driver named.
+- **Stretch:** add a protein/circuit toy benchmark.
 
 ### Harness / reusable skill — `$open-ended-evolver`
 - **Purpose:** run population-based, novelty-driven optimization in language/program space. **Evidence:** the trajectory.
@@ -594,6 +690,18 @@ def evolve(pop, compare, mutate, gens=20):
 
 ▶ **Practical project:** `VizuaraAI/paper-to-notebook` — add a learnability-estimating curriculum + a GRPO controller and show frontier-vs-random learning-speed in a notebook.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** GPU; MATH with difficulty labels + a synthetic graded family.
+2. **Estimate learnability:** per-task pass-rate.
+3. **Frontier sample:** keep mid pass-rate (the edge of learnability).
+4. **Compare:** learning speed vs random/curriculum-free.
+5. **Controller:** a GRPO controller for one hyperparameter.
+6. **Stability** check.
+- **Artifact:** learning-speed curves (frontier vs random) + the controller schedule.
+- **Use `$learnability-curriculum`:** order self-generated tasks by learnability, adapt online.
+- **Done when:** frontier beats random; the controller converges.
+- **Stretch:** add process rewards (MAPPA-style).
+
 ### Harness / reusable skill — `$learnability-curriculum`
 - **Purpose:** order self-generated tasks by estimated learnability and adapt online. **Evidence:** the curves.
 
@@ -653,6 +761,18 @@ def frontier_sample(tasks, model, lo=0.3, hi=0.7):
 - **Deliverable:** depth-vs-recursion comparison + a compute-matched plot.
 
 ▶ **Practical project:** `VizuaraAI/paper-to-notebook` — train a tiny looped/recursive model vs a same-compute deep transformer on an algorithmic task in a notebook.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** GPU; a synthetic algorithmic suite (jigsaw/sorting/parity).
+2. **Recursive model:** a tiny looped block (reuse the same block).
+3. **Deep baseline:** a same-parameter deep transformer.
+4. **Compute-match:** compare at matched compute/params.
+5. **Measure:** accuracy + where recursion wins.
+6. **Diagnose** the curse of depth.
+- **Artifact:** depth-vs-recursion comparison + a compute-matched plot.
+- **Use `$recursion-profiler`:** compare looped vs deep at matched compute.
+- **Done when:** a fair (compute/param-matched) comparison; insight on when recursion wins.
+- **Stretch:** add unrolled policy iteration on the recursive model.
 
 ### Harness / reusable skill — `$recursion-profiler`
 - **Purpose:** compare looped vs deep models at matched compute/params on reasoning tasks. **Evidence:** the plot.
@@ -715,6 +835,18 @@ class TinyRecursive(nn.Module):
 - **Deliverable:** success-rate curve + a sim-to-real / safety caveat note.
 
 ▶ **Practical project:** `VizuaraAI/paper-to-notebook` — build a policy↔world-model co-improvement loop in sim and track success-rate + a safety caveat note.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** GPU; MuJoCo/Gymnasium-Robotics or MetaDrive; optional LIBERO VLA.
+2. **Collect:** the policy generates trajectories.
+3. **Relabel:** a learned world model scores/relabels them.
+4. **Improve:** residual RL on top of BC.
+5. **Co-improve:** fit the world model; watch for exploitation.
+6. **Safety:** monitor unsafe behaviors; ground with real rollouts.
+- **Artifact:** success-rate curve + a sim-to-real/safety caveat note.
+- **Use `$embodied-self-improver`:** policy↔world-model co-improvement with safety logging.
+- **Done when:** real rollouts check the model; unsafe behaviors monitored.
+- **Stretch:** add model-uncertainty gating on imagined returns.
 
 ### Harness / reusable skill — `$embodied-self-improver`
 - **Purpose:** run a policy↔world-model co-improvement loop with safety logging. **Evidence:** the curve + caveat note.
@@ -780,6 +912,18 @@ def vla_self_improve(policy, world_model, env, rounds=5):
 
 ▶ **Practical project:** `VizuaraAI/paper-to-notebook` — build a frozen-held-out + leakage-audit + loop-off-ablation harness and re-score which weekly gains survive.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** PostTrainBench + TangramSR + your frozen held-out splits.
+2. **Frozen held-out:** never trained on.
+3. **Leakage audit:** train-data vs eval overlap.
+4. **Loop-off ablation:** score with vs without the loop (attribution).
+5. **Re-score:** which earlier weekly gains survive?
+6. **Report** artifacts vs real.
+- **Artifact:** an RSI evidence report (which mechanisms truly helped).
+- **Use `$rsi-evidence-audit`:** certify a claim against leakage, gaming, ablation.
+- **Done when:** loop-off isolates the gain; leakage audited; held-out frozen.
+- **Stretch:** add a time-separated split.
+
 ### Harness / reusable skill — `$rsi-evidence-audit`
 - **Purpose:** certify a self-improvement claim against leakage, gaming, and ablation. **Evidence:** the evidence report.
 
@@ -840,6 +984,18 @@ def rsi_evidence(system, frozen_eval):
 
 ▶ **Practical project:** `VizuaraAI/paper-to-notebook` — run a tamper/reward-hack/unlearning safety battery on your loop and write a 2-page safety case.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** TamperBench + a small unlearning-request set + a bias probe set.
+2. **Tamper/jailbreak:** a TamperBench-style stress test.
+3. **Reward-hack:** attempt to game the loop's reward.
+4. **Unlearn:** test an unlearning request; verify with a relearning probe.
+5. **Mitigate:** a fail-closed safety gate + a kill-switch.
+6. **Governance:** map to EU AI Act / NIST; a residual-risk statement.
+- **Artifact:** a 2-page safety case + a red-team→mitigation log.
+- **Use `$rsi-safety-case`:** assemble threats/tests/mitigations/residual-risk/kill-switch.
+- **Done when:** tamper+hack+unlearn+bias tested; fail-closed gate + governance frame.
+- **Stretch:** add a CoT-monitoring signal to the gate.
+
 ### Harness / reusable skill — `$rsi-safety-case`
 - **Purpose:** assemble a safety case for a self-improving system (threats, tests, mitigations, residual risk, kill-switch). **Evidence:** the safety case.
 
@@ -885,6 +1041,18 @@ def safety_gate(update, checks):                        # block the self-update 
 Integrate the term into one working self-improving system that **provably** improves on a held-out measure, with a safety case.
 
 ▶ **Practical project:** `VizuaraAI/paper-to-notebook` — assemble `Agent0-Loop` as a reproducible notebook+repo where every improvement claim links to held-out evidence.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** pick a context (coding/reasoning/research/embodied); stack veRL/OpenRLHF + vLLM + Ray; Inspect AI for evals.
+2. **Loop v1:** self-generation + an independent verifier + update; show a held-out delta with a loop-off ablation.
+3. **Mechanism deep-dive:** add one advanced driver (self-play/test-time distill/curriculum/evolution/memory); ablate its contribution.
+4. **Evidence audit:** leakage audit + verifier-of-verifier + a score on an RSI benchmark.
+5. **Safety case:** tamper/reward-hack/unlearning tests + a fail-closed gate + kill-switch + governance.
+6. **Showcase:** every improvement claim links to held-out evidence.
+- **Artifact:** the `Agent0-Loop` repo+notebook + safety case + evidence report.
+- **Use `$rsi-evidence-audit` + `$rsi-safety-case`:** prove genuine improvement + safety.
+- **Done when:** held-out, ablated, leakage-free delta + a complete safety case; no self-graded claims.
+- **Stretch:** add a second track and compare transfer.
 
 **Milestones**
 1. **Proposal & lens map** — pick a context (coding / reasoning / research / embodied), state the change target, mechanism,

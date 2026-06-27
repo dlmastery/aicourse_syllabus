@@ -109,6 +109,18 @@ checkpoint 10% + capstone 20% + labs 60% = 100%.)
 
 ▶ **Practical project:** `VizuaraAI/visual-ai-book` — follow its NN-from-scratch track to build a neuron, a forward pass, and a scalar-autodiff engine.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab; `pip install numpy matplotlib`; open the `VizuaraAI/visual-ai-book` NN-from-scratch chapter.
+2. **Implement:** `engine.py` — a `Value` class with `+ * tanh relu exp` and a topo-sort `.backward()`.
+3. **Test:** finite-difference gradient-check each op to 1e-6, including a reused node (`d = a*b + a`).
+4. **Build net:** `neuron.py` with `Neuron/Layer/MLP` on `Value`; forward-pass one Fashion-MNIST image (784→16→10).
+5. **Normalize:** scale pixels to [0,1]; confirm `tanh` isn't saturated by plotting the activation histogram.
+6. **Trace:** print the topo-ordered node list + each local derivative for one small expression.
+- **Artifact:** `engine.py` + `evidence/week01-autodiff-check.md` (per-op gradient-check table).
+- **Use `$autodiff-tracer`:** draw the graph and verify each local gradient via finite differences.
+- **Done when:** all ops pass FD-check < 1e-6 incl. reused nodes; `MLP([784,16,10])` returns a 10-vector; pixels normalized.
+- **Stretch:** add a `pow`/`exp` op and extend the gradient-check suite.
+
 ### Harness / reusable skill — `$autodiff-tracer`
 - **Purpose:** for any small expression, draw/print the computation graph and verify each local gradient.
 - **Inputs:** an expression built from `Value` ops. **Outputs:** the topo-ordered node list, each node's
@@ -215,6 +227,18 @@ class Value:
 
 ▶ **Practical project:** `rasbt/LLMs-from-scratch` — use its Appendix-A autograd intro to cross-check your hand-derived NumPy MLP backward pass.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab; `pip install numpy torch`; open `rasbt/LLMs-from-scratch` Appendix-A autograd intro.
+2. **Data:** Fashion-MNIST 60k/10k, hold out 5k for validation; one-hot the labels.
+3. **Implement:** `mlp_numpy.py` — `forward`, `backward` (key: `dz = (p - Y)/B`), `step(lr)` for 784→128→10 with ReLU+softmax-CE.
+4. **Cross-check:** rebuild the net in PyTorch (Appendix A) and compare gradients on a 4-example batch.
+5. **Train:** run to ≥88% test accuracy; log loss/accuracy per epoch.
+6. **Stabilize:** shift logits by the row-max before `exp`; assert no NaNs across seeds.
+- **Artifact:** `evidence/week02-backprop-derivation.md` (forward/backward formulas + grad-check) + loss/acc curve.
+- **Use `$layer-backprop-derive`:** produce the forward + backward formulas + shapes + a numeric pass/fail before trusting them.
+- **Done when:** grad-check max-abs-diff < 1e-5 (vs PyTorch); test acc ≥ 88%; softmax is numerically stable.
+- **Stretch:** add a second hidden layer and re-derive/re-check the extra gradients.
+
 ### Harness / reusable skill — `$layer-backprop-derive`
 - **Purpose:** for any layer, produce the forward formula, the backward formula, the shapes, and a
   finite-difference check before trusting it.
@@ -309,6 +333,18 @@ def backward(X, Z1, A1, P, Y, W2):     # Y is one-hot (B,10)
   fewer steps than plain SGD, and you can explain *why* in two sentences referencing the accumulators.
 
 ▶ **Practical project:** `rasbt/LLMs-from-scratch` — adapt its training loop to implement and compare SGD / Momentum / RMSProp / Adam on one model.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab; `pip install numpy torch matplotlib`; reuse the Week-2 MLP; reference the `rasbt/LLMs-from-scratch` training loop.
+2. **Implement:** `optim.py` with `SGD`, `Momentum`, `RMSProp`, `Adam` sharing a `.step(params, grads)` API (Adam with bias correction).
+3. **Control:** fix the seed; sweep LR per optimizer so the comparison is fair.
+4. **Train:** run all four on Fashion-MNIST; record epochs-to-90%-train-accuracy.
+5. **Evaluate:** tabulate best-LR + convergence speed per optimizer.
+6. **Visualize:** overlay the four loss curves on one plot.
+- **Artifact:** `evidence/week03-optim/` (overlaid curves + epochs-to-target table + a 1-paragraph reasoning).
+- **Use `$optimizer-bench`:** compare optimizers with matched seeds + LR sweeps and a recommendation.
+- **Done when:** all four update rules match reference within noise; Adam beats plain SGD in steps-to-target; differences attributed to the accumulators.
+- **Stretch:** add AdamW (decoupled decay) and show its effect on the train–test gap.
 
 ### Harness / reusable skill — `$optimizer-bench`
 - **Purpose:** fairly compare optimizers on one model/data with matched seeds and LR sweeps.
@@ -408,6 +444,18 @@ class Adam:
 
 ▶ **Practical project:** `microsoft/AI-For-Beginners` — port your MLP to its PyTorch neural-network notebooks and ablate dropout / batchnorm / weight decay.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab (GPU); `pip install torch torchvision`; open the AI-For-Beginners PyTorch notebooks.
+2. **Port:** `mlp_torch.py` (`nn.Module`) matching `mlp_numpy.py`; assert logits agree on a fixed batch to 1e-4.
+3. **Add regularizers:** dropout, batchnorm, and AdamW weight decay as toggles.
+4. **Ablate:** run none / +dropout / +bn / +wd / all; record train acc, test acc, and the gap each.
+5. **Verify modes:** confirm `model.train()` vs `model.eval()` changes dropout/bn behavior; check `zero_grad` each step.
+6. **Visualize:** bar-chart the train–test gap per setting.
+- **Artifact:** `evidence/week04-ablation.md` (parity log + regularization ablation table).
+- **Use `$regularization-ablation`:** quantify each regularizer's effect on the train–test gap with everything else fixed.
+- **Done when:** NumPy↔PyTorch parity < 1e-4; ablation is all-else-fixed; at least one regularizer measurably shrinks the gap.
+- **Stretch:** add label smoothing and place it in the ablation.
+
 ### Harness / reusable skill — `$regularization-ablation`
 - **Purpose:** quantify each regularizer's effect on the train–test gap with everything else fixed.
 - **Inputs:** a model + a set of regularizers to toggle. **Outputs:** an ablation table (train acc, test
@@ -502,6 +550,18 @@ loss_fn = nn.CrossEntropyLoss()
 
 ▶ **Practical project:** `krishnaik06/Malaria-Detection` — build and train a small CNN end-to-end on an image dataset, visualize filters, and read the confusion matrix.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab (GPU); `pip install torch torchvision matplotlib`; clone `krishnaik06/Malaria-Detection` for the image pipeline.
+2. **Plan shapes:** before coding, compute every conv/pool output size via `(H+2P-k)/S + 1` into a shape table.
+3. **Implement:** `conv_numpy.py` (im2col `conv2d` + `maxpool2d`) checked vs `F.conv2d` to 1e-4.
+4. **Build CNN:** `Conv→ReLU→Pool→Conv→ReLU→Pool→FC` in PyTorch; train (Fashion-MNIST or malaria images) to ≥91% / strong AUC.
+5. **Evaluate:** plot the 10×10 confusion matrix; name the two most-confused classes.
+6. **Visualize:** show the 8 first-layer filters as an image grid.
+- **Artifact:** `evidence/week05-shape-table.md` + filter grid + confusion matrix + a 1-paragraph error reading.
+- **Use `$conv-shape-planner`:** compute every intermediate shape + param count + one predicted bottleneck before coding.
+- **Done when:** NumPy conv matches torch < 1e-4; test acc ≥ 92% (or strong malaria AUC); confused classes named with a reason.
+- **Stretch:** add a residual connection and compare accuracy + training stability.
+
 ### Harness / reusable skill — `$conv-shape-planner`
 - **Purpose:** given an input size and a stack of conv/pool layers, compute every intermediate shape *before* coding.
 - **Inputs:** input `(C,H,W)` + layer specs. **Outputs:** a per-layer shape table + total param count + one
@@ -594,6 +654,18 @@ class SmallCNN(nn.Module):
   **Acceptance:** grad-check < 1e-4; LSTM BPC clearly beats a uniform-character baseline; samples are word-shaped.
 
 ▶ **Practical project:** `VizuaraAI/visual-ai-book` — follow its sequence-models chapter to build an RNN/LSTM char-LM and report bits-per-character.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab (GPU); `pip install torch numpy`; download TinyShakespeare; open the visual-ai-book sequence chapter.
+2. **Implement RNN:** `rnn_numpy.py` vanilla cell + BPTT; gradient-check on a 5-step sequence.
+3. **Implement LSTM:** `lstm_torch.py` char-LM (forget-gate bias ≈ 1); train on TinyShakespeare.
+4. **Stabilize:** add `clip_grad_norm_(…, 1.0)`; confirm no NaN on long sequences.
+5. **Evaluate:** report bits-per-character; sample 200 characters and check they're word-shaped.
+6. **Sanity:** overfit a single batch to ~0 loss as a correctness check.
+- **Artifact:** `evidence/week06-seq-sanity.md` (grad-check + single-batch overfit + sample).
+- **Use `$sequence-sanity`:** validate with grad-check + overfit-one-batch + a samples-look-reasonable read.
+- **Done when:** RNN grad-check < 1e-4; LSTM BPC clearly beats a uniform baseline; samples are word-shaped.
+- **Stretch:** swap in a GRU cell and compare BPC at equal parameters.
 
 ### Harness / reusable skill — `$sequence-sanity`
 - **Purpose:** validate any sequence model with three cheap checks: grad-check on a short sequence,
@@ -690,6 +762,18 @@ class CharLSTM(nn.Module):
 
 ▶ **Practical project:** `rasbt/LLMs-from-scratch` — implement scaled-dot-product + causal self-attention (Ch.3) and visualize the attention matrix.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab (GPU); `pip install torch matplotlib`; open `rasbt/LLMs-from-scratch` Ch.3.
+2. **Implement:** `attention_numpy.py` — `scaled_dot_product_attention(Q,K,V,mask)` with `/√d_k` scaling and a causal mask applied BEFORE softmax.
+3. **Cross-check:** parity vs a PyTorch reference to 1e-5 on random Q,K,V.
+4. **Swap in:** replace the LSTM in the char-LM with one self-attention layer + MLP; train on TinyShakespeare.
+5. **Compare:** show BPC beats the Week-6 vanilla RNN.
+6. **Visualize:** heatmap the `(T,T)` attention matrix and annotate one interpretable pattern.
+- **Artifact:** `evidence/week07-attention/` (parity log + heatmap + mask-correctness test + BPC comparison).
+- **Use `$attention-inspector`:** dump/visualize the score matrix, verify the causal mask, flag degenerate patterns.
+- **Done when:** parity < 1e-5; the mask provably hides the future (position t ignores t+1); the attention LM beats the RNN BPC.
+- **Stretch:** add a second head and inspect whether the heads specialize.
+
 ### Harness / reusable skill — `$attention-inspector`
 - **Purpose:** for any attention layer, dump and visualize the score matrix, verify the causal mask, and
   flag degenerate patterns (all-uniform or all-on-one-token).
@@ -778,6 +862,18 @@ def causal_self_attention(x, Wq, Wk, Wv):     # x: (B,T,d)
   **Acceptance:** the full block beats Week 7's BPC; removing PE or residuals visibly hurts (documented).
 
 ▶ **Practical project:** `rasbt/LLMs-from-scratch` — assemble multi-head attention + the full pre-norm decoder block (Ch.3–4) and overfit a single batch.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab (GPU); `pip install torch einops`; open `rasbt/LLMs-from-scratch` Ch.3–4.
+2. **Implement:** `transformer_block.py` — `MultiHeadAttention` (einops head reshape), sinusoidal + learned `PositionalEncoding`, pre-norm `TransformerBlock`.
+3. **Validate shapes:** run a shape table over every sublayer; confirm residual + LayerNorm placement.
+4. **Train:** stack 2–4 blocks into a tiny decoder; train on TinyShakespeare; beat Week-7 BPC.
+5. **Ablate:** remove positional encoding, then residuals; record the BPC damage each.
+6. **Sanity:** overfit a single batch to near-zero loss.
+- **Artifact:** `evidence/week08-block-validate.md` (shape table + single-batch overfit + PE/residual ablation table).
+- **Use `$transformer-block-validator`:** shape-check every sublayer, confirm pre-norm/residual, overfit one batch.
+- **Done when:** heads reshape correctly; the full block beats Week-7 BPC; removing PE/residuals visibly hurts (documented).
+- **Stretch:** swap sinusoidal PE for RoPE and compare long-sequence BPC.
 
 ### Harness / reusable skill — `$transformer-block-validator`
 - **Purpose:** verify a Transformer block by shape-checking every sublayer, confirming residual/Norm
@@ -873,6 +969,18 @@ class MultiHeadAttention(nn.Module):
   **Acceptance:** exact round-trip on 10k held-out chars; your BPE's compression is within a sensible range of HF `tokenizers`.
 
 ▶ **Practical project:** `rasbt/LLMs-from-scratch` — build/train a BPE tokenizer (Ch.2) and compare round-trip + fertility against tiktoken.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab; `pip install tokenizers tiktoken datasets`; open `rasbt/LLMs-from-scratch` Ch.2; load WikiText-2.
+2. **Implement:** `bpe.py` — `train_bpe(corpus, vocab_size)`, `encode`, `decode`; assert exact round-trip on 10k held-out chars.
+3. **Train:** build a 4k–8k vocab on WikiText-2; list the 20 most frequent merges.
+4. **Compare:** report tokens-per-word vs char-level and vs a GPT-2/`tiktoken` tokenizer.
+5. **Probe edges:** run numbers, code, emojis, and non-English through the probe.
+6. **Swap & retrain:** point the Week-8 decoder at BPE tokens; compare perplexity-per-token and sequence length.
+- **Artifact:** `evidence/week09-tokenizer-probe.md` (round-trip proof + compression table + surprising tokenizations).
+- **Use `$tokenizer-probe`:** stress-test round-trip fidelity, compression ratio, and edge-case behavior.
+- **Done when:** exact round-trip on 10k chars; compression within a sensible range of HF `tokenizers`; edge cases tabulated.
+- **Stretch:** add byte-level fallback and show it represents any string.
 
 ### Harness / reusable skill — `$tokenizer-probe`
 - **Purpose:** stress-test any tokenizer: round-trip fidelity, compression ratio, and behavior on edge cases
@@ -974,6 +1082,18 @@ def train_bpe(words, vocab_size):
 
 ▶ **Practical project:** `rasbt/LLMs-from-scratch` — pretrain the GPT end-to-end (Ch.5) on TinyShakespeare and track perplexity + sampling.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab (GPU); `pip install torch tiktoken`; open `rasbt/LLMs-from-scratch` Ch.5.
+2. **Assemble:** wire your Week-8 blocks into a ~10M-param GPT with the Week-9 BPE tokenizer.
+3. **Train:** pretrain on TinyShakespeare with a cosine LR schedule + warmup; log train/val loss.
+4. **Sample:** implement temperature/top-k sampling; generate 200 tokens at checkpoints.
+5. **Evaluate:** report validation perplexity; confirm it drops over training.
+6. **Instrument:** log tokens/sec and (if GPU) a rough MFU number.
+- **Artifact:** a trained GPT checkpoint + `evidence/week10-train/` (loss curves + samples + perplexity).
+- **Use `$mini-train-loop`:** standardize the train/eval/sample/log loop you reuse in the capstone.
+- **Done when:** val perplexity decreases to a target; samples are word-shaped; one run reproduces from a pinned seed/config.
+- **Stretch:** train on a WikiText-2 subset with BPE and compare perplexity to the char model.
+
 ### Harness / reusable skill — `$mini-train-loop`
 - **Purpose:** a reusable, instrumented training loop: seedable, checkpointing, eval-every-N, early-stop,
   metric logging — the backbone for every later course.
@@ -1074,6 +1194,18 @@ def generate(model, idx, n_new, block_size, temp=1.0, top_k=50):
 
 ▶ **Practical project:** `VizuaraAI/kv-cache-token-reduction-walkthrough` — profile KV-cache + inference efficiency on your small GPT and measure the latency effect.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab (GPU); `pip install torch vllm` (or the repo's deps); open `VizuaraAI/kv-cache-token-reduction-walkthrough`.
+2. **Baseline:** measure tokens/sec + peak memory generating from your Week-10 GPT without a KV-cache.
+3. **Add KV-cache:** enable caching; re-measure decode latency and memory.
+4. **Quantize:** try FP8/INT8 KV-cache; note any speculative-decoding incompatibility.
+5. **Evaluate:** triangulate quality — perplexity + a tiny task eval + a couple of sampled generations.
+6. **Visualize:** plot latency vs sequence length with and without the cache.
+- **Artifact:** `evidence/week11-efficiency/` (latency/memory table + the triangulated eval).
+- **Use `$eval-triangulator`:** combine perplexity, a task metric, and sample inspection rather than one number.
+- **Done when:** the KV-cache shows a measured decode-latency win; the memory delta is reported; quality is triangulated, not single-metric.
+- **Stretch:** add speculative decoding with a tiny draft model and measure the low-concurrency speedup.
+
 ### Harness / reusable skill — `$eval-triangulator`
 - **Purpose:** evaluate a generative model along three axes (quantitative metric, qualitative samples,
   downstream probe) and force a limitation statement.
@@ -1161,6 +1293,18 @@ def fit_scaling(params, losses):                          # L ≈ a*N^-alpha + L
 - **Deliverable:** `capstone/` folder + 2-page report. **Acceptance:** reproducible (`seed` + config + one command), samples are coherent for the corpus, and the report names at least one concrete failure mode and a defended next step.
 
 ▶ **Practical project:** `VizuaraAILabs/nano-gpt-oss` — use its from-scratch gpt-oss pretraining as the reference to extend your capstone GPT + model card.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab (GPU) / serverless GPU; `pip install torch`; reference `VizuaraAILabs/nano-gpt-oss`.
+2. **Configure:** write `capstone/config.json` (seed, data, arch, optim); pin deps + data hash.
+3. **Train:** run `capstone/run.py` end-to-end so one command reproduces the headline result.
+4. **Evaluate:** report validation perplexity + sampled generations + one named failure mode.
+5. **Document:** write a model card (intended use, data, limitations) + a 2-page report.
+6. **Assemble:** bundle checkpoint + curves + samples + eval note into `capstone/`.
+- **Artifact:** a `capstone/` packet where every report claim links to a file (+ a model card).
+- **Use `$model-evidence-packet`:** assemble model card + curves + samples + eval + critique into one reviewable bundle.
+- **Done when:** one command reproduces the result; every arch/optim choice is justified; eval is triangulated with a named failure + next step.
+- **Stretch:** publish the model card + a Gradio demo to a Hugging Face Space.
 
 ### Harness / reusable skill — `$model-evidence-packet`
 - **Purpose:** assemble model card + training curves + samples + eval note + critique into one reviewable bundle.

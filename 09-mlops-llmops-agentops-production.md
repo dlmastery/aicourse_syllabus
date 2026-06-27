@@ -91,6 +91,18 @@ Per-week weights below are the share of the 60% lab bucket, expressed as **% of 
 
 ▶ **Practical project:** `krishnaik06/mlproject` — use its containerized end-to-end template as the base for the `fullstack-ai-platform` monorepo and the slim `eta-model` image.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Docker 27 + BuildKit + `uv` 0.7; base the layout on `krishnaik06/mlproject`.
+2. Create the `fullstack-ai-platform/` monorepo (`services/eta-model`, `services/support-copilot`, `libs`, `infra`).
+3. Write a multi-stage `Dockerfile` (`python:3.12-slim`, non-root, pinned `uv` lock) serving `/predict` + `/healthz`.
+4. `docker build` + `docker run`; verify deterministic predictions; add `make up`.
+5. Record image size, cold-start, and repro hash.
+6. Open the PR with a green build.
+- **Artifact:** buildable image + `evidence/week01-image.md` committed.
+- **Use `$repro-image`:** a slim, non-root, healthchecked, reproducible container.
+- **Done when:** image <400 MB, non-root, `/predict` returns a prediction with the model-version header.
+- **Stretch:** add an SBOM + a Trivy scan of the image.
+
 ### Harness / reusable skill — `$repro-image`
 - **Purpose:** turn any model into a reproducible, slim, non-root container with a health check.
 - **Inputs:** a trained model artifact + an inference function. **Required outputs:** multi-stage `Dockerfile`, pinned lockfile, `/healthz`, a recorded image-size + cold-start line.
@@ -177,6 +189,18 @@ CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]
 - **Deliverable:** running Deployment + HPA + a one-page "self-managed K8s vs serverless GPU" decision note. **Acceptance:** rolling update causes zero failed requests under light load (proven by a k6 report).
 
 ▶ **Practical project:** `GokuMohandas/Made-With-ML` — follow its deploy/scale modules to take the `eta-model` image to a probed, autoscaled Deployment and a serverless-GPU comparison.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** `kind` 0.27 + Helm 3.16 + `k6`; follow `GokuMohandas/Made-With-ML` deploy modules.
+2. Write Helm chart `infra/charts/eta-model/` with Deployment, Service, HPA, probes, resource requests/limits.
+3. `kind create cluster` + `helm install`; drive load with k6 and watch pods scale.
+4. Deploy the same image to Modal/Baseten; record cold-start + $/1k requests.
+5. Prove a rolling update causes zero failed requests (k6 report).
+6. Write the self-managed-K8s vs serverless-GPU decision note.
+- **Artifact:** `evidence/week02-rollout/` (manifests + k6 report + decision note) committed.
+- **Use `$k8s-deploy`:** take any container to a probed, autoscaled, zero-downtime Deployment.
+- **Done when:** a rolling update shows 0 failed reqs and the HPA scales on a justified signal.
+- **Stretch:** switch autoscaling to KEDA queue-depth and re-measure.
 
 ### Harness / reusable skill — `$k8s-deploy`
 - **Purpose:** take any container to a probed, autoscaled, zero-downtime Deployment.
@@ -266,6 +290,18 @@ spec:
 - **Deliverable:** a scheduled DAG + DVC remote + Feast feature view. **Acceptance:** a deliberately corrupted input row makes the DAG fail at the validation task (not at serving).
 
 ▶ **Practical project:** `krishnaik06/Kidney-Disease-Classification-Deep-Learning-Project` — mirror its DVC pipeline as the data/model-versioning reference for the `delivery-eta` features.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Airflow 2.10 + DVC 3.x + Feast 0.40 + pandera; mirror the DVC pipeline in `krishnaik06/Kidney-Disease-Classification-Deep-Learning-Project`.
+2. Build `pipelines/eta_features.py`: extract → validate (pandera) → transform → materialize_to_feast.
+3. `dvc init`; track `data/` + `models/`; push to an S3/GCS remote; show `dvc checkout` reproducing an old dataset.
+4. Define a Feast feature view; read the same feature offline + online (parity).
+5. Inject a corrupted row; confirm the DAG fails at validation, not at serving.
+6. Capture the validation report.
+- **Artifact:** `evidence/week03-data-contract/` (DAG log + validation report + dvc-checkout note) committed.
+- **Use `$data-contract`:** wrap the dataset in a schema + distribution contract that gates the pipeline.
+- **Done when:** a corrupted row fails the DAG at validation and an old dataset is reproduced from a commit.
+- **Stretch:** add a distribution-drift expectation (ties to Week 9).
 
 ### Harness / reusable skill — `$data-contract`
 - **Purpose:** wrap any dataset in a schema + distribution contract that gates the pipeline.
@@ -357,6 +393,18 @@ eta_features()
 
 ▶ **Practical project:** `DataTalksClub/mlops-zoomcamp` — follow its experiment-tracking module (W&B/MLflow) to log the `delivery-eta` sweep and promote a registry version with lineage.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** W&B + MLflow 2.20; follow the experiment-tracking module of `DataTalksClub/mlops-zoomcamp`.
+2. Add `wandb` logging to `train_eta.py` (config, metrics, the DVC data hash + git SHA as tags).
+3. Run a small W&B Sweep over 2–3 hyperparameters; pick best by validation MAE.
+4. Log the model to the MLflow registry; promote to Staging; write `promote.py` for next week's CI.
+5. From the registered model, trace back to its data version + git SHA.
+6. Summarize the sweep.
+- **Artifact:** `evidence/week04-runs/` (sweep summary + registry link with lineage) committed.
+- **Use `$run-ledger`:** make every run reproducible and registry-promotable.
+- **Done when:** the registered model traces to data version + git SHA and the sweep has a justified winner.
+- **Stretch:** add a second tracked task (California Housing) to prove the harness generalizes.
+
 ### Harness / reusable skill — `$run-ledger`
 - **Purpose:** ensure every training run is reproducible and registry-promotable.
 - **Inputs:** a training script. **Outputs:** logged config+metrics+artifact, a registry entry with data/code lineage, a promotion command.
@@ -440,6 +488,18 @@ with mlflow.start_run():
 - **Design review #1 (10%-component):** an ADR choosing the serving topology for both anchor cases.
 
 ▶ **Practical project:** `VizuaraAI/infertutor-arena-capstone` — study its Modal + vLLM serving stack to stand up and benchmark the `support-copilot` LLM endpoint.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** FastAPI 0.115 + vLLM 0.8.x + `k6`/locust; study the Modal+vLLM serving in `VizuaraAI/infertutor-arena-capstone`.
+2. Build `services/eta-model/main.py`: Pydantic I/O, model-version header, `/metrics`, graceful shutdown.
+3. Launch vLLM serving Qwen3-8B with continuous batching (`--max-num-seqs`).
+4. Load-test FastAPI vs vLLM vs Triton; build a p50/p95/p99 + tokens/sec + $/1k table.
+5. Show vLLM continuous batching beats a naive loop ≥3× at equal p95.
+6. Write ADR-001 (serving topology) for the design review.
+- **Artifact:** `evidence/week05-serving/` (bench table + ADR) committed.
+- **Use `$serve-bench`:** benchmark any stack for latency/throughput/cost and recommend a topology.
+- **Done when:** the ≥3× continuous-batching win is shown with numbers and tails are reported.
+- **Stretch:** enable FP8 KV-cache (`--kv-cache-dtype fp8`) and re-measure the decode-latency slope.
 
 ### Harness / reusable skill — `$serve-bench`
 - **Purpose:** benchmark any serving stack for latency/throughput/cost and recommend a topology.
@@ -531,6 +591,18 @@ def predict(r: Req, resp: Response):
 
 ▶ **Practical project:** `promptfoo/promptfoo` — build the offline eval suite and wire it as the CI gate that blocks a regressing copilot prompt PR.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** GitHub Actions + `promptfoo` 0.100+ / DeepEval; clone `promptfoo/promptfoo` examples.
+2. Build `evals/copilot/`: ≥20 cases + assertions (contains / llm-rubric / latency / cost).
+3. Write `.github/workflows/support-copilot.yml`: lint→test→build→eval→deploy with the deploy job `needs: eval`.
+4. Fail CI if pass-rate < 0.90 or cost regresses; seed it + tolerance-band the judge.
+5. Open a deliberately-bad prompt PR; confirm CI blocks it.
+6. Screenshot the red gate.
+- **Artifact:** `evidence/week06-eval-gate/` (workflow + blocked-PR + eval report) committed.
+- **Use `$eval-gate`:** turn an eval suite into a CI gate that blocks quality/latency/cost regressions.
+- **Done when:** a regressing prompt PR is automatically blocked and the gate is stable (seeded).
+- **Stretch:** tier the evals (fast smoke on PR, full nightly).
+
 ### Harness / reusable skill — `$eval-gate`
 - **Purpose:** turn any eval suite into a CI gate that blocks regressions in quality, latency, or cost.
 - **Inputs:** an eval set + thresholds. **Outputs:** a CI job, a pass/fail report, a blocked-PR example.
@@ -616,6 +688,18 @@ jobs:
 
 ▶ **Practical project:** `decodingml/llm-twin-course` — adapt its production LLMOps patterns (gateway, caching, cost control) to route the copilot through LiteLLM with budgets.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** LiteLLM Proxy 1.5x + Redis 7.4/GPTCache; adapt the LLMOps patterns in `decodingml/llm-twin-course`.
+2. Deploy LiteLLM: register Bedrock/Anthropic + the self-hosted vLLM model; per-key budgets + a fallback chain.
+3. Add semantic caching; measure hit-rate, cost saved, and audit for wrong-cache-hits.
+4. Move copilot prompts into a versioned registry (Langfuse prompts); select variant by env.
+5. Replay ~2k logged queries; show ≥30% cost cut without dropping the Week-6 eval pass-rate.
+6. Capture the cost-before/after + dashboard.
+- **Artifact:** `evidence/week07-llmops/` (gateway config + cache audit + cost report) committed.
+- **Use `$llm-gateway`:** front the app with routing, fallback, budgets, caching, and metered cost.
+- **Done when:** ≥30% cost cut with quality held and a budget kill-switch proven.
+- **Stretch:** add cheap-first routing with quality-triggered escalation to Opus.
+
 ### Harness / reusable skill — `$llm-gateway`
 - **Purpose:** front any LLM app with routing, fallback, budgets, and caching, with cost/latency metered.
 - **Inputs:** provider keys + a routing/budget policy. **Outputs:** a gateway config, a cache policy, a cost/latency dashboard, a savings report.
@@ -699,6 +783,18 @@ litellm_settings:
 - **Deliverable:** an end-to-end trace + a Grafana dashboard + a Phoenix eval over real traces. **Acceptance:** given a planted bad answer, you can open *its* trace and name the failing step (bad retrieval vs bad tool result vs model error) in under 2 minutes.
 
 ▶ **Practical project:** `langfuse/langfuse` — self-host it and instrument the copilot with OTel spans (retrieve / tools / LLM) carrying token and cost attributes.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** OpenTelemetry 1.x + Langfuse 3.x + Prometheus/Grafana + Arize Phoenix; self-host Langfuse.
+2. Instrument the copilot: spans for retrieve / each tool / each LLM call with token + cost + doc-ids.
+3. Export metrics to Prometheus; build a Grafana dashboard (RED + tokens + cost + cache-hit + eval score).
+4. Run Phoenix over a batch of traces to flag low-relevance retrievals.
+5. Plant a bad answer; open its trace and name the failing span in <2 min.
+6. Write the root-cause-from-trace note.
+- **Artifact:** `evidence/week08-obs/` (trace export + Grafana JSON + Phoenix eval + root-cause) committed.
+- **Use `$trace-debug`:** make any request explainable from a single span tree.
+- **Done when:** a planted failure is root-caused from its trace and the dashboard shows RED+cost+quality.
+- **Stretch:** add trace-linked eval scoring on live sampled traffic.
 
 ### Harness / reusable skill — `$trace-debug`
 - **Purpose:** make any LLM/agent request fully traceable and explainable from a single span tree.
@@ -788,6 +884,18 @@ def answer(query: str) -> str:
 
 ▶ **Practical project:** `evidentlyai/evidently` — use its drift detectors and reference datasets to monitor `delivery-eta` feature drift and fire one actionable alert.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Evidently 0.6 / NannyML + Prometheus Alertmanager; clone `evidentlyai/evidently` examples.
+2. Add drift monitors to `eta-model` (feature drift now; performance once labels arrive); schedule as an Airflow report.
+3. For the copilot, sample 5% nightly, run the Week-6 eval, track pass-rate + refusal + retrieval relevance.
+4. Define SLOs + Alertmanager rules with thresholds + `for:` durations.
+5. Inject a covariate shift; confirm exactly one actionable alert (not ten), runbook-linked.
+6. Write ADR-002 (release strategy) for the design review.
+- **Artifact:** `evidence/week09-monitoring/` (drift report + alert rules + runbook + ADR) committed.
+- **Use `$drift-watch`:** monitor for drift/quality decay with low-noise, actionable alerts.
+- **Done when:** the injected shift fires one impactful alert linked to a runbook step.
+- **Stretch:** add a RAG index-freshness check as a copilot drift signal.
+
 ### Harness / reusable skill — `$drift-watch`
 - **Purpose:** monitor a model or LLM app for drift/quality decay with low-noise, actionable alerts.
 - **Inputs:** a reference window + live data + SLOs. **Outputs:** drift report, alert rules, a runbook entry per alert.
@@ -867,6 +975,18 @@ if share > 0.3:                 # tune from history, not gut feel
 - **Deliverable:** a recorded shadow→canary→rollback cycle + an HITL-gated agent action. **Acceptance:** a deliberately-bad new version is **auto-rolled-back** by the analysis gate (no human intervention), and the refund tool cannot fire without logged approval.
 
 ▶ **Practical project:** `argoproj/argo-rollouts` — configure a canary with an AnalysisTemplate so a deliberately-bad version auto-rolls-back on SLO/eval breach.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Argo Rollouts 2.x on the kind cluster; reuse the Week-6 golden eval as the analysis gate.
+2. Deploy a new `eta-model` in shadow mode; compare shadow vs prod predictions offline (side-effects stubbed).
+3. Configure a canary Rollout with an AnalysisTemplate (fail if p95 > 400ms OR eval pass-rate < 0.88).
+4. Gate the copilot's "process refund" tool behind an HITL approval (queue + approve/deny + audit log).
+5. Ship a deliberately-bad version; confirm metric-driven auto-rollback (no human).
+6. Record MTTR + the HITL audit trail.
+- **Artifact:** `evidence/week10-release/` (rollout manifest + analysis template + auto-rollback log) committed.
+- **Use `$safe-release`:** release via shadow→canary with auto-rollback + HITL gates.
+- **Done when:** a bad version auto-rolls-back and the refund tool can't fire without logged approval.
+- **Stretch:** add a blue-green path and compare rollback latency.
 
 ### Harness / reusable skill — `$safe-release`
 - **Purpose:** release any model/prompt/agent change via shadow→canary with metric-driven auto-rollback + HITL gates for risky actions.
@@ -952,6 +1072,18 @@ strategy:
 - **Deliverable:** an operated agent with trajectory evals + guardrails + a red-team report. **Acceptance:** the agent (a) passes a budget/loop stress test without runaway, and (b) refuses ≥90% of a held-out prompt-injection set while keeping task success above the Week-6 bar.
 
 ▶ **Practical project:** `krishnaik06/Agentic-LanggraphCrash-course` — follow it to refactor the copilot into a traced LangGraph agent with budget/loop/injection guardrails.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** LangGraph + Langfuse + Mem0 + an injection corpus; follow `krishnaik06/Agentic-LanggraphCrash-course`.
+2. Refactor the copilot into a LangGraph agent (planner → tools → critic) with per-node Langfuse tracing.
+3. Add guardrails: `max_steps`, `max_cost_usd`, a loop detector, a tool allow-list, an injection filter (spotlighting + classifier).
+4. Build a tau-bench-style trajectory eval scoring success AND "no unsafe step".
+5. Wire short-term scratchpad + long-term Mem0 with a retention/PII policy.
+6. Run a budget/loop stress test + a held-out injection suite.
+- **Artifact:** `evidence/week11-agentops/` (trajectory eval + red-team + guardrail config + memory policy) committed.
+- **Use `$agent-ops`:** make the agent observable, budgeted, safety-gated, and trajectory-evaluated.
+- **Done when:** no runaway under stress and ≥90% injection refusal with task success held.
+- **Stretch:** add A2A delegation to a second specialist and trace cross-agent calls.
 
 ### Harness / reusable skill — `$agent-ops`
 - **Purpose:** make any agent observable, budgeted, safety-gated, and trajectory-evaluated before production.
@@ -1049,6 +1181,18 @@ Take **one classical ML model** and **one LLM/agent** from a notebook to a monit
 - [ ] A **runbook** exists that a new on-call could follow to diagnose and roll back.
 
 ▶ **Practical project:** `GokuMohandas/Made-With-ML` — use its end-to-end structure as the integration reference for taking your model + agent to monitored production.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** the full stack (Docker/K8s + DVC/MLflow + vLLM/LiteLLM + Langfuse + Argo Rollouts); use `GokuMohandas/Made-With-ML` as the integration reference.
+2. Take one model + one agent from notebook to deployment: containerized + orchestrated with probes/autoscaling.
+3. Version data+model (DVC) + tracked training (registry, lineage); serve through the gateway with cache + budgets.
+4. Wire eval-gated CI/CD for code AND prompts; add OTel traces + Grafana + drift alerts.
+5. Add shadow→canary→auto-rollback + an HITL gate; add AgentOps guardrails + memory policy.
+6. Run the load + one injected incident; write the readiness report + runbook + cost report + post-mortem.
+- **Artifact:** `capstone/` (platform repo + readiness report + runbook + cost report + post-mortem) committed.
+- **Use `$production-readiness-review`:** assemble all eight skills into one go/no-go review.
+- **Done when:** the eval-gate blocks a regression AND auto-rollback fires, both demonstrated; every claim maps to a trace/dashboard/rollback log.
+- **Stretch:** swap the agent's model for an open-weight fallback and re-run the eval gate.
 
 ### Harness / reusable skill — `$production-readiness-review`
 - **Purpose:** assemble all eight skills into a single go/no-go production review.

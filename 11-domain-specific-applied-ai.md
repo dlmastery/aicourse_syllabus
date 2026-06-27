@@ -104,6 +104,17 @@ Ship a **domain solution** for your Week-1 anchor vertical with these milestones
 
 ▶ **Practical project:** `krishnaik06/mlproject` — use the canonical end-to-end ML template (CI, pipelines, deploy) to scaffold your anchor-vertical solution.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab or local `uv`; `pip install scikit-learn pandas`; clone the repo as your pipeline scaffold; load Telco churn.
+2. **Three memos:** write the same prediction as marketing vs credit vs clinical decision memos, each filling all six lenses.
+3. **Threshold:** derive each operating threshold from a cost matrix (not 0.5); show the metric differs per context.
+4. **Risk tier:** tag the seven verticals against the EU AI Act Annex III high-risk list.
+5. **Anchor:** pick your anchor vertical; write the one-page framing.
+- **Artifact:** `anchor/week01-framing.md` + the three churn decision memos in the repo scaffold.
+- **Use `$domain-readiness`:** produce the six-lens readiness brief + the cheapest de-risking check.
+- **Done when:** the framing names a decision-maker, a wrong-answer cost in real units, and one applicable regulation.
+- **Stretch:** add the Digital-Omnibus 2027 high-risk deferral nuance to the regulatory lens.
+
 ### Harness / reusable skill — `$domain-readiness`
 - **Purpose:** turn any vertical problem into a structured six-lens readiness brief before modeling.
 - **Inputs:** a one-line use case. **Required outputs:** data lens, decision lens, regulatory lens, candidate model, eval plan, top-3 deployment risks.
@@ -183,6 +194,17 @@ def best_threshold(y_true, p_hat, cost_fp, cost_fn, grid=np.linspace(0.01, 0.99,
 - **Deliverable:** `verticals/healthcare-imaging/` with model, eval, and an XAI audit note. **Acceptance:** patient-level split proven; ≥1 documented shortcut; abstention curve plotted.
 
 ▶ **Practical project:** `krishnaik06/Malaria-Detection` — train the medical-image classifier with a patient-level split and a Grad-CAM shortcut audit.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab GPU; `pip install monai timm scikit-learn grad-cam`; clone the repo; load the imaging set.
+2. **Patient split:** enforce a patient-level train/test split; verify no ID crosses.
+3. **Train + CI:** train the classifier; report AUROC/Dice with 95% CIs.
+4. **Grad-CAM:** audit 10 correct + 10 incorrect cases; find ≥1 shortcut/artifact.
+5. **Abstain:** add a confidence-band abstention; plot coverage vs accuracy.
+- **Artifact:** `verticals/healthcare-imaging/eval.md` + `xai-audit.md`.
+- **Use `$xai-audit`:** saliency for TP/FP/FN + a trust/don't-trust-in-production verdict.
+- **Done when:** patient split proven, ≥1 documented shortcut, abstention curve plotted.
+- **Stretch:** swap in a MedSAM-2 / RadDINO foundation backbone and compare.
 
 ### Harness / reusable skill — `$xai-audit`
 - **Purpose:** systematically interrogate whether a vision model is right for the right reasons.
@@ -268,6 +290,17 @@ def evaluate(model, loader):
 
 ▶ **Practical project:** `krishnaik06/Text-Summarization-NLP-Project` — adapt it to clinical-note summarization with a retrieval-grounding + faithfulness check.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab; `pip install scispacy spacy transformers`; clone the repo; load the i2b2/MIMIC teaching subset.
+2. **De-id:** run model-based de-identification; spot-audit for residual PHI.
+3. **Extract:** scispaCy concept extraction with negation handling; score entity-level F1.
+4. **RAG summarize:** retrieve note sections, draft a problem list with Claude Haiku, ground each claim.
+5. **Judge:** an LLM-as-judge faithfulness eval flags unsupported claims; report the rate.
+- **Artifact:** `verticals/clinical-nlp/faithfulness-report.md` + F1 table + de-id audit.
+- **Use `$faithfulness-judge`:** per-claim supported/unsupported + the worst hallucination.
+- **Done when:** zero un-grounded medications in a 20-note sample (or each flagged).
+- **Stretch:** add an agentic-RAG retrieval loop and re-measure faithfulness.
+
 ### Harness / reusable skill — `$faithfulness-judge`
 - **Purpose:** decide, claim-by-claim, whether generated text is supported by sources.
 - **Inputs:** generated summary + retrieved spans. **Required outputs:** per-claim supported/unsupported labels, an aggregate faithfulness rate, and the worst hallucination. **Evidence artifact:** `faithfulness-report.md`.
@@ -347,6 +380,17 @@ def extract_concepts(note: str):
 
 ▶ **Practical project:** `krishnaik06/RAG-Tutorials` — build citation-grounded RAG over contracts/case-law with a citation-verifier gate that blocks fabricated cites.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab; `pip install langchain llama-index qdrant-client`; clone the repo; load CUAD + a case-law slice.
+2. **Clause:** classify 5 high-risk clause types; report recall@type.
+3. **Retrieve:** hybrid + (optional) graph retrieval over the case corpus.
+4. **Verify:** a citation-verifier rejects any answer whose cited case isn't in the retrieved set.
+5. **Measure:** fabrication rate before vs after the verifier.
+- **Artifact:** `verticals/legal/citation-integrity.md` + clause recall table.
+- **Use `$citation-verifier`:** per-citation exists/supports flags + a blocked/allowed verdict.
+- **Done when:** post-verifier fabricated-citation rate = 0 on the test queries.
+- **Stretch:** add ColPali page-image retrieval over scanned contracts.
+
 ### Harness / reusable skill — `$citation-verifier`
 - **Purpose:** guarantee every cited source in a generated answer actually exists in the retrieved evidence and supports the claim.
 - **Inputs:** an answer with citations + the retrieval set. **Required outputs:** per-citation exists/supports flags, a fabrication rate, and a blocked/allowed verdict. **Evidence artifact:** `citation-integrity.md`.
@@ -423,6 +467,17 @@ def verify_citations(answer: str, retrieved: list[dict]) -> dict:
 - **Deliverable:** `verticals/finance-fraud/` with a PIT feature spec, temporal eval, and leakage-audit note. **Acceptance:** leakage audit demonstrates a detected leak and its fix; metric is reported at a stated operating point.
 
 ▶ **Practical project:** `krishnaik06/Credit-Card-Fraudlent` — build the fraud scorer with PIT-correct features and a fixed alerts-per-day operating point.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab; `pip install lightgbm feast scikit-learn`; clone the repo; load IEEE-CIS / ULB.
+2. **PIT features:** engineer velocity features with strict point-in-time discipline (`as_of` joins).
+3. **Temporal split:** train LightGBM on a time-ordered split; evaluate at a fixed alerts-per-day budget.
+4. **Leak demo:** add one leaky feature, show the score jump, remove it, document the gap.
+5. **Audit:** list each feature's earliest valid timestamp; pass/fail.
+- **Artifact:** `verticals/finance-fraud/pit-audit.md` + temporal eval at a stated operating point.
+- **Use `$pit-leakage-audit`:** prove no target/temporal leakage.
+- **Done when:** the audit demos a detected leak + its fix and the metric is at a stated operating point.
+- **Stretch:** add a GNN network feature and re-check PIT correctness.
 
 ### Harness / reusable skill — `$pit-leakage-audit`
 - **Purpose:** prove a tabular/time-series pipeline has no target/temporal leakage.
@@ -504,6 +559,17 @@ print("P@R=0.5:", precision_at_recall(te.isFraud, m.predict_proba(te[feats])[:,1
 
 ▶ **Practical project:** `krishnaik06/ARIMA-And-Seasonal-ARIMA` — build the probabilistic forecast half with calibrated prediction intervals (pair with a PD scorecard + reason codes).
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab; `pip install statsforecast scikit-learn shap`; clone the repo; load Give-Me-Some-Credit + a price/volume series.
+2. **PD model:** train + calibrate (isotonic); plot a reliability diagram + Brier score.
+3. **Reason codes:** SHAP top-3 reasons for 3 sample denials; adverse-impact ratio on a protected attribute.
+4. **Forecast:** build a probabilistic ARIMA/Croston forecast with conformal intervals; report coverage + pinball.
+5. **Memo:** write the SR 11-7-style governance card / midterm memo.
+- **Artifact:** `anchor/midterm-memo.md` + `governance-card.md`.
+- **Use `$model-governance-card`:** the regulator-facing dossier (calibration, fairness, reason codes, monitoring).
+- **Done when:** calibrated PD, reason codes for 3 denials, adverse-impact ratio, and interval coverage all reported.
+- **Stretch:** add a challenger model benchmark per SR 11-7.
+
 ### Harness / reusable skill — `$model-governance-card`
 - **Purpose:** assemble the regulator-facing dossier for any high-risk model.
 - **Inputs:** a trained model + data card. **Required outputs:** intended use, development/validation summary, calibration, fairness test, reason-code method, monitoring plan, known limitations. **Evidence artifact:** `governance-card.md`.
@@ -583,6 +649,17 @@ reason_codes = np.argsort(-np.abs(expl.shap_values(Xte[:1])))[0][:3]
 
 ▶ **Practical project:** `krishnaik06/Movie-Recommender-in-python` — build retrieval + ranking with explicit cold-start and popularity-bias slices.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab; `pip install torch lightgbm pandas`; clone the repo; load the interaction logs.
+2. **Two-stage:** build a two-tower retrieval model + a gradient-boosted ranker.
+3. **Temporal eval:** Recall@k and NDCG@k on a time split.
+4. **Slices:** cold-start (new users/items) + popularity bias (coverage, long-tail exposure).
+5. **Caveat:** write the offline≠online (exposure-bias) note + an A/B plan.
+- **Artifact:** `verticals/retail-recsys/recsys-eval.md` + cold-start/coverage tables.
+- **Use `$recsys-slice-eval`:** Recall/NDCG + cold-start + coverage + an online-lift caveat.
+- **Done when:** temporal split, cold-start reported separately, offline≠online noted.
+- **Stretch:** add LLM/content embeddings to fix cold-start and re-measure.
+
 ### Harness / reusable skill — `$recsys-slice-eval`
 - **Purpose:** evaluate a recommender beyond a single averaged metric.
 - **Inputs:** a ranked-list model + log. **Required outputs:** Recall/NDCG@k, cold-start vs warm split, catalog coverage, long-tail exposure, and one online-lift caveat. **Evidence artifact:** `recsys-eval.md`.
@@ -659,6 +736,17 @@ def ndcg_at_k(ranked_items, relevant, k=10):
 - **Deliverable:** `verticals/retail-forecast/` with a metric table, the inventory simulation, and cost-vs-baseline. **Acceptance:** beats a seasonal-naive baseline on WAPE *and* on simulated inventory cost.
 
 ▶ **Practical project:** `krishnaik06/Stock-MArket-Forecasting` — build SKU-style forecasts and convert them to a newsvendor reorder decision with a cost simulation.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab; `pip install statsforecast mlforecast lightgbm`; clone the repo; load M5/Favorita.
+2. **Forecast:** per-SKU `statsforecast` baselines + a global `mlforecast` model.
+3. **Metrics:** WAPE/MASE + pinball loss at the service-level quantile.
+4. **Decide:** convert forecasts to newsvendor reorder quantities; simulate stock-out vs overstock cost.
+5. **Baseline:** beat seasonal-naive on WAPE *and* inventory cost.
+- **Artifact:** `verticals/retail-forecast/forecast-decision-eval.md` + inventory cost simulation.
+- **Use `$decision-forecast-eval`:** evaluate by the decision the forecast drives, not point error.
+- **Done when:** beats seasonal-naive on WAPE and simulated inventory cost.
+- **Stretch:** swap in a TimesFM/Chronos zero-shot baseline and compare.
 
 ### Harness / reusable skill — `$decision-forecast-eval`
 - **Purpose:** evaluate a forecast by the *decision* it drives, not just by point error.
@@ -738,6 +826,17 @@ fc = sf.predict(h=28, level=[80])
 
 ▶ **Practical project:** `krishnaik06/Tomato-Leaf-Disease-Prediction` — train a visual defect/disease detector and report localization + a false-alarm operating threshold.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab GPU; `pip install anomalib timm`; clone the repo; load MVTec-AD + the leaf set.
+2. **One-class:** train a PatchCore/EfficientAD detector per category on good parts only.
+3. **Localize:** report image- and pixel-level AUROC + a false-alarm rate at a chosen threshold.
+4. **RUL (optional):** on C-MAPSS, build an RUL model with the asymmetric PHM score + lead-time.
+5. **Threshold:** set the operating threshold from missed-defect vs line-stop cost.
+- **Artifact:** `verticals/manufacturing/qc-eval.md` + localization maps (+ RUL curve).
+- **Use `$anomaly-qc-eval`:** image/pixel AUROC + false-alarm + the cost trade-off at the operating point.
+- **Done when:** localization shown and the threshold is set from cost, not a default.
+- **Stretch:** add zero-shot WinCLIP/AnomalyCLIP for novel defect types.
+
 ### Harness / reusable skill — `$anomaly-qc-eval`
 - **Purpose:** evaluate a rare-defect / unseen-failure system against operational costs.
 - **Inputs:** an anomaly model + test set. **Required outputs:** image- & pixel-level AUROC, false-alarm rate at the chosen threshold, localization samples, and the cost trade-off at that operating point. **Evidence artifact:** `qc-eval.md`.
@@ -813,6 +912,17 @@ def phm_score(rul_true, rul_pred):
 - **Deliverable:** `verticals/education/` with the agent, the pedagogy-eval rubric + scores, and an answer-leakage rate. **Acceptance:** verified-correct solutions; answer-leakage rate reported under adversarial probing.
 
 ▶ **Practical project:** `krishnaik06/Agentic-LanggraphCrash-course` — build the Socratic tutoring agent with a hint-ladder + CAS verifier and an answer-leakage probe.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab; `pip install langgraph sympy anthropic`; clone the repo; load GSM8K/MATH items.
+2. **Agent:** build a tutoring agent with a hint-ladder (hints, not answers) + a knowledge-tracing state.
+3. **Verify:** add a CAS/code verifier for every worked solution step.
+4. **Pedagogy eval:** an LLM-judge rubric scoring scaffolding, answer-leakage, factual correctness.
+5. **Adversary:** run an answer-extracting student; report the answer-leakage rate.
+- **Artifact:** `verticals/education/pedagogy-eval.md` + leakage rate + verifier logs.
+- **Use `$pedagogy-eval`:** score teaching quality, not just final-answer correctness.
+- **Done when:** verified-correct solutions + an answer-leakage rate reported under adversarial probing.
+- **Stretch:** add FERPA-safe pseudonymized logging and gate third-party calls.
 
 ### Harness / reusable skill — `$pedagogy-eval`
 - **Purpose:** score a tutoring interaction on teaching quality, not just final-answer correctness.
@@ -891,6 +1001,17 @@ def next_hint(state): return HINT_LADDER[min(state["attempts"], len(HINT_LADDER)
 
 ▶ **Practical project:** `krishnaik06/AQI-Project` — build a scientific regression surrogate and report an OOD/extrapolation slice with an uncertainty estimate.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab; `pip install rdkit chemprop scikit-learn`; clone the repo; load MoleculeNet (or the AQI regression set).
+2. **Scaffold split:** split by structure/scaffold so the test set is structurally novel.
+3. **Train:** a GNN/`chemprop` (or the AQI regressor) + an uncertainty estimate.
+4. **Physics/OOD:** report novel-scaffold metrics + an OOD slice; for a PDE surrogate, a conservation/units check.
+5. **Baseline:** beat a simple fingerprint/linear baseline.
+- **Artifact:** `verticals/ai-for-science/science-eval.md` + scaffold-split + validity check.
+- **Use `$ood-science-eval`:** extrapolation + physical validity, not just in-distribution fit.
+- **Done when:** scaffold-split (not random) metrics reported and the validity check passes or is documented.
+- **Stretch:** add an FNO PDE surrogate and check it against the numerical solver.
+
 ### Harness / reusable skill — `$ood-science-eval`
 - **Purpose:** evaluate a scientific model on extrapolation and physical validity, not just in-distribution fit.
 - **Inputs:** model + scientific dataset. **Required outputs:** scaffold/structure-split metrics, an OOD slice, a physical-constraint check, and an uncertainty/applicability-domain note. **Evidence artifact:** `science-eval.md`.
@@ -964,6 +1085,17 @@ def scaffold_split(smiles, frac_train=0.8):
 
 ▶ **Practical project:** `krishnaik06/mlproject` — wrap your anchor solution in the end-to-end template (pipelines, CI, deploy) and bolt on the drift monitor + dossier.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** local/Colab; reuse the `mlproject` scaffold (CI, pipelines, deploy) for your anchor vertical.
+2. **Finish model:** complete M2 (model/agent passing the domain eval with a slice).
+3. **Drift monitor:** stand up an `evidently` PSI/KS drift report on reference vs live data.
+4. **Failure catalog:** top-5 ways it breaks + detection + fallback; human-in-the-loop design.
+5. **Dossier:** assemble the drift plan + failure catalog + audit/accountability story.
+- **Artifact:** `capstone/` (solution + eval + governance card + `dossier.md`).
+- **Use `$deployment-risk-dossier`:** the production-readiness + accountability package.
+- **Done when:** the capstone acceptance checklist is satisfied and every claim traces to an artifact.
+- **Stretch:** wire a human-review UX (evidence, uncertainty, correction, escalation).
+
 ### Harness / reusable skill — `$deployment-risk-dossier`
 - **Purpose:** assemble the production-readiness and accountability package for a high-stakes model.
 - **Inputs:** the shipped solution. **Required outputs:** drift plan, failure catalog with detections + fallbacks, human-in-the-loop design, audit/logging story, and the residual-risk statement. **Evidence artifact:** `capstone/dossier.md`.
@@ -1030,6 +1162,17 @@ assert not drift, "Distribution shift detected — trigger review before serving
 - Write a one-page **cross-vertical synthesis**: the same five traps as they appeared in each vertical and the discipline that caught them.
 
 ▶ **Practical project:** `krishnaik06/Data-Science-Projects-For-Resumes` — package and present your shipped solution for the stakeholder + regulator panel.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** package your capstone repo using the `Data-Science-Projects-For-Resumes` structure for a clean narrative.
+2. **Deck:** build the 12-minute ship-review presentation framed as a decision tool with bounded risk.
+3. **Map obligations:** each named regulation → a concrete artifact.
+4. **Defend:** rehearse adversarial Q&A on leakage, fairness, drift, accountability.
+5. **Go/no-go:** write the six-lens gate + a conditioned ship decision + the cross-vertical synthesis.
+- **Artifact:** `ship-review.md` + the cross-vertical synthesis + the final repo.
+- **Use `$ship-review`:** lens-by-lens findings + top-3 unmitigated risks + a go/no-go.
+- **Done when:** you survive the panel's leakage/fairness/drift probes with an obligation→artifact mapping.
+- **Stretch:** present the public-good/low-resource variant with an equity + limitations note.
 
 ### Harness / reusable skill — `$ship-review`
 - **Purpose:** run a structured pre-deployment review of any domain AI system.

@@ -109,6 +109,18 @@ reproduction checkpoint 9% + capstone 25% = 100%.)
 
 ▶ **Practical project:** `VizuaraAILabs/nano-gpt-oss` — stand up a tiny gpt-oss pretraining run and annotate where each later week plugs into the lifecycle.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab (GPU) / serverless GPU; `pip install transformers datasets accelerate wandb`; clone `VizuaraAILabs/nano-gpt-oss`.
+2. **Scaffold:** init `llm-lifecycle/` with `configs/ data/ src/ evidence/`, an `accelerate` config, and a seed helper.
+3. **Data:** stream a ~100 MB FineWeb-Edu slice; tokenize + pack to length 1024.
+4. **Train:** continue-pretrain a SmolLM2-135M-scale model for ~1k steps; log loss, tokens/sec, MFU.
+5. **Map:** draw the lifecycle (data→tokenizer→arch→pretrain→eval→SFT→align→RL→safety→serve) naming each stage's objective + gate.
+6. **Record:** annotate where each later week plugs in.
+- **Artifact:** `evidence/week01-lifecycle-map.md` (stage table) + the tiny run's loss/throughput log.
+- **Use `$lifecycle-map`:** lay out each stage's objective/data/eval and the decision that gates moving on.
+- **Done when:** loss decreases; tokens/sec + MFU logged; the map names the objective at every stage.
+- **Stretch:** add a config-hash check so the run re-launches deterministically.
+
 ### Harness / reusable skill — `$lifecycle-map`
 - **Purpose:** for any LLM project, lay out the stages, the objective + data + eval at each, and the decision that gates moving on.
 - **Inputs:** a target model/use-case. **Outputs:** a stage table (objective/data/eval/gate). **Evidence artifact:** `evidence/week01-lifecycle-map.md`.
@@ -193,6 +205,18 @@ Trainer(model=model, args=args, train_dataset=ds).train()
   **Acceptance:** the funnel quantifies each stage's drop rate; you can defend each filter with examples and name one bias it could introduce.
 
 ▶ **Practical project:** `VizuaraAILabs/truly-open-gpt-oss` — run its data-prep stage (extraction/filtering) and emit a retention funnel with sampled drops.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** local env; `pip install datatrove trafilatura fasttext`; clone `VizuaraAILabs/truly-open-gpt-oss` data stage.
+2. **Read:** point a `WarcReader` at a small Common Crawl / FineWeb WARC sample (limit ~5k docs).
+3. **Extract:** `Trafilatura(favour_precision=True)` to strip boilerplate to clean text.
+4. **Filter:** fastText `lid.176` language ID → Gopher-style heuristics → a FineWeb-Edu-style quality classifier.
+5. **Funnel:** log docs-in → kept-after-each-stage with 10 sampled drops per stage and a reason.
+6. **Reflect:** name one bias each filter could introduce; track source + license per shard.
+- **Artifact:** `evidence/week02-funnel.md` (retention funnel + sampled drops + a bias-risk paragraph).
+- **Use `$data-funnel`:** produce a stage-by-stage retention funnel with sampled drops and a bias note.
+- **Done when:** per-stage drop rates quantified; each filter defended with examples; one induced bias named; provenance tracked.
+- **Stretch:** add a PII/secret scrubber and measure how many docs it touches.
 
 ### Harness / reusable skill — `$data-funnel`
 - **Purpose:** for any corpus, produce a stage-by-stage retention funnel with sampled drops and a bias note.
@@ -281,6 +305,18 @@ LocalPipelineExecutor(pipeline=pipeline, tasks=4).run()
   **Acceptance:** measurable dup reduction; documented decontamination; tokenizer round-trips and reports fertility.
 
 ▶ **Practical project:** `VizuaraAILabs/truly-open-gpt-oss` — run its tokenizer-training stage, then layer in MinHash dedup + n-gram decontamination and measure the duplicate rate.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** local env; `pip install datasketch tokenizers datasets`; reuse the Week-2 cleaned corpus.
+2. **Exact dedup:** hash docs and drop byte-identical duplicates; report the rate.
+3. **Near-dup:** `datasketch` MinHashLSH (threshold ~0.8); report duplicate rate + size reduction.
+4. **Decontaminate:** n-gram overlap check vs MMLU/GSM8K samples; remove and count contaminated docs.
+5. **Tokenizer:** `train_tokenizer.py` a 32k BPE on the cleaned corpus; report fertility vs Llama-3 and GPT-2 tokenizers.
+6. **Verify:** assert the tokenizer round-trips on held-out text.
+- **Artifact:** `evidence/week03-dedup.md` (dup rate + contamination count + fertility table + round-trip proof).
+- **Use `$dedup-decontam`:** quantify duplication + benchmark contamination and emit clean shards.
+- **Done when:** exact+near dup rates reported with justified thresholds; decontamination counted; tokenizer round-trips + reports fertility.
+- **Stretch:** sweep the MinHash threshold and show which legitimate repetition it starts deleting.
 
 ### Harness / reusable skill — `$dedup-decontam`
 - **Purpose:** quantify duplication and benchmark contamination in any corpus and emit a clean shard set.
@@ -374,6 +410,18 @@ def dedup(docs, threshold=0.8):
 
 ▶ **Practical project:** `VizuaraAILabs/DeepSeek-From-Scratch` — build the modern decoder (RoPE/RMSNorm/SwiGLU/MoE) and fit a small scaling law across sizes.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab (GPU); `pip install torch scipy matplotlib`; clone `VizuaraAILabs/DeepSeek-From-Scratch`.
+2. **Build:** `arch.py` configurable decoder — RoPE + RMSNorm + SwiGLU + GQA; verify a forward pass + KV-cache parity vs full attention.
+3. **Sweep sizes:** train 4–5 model sizes on a fixed token budget on the FineWeb-Edu slice.
+4. **Fit:** `fit_scaling(runs)` to `L(N,D)=E+A/N^α+B/D^β` via `curve_fit`.
+5. **Validate:** hold out one size, predict its loss, report the error.
+6. **Recommend:** use the fit (and the ~20 tokens/param rule) to pick a compute-optimal config.
+- **Artifact:** `evidence/week04-scaling.md` (fit + held-out prediction + compute-optimal config justification).
+- **Use `$scaling-fit`:** fit + validate a scaling law from a few runs, then recommend a config.
+- **Done when:** RoPE+RMSNorm+SwiGLU+GQA verified with KV-cache parity; held-out loss within tolerance; recommendation cites token/param balance.
+- **Stretch:** swap the dense MLP for a 2-expert MoE and re-fit, comparing the curves.
+
 ### Harness / reusable skill — `$scaling-fit`
 - **Purpose:** fit and validate a scaling law from a handful of runs, then recommend a compute-optimal config.
 - **Inputs:** (params, tokens, loss) triples. **Outputs:** fitted exponents + a held-out prediction + a config rec. **Evidence artifact:** `evidence/week04-scaling.md`.
@@ -463,6 +511,18 @@ def fit_scaling(runs):                      # runs: list of (N_params, D_tokens,
 
 ▶ **Practical project:** `VizuaraAI/vizuara-5d-parallelism-workshop` — run DP/TP/PP/FSDP across GPUs and measure scaling efficiency + MFU.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** multi-GPU node / 2–8 serverless GPUs; `pip install torch accelerate deepspeed`; clone `VizuaraAI/vizuara-5d-parallelism-workshop`.
+2. **Shard:** wrap the Week-4 model in FSDP2 (or DeepSpeed ZeRO-3) + activation checkpointing + bf16.
+3. **Launch:** `accelerate launch --multi_gpu` across 1, 2, 4 (and 8 if available) GPUs.
+4. **Measure:** tokens/sec/GPU + MFU at each world size; record a memory breakdown.
+5. **Plot:** scaling efficiency vs GPU count; mark the gap from linear.
+6. **Diagnose:** identify the communication bottleneck (interconnect, batch size, overlap).
+- **Artifact:** `evidence/week05-scaling-eff.md` (scaling-efficiency plot + MFU + memory breakdown + bottleneck note).
+- **Use `$distributed-profiler`:** profile throughput/MFU/memory/comm and recommend the parallelism strategy.
+- **Done when:** trains beyond single-GPU capacity; efficiency + MFU reported vs a 1-GPU baseline; a real bottleneck named.
+- **Stretch:** add tensor-parallel to one layer and compare against pure FSDP.
+
 ### Harness / reusable skill — `$distributed-profiler`
 - **Purpose:** profile a distributed run's throughput, MFU, memory, and communication overhead; recommend the parallelism strategy.
 - **Inputs:** a training job + GPU count. **Outputs:** scaling table, MFU, bottleneck diagnosis. **Evidence artifact:** `evidence/week05-scaling-eff.md`.
@@ -548,6 +608,18 @@ def setup_fsdp(model):
   **Acceptance:** experts are utilized (no collapse), active-param accounting is correct, and you state when MoE is/ isn't worth it.
 
 ▶ **Practical project:** `VizuaraAI/Mixture_of_Experts` — implement a top-k MoE FFN + load-balancing loss and track expert utilization.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab (GPU); `pip install torch matplotlib`; clone `VizuaraAI/Mixture_of_Experts`.
+2. **Implement:** `moe.py` replace a dense MLP with a top-2 MoE (8 experts) + a load-balancing aux loss.
+3. **Account:** report active vs total params explicitly.
+4. **Compare:** dense vs MoE at matched active params on a small pretraining run; track expert utilization.
+5. **Long context:** extend 1k→4k via RoPE scaling on a small model; measure perplexity on PG-19 long docs.
+6. **Monitor:** plot the per-expert load histogram + token-drop rate; flag collapse.
+- **Artifact:** `evidence/week06-moe.md` (utilization histogram + drop rate + dense-vs-MoE table + long-context perplexity).
+- **Use `$moe-router-monitor`:** monitor per-expert load, drop rate, and balance loss; flag collapse.
+- **Done when:** experts are utilized (no collapse); active/total accounting correct; you state when MoE is/ isn't worth it.
+- **Stretch:** add router noise + a capacity factor and show their effect on the drop rate.
 
 ### Harness / reusable skill — `$moe-router-monitor`
 - **Purpose:** monitor MoE routing health (per-expert load, drop rate, balance loss) and flag collapse.
@@ -640,6 +712,18 @@ class MoEFFN(nn.Module):
 
 ▶ **Practical project:** `mlabonne/llm-course` — run its evaluation notebooks (lm-eval-harness) on your base model and reproduce a published number with CIs.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab (GPU); `pip install lm-eval vllm`; open the eval section of `mlabonne/llm-course`.
+2. **Run:** `lm_eval.simple_evaluate` on HellaSwag, ARC-easy, MMLU (subset), GSM8K for your base + continue-pretrained model.
+3. **Quantify:** extract acc + stderr; build a table with 95% CIs and fixed prompt templates.
+4. **Reproduce:** pick a published small-scale number (e.g., a Pythia/SmolLM2 HellaSwag) and reproduce within a stated tolerance.
+5. **Diagnose:** document every deviation; check for contamination / format sensitivity.
+6. **Visualize:** bar-chart your scores vs the published target with CIs.
+- **Artifact:** `evidence/week07-eval/` (benchmark table with CIs + format notes + reproduction report).
+- **Use `$benchmark-runner`:** run the suite reproducibly with format/contamination caveats + a reproduction delta.
+- **Done when:** scores reported with CIs + a pinned harness; the reproduction is within tolerance or the gap is diagnosed.
+- **Stretch:** re-run one benchmark under two prompt templates and quantify the format swing.
+
 ### Harness / reusable skill — `$benchmark-runner`
 - **Purpose:** run a standard eval suite reproducibly, with format/contamination caveats and confidence intervals.
 - **Inputs:** a model + a benchmark list. **Outputs:** a scored table + caveats + a reproduction delta. **Evidence artifact:** `evidence/week07-eval/`.
@@ -722,6 +806,18 @@ results = lm_eval.simple_evaluate(
   **Acceptance:** the SFT model follows instructions (qualitative + a small held-out instruction eval); loss masking and templating are verified; the data-quality ablation shows the expected effect.
 
 ▶ **Practical project:** `krishnaik06/Finetuning-LLM` — run SFT + LoRA/QLoRA on an instruction set with proper chat templating and loss masking.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab (GPU); `pip install trl peft bitsandbytes transformers`; clone `krishnaik06/Finetuning-LLM`.
+2. **Data:** chat-template a 5–10k instruction subset (Tulu-3/UltraChat); verify token-level labels.
+3. **Configure:** TRL `SFTTrainer` with `assistant_only_loss=True` (mask prompt tokens) + packing; QLoRA via `LoraConfig(r=16)`.
+4. **Train:** run full-FT on a small model and QLoRA on a larger one.
+5. **Ablate:** SFT on raw vs cleaned data; compare on a small held-out instruction eval.
+6. **Inspect:** generate sample completions; confirm the chat template round-trips.
+- **Artifact:** `evidence/week08-sft/` (config + loss curves + LoRA-vs-full table + data-quality ablation + samples).
+- **Use `$sft-recipe`:** template + mask + pack + LoRA config + held-out instruction eval.
+- **Done when:** masking + template verified; the model follows instructions; the data-quality ablation shows the expected effect.
+- **Stretch:** sweep LoRA rank and plot quality vs trainable-parameter count.
 
 ### Harness / reusable skill — `$sft-recipe`
 - **Purpose:** a reproducible SFT recipe: template + mask + pack + LoRA config + held-out instruction eval.
@@ -811,6 +907,18 @@ trainer.train()
 
 ▶ **Practical project:** `mlabonne/llm-course` — train a Bradley-Terry reward model and run PPO RLHF from its post-training notebooks, watching reward/KL.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab (GPU); `pip install trl transformers`; open the RLHF section of `mlabonne/llm-course`.
+2. **Reward model:** `reward_model.py` Bradley-Terry on UltraFeedback/HH-RLHF; report held-out pairwise accuracy.
+3. **PPO:** TRL `PPOTrainer` — policy + frozen reference (KL anchor) + value head + the RM.
+4. **Track:** log reward, KL, and a held-out LLM-as-judge score over training.
+5. **Probe hacking:** demonstrate one reward-hacking failure (length/lists/sycophancy) and a mitigation.
+6. **Visualize:** plot reward vs KL trajectories.
+- **Artifact:** `evidence/week09-rlhf/` (RM accuracy + reward/KL curves + reward-hacking demo + mitigation).
+- **Use `$rlhf-monitor`:** watch reward/KL trajectories + hacking signatures and make a stop/continue call.
+- **Done when:** the RM beats chance clearly; PPO raises judge-scored quality without KL blow-up; one hack shown + mitigated.
+- **Stretch:** add an adaptive-KL controller and compare stability vs a fixed β.
+
 ### Harness / reusable skill — `$rlhf-monitor`
 - **Purpose:** monitor an RLHF run for reward/KL trajectories and reward-hacking signatures (length inflation, repetition, sycophancy).
 - **Inputs:** a PPO run's logs + samples. **Outputs:** reward/KL plots, a hacking-signature checklist, a stop/continue call. **Evidence artifact:** `evidence/week09-rlhf/`.
@@ -896,6 +1004,18 @@ ppo_cfg = PPOConfig(output_dir="ppo", kl_coef=0.05, batch_size=64)
 
 ▶ **Practical project:** `mlabonne/llm-course` — align your SFT model with DPO (and contrast ORPO/KTO) using its preference-optimization notebook.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab (GPU); `pip install trl peft`; open the preference-optimization notebook of `mlabonne/llm-course`.
+2. **Data:** the binarized UltraFeedback pairs; chat-template chosen/rejected.
+3. **Align:** run DPO on your Week-8 SFT model; then ORPO and KTO with matched data.
+4. **Compare:** evaluate the three on a held-out preference set + an LLM-as-judge head-to-head.
+5. **Inspect:** check for over-optimization (degenerate length/format drift).
+6. **Visualize:** bar-chart win-rate per method vs the SFT baseline.
+- **Artifact:** `evidence/week10-preference/` (method comparison table + judge win-rates + sample completions).
+- **Use `$preference-align-bench`:** benchmark DPO vs ORPO vs KTO fairly on one model/data.
+- **Done when:** all three run on the same base/data; a fair comparison + judge eval is reported; the pick is justified.
+- **Stretch:** model-merge the DPO + SFT checkpoints and re-evaluate.
+
 ### Harness / reusable skill — `$preference-align-bench`
 - **Purpose:** fairly compare preference-optimization methods on fixed data/compute with a judge + a benchmark.
 - **Inputs:** SFT model + preferences + method list. **Outputs:** win-rate table, KL drift, cost, recommendation. **Evidence artifact:** `evidence/week10-align/`.
@@ -978,6 +1098,18 @@ dpo.train()
   **Acceptance:** measurable accuracy improvement on a held-out math set; reward function is verifiable and documented; you discuss the length/accuracy trade-off.
 
 ▶ **Practical project:** `VizuaraAILabs/OpenClaw-RL-Tutorial` — implement GRPO with verifiable rewards on a math task, adding format + correctness rewards.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** Colab (GPU); `pip install trl vllm`; clone `VizuaraAILabs/OpenClaw-RL-Tutorial`.
+2. **Task:** pick a math set (GSM8K / AIME-style) with a programmatic answer checker.
+3. **Rewards:** define a verifiable reward = format reward + correctness reward (exact-match on the parsed answer).
+4. **Train:** run GRPO (group-relative advantages, no value model) on your SFT/aligned model.
+5. **Evaluate:** measure accuracy gain + reasoning-length change; add a test-time best-of-n comparison.
+6. **Probe:** check for reward hacking / verifier gaming and patch the checker.
+- **Artifact:** `evidence/week11-grpo/` (reward curves + accuracy gain + a reward-hacking note).
+- **Use `$verifiable-reward`:** design + validate format + correctness rewards that resist gaming.
+- **Done when:** GRPO raises verified accuracy; the reward isn't trivially gamed; the test-time scaling effect is measured.
+- **Stretch:** add a DAPO-style refinement and compare sample efficiency to vanilla GRPO.
 
 ### Harness / reusable skill — `$verifiable-reward`
 - **Purpose:** build and validate a programmatic reward (answer-checking + format) and audit it for gameability.
@@ -1071,6 +1203,18 @@ GRPOTrainer(model="./dpo-ckpt", reward_funcs=[correctness_reward],
 
 ▶ **Practical project:** `VizuaraAI/llm-inference-tutorial` — serve your model with vLLM + KV-cache, measure latency, and add input/output guardrails.
 
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** GPU box / serverless GPU; `pip install vllm`; clone `VizuaraAI/llm-inference-tutorial`.
+2. **Serve:** launch your aligned model under vLLM with `--kv-cache-dtype fp8`; hit it with concurrent requests.
+3. **Measure:** record throughput, p50/p99 latency, and the FP8-KV memory saving.
+4. **Long context:** extend context via YaRN/NTK; test retrieval / perplexity on long docs.
+5. **Safety:** add input/output guardrails (prompt-injection focus); run a small red-team set; measure refusal AND over-refusal.
+6. **Audit:** write a serving + safety audit note.
+- **Artifact:** `evidence/week12-serving/` (latency/memory table + long-context check + refusal/over-refusal numbers).
+- **Use `$safety-serving-audit`:** audit serving efficiency + safety (refusal + over-refusal + injection).
+- **Done when:** the FP8-KV serving win is measured; long-context extension tested; refusal and over-refusal both reported.
+- **Stretch:** add speculative decoding and measure the low-concurrency speedup (note the KV-quant gotcha).
+
 ### Harness / reusable skill — `$safety-serving-audit`
 - **Purpose:** audit a deployed model on three axes — long-context fidelity, safety (with over-refusal control), and serving latency/throughput.
 - **Inputs:** a served model + probes. **Outputs:** a long-context curve, a safety/over-refusal table, a latency/throughput table. **Evidence artifact:** `evidence/week12-audit/`.
@@ -1148,6 +1292,18 @@ out = llm.generate(prompts, SamplingParams(max_tokens=512, temperature=0.7))
   **Acceptance:** reproducible (config + seeds + data hashes + one orchestration command), each stage shows its evidence artifact, the evaluation is honest (names ≥ 2 concrete failure modes + defended next steps), and the safety section reports both refusal and over-refusal.
 
 ▶ **Practical project:** `VizuaraAI/pharma-slm` — use its full ~350M domain-SLM pipeline as the capstone template for your pretrain → post-train evidence packet.
+
+**Build it — step by step (AI-builder lab):**
+1. **Setup:** GPU / serverless GPU; `pip install transformers trl peft datasets accelerate`; reference `VizuaraAI/pharma-slm`.
+2. **Configure:** `capstone/config.json` (seeds, data, arch, optim, methods); pin deps + data hashes.
+3. **Run pipeline:** `capstone/pipeline.py` end-to-end — curate → tokenizer → pretrain → SFT → align (DPO/GRPO) → eval → safety.
+4. **Evaluate:** benchmarks + judge + CIs; name ≥2 failure modes; report refusal + over-refusal.
+5. **Document:** a model card + a report where every claim links to a file.
+6. **Reproduce:** confirm one command re-runs the headline result from the pinned config.
+- **Artifact:** a `capstone/` lifecycle packet (every claim → a file) + a model card.
+- **Use `$lifecycle-evidence-packet`:** assemble every stage's evidence into one reviewable bundle.
+- **Done when:** one command reproduces it; every stage has its artifact; eval is honest (CIs + named failures); safety measured.
+- **Stretch:** serve the final model behind a small API + a Langfuse trace of the eval runs.
 
 ### Harness / reusable skill — `$lifecycle-evidence-packet`
 - **Purpose:** assemble data-funnel + tokenizer report + training curves + SFT/alignment comparisons + eval table + safety report + serving benchmark into one reviewable bundle with a model card.
