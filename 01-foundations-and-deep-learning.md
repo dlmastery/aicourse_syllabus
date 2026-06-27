@@ -54,6 +54,28 @@ This subject is taught with the reusable **reader-skills** from *Harnessing LLM 
 
 ---
 
+
+## Krish Naik real-world projects for this subject
+
+End-to-end, deployable projects from [krishnaik.in/projects](https://www.krishnaik.in/projects) that fit this subject — use one as the **capstone-grade option** for the matching lecture's hands-on lab. Full 79-project list and cross-subject mapping: [`KRISHNAIK-WEBSITE-PROJECTS.md`](KRISHNAIK-WEBSITE-PROJECTS.md).
+
+- **Intelligent Timetable Generator (Genetic Algorithm)** — GA/web app — *foundations/optimization*
+- **Regional Sales Performance Analysis** — Power BI/EDA — *data analysis*
+- **Predictive Modeling for Cancer Risk (ML)** — SMOTE/HPO/imbalance — *ML*
+- **Solar Energy Data Analysis (Power BI & MySQL)** — Power BI/MySQL — *data analysis*
+- **SQL Server + Power BI Sales Analysis** — SQL/Power BI/modeling — *data analysis*
+- **Academic Risk & Engagement Prediction** — classification/feature importance — *ML*
+- **2-Stage Loan Approval & Valuation** — two-stage/YAML/Streamlit — *ML*
+- **NexusView Package** — Python library/Jupyter — *tooling*
+- **Telecom Customer Churn Prediction (ML)** — classification/lifecycle/deploy — *ML*
+- **Telecom Churn Analysis & Dashboarding** — dashboards/EDA — *data analysis*
+- **Diamonds Data Analysis (Power BI)** — Power BI/viz — *data analysis*
+- **Drinks Quality Prediction** — ML pipeline/automation — *ML*
+- **Global Mobility Application Analyzer** — ML pipeline/feature engineering — *ML*
+- **Thunderstorm Forecasting (MLflow)** — MLflow/HPO/weather — *ML*
+
+---
+
 # Part A — Math & ML Foundations From Scratch
 
 **Track:** Foundations · **Altitude:** Learner · **Length:** 10 weeks (3 lecture hrs + 3 lab hrs/wk)

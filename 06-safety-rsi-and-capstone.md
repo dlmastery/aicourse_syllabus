@@ -63,6 +63,19 @@ This subject is taught with the reusable **reader-skills** from *Harnessing LLM 
 
 ---
 
+
+## Krish Naik real-world projects for this subject
+
+End-to-end, deployable projects from [krishnaik.in/projects](https://www.krishnaik.in/projects) that fit this subject — use one as the **capstone-grade option** for the matching lecture's hands-on lab. Full 79-project list and cross-subject mapping: [`KRISHNAIK-WEBSITE-PROJECTS.md`](KRISHNAIK-WEBSITE-PROJECTS.md).
+
+- **PCAP StoryTeller (network packet analysis)** — heuristic risk scoring/dashboard — *security*
+- **AWS Threat Detection (GuardDuty, EventBridge, Lambda, SNS)** — GuardDuty/CloudTrail — *security*
+- **Network Security (MLflow, Dagshub, MongoDB Atlas)** — MLflow/ETL — *security*
+- **Azure Multi-Modal Compliance Orchestration (LangGraph, LangSmith)** — Azure Video Indexer/AI Search/OpenAI — *compliance*
+- **Kubernetes Pen-Testing & Benchmarking (KubeHunter, KubeBench)** — K8s/RBAC — *security*
+
+---
+
 # Part A — AI Safety, Alignment & Governance
 
 **Track:** Safety & Society · **Altitude:** Specialist · **Format:** seminar + live lab (3h seminar + 3h lab/wk) · **Length:** 13 weeks

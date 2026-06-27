@@ -88,6 +88,46 @@ This subject is taught with the reusable **reader-skills** from *Harnessing LLM 
 
 ---
 
+
+## Krish Naik real-world projects for this subject
+
+End-to-end, deployable projects from [krishnaik.in/projects](https://www.krishnaik.in/projects) that fit this subject — use one as the **capstone-grade option** for the matching lecture's hands-on lab. Full 79-project list and cross-subject mapping: [`KRISHNAIK-WEBSITE-PROJECTS.md`](KRISHNAIK-WEBSITE-PROJECTS.md).
+
+- **End-to-End Tumor Detection with XAI and GCP** — Deep Learning · GradCAM/GCP/MLOps — *Domain: healthcare/CV*
+- **Solar Panel Defect Classification (Deep Learning)** — Deep Learning · CNN/AWS EC2/HPO — *CV*
+- **PCAP StoryTeller (network packet analysis)** — heuristic risk scoring/dashboard — *applied*
+- **Cancer Detection with Explainable AI** — FibonacciNet/Grad-CAM — *CV/healthcare*
+- **Real-Time Voice AI Agent with RAG** — voice/vector DB/low-latency — *audio*
+- **Flipkart Product Recommender Chatbot (GCP)** — RAG/LangChain/LangGraph/microservices — *recsys*
+- **AI Anime Recommendation System** — RAG/LLM-as-Judge/LangSmith/K8s/GCP — *recsys*
+- **Pipecat AI Interview Coach (real-time voice)** — voice/avatar/full-stack — *audio*
+- **Predictive Modeling for Cancer Risk (ML)** — SMOTE/HPO/imbalance — *healthcare*
+- **Elephant Species Classification (DL + Transfer Learning)** — CNN/transfer — *CV*
+- **Academic Risk & Engagement Prediction** — classification/feature importance — *education*
+- **2-Stage Loan Approval & Valuation** — two-stage/YAML/Streamlit — *finance*
+- **AI Heart Murmur Detection** — audio/LSTM — *audio/healthcare*
+- **Personal AI Voice Assistant (Gemini)** — Streamlit/TTS/STT — *audio*
+- **Books Recommender System** — ML recsys — *recsys*
+- **Facial Emotion Detection** — CV — *CV*
+- **Waste Detection System** — CV/object detection — *CV*
+- **Sign Language Detection (YOLOv5)** — YOLOv5/Flask/AWS/CI-CD — *CV*
+- **Mosquito Detection (YOLOv5)** — object detection — *CV*
+- **AI Image Analyzer (Terraform, AWS Bedrock, Rekognition)** — Terraform/Bedrock/Rekognition/Lambda — *vision*
+- **End-to-End Medical Chatbot** — RAG/Pinecone/LangChain/Flask/AWS — *healthcare*
+- **Medical Diagnosis App** — LLMs/research-data — *healthcare*
+- **Kidney Tumor Identification** — CNN/MLOps — *CV/healthcare*
+- **Poultry Disease Identification** — DL/fecal analysis — *CV/agri*
+- **Discarded Material Identification** — object detection/CI-CD — *CV*
+- **Chest Disease Identification** — CNN/MLOps/CI-CD — *CV/healthcare*
+- **Collaborative Filtering Recommendation System** — collaborative filtering/MLOps — *recsys*
+- **Multi-Agent Quantitative Analysis (Azure)** — FastAPI/Streamlit/Azure PostgreSQL/Blob — *finance*
+- **Object Detection with Faster R-CNN (DVC, TensorBoard, FastAPI)** — Faster R-CNN/DVC — *CV*
+- **Automated YouTube Mixtape Creation** — FastAPI/Streamlit/audio — *audio*
+- **Azure Multi-Modal Compliance Orchestration (LangGraph, LangSmith)** — Azure Video Indexer/AI Search/OpenAI — *multimodal*
+- **AI-Powered Image Analyzer / vision pipelines** — (see #45) — *vision*
+
+---
+
 # Part A — Domain-Specific Applied AI
 
 **Track:** Applied / Verticals · **Altitude:** Builder → Engineer · **Length:** 13 weeks (3 lecture hrs + 3 lab hrs/wk)

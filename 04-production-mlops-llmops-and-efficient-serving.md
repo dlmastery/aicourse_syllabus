@@ -52,6 +52,34 @@ This subject is taught with the reusable **reader-skills** from *Harnessing LLM 
 
 ---
 
+
+## Krish Naik real-world projects for this subject
+
+End-to-end, deployable projects from [krishnaik.in/projects](https://www.krishnaik.in/projects) that fit this subject — use one as the **capstone-grade option** for the matching lecture's hands-on lab. Full 79-project list and cross-subject mapping: [`KRISHNAIK-WEBSITE-PROJECTS.md`](KRISHNAIK-WEBSITE-PROJECTS.md).
+
+- **Production-grade Advanced RAG with LangGraph, Guardrails, LLM Gateway, Evals, GCP** — Agentic AI · LangGraph/GCP/Guardrails/Evals — *LLMOps*
+- **AWS Cost Optimizer Dashboard (Terraform, Lambda, API Gateway)** — DevOps/Cloud · Terraform/Lambda/boto3/LangChain/GPT-4o — *Production/Cloud*
+- **AI Travel Planner with GCP, ELK Stack, DeepEval** — Agentic AI · GCP/ELK/LLMs/DeepEval — *observability*
+- **AI-Powered Job Analyzer (Filebeat + ELK + Kubernetes)** — GenAI · GPT-4/ELK/Kubernetes — *Production/observability*
+- **Realtime Flight Data Engineering (Airflow & Snowflake)** — Airflow/Snowflake/medallion/Docker — *Data Eng*
+- **MLOps Jenkins Shared Library CI-CD** — Jenkins/Docker/K8s/GCP — *MLOps*
+- **AI Anime Recommendation System** — RAG/LLM-as-Judge/LangSmith/K8s/GCP — *eval/ops*
+- **YouTube SEO Insights Generator (Jenkins, ArgoCD, K8s)** — GPT-4/GitOps — *MLOps/GitOps*
+- **Sign Language Detection (YOLOv5)** — YOLOv5/Flask/AWS/CI-CD — *deploy*
+- **AI Image Analyzer (Terraform, AWS Bedrock, Rekognition)** — Terraform/Bedrock/Rekognition/Lambda — *Cloud*
+- **AWS Threat Detection (GuardDuty, EventBridge, Lambda, SNS)** — GuardDuty/CloudTrail — *Cloud*
+- **Kidney Tumor Identification** — CNN/MLOps — *MLOps*
+- **Network Security (MLflow, Dagshub, MongoDB Atlas)** — MLflow/ETL — *MLOps*
+- **Discarded Material Identification** — object detection/CI-CD — *deploy*
+- **Chest Disease Identification** — CNN/MLOps/CI-CD — *MLOps*
+- **Telecom Customer Churn Prediction (ML)** — classification/lifecycle/deploy — *deploy*
+- **Collaborative Filtering Recommendation System** — collaborative filtering/MLOps — *MLOps*
+- **Object Detection with Faster R-CNN (DVC, TensorBoard, FastAPI)** — Faster R-CNN/DVC — *data versioning*
+- **Thunderstorm Forecasting (MLflow)** — MLflow/HPO/weather — *tracking*
+- **Kubernetes Pen-Testing & Benchmarking (KubeHunter, KubeBench)** — K8s/RBAC — *Cloud*
+
+---
+
 # Part A — Full-Stack AI: MLOps, LLMOps & AgentOps to Production
 
 **Track:** Production Engineering · **Altitude:** Engineer · **Length:** 12 weeks (3 lecture hrs + 4 lab hrs/wk; two-semester feel)

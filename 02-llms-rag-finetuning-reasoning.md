@@ -79,6 +79,25 @@ This subject is taught with the reusable **reader-skills** from *Harnessing LLM 
 
 ---
 
+
+## Krish Naik real-world projects for this subject
+
+End-to-end, deployable projects from [krishnaik.in/projects](https://www.krishnaik.in/projects) that fit this subject — use one as the **capstone-grade option** for the matching lecture's hands-on lab. Full 79-project list and cross-subject mapping: [`KRISHNAIK-WEBSITE-PROJECTS.md`](KRISHNAIK-WEBSITE-PROJECTS.md).
+
+- **Enterprise Advanced RAG (Hybrid Search, ReRanking, HyDE, CRAG, Self-RAG, Text2SQL, Caching, Guardrails) in LangGraph** — GenAI · LangGraph/FastAPI/Qdrant/PostgreSQL/Redis — *Part B · RAG*
+- **Production-grade Advanced RAG with LangGraph, Guardrails, LLM Gateway, Evals, GCP** — Agentic AI · LangGraph/GCP/Guardrails/Evals — *RAG*
+- **RAG-Based Document Search Application** — Agentic AI · RAG/UV/modular — *RAG*
+- **Flipkart Product Recommender Chatbot (GCP)** — RAG/LangChain/LangGraph/microservices — *RAG*
+- **End-to-End NLP Text Summarization (HF Transformers)** — Pegasus/SAMSum/HF — *NLP/LLMs*
+- **AI Content Summarization** — NLP
+- **AI Web App with LLM Fine-Tuning + CI/CD + Vibe-Coding** — Azure AI Foundry/React/AWS CodePipeline — *fine-tune*
+- **Knowledge Intelligence System** — RAG/vector retrieval — *RAG*
+- **End-to-End Medical Chatbot** — RAG/Pinecone/LangChain/Flask/AWS — *RAG*
+- **Air India RAG Chatbot** — AWS Bedrock/RAG/knowledge base — *RAG*
+- **Social Video Audience Sentiment Intelligence** — sentiment/comment classification — *NLP*
+
+---
+
 # Part A — Large Language Models: Pretraining → Post-Training
 
 **Track:** Core · **Altitude:** Builder→Engineer · **Length:** 13 weeks (3 lecture hrs + 5 lab hrs/wk)

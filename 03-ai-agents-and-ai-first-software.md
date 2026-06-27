@@ -52,6 +52,40 @@ This subject is taught with the reusable **reader-skills** from *Harnessing LLM 
 
 ---
 
+
+## Krish Naik real-world projects for this subject
+
+End-to-end, deployable projects from [krishnaik.in/projects](https://www.krishnaik.in/projects) that fit this subject — use one as the **capstone-grade option** for the matching lecture's hands-on lab. Full 79-project list and cross-subject mapping: [`KRISHNAIK-WEBSITE-PROJECTS.md`](KRISHNAIK-WEBSITE-PROJECTS.md).
+
+- **Advanced AI GitHub PR Code Reviewer** — Agentic AI · LangGraph/GPT-4o-mini/FastAPI/Celery/Redis/Prometheus/Grafana/Langfuse — *AI-First SWE · code review*
+- **AI Travel Planner with GCP, ELK Stack, DeepEval** — Agentic AI · GCP/ELK/LLMs/DeepEval — *Agents*
+- **Stateful Agentic AI with LangGraph and Llama 3** — Agentic AI · LangGraph/Groq/Llama 3 — *Agents · memory*
+- **Autonomous Blog Generation Agent (LangGraph & FastAPI)** — Agentic AI · LangGraph/FastAPI/DAG — *Agents*
+- **Gen AI Clothing Store with Pydantic AI** — Pydantic AI/AWS CI-CD — *Agents · typed*
+- **Insurance Claim Support AI Agent (LangMem + RAG)** — Mem0/RAG/tool-calling — *Agents · memory*
+- **Customer Support Agent with Memory & Tool Calling** — RAG/Mem0/ChromaDB/FastAPI/EC2 — *Agents*
+- **Real-Time Voice AI Agent with RAG** — voice/vector DB/low-latency — *Agents*
+- **Pipecat AI Interview Coach (real-time voice)** — voice/avatar/full-stack — *Agents*
+- **Smart Attendance Portal (Supabase)** — Streamlit/Supabase — *app build*
+- **Realtime Source Code Analyzer** — RAG/vector store/conversational memory — *AI-First SWE*
+- **Personal AI Voice Assistant (Gemini)** — Streamlit/TTS/STT — *app*
+- **AI Web App with LLM Fine-Tuning + CI/CD + Vibe-Coding** — Azure AI Foundry/React/AWS CodePipeline — *AI-First SWE*
+- **YouTube Content Creation Agent** — Streamlit/real-time search/LLMs — *Agents*
+- **Telegram Chatbot** — Telegram API/Gemini/GPT — *app*
+- **Personalized Holiday Management Agent** — multi-agent/real-time validation — *multi-agent*
+- **Automated Candidate Interview & Evaluation** — agentic AI/LLMs — *Agents*
+- **Resume Genie Career Suite** — Streamlit/AWS EC2 — *app*
+- **Google ADK: Build & Deploy AI Agents** — Google ADK/REST/Cloud Run — *Agents · ADK*
+- **MCP with AutoGen + Notion** — MCP/AutoGen/Flask/ngrok — *Agents · MCP*
+- **AutoGen Data Analyzer GPT** — AutoGen/multi-agent/viz — *multi-agent*
+- **Neural-Semantic Matching Protocol (MCP)** — LLMs/MCP — *Agents · MCP*
+- **Notion ReAct Planner Agent** — ReAct/Notion API — *Agents · ReAct*
+- **Multi-Agent Quantitative Analysis (Azure)** — FastAPI/Streamlit/Azure PostgreSQL/Blob — *multi-agent*
+- **Automated YouTube Mixtape Creation** — FastAPI/Streamlit/audio — *app*
+- **Azure Multi-Modal Compliance Orchestration (LangGraph, LangSmith)** — Azure Video Indexer/AI Search/OpenAI — *Agents*
+
+---
+
 # Part A — AI Agent Engineering (MCP, A2A, Multi-Agent, AgentOps)
 
 **Track:** Engineering · **Altitude:** Engineer · **Length:** 12 weeks (3 lecture hrs + 4 lab hrs/wk)

@@ -10,6 +10,7 @@
 - [Project Catalog & Build Studios](PROJECTS.md)
 - [Every Chapter → Its Practical Project](CHAPTER-PROJECT-MAP.md)
 - [Krish Naik Projects → Chapter Map](KRISHNAIK-PROJECTS-MAP.md)
+- [Krish Naik Website Projects (79) → Subjects](KRISHNAIK-WEBSITE-PROJECTS.md)
 
 # Subjects — 6 quarter-tracks (each = one academic quarter, 3 lecture-hrs/week)
 
